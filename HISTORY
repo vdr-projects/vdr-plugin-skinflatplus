@@ -1,7 +1,7 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
-2013-XX-XX: Version 0.0.1
+2013-23-09: Version 0.0.1
 difference to skinflat
 - [add] configurable borders
         - any window have its own border with separate size and type
