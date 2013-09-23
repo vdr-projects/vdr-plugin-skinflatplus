@@ -1,0 +1,75 @@
+This is a "plugin" for the Video Disk Recorder (VDR).
+
+Written by:                  Martin Schirrmacher <vdr.skinflatplus@schirrmacher.eu>
+
+Project's homepage:          http://projects.vdr-developer.org/projects/plg-skinflatplus/
+
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+See the file COPYING for more information.
+
+Requirements
+------------
+
+- VDR version >= 1.7.34
+
+- Installed ImageMagick for displaying png/jpg Icons, Channel Logos and EPG Images
+
+Description
+-----------
+Skin flatPlus basiert auf dem Skin flat. Im Gegensatz zu diesem ist der Skin flatPlus grafisch aufwendiger
+und an die Bedürfnisse Konfigurierbar. Derzeit ist der Hauptunterschied die Decorations  mit Border und ProgressBar.
+
+
+Installation 
+------------
+Installation wie bei allen VDR Plugins.
+    make
+    make install
+
+Für die Kanallogos empfehle ich die Logos von 3PO Repo (https://github.com/3PO/Senderlogos).
+Diese können mit folgendem Befehl heruntergeladen werden:
+    git clone https://github.com/3PO/Senderlogos.git logos
+Die Logos müssen im folgenden Ordner zur Verfügung gestellt werden:
+    <vdrconfigdir>/plugins/skinflat/logos/
+
+Der Skin muss im Menü unter Einstellungen -> OSD ausgewählt werden.
+
+
+Themes and theme specific Icons
+-------------------------------
+Der Skin ist weitestgehend über Themes anpassbar.
+Die Decorations (Border, ProgressBar) sind über das Theme einstellbar. Dabei kann jeweils der Typ und
+die Größe (in Pixeln) eingestellt werden. Dabei wird von dem ARGB im Theme nur B verwendet. Es muss darauf geachtet werden
+das die Werte in Hex angegeben werden. Wenn man also z.B. eine Größe von 20 Pixeln angeben möchte heißt der Wert: 00000014
+Siehe dazu die Beispiele.
+
+Borders:
+    0 = none
+    1 = rect
+    2 = round
+    3 = invert round
+    4 = rect + alpha blend
+    5 = round + alpha blend
+    6 = invert round + alpha blend
+Beispiel:
+    clrChannelBorderType = 00000004
+    clrChannelBorderSize = 0000000F
+
+ProgressBar:
+    0 = small line + big line
+    1 = big line
+    2 = big line + outline
+    3 = small line + big line + dot
+    4 = big line + dot
+    5 = big line + outline + dot
+    6 = small line + dot
+    7 = outline + dot
+    8 = small line + big line + alpha blend
+    9 = big line + alpha blend
+Beispiel
+    clrChannelProgressType = 00000008
+    clrChannelProgressSize = 0000000F

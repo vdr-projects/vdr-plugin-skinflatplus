@@ -1,0 +1,26 @@
+VDR Plugin 'skinflatplus' Revision History
+---------------------------------------
+
+2013-XX-XX: Version 0.0.1
+difference to skinflat
+- [add] configurable borders
+        - any window have its own border with separate size and type
+        - 6 border types:
+            rect, round, invert round,
+            rect + alpha blend, round + alpha blend, invert round + alpha blend
+        - configurable by theme or user
+- [add] configurable progressbar
+        - any progressbar have its own size and type
+        - 10 progressbar types:
+            small line + big line, big line, big line + outline,
+            small line + big line + dot, big line + dot, big line + outline + dot,
+            small line + dot, outline + dot, small line + big line + alpha blend,
+            big line + alpha blend
+        - configurable by theme or user
+- [add] channel icons for resolution, recording, encrypted (configurable)
+- [add] show disk usage in topbar @ menu recordings & timer
+- [add] show disk usage pie graph
+- [add] show signal strength and quality (configurable)
+- [add] hide empty color buttons (configurable)
+- [add] configure menu item padding
+- [add] configure osd margin

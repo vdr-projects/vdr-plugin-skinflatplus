@@ -1,0 +1,250 @@
+# VDR plugin language source file.
+# Copyright (C) 2008 Martin Schirrmacher <vdr.skinflat@schirrmacher.eu>
+# This file is distributed under the same license as the skinflat package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: vdr-skinflat 0.0.1\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2013-09-23 10:56+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "clock"
+msgstr "Uhr"
+
+msgid "disk usage"
+msgstr "Plattennutzung"
+
+msgid "free space"
+msgstr "freier Platz"
+
+msgid "Volume"
+msgstr "Lautstärke"
+
+msgid "none"
+msgstr "keine"
+
+msgid "rect"
+msgstr ""
+
+msgid "round"
+msgstr ""
+
+msgid "invert round"
+msgstr ""
+
+msgid "rect + alpha blend"
+msgstr ""
+
+msgid "round + alpha blend"
+msgstr ""
+
+msgid "invert round + alpha blend"
+msgstr ""
+
+msgid "small line + big line"
+msgstr ""
+
+msgid "big line"
+msgstr ""
+
+msgid "big line + outline"
+msgstr ""
+
+msgid "small line + big line + dot"
+msgstr ""
+
+msgid "big line + dot"
+msgstr ""
+
+msgid "big line + outline + dot"
+msgstr ""
+
+msgid "small line + dot"
+msgstr ""
+
+msgid "outline + dot"
+msgstr ""
+
+msgid "small line + big line + alpha blend"
+msgstr ""
+
+msgid "big line + alpha blend"
+msgstr ""
+
+msgid "General settings"
+msgstr "Allgemeine Einstellungen"
+
+msgid "Channelinfo settings"
+msgstr "Kanalinfo Einstellungen"
+
+msgid "Menu settings"
+msgstr "Menü Einstellungen"
+
+msgid "Replay settings"
+msgstr "Replay Einstellungen"
+
+msgid "Volume settings"
+msgstr "Lautstärke Einstellungen"
+
+msgid "Tracks settings"
+msgstr "Audiospur Einstellungen"
+
+msgid "Show empty color-buttons"
+msgstr "Zeige leere Farbtasten"
+
+msgid "Show Diskusage stats"
+msgstr ""
+
+msgid "OSD vertical margin"
+msgstr "OSD vertikaler Rand"
+
+msgid "OSD horizontal margin"
+msgstr "OSD horizontaler Rand"
+
+msgid "TopBar border by theme?"
+msgstr "TopBar Rand vom Theme?"
+
+msgid "TopBar border type"
+msgstr "TopBar Rand Typ"
+
+msgid "TopBar border size"
+msgstr "TopBar Rand Größe"
+
+msgid "Message border by theme?"
+msgstr "Meldung Rand vom Theme?"
+
+msgid "Message border type"
+msgstr "Meldung Rand Typ"
+
+msgid "Message border size"
+msgstr "Meldung Rand Größe"
+
+msgid "Button border by theme?"
+msgstr "Tasten Rand vom Theme?"
+
+msgid "Button border type"
+msgstr "Tasten Rand Typ"
+
+msgid "Button border size"
+msgstr "Tasten Rand Größe"
+
+msgid "Show Channelinfo icons"
+msgstr "Zeige Kanalinfo Icons"
+
+msgid "Show signal quality"
+msgstr "Zeige Signalqualität"
+
+msgid "Channelinfo border by theme?"
+msgstr "Kanalinfo Rand vom Theme?"
+
+msgid "Channelinfo border type"
+msgstr "Kanalinfo Rand Typ"
+
+msgid "Channelinfo border size"
+msgstr "Kanalinfo Rand Größe"
+
+msgid "Channelinfo progress by theme?"
+msgstr "Kanalinfo Progress vom Theme?"
+
+msgid "Channelinfo progress type"
+msgstr "Kanalinfo Progress Typ"
+
+msgid "Channelinfo progress size"
+msgstr "Kanalinfo Progress Größe"
+
+msgid "Signalquality progress by theme?"
+msgstr "Signal Progress vom Theme?"
+
+msgid "Signalquality progress type"
+msgstr "Signal Progress Typ"
+
+msgid "Signalquality progress size"
+msgstr "Signal Progress Größe"
+
+msgid "Menuitem padding"
+msgstr "Menüitem Abstand"
+
+msgid "Menuitem border by theme?"
+msgstr "Menüitem Rand vom Theme?"
+
+msgid "Menuitem border type"
+msgstr "Menüitem Rand Typ"
+
+msgid "Menuitem border size"
+msgstr "Menüitem Rand Größe"
+
+msgid "Menucont. border by theme?"
+msgstr "Menü Rand vom Theme?"
+
+msgid "Menucont. border type"
+msgstr "Menü Rand Typ"
+
+msgid "Menucont. border size"
+msgstr "Menü Rand Größe"
+
+msgid "Menucont. head border by theme?"
+msgstr "Menükopf Rand vom Theme?"
+
+msgid "Menucont. head border type"
+msgstr "Menükopf Rand Typ"
+
+msgid "Menucont. head border size"
+msgstr "Menükopf Rand Größe"
+
+msgid "Menuitem progress by theme?"
+msgstr "Menüitem Progress vom Theme?"
+
+msgid "Menuitem progress type"
+msgstr "Menüitem Progress Typ"
+
+msgid "Menuitem progress size"
+msgstr "Menüitem Progress Größe"
+
+msgid "Replay border by theme?"
+msgstr "Replay Rand vom Theme?"
+
+msgid "Replay border type"
+msgstr "Replay Rand Typ"
+
+msgid "Replay border size"
+msgstr "Replay Rand Größe"
+
+msgid "Replay progress by theme?"
+msgstr "Replay Progress vom Theme?"
+
+msgid "Replay progress size"
+msgstr "Replay Progress Größe"
+
+msgid "Volume border by theme?"
+msgstr "Lautstärke Rand vom Theme?"
+
+msgid "Volume border type"
+msgstr "Lautstärke Rand Typ"
+
+msgid "Volume border size"
+msgstr "Lautstärke Rand Größe"
+
+msgid "Volume progress by theme?"
+msgstr "Lautstärke Progress vom Theme?"
+
+msgid "Volume progress type"
+msgstr "Lautstärke Progress Typ"
+
+msgid "Volume progress size"
+msgstr "Lautstärke Progress Größe"
+
+msgid "Tracks border by theme?"
+msgstr "Audiospur Rand vom Theme?"
+
+msgid "Tracks border type"
+msgstr "Audiospur Rand Typ"
+
+msgid "Tracks border size"
+msgstr "Audiospur Rand Größe"
