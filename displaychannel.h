@@ -9,6 +9,7 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         int channelWidth, channelHeight;
     
         cString channelName;
+        const cChannel *CurChannel;
     
         cPixmap *chanInfoTopPixmap;
         cPixmap *chanInfoBottomPixmap;

@@ -31,11 +31,15 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     int height = heightBottom;
     chanInfoBottomPixmap = osd->CreatePixmap(1, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, channelWidth, heightBottom));
+    chanInfoBottomPixmap->Fill(clrTransparent);
 
     chanIconsPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, channelWidth, heightBottom));
+    chanIconsPixmap->Fill(clrTransparent);
+
     chanLogoPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, heightBottom, heightBottom));
+    chanLogoPixmap->Fill(clrTransparent);
     
     height += Config.decorProgressChannelSize + marginItem*2;
     ProgressBarCreate(Config.decorBorderChannelSize, Config.decorBorderChannelSize+channelHeight - height + marginItem,
@@ -45,7 +49,8 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     height += heightTop;
     chanInfoTopPixmap = osd->CreatePixmap(1, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, channelWidth, heightTop));
-
+    chanInfoTopPixmap->Fill(clrTransparent);
+    
     DecorBorderDraw(Config.decorBorderChannelSize, Config.decorBorderChannelSize+channelHeight - height,
         channelWidth, heightTop + heightBottom + Config.decorProgressChannelSize+marginItem*2,
         Config.decorBorderChannelSize, Config.decorBorderChannelType, Config.decorBorderChannelFg, Config.decorBorderChannelBg);
@@ -67,6 +72,7 @@ cFlatDisplayChannel::~cFlatDisplayChannel() {
 void cFlatDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
     cString channelNumber("");
     isRecording = false;
+    chanIconsPixmap->Fill(clrTransparent);
     if (Channel) {
         channelName = Channel->Name();
         if (!Channel->GroupSep())
@@ -74,8 +80,7 @@ void cFlatDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
         else if (Number)
             channelNumber = cString::sprintf("%d-", Number);
         
-        if( Config.ChannelIconsShow )
-            ChannelIconsDraw(Channel, false);
+        CurChannel = Channel;
     } else
         channelName = ChannelString(NULL, 0);
 
@@ -164,6 +169,7 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
 
     chanInfoBottomPixmap->Fill(Theme.Color(clrChannelBg));
     chanLogoPixmap->Fill(clrTransparent);
+    chanIconsPixmap->Fill(clrTransparent);
 
     int imageHeight = heightBottom - marginItem*2;
     if( imgLoader.LoadLogo(*channelName, imageHeight, imageHeight) ) {
@@ -258,6 +264,8 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         chanInfoBottomPixmap->DrawText(cPoint(left, fontHeight*2 + fontSmlHeight), *epgShort,
                 Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), fontSml);
     }
+    if( Config.ChannelIconsShow && CurChannel )
+        ChannelIconsDraw(CurChannel, false);
 }
 
 void cFlatDisplayChannel::SetMessage(eMessageType Type, const char *Text) {
@@ -316,7 +324,7 @@ void cFlatDisplayChannel::Flush(void) {
         double aspect;
         cDevice::PrimaryDevice()->GetVideoSize(screenWidth, screenHeight, aspect);
         if (screenWidth != lastScreenWidth) {
-            ChannelIconsDraw(NULL, true);
+            ChannelIconsDraw(CurChannel, true);
             screenWidth = lastScreenWidth;
         }
     }

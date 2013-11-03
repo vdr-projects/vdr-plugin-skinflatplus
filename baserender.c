@@ -62,10 +62,13 @@ cFlatBaseRender::~cFlatBaseRender(void) {
 }
 
 void cFlatBaseRender::CreateFullOsd(void) {
+    //printf("left: %d top: %d width: %d height: %d", cOsd::OsdLeft(), cOsd::OsdTop(), cOsd::OsdWidth(), cOsd::OsdHeight());
     CreateOsd(cOsd::OsdLeft() + Config.marginOsdHor, cOsd::OsdTop() + Config.marginOsdVer, cOsd::OsdWidth() - Config.marginOsdHor*2, cOsd::OsdHeight() - Config.marginOsdVer*2);
 }
 
 void cFlatBaseRender::CreateOsd(int left, int top, int width, int height) {
+    osdLeft = left;
+    osdTop = top;
     osdWidth = width;
     osdHeight = height;
 
@@ -605,10 +608,17 @@ void cFlatBaseRender::ProgressBarDrawMarks(int Current, int Total, const cMarks 
         posMarkLast = posMark;
         Start = !Start;
     }
+    
+    // draw last marker vertical line
+    if( posCurrent == posMark )
+        progressBarPixmap->DrawRectangle(cRect( posMark - sml, 0, sml*2, progressBarHeight), progressBarColorMarkCurrent);
+    else
+        progressBarPixmap->DrawRectangle(cRect( posMark - sml/2, 0, sml, progressBarHeight), progressBarColorMark);
+    
     if( !Start ) {
-        progressBarPixmap->DrawRectangle(cRect( posMarkLast, top - big/2, progressBarWidth - posMarkLast, big), progressBarColorBarFg);
+        //progressBarPixmap->DrawRectangle(cRect( posMarkLast + sml/2, top - big/2, progressBarWidth - posMarkLast, big), progressBarColorBarFg);
         if( posCurrent > posMarkLast )
-            progressBarPixmap->DrawRectangle(cRect( posMarkLast, top - big/2, posCurrent - posMarkLast, big), progressBarColorBarCurFg);
+            progressBarPixmap->DrawRectangle(cRect( posMarkLast + sml/2, top - big/2, posCurrent - posMarkLast, big), progressBarColorBarCurFg);
     } else {
         // marker
         progressBarPixmap->DrawRectangle(cRect( posMarkLast, top - sml/2, posCurrent - posMarkLast, sml), progressBarColorBarCurFg);
@@ -617,6 +627,7 @@ void cFlatBaseRender::ProgressBarDrawMarks(int Current, int Total, const cMarks 
         if( posCurrent > posMarkLast + sml/2 )
             progressBarPixmap->DrawRectangle(cRect( posMarkLast - sml/2, 0, sml, progressBarHeight), progressBarColorMark);
     }
+    
 }
 
 int cFlatBaseRender::ProgressBarMarkPos(int P, int Total) {
@@ -761,7 +772,7 @@ void cFlatBaseRender::DecorBorderDraw(int Left, int Top, int Width, int Height, 
     int BottomDecor = Height + Size;
 
     if( !decorPixmap ) {
-        decorPixmap = osd->CreatePixmap(4, cRect(cOsd::OsdLeft(), cOsd::OsdTop(), cOsd::OsdWidth(), cOsd::OsdHeight()));
+        decorPixmap = osd->CreatePixmap(4, cRect(0, 0, cOsd::OsdWidth(), cOsd::OsdHeight()));
         decorPixmap->Fill(clrTransparent);
     }
     

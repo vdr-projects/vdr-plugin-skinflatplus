@@ -18,7 +18,7 @@ class cFlatBaseRender
     protected:
         cOsd *osd;
 
-        int osdWidth, osdHeight;
+        int osdLeft, osdTop, osdWidth, osdHeight;
         int marginItem;
     
         // Standard fonts
