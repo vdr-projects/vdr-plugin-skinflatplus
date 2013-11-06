@@ -66,6 +66,8 @@ class cFlatBaseRender
         int contentDrawPortHeight; // gesamthöhe des Textes
         bool contentHasScrollbar;
         bool contentShown;
+        bool contentFixedFont;
+        
         tColor contentColorFg, contentColorBg;
         cTextWrapper contentWrapper;
 
@@ -124,7 +126,7 @@ class cFlatBaseRender
         int ScrollBarWidth(void);
         
         void ContentCreate(int Left, int Top, int Width, int Height);
-        void ContentSet(const char *Text, tColor ColorFg, tColor ColorBg);
+        void ContentSet(const char *Text, bool FixedFont, tColor ColorFg, tColor ColorBg);
         bool ContentIsShown(void);
         bool ContentScrollable(void);
         int ContentScrollTotal(void);

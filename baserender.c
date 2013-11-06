@@ -272,8 +272,13 @@ void cFlatBaseRender::ContentCreate(int Left, int Top, int Width, int Height) {
     contentHeight = lines * fontHeight;
 }
 
-void cFlatBaseRender::ContentSet(const char *Text, tColor ColorFg, tColor ColorBg) {
-    contentWrapper.Set(Text, font, contentWidth - marginItem*2);
+void cFlatBaseRender::ContentSet(const char *Text, bool FixedFont, tColor ColorFg, tColor ColorBg) {
+    contentFixedFont = FixedFont;
+    if( FixedFont )
+        contentWrapper.Set(Text, fontFixed, contentWidth - marginItem*2);
+    else
+        contentWrapper.Set(Text, font, contentWidth - marginItem*2);
+        
     contentColorFg = ColorFg;
     contentColorBg = ColorBg;
 
@@ -376,7 +381,10 @@ void cFlatBaseRender::contentDraw(void) {
     int currentHeight = 0;
     for (int i=0; i < linesText; i++) {
         currentHeight = (i)*fontHeight;
-        contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, font, contentWidth - marginItem*2);
+        if( contentFixedFont )
+            contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, fontFixed, contentWidth - marginItem*2);
+        else
+            contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, font, contentWidth - marginItem*2);
     }
 }
 
@@ -598,8 +606,9 @@ void cFlatBaseRender::ProgressBarDrawMarks(int Current, int Total, const cMarks 
 
     // the small line
     progressBarPixmap->DrawRectangle(cRect( 0, top - sml/2, progressBarWidth, sml), progressBarColorFg);
-        
+
     bool Start = true;
+    
     for( const cMark *m = Marks->First(); m; m = Marks->Next(m) ) {
         posMark = ProgressBarMarkPos( m->Position(), Total );
         posCurrent = ProgressBarMarkPos( Current, Total );
@@ -627,7 +636,6 @@ void cFlatBaseRender::ProgressBarDrawMarks(int Current, int Total, const cMarks 
         if( posCurrent > posMarkLast + sml/2 )
             progressBarPixmap->DrawRectangle(cRect( posMarkLast - sml/2, 0, sml, progressBarHeight), progressBarColorMark);
     }
-    
 }
 
 int cFlatBaseRender::ProgressBarMarkPos(int P, int Total) {
@@ -686,10 +694,10 @@ void cFlatBaseRender::ProgressBarDrawMark(int posMark, int posMarkLast, int posC
         else
             progressBarPixmap->DrawRectangle(cRect( posMark - mbig/2, progressBarHeight - sml, mbig, sml), progressBarColorMark);
     }
-    
-    if( posCurrent == posMarkLast )
+
+    if( posCurrent == posMarkLast && posMarkLast != 0 )
         progressBarPixmap->DrawRectangle(cRect( posMarkLast - sml, 0, sml*2, progressBarHeight), progressBarColorMarkCurrent);
-    else
+    else if( posMarkLast != 0 )
         progressBarPixmap->DrawRectangle(cRect( posMarkLast - sml/2, 0, sml, progressBarHeight), progressBarColorMark);
     
 }

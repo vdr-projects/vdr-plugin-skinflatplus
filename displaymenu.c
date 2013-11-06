@@ -358,7 +358,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
     DecorBorderDraw(chLeft, chTop, chWidth, chHeight, Config.decorBorderMenuContentHeadSize, Config.decorBorderMenuContentHeadType,
         Config.decorBorderMenuContentHeadFg, Config.decorBorderMenuContentHeadBg);
     
-    ContentSet( Event->Description(), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
+    ContentSet( Event->Description(), false, Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
     if( ContentScrollable() )
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
 
@@ -387,7 +387,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     DecorBorderDraw(chLeft, chTop, chWidth, chHeight, Config.decorBorderMenuContentHeadSize, Config.decorBorderMenuContentHeadType,
         Config.decorBorderMenuContentHeadFg, Config.decorBorderMenuContentHeadBg);
     
-    ContentSet( recInfo->Description(), Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg) );
+    ContentSet( recInfo->Description(), false, Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg) );
     if( ContentScrollable() )
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
 
@@ -400,7 +400,7 @@ void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
         return;
     contentHeadPixmap->Fill(clrTransparent);
 
-    ContentSet( Text, Theme.Color(clrMenuTextFont), Theme.Color(clrMenuTextBg) );
+    ContentSet( Text, false, Theme.Color(clrMenuTextFont), Theme.Color(clrMenuTextBg) );
     if( ContentScrollable() )
         SetScrollbar( ContentScrollTotal(), 0 );
 
