@@ -103,9 +103,10 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
     if( (menuCategory == mcRecording || menuCategory == mcTimer) && Config.DiskUsageShow ) {
         cVideoDiskUsage::HasChanged(VideoDiskUsageState);
         int DiskUsage = cVideoDiskUsage::UsedPercent();
-        int FreeGB = cVideoDiskUsage::FreeMB() / 1024;
+        double FreeGB = cVideoDiskUsage::FreeMB() / 1024.0;
+        int FreeMinutes = cVideoDiskUsage::FreeMinutes();
         cString extra1 = cString::sprintf("%s: %d%%", tr("disk usage"), DiskUsage);
-        cString extra2 = cString::sprintf("%s: %d GB", tr("free space"), FreeGB);
+        cString extra2 = cString::sprintf("%s: %.1f GB ~ %02d:%02d", tr("free"), FreeGB, FreeMinutes / 60, FreeMinutes % 60);
 
         cString iconName("chart1");
         if( DiskUsage > 14 )

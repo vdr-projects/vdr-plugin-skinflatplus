@@ -21,8 +21,8 @@ msgstr "Uhr"
 msgid "disk usage"
 msgstr "Plattennutzung"
 
-msgid "free space"
-msgstr "freier Platz"
+msgid "free"
+msgstr "frei"
 
 msgid "Volume"
 msgstr "Lautstärke"
