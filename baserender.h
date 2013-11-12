@@ -27,6 +27,7 @@ class cFlatBaseRender
         cFont *fontFixed;
         int fontHeight;
         int fontSmlHeight;
+        int fontFixedHeight;
 
         // TopBar
         cPixmap *topBarPixmap;
@@ -125,7 +126,7 @@ class cFlatBaseRender
         void ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Height, int Total, int Offset, int Shown, bool CanScrollUp, bool CanScrollDown);
         int ScrollBarWidth(void);
         
-        void ContentCreate(int Left, int Top, int Width, int Height);
+        void ContentCreate(int Left, int Top, int Width, int Height, bool FixedFont);
         void ContentSet(const char *Text, bool FixedFont, tColor ColorFg, tColor ColorBg);
         bool ContentIsShown(void);
         bool ContentScrollable(void);

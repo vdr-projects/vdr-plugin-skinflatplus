@@ -33,7 +33,7 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     cHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
         buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + 
         chHeight + Config.decorBorderMenuContentHeadSize*2 + Config.decorBorderMenuContentSize*2);
-    ContentCreate(cLeft, cTop, cWidth, cHeight);
+    ContentCreate(cLeft, cTop, cWidth, cHeight, false);
 
     scrollbarPixmap = osd->CreatePixmap(2, cRect(osdWidth - scrollBarWidth, scrollBarTop, scrollBarWidth, scrollBarHeight));
 
@@ -401,11 +401,18 @@ void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
         return;
     contentHeadPixmap->Fill(clrTransparent);
 
-    ContentSet( Text, false, Theme.Color(clrMenuTextFont), Theme.Color(clrMenuTextBg) );
-    if( ContentScrollable() )
-        SetScrollbar( ContentScrollTotal(), 0 );
+    int Left = Config.decorBorderMenuContentSize;
+    int Top = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentHeadSize;
+    int Width = menuWidth - Config.decorBorderMenuContentSize*2;
+    int Height = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
+        buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3);
+    ContentCreate(Left, Top, Width, Height, FixedFont);
 
-    DecorBorderDraw(cLeft, cTop, cWidth, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+    ContentSet( Text, FixedFont, Theme.Color(clrMenuTextFont), Theme.Color(clrMenuTextBg) );
+    if( ContentScrollable() )
+        DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
+
+    DecorBorderDraw(Left, Top, Width, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
         Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
 }
 

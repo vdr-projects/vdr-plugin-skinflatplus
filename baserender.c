@@ -8,7 +8,8 @@ cFlatBaseRender::cFlatBaseRender(void) {
 
     fontHeight = font->Height();
     fontSmlHeight = fontSml->Height();
-
+    fontFixedHeight = fontFixed->Height();
+    
     topBarTitle = "";
     tobBarTitleExtra1 = ""; 
     tobBarTitleExtra2 = ""; 
@@ -260,21 +261,26 @@ void cFlatBaseRender::MessageClear(void) {
     DecorBorderClear(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight, Config.decorBorderMessageSize);
 }
 
-void cFlatBaseRender::ContentCreate(int Left, int Top, int Width, int Height) {
+void cFlatBaseRender::ContentCreate(int Left, int Top, int Width, int Height, bool FixedFont) {
     contentHasScrollbar = false;
     contentShown = false;
+    contentFixedFont = FixedFont;
 
     contentLeft = Left;
     contentTop = Top;
     contentWidth = Width;
     contentHeight = Height;
     int lines = ContentVisibleLines();
+    
     contentHeight = lines * fontHeight;
+    if( contentFixedFont )
+        contentHeight = lines * fontFixedHeight;
+
 }
 
 void cFlatBaseRender::ContentSet(const char *Text, bool FixedFont, tColor ColorFg, tColor ColorBg) {
     contentFixedFont = FixedFont;
-    if( FixedFont )
+    if( contentFixedFont )
         contentWrapper.Set(Text, fontFixed, contentWidth - marginItem*2);
     else
         contentWrapper.Set(Text, font, contentWidth - marginItem*2);
@@ -283,7 +289,9 @@ void cFlatBaseRender::ContentSet(const char *Text, bool FixedFont, tColor ColorF
     contentColorBg = ColorBg;
 
     int contentWrapperHeight = (contentWrapper.Lines()+1) * fontHeight;
-
+    if( contentFixedFont )
+        contentWrapperHeight = (contentWrapper.Lines()+1) * fontFixedHeight;
+        
     if( contentWrapperHeight > contentHeight ) {
         contentDrawPortHeight = contentWrapperHeight;
         contentHasScrollbar = true;
@@ -327,7 +335,10 @@ int cFlatBaseRender::ContentScrollOffset(void) {
 }
 
 int cFlatBaseRender::ContentVisibleLines(void) {
-    return contentHeight / fontHeight;
+    if( contentFixedFont )
+        return contentHeight / fontFixedHeight;
+    else
+        return contentHeight / fontHeight;
 }
 
 bool cFlatBaseRender::ContentScroll(bool Up, bool Page) {
