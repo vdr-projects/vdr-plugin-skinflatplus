@@ -11,6 +11,7 @@ class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay {
         cPixmap *labelJump;
         cPixmap *iconsPixmap;
     
+        bool ProgressShown;
         void UpdateInfo(void);
     public:
         cFlatDisplayReplay(bool ModeOnly);

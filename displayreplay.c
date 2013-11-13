@@ -5,6 +5,7 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
     current = "";
     total = "";
 
+    ProgressShown = false;
     CreateFullOsd();
     TopBarCreate();
     MessageCreate();
@@ -18,15 +19,13 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
         osdWidth - Config.decorBorderReplaySize*2, Config.decorProgressReplaySize, marginItem, 0,
         Config.decorProgressReplayFg, Config.decorProgressReplayBarFg, Config.decorProgressReplayBg, Config.decorProgressReplayType);
 
-    labelJump = osd->CreatePixmap(1, cRect(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorProgressReplaySize - marginItem - fontHeight - Config.decorBorderReplaySize,
+    labelJump = osd->CreatePixmap(1, cRect(Config.decorBorderReplaySize, 
+        osdHeight - labelHeight - Config.decorProgressReplaySize - marginItem*3 - fontHeight - Config.decorBorderReplaySize*2,
         osdWidth - Config.decorBorderReplaySize*2, fontHeight));
     
     labelPixmap->Fill(Theme.Color(clrReplayBg));
     labelJump->Fill(clrTransparent);
 
-    DecorBorderDraw(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorProgressReplaySize - Config.decorBorderReplaySize - marginItem,
-        osdWidth - Config.decorBorderReplaySize*2, labelHeight + Config.decorProgressReplaySize + marginItem,
-        Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg);
 }
 
 cFlatDisplayReplay::~cFlatDisplayReplay() {
@@ -102,9 +101,21 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
             iconsPixmap->DrawImage( cPoint(left + fontHeight*3 + marginItem*3, 0), imgLoader.GetImage() );
 
     }
+    
+    if( ProgressShown )
+        DecorBorderDraw(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorProgressReplaySize - Config.decorBorderReplaySize - marginItem,
+            osdWidth - Config.decorBorderReplaySize*2, labelHeight + Config.decorProgressReplaySize + marginItem,
+            Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg);
+    else
+        DecorBorderDraw(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorBorderReplaySize,
+            osdWidth - Config.decorBorderReplaySize*2, labelHeight,
+            Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg);
+        
+        
 }
 
 void cFlatDisplayReplay::SetProgress(int Current, int Total) {
+    ProgressShown = true;
     ProgressBarDrawMarks(Current, Total, marks, Theme.Color(clrReplayMarkFg), Theme.Color(clrReplayMarkCurrentFg));
 }
 
@@ -125,6 +136,8 @@ void cFlatDisplayReplay::UpdateInfo(void) {
 }
 
 void cFlatDisplayReplay::SetJump(const char *Jump) {
+    DecorBorderClearByFrom(BorderRecordJump);
+    
     if( !Jump )
     {
         labelJump->Fill(clrTransparent);
@@ -134,6 +147,11 @@ void cFlatDisplayReplay::SetJump(const char *Jump) {
     left /= 2;
     
     labelJump->DrawText(cPoint(left, 0), Jump, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(Jump), fontHeight, taCenter);
+
+    DecorBorderDraw(left + Config.decorBorderReplaySize,
+    osdHeight - labelHeight - Config.decorProgressReplaySize - marginItem*3 - fontHeight - Config.decorBorderReplaySize*2,
+        font->Width(Jump), fontHeight,
+        Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg, BorderRecordJump);
 }
 
 void cFlatDisplayReplay::SetMessage(eMessageType Type, const char *Text) {

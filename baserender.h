@@ -5,7 +5,8 @@
 #include <list>
 
 enum eBorder {
-    BorderMenuItem = 1
+    BorderMenuItem = 1,
+    BorderRecordJump = 2
 };
 
 struct sBorderFrom {
