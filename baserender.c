@@ -135,8 +135,8 @@ void cFlatBaseRender::TopBarUpdate(void) {
         int extraMaxWidth = max(extra1Width, extra2Width);
         
         int extraLeft = TopBarWidth/2 - extraMaxWidth/2;
-        topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop), tobBarTitleExtra1, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, extraMaxWidth);
-        topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop + fontSmlHeight), tobBarTitleExtra2, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, extraMaxWidth);
+        topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop), tobBarTitleExtra1, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, extraMaxWidth, 0, taRight);
+        topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop + fontSmlHeight), tobBarTitleExtra2, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, extraMaxWidth, 0, taRight);
 
         topBarExtraIconPixmap->Fill(clrTransparent);
         if( topBarExtraIconSet ) {
@@ -163,8 +163,8 @@ void cFlatBaseRender::TopBarUpdate(void) {
 
         int fullWidth = max(weekdayWidth, dateWidth);
 
-        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop), weekday, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, fullWidth, 0, taCenter);
-        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop + fontSmlHeight), date, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, fullWidth, 0, taCenter);
+        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop), weekday, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, fullWidth, 0, taRight);
+        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop + fontSmlHeight), date, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, fullWidth, 0, taRight);
 
         DecorBorderDraw(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight, Config.decorBorderTopBarSize, Config.decorBorderTopBarType, Config.decorBorderTopBarFg, Config.decorBorderTopBarBg);
     }
