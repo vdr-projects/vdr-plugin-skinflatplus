@@ -16,7 +16,7 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
         buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 );
     scrollBarTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2;
 
-    menuWidth = osdWidth - scrollBarWidth;
+    menuWidth = osdWidth; // - scrollBarWidth; // scrollbar only if needed
     menuTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize;
     menuPixmap = osd->CreatePixmap(1, cRect(0, menuTop, menuWidth, scrollBarHeight ));
     
@@ -54,6 +54,9 @@ void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
 }
 
 void cFlatDisplayMenu::DrawScrollbar(int Total, int Offset, int Shown, int Top, int Height, bool CanScrollUp, bool CanScrollDown) {
+    if (Total > 0 && Total > Shown)
+        menuPixmap->DrawRectangle(cRect(menuWidth - scrollBarWidth, 0, scrollBarWidth, scrollBarHeight), clrTransparent);
+
     ScrollbarDraw(scrollbarPixmap, Config.MenuItemPadding, Top, Height, Total, Offset, Shown, CanScrollUp, CanScrollDown);
 }
 
