@@ -183,7 +183,7 @@ void cFlatBaseRender::ButtonsCreate(void) {
 }
 
 void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char *Yellow, const char *Blue) {
-    int buttonWidth = (buttonsWidth / 4) - marginItem - Config.decorBorderButtonSize*2;
+    int buttonWidth = (buttonsWidth / 4) - Config.decorBorderButtonSize*2;
 
     buttonsPixmap->Fill(clrTransparent);
 
