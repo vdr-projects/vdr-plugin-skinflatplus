@@ -1,6 +1,13 @@
 #pragma once
 
 #include "baserender.h"
+#include <list>
+
+struct sDecorBorder {
+    int Left, Top, Width, Height, Size, Type;
+    tColor ColorFg, ColorBg;
+    int From;
+};
 
 class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
     private:
@@ -19,6 +26,16 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         int scrollBarTop, scrollBarWidth, scrollBarHeight;
 
         int itemHeight, itemChannelHeight;
+
+        std::list<sDecorBorder> ItemsBorder;
+        sDecorBorder EventBorder, RecordingBorder, TextBorder;
+    
+        bool isScrolling;
+        bool ShowEvent, ShowRecording, ShowText;
+    
+        void ItemBorderInsertUnique(sDecorBorder ib);
+        void ItemBorderDrawAllWithScrollbar(void);
+        void ItemBorderClear(void);
         
         void DrawScrollbar(int Total, int Offset, int Shown, int Top, int Height, bool CanScrollUp, bool CanScrollDown);
         int ItemsHeight(void);

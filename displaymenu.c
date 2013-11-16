@@ -15,8 +15,12 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     scrollBarHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 + 
         buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 );
     scrollBarTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2;
-
-    menuWidth = osdWidth; // - scrollBarWidth; // scrollbar only if needed
+    isScrolling = false;
+    ShowEvent = false;
+    ShowRecording = false;
+    ShowText = false;
+    
+    menuWidth = osdWidth;
     menuTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize;
     menuPixmap = osd->CreatePixmap(1, cRect(0, menuTop, menuWidth, scrollBarHeight ));
     
@@ -26,15 +30,6 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     chHeight = fontHeight + fontSmlHeight*2 + marginItem*2;
     contentHeadPixmap = osd->CreatePixmap(1, cRect(chLeft, chTop, chWidth, chHeight));
     
-    cLeft = Config.decorBorderMenuContentSize;
-    cTop = chTop + marginItem*3 + fontHeight + fontSmlHeight*2 +
-        Config.decorBorderMenuContentSize + Config.decorBorderMenuContentHeadSize;
-    cWidth = menuWidth - Config.decorBorderMenuContentSize*2;
-    cHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
-        buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + 
-        chHeight + Config.decorBorderMenuContentHeadSize*2 + Config.decorBorderMenuContentSize*2);
-    ContentCreate(cLeft, cTop, cWidth, cHeight, false);
-
     scrollbarPixmap = osd->CreatePixmap(2, cRect(osdWidth - scrollBarWidth, scrollBarTop, scrollBarWidth, scrollBarHeight));
 
     menuPixmap->Fill(clrTransparent);
@@ -54,8 +49,17 @@ void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
 }
 
 void cFlatDisplayMenu::DrawScrollbar(int Total, int Offset, int Shown, int Top, int Height, bool CanScrollUp, bool CanScrollDown) {
-    if (Total > 0 && Total > Shown)
-        menuPixmap->DrawRectangle(cRect(menuWidth - scrollBarWidth, 0, scrollBarWidth, scrollBarHeight), clrTransparent);
+    if( Total > 0 && Total > Shown ) {
+        if( isScrolling == false && ShowEvent == false && ShowRecording == false && ShowText == false ) {
+            isScrolling = true;
+            DecorBorderClearByFrom(BorderMenuItem);
+            ItemBorderDrawAllWithScrollbar();
+            ItemBorderClear();
+            menuPixmap->DrawRectangle(cRect(menuWidth - scrollBarWidth - Config.decorBorderMenuItemSize, 0, scrollBarWidth, scrollBarHeight), clrTransparent);
+        }
+    } else if( ShowEvent == false && ShowRecording == false && ShowText == false ) {
+        isScrolling = false;
+    }
 
     ScrollbarDraw(scrollbarPixmap, Config.MenuItemPadding, Top, Height, Total, Offset, Shown, CanScrollUp, CanScrollDown);
 }
@@ -144,7 +148,15 @@ void cFlatDisplayMenu::SetMessage(eMessageType Type, const char *Text) {
 }
 
 void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Selectable) {
+    ShowEvent = false;
+    ShowRecording = false;
+    ShowText = false;
+    
     int y = Index * itemHeight;
+    int Width = menuWidth - Config.decorBorderMenuItemSize*2;
+    if( isScrolling )
+        Width -= scrollBarWidth;
+    
     tColor ColorFg, ColorBg;
     if (Current) {
         ColorFg = Theme.Color(clrItemCurrentFont);
@@ -180,30 +192,40 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                     xt + Config.decorBorderMenuItemSize, colWidth, s, ColorFg, ColorBarFg, ColorBg);
             } else {
                 menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
-                    menuWidth - Config.decorBorderMenuItemSize*2 - xt);
+                    Width - xt);
             }
         }
         if (!Tab(i + 1))
             break;
     }
 
-    int left = Config.decorBorderMenuItemSize;
-    int top = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize + y;
+    sDecorBorder ib;
+    ib.Left = Config.decorBorderMenuItemSize;
+    ib.Top = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize + y;
+    ib.Width = menuWidth - Config.decorBorderMenuItemSize*2;
+    if( isScrolling )
+        ib.Width -= scrollBarWidth;
+    ib.Height = fontHeight;
+    ib.Size = Config.decorBorderMenuItemSize;
+    ib.Type = Config.decorBorderMenuItemType;
 
-    if( Current )
-        DecorBorderDraw(left, top, menuWidth - Config.decorBorderMenuItemSize*2, fontHeight,
-            Config.decorBorderMenuItemSize, Config.decorBorderMenuItemType, Config.decorBorderMenuItemCurFg,
-            Config.decorBorderMenuItemCurBg, BorderMenuItem);
-    else {
-        if( Selectable )
-            DecorBorderDraw(left, top, menuWidth - Config.decorBorderMenuItemSize*2, fontHeight,
-                Config.decorBorderMenuItemSize, Config.decorBorderMenuItemType, Config.decorBorderMenuItemSelFg,
-                Config.decorBorderMenuItemSelBg, BorderMenuItem);
-        else
-            DecorBorderDraw(left, top, menuWidth - Config.decorBorderMenuItemSize*2, fontHeight,
-                Config.decorBorderMenuItemSize, Config.decorBorderMenuItemType, Config.decorBorderMenuItemFg,
-                Config.decorBorderMenuItemBg, BorderMenuItem);
+    if( Current ) {
+        ib.ColorFg = Config.decorBorderMenuItemCurFg;
+        ib.ColorBg = Config.decorBorderMenuItemCurBg;
+    } else {
+        if( Selectable ) {
+            ib.ColorFg = Config.decorBorderMenuItemSelFg;
+            ib.ColorBg = Config.decorBorderMenuItemSelBg;
+        } else {
+            ib.ColorFg = Config.decorBorderMenuItemFg;
+            ib.ColorBg = Config.decorBorderMenuItemBg;
+        }
     }
+
+    DecorBorderDraw(ib.Left, ib.Top, ib.Width, ib.Height,
+        ib.Size, ib.Type, ib.ColorFg, ib.ColorBg, BorderMenuItem);
+    
+    ItemBorderInsertUnique(ib);
     
     SetEditableWidth(menuWidth - Tab(1));
 }
@@ -343,6 +365,26 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
     if( !Event )
         return;
 
+    ShowEvent = true;
+    ShowRecording = false;
+    ShowText = false;
+    ItemBorderClear();
+
+    cLeft = Config.decorBorderMenuContentSize;
+    cTop = chTop + marginItem*3 + fontHeight + fontSmlHeight*2 +
+        Config.decorBorderMenuContentSize + Config.decorBorderMenuContentHeadSize;
+    cWidth = menuWidth - Config.decorBorderMenuContentSize*2;
+    cHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
+        buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + 
+        chHeight + Config.decorBorderMenuContentHeadSize*2 + Config.decorBorderMenuContentSize*2);
+
+    bool contentScrollable = ContentWillItBeScrollable(cWidth, cHeight, Event->Description(), false);
+    if( contentScrollable ) {
+        cWidth -= scrollBarWidth;
+    }
+
+    ContentCreate(cLeft, cTop, cWidth, cHeight, false);
+    
     contentHeadPixmap->Fill(clrTransparent);
     contentHeadPixmap->DrawRectangle(cRect(0, 0, menuWidth, fontHeight + fontSmlHeight*2 + marginItem*2), Theme.Color(clrScrollbarBg));
 
@@ -373,10 +415,38 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
 void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     if( !Recording )
         return;
+
+    ShowEvent = false;
+    ShowRecording = true;
+    ShowText = false;
+    ItemBorderClear();
+
+    const cRecordingInfo *recInfo = Recording->Info();
+
+    chLeft = Config.decorBorderMenuContentHeadSize;
+    chTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentHeadSize;
+    chWidth = menuWidth - Config.decorBorderMenuContentHeadSize*2;
+    chHeight = fontHeight + fontSmlHeight*2 + marginItem*2;
+    contentHeadPixmap = osd->CreatePixmap(1, cRect(chLeft, chTop, chWidth, chHeight));
+    
+    cLeft = Config.decorBorderMenuContentSize;
+    cTop = chTop + marginItem*3 + fontHeight + fontSmlHeight*2 +
+        Config.decorBorderMenuContentSize + Config.decorBorderMenuContentHeadSize;
+    cWidth = menuWidth - Config.decorBorderMenuContentSize*2;
+    cHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
+        buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + 
+        chHeight + Config.decorBorderMenuContentHeadSize*2 + Config.decorBorderMenuContentSize*2);
+
+    bool contentScrollable = ContentWillItBeScrollable(cWidth, cHeight, recInfo->Description(), false);
+    if( contentScrollable ) {
+        cWidth -= scrollBarWidth;
+    }
+
+    ContentCreate(cLeft, cTop, cWidth, cHeight, false);
+    
     contentHeadPixmap->Fill(clrTransparent);
     contentHeadPixmap->DrawRectangle(cRect(0, 0, menuWidth, fontHeight + fontSmlHeight*2 + marginItem*2), Theme.Color(clrScrollbarBg));
 
-    const cRecordingInfo *recInfo = Recording->Info();
     cString timeString = cString::sprintf("%s  %s  %s", *DateString(Recording->Start()), *TimeString(Recording->Start()), recInfo->ChannelName() ? recInfo->ChannelName() : "");
 
     cString title = recInfo->Title();
@@ -392,16 +462,34 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         Config.decorBorderMenuContentHeadFg, Config.decorBorderMenuContentHeadBg);
     
     ContentSet( recInfo->Description(), false, Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg) );
-    if( ContentScrollable() )
+    if( ContentScrollable() ) {
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
+    }
 
-    DecorBorderDraw(cLeft, cTop, cWidth, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
-        Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
+    RecordingBorder.Left = cLeft;
+    RecordingBorder.Top = cTop;
+    RecordingBorder.Width = cWidth;
+    RecordingBorder.Height = ContentGetHeight();
+    RecordingBorder.Size = Config.decorBorderMenuContentSize;
+    RecordingBorder.Type = Config.decorBorderMenuContentType;
+    RecordingBorder.ColorFg = Config.decorBorderMenuContentFg;
+    RecordingBorder.ColorBg = Config.decorBorderMenuContentBg;
+    RecordingBorder.From = BorderMenuRecord;
+    
+    DecorBorderDraw(RecordingBorder.Left, RecordingBorder.Top, RecordingBorder.Width, RecordingBorder.Height,
+        RecordingBorder.Size, RecordingBorder.Type,
+        RecordingBorder.ColorFg, RecordingBorder.ColorBg, RecordingBorder.From);
 }
 
 void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
     if( !Text )
         return;
+
+    ShowEvent = false;
+    ShowRecording = false;
+    ShowText = true;
+    ItemBorderClear();
+
     contentHeadPixmap->Fill(clrTransparent);
 
     int Left = Config.decorBorderMenuContentSize;
@@ -409,6 +497,12 @@ void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
     int Width = menuWidth - Config.decorBorderMenuContentSize*2;
     int Height = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
         buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3);
+
+    bool contentScrollable = ContentWillItBeScrollable(Width, Height, Text, FixedFont);
+    if( contentScrollable ) {
+        Width -= scrollBarWidth;
+    }
+
     ContentCreate(Left, Top, Width, Height, FixedFont);
 
     ContentSet( Text, FixedFont, Theme.Color(clrMenuTextFont), Theme.Color(clrMenuTextBg) );
@@ -431,4 +525,26 @@ const cFont *cFlatDisplayMenu::GetTextAreaFont(bool FixedFont) const {
 void cFlatDisplayMenu::Flush(void) {
     TopBarUpdate();
     osd->Flush();
+}
+
+void cFlatDisplayMenu::ItemBorderInsertUnique(sDecorBorder ib) {
+    std::list<sDecorBorder>::iterator it;
+    for( it = ItemsBorder.begin(); it != ItemsBorder.end(); it++ ) {
+        if( (*it).Left == ib.Left && (*it).Width == ib.Width && (*it).Top == ib.Top && (*it).Height == ib.Height ) {
+            return;
+        }
+    }
+    ItemsBorder.push_back(ib);
+}
+
+void cFlatDisplayMenu::ItemBorderDrawAllWithScrollbar(void) {
+    std::list<sDecorBorder>::iterator it;
+    for( it = ItemsBorder.begin(); it != ItemsBorder.end(); it++ ) {
+        DecorBorderDraw((*it).Left, (*it).Top, (*it).Width - scrollBarWidth, (*it).Height, (*it).Size, (*it).Type,
+            (*it).ColorFg, (*it).ColorBg, BorderMenuItem);
+    }
+}
+
+void cFlatDisplayMenu::ItemBorderClear(void) {
+    ItemsBorder.clear();
 }

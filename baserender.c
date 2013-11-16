@@ -183,7 +183,8 @@ void cFlatBaseRender::ButtonsCreate(void) {
 }
 
 void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char *Yellow, const char *Blue) {
-    int buttonWidth = (buttonsWidth / 4) - Config.decorBorderButtonSize*2;
+    int WidthMargin = buttonsWidth - marginItem*3;
+    int buttonWidth = (WidthMargin / 4) - Config.decorBorderButtonSize*2;
 
     buttonsPixmap->Fill(clrTransparent);
 
@@ -284,7 +285,7 @@ void cFlatBaseRender::ContentSet(const char *Text, bool FixedFont, tColor ColorF
         contentWrapper.Set(Text, fontFixed, contentWidth - marginItem*2);
     else
         contentWrapper.Set(Text, font, contentWidth - marginItem*2);
-        
+    
     contentColorFg = ColorFg;
     contentColorBg = ColorBg;
 
@@ -300,6 +301,9 @@ void cFlatBaseRender::ContentSet(const char *Text, bool FixedFont, tColor ColorF
         contentHasScrollbar = false;
     }
 
+    if( contentPixmap )
+        osd->DestroyPixmap(contentPixmap);
+        
     contentPixmap = osd->CreatePixmap(2, cRect(contentLeft, contentTop, contentWidth, contentHeight),
             cRect(0, 0, contentWidth, contentDrawPortHeight));
 
@@ -309,8 +313,29 @@ void cFlatBaseRender::ContentSet(const char *Text, bool FixedFont, tColor ColorF
     contentShown = true;
 }
 
+bool cFlatBaseRender::ContentWillItBeScrollable(int Width, int Height, const char *Text, bool FixedFont) {
+    cTextWrapper wrapper;
+    if( FixedFont )
+        wrapper.Set(Text, fontFixed, Width - marginItem*2);
+    else
+        wrapper.Set(Text, font, Width - marginItem*2);
+
+    int VisibleLines = Height / fontHeight;
+    if( FixedFont )
+        VisibleLines = Height / fontFixedHeight;
+
+    if( wrapper.Lines() > 0 && wrapper.Lines() > VisibleLines )
+        return true;
+    
+    return false;
+}
+
 bool cFlatBaseRender::ContentScrollable(void) {
     return contentHasScrollbar;
+}
+
+int cFlatBaseRender::ContentGetHeight(void) {
+    return contentHeight;
 }
 
 double cFlatBaseRender::ScrollbarSize(void) {
@@ -321,16 +346,18 @@ int cFlatBaseRender::ContentScrollTotal(void) {
     return contentWrapper.Lines();
 }
 
-int cFlatBaseRender::ContentGetHeight(void) {
-    return contentHeight;
-}
-
 int cFlatBaseRender::ContentScrollOffset(void) {
     double offset;
-    if ( ((-1)*contentPixmap->DrawPort().Point().Y() + contentHeight + fontHeight) > contentDrawPortHeight)
+    int h = fontHeight;
+    if( contentFixedFont )
+        h = fontFixedHeight;
+    
+    if ( ((-1)*contentPixmap->DrawPort().Point().Y() + contentHeight + h) > contentDrawPortHeight) {
         offset = (double)1 - ScrollbarSize();
-    else
-        offset = (double)((-1)*contentPixmap->DrawPort().Point().Y())/(double)((-1)*contentPixmap->DrawPort().Point().Y() + contentHeight);
+    } else {
+        offset = (double)((-1)*contentPixmap->DrawPort().Point().Y()) / (double)((-1)*contentPixmap->DrawPort().Point().Y() + contentHeight);
+    }
+    
     return ContentScrollTotal() * offset;
 }
 
@@ -346,6 +373,8 @@ bool cFlatBaseRender::ContentScroll(bool Up, bool Page) {
     int totalHeight = contentPixmap->DrawPort().Height();
     int screenHeight = contentPixmap->ViewPort().Height();
     int lineHeight = fontHeight;
+    if( contentFixedFont )
+        lineHeight = fontFixedHeight;
     bool scrolled = false;
     if (Up) {
         if (Page) {
@@ -391,11 +420,13 @@ void cFlatBaseRender::contentDraw(void) {
     int linesText = contentWrapper.Lines();
     int currentHeight = 0;
     for (int i=0; i < linesText; i++) {
-        currentHeight = (i)*fontHeight;
-        if( contentFixedFont )
+        if( contentFixedFont ) {
+            currentHeight = (i)*fontFixedHeight;
             contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, fontFixed, contentWidth - marginItem*2);
-        else
+        } else {
+            currentHeight = (i)*fontHeight;
             contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, font, contentWidth - marginItem*2);
+        }
     }
 }
 

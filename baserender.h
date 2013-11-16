@@ -6,7 +6,8 @@
 
 enum eBorder {
     BorderMenuItem = 1,
-    BorderRecordJump = 2
+    BorderRecordJump = 2,
+    BorderMenuRecord = 3
 };
 
 struct sBorderFrom {
@@ -131,6 +132,7 @@ class cFlatBaseRender
         void ContentSet(const char *Text, bool FixedFont, tColor ColorFg, tColor ColorBg);
         bool ContentIsShown(void);
         bool ContentScrollable(void);
+        bool ContentWillItBeScrollable(int Width, int Height, const char *Text, bool FixedFont);
         int ContentScrollTotal(void);
         int ContentScrollOffset(void);
         int ContentVisibleLines(void);
