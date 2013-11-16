@@ -133,6 +133,7 @@ void cFlatSetup::Store(void) {
     SetupStore("marginOsdHor", Config.marginOsdHor);
     SetupStore("TopBarFontSize", dtoa(Config.TopBarFontSize));
     SetupStore("MessageOffset", Config.MessageOffset);
+    SetupStore("MenuContentFullSize", Config.MenuContentFullSize);
     
     Config.Init();
 }
@@ -315,6 +316,7 @@ void cFlatSetupMenu::Setup(void) {
     Clear();
 
     Add(new cMenuEditIntItem(tr("Menuitem padding"), &SetupConfig->MenuItemPadding));
+    Add(new cMenuEditBoolItem(tr("Menu content fullsize background"), &SetupConfig->MenuContentFullSize));
 
     Add(new cMenuEditBoolItem(tr("Menuitem border by theme?"), &SetupConfig->decorBorderMenuItemByTheme));
     if( SetupConfig->decorBorderMenuItemByTheme ) {

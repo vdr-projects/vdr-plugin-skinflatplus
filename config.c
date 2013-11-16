@@ -11,6 +11,8 @@ cFlatConfig::cFlatConfig(void) {
     
     DiskUsageShow = true;
     
+    MenuContentFullSize = true;
+    
     MenuItemPadding = 5;
     marginOsdVer = 5;
     marginOsdHor = 5;
@@ -139,6 +141,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "marginOsdHor") == 0)                         marginOsdHor = atoi(Value);
     else if (strcmp(Name, "MessageOffset") == 0)                        MessageOffset = atoi(Value);
     else if (strcmp(Name, "TopBarFontSize") == 0)                       TopBarFontSize = atod(Value);
+    else if (strcmp(Name, "MenuContentFullSize") == 0)                  MenuContentFullSize = atoi(Value);
     else return false;
     return true;
 }

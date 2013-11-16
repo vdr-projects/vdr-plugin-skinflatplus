@@ -71,7 +71,8 @@ class cFlatBaseRender
         // Mehrzeiliger Content mit Scrollbalken
         cPixmap *contentPixmap;
         int contentLeft, contentTop, contentHeight, contentWidth;
-        int contentDrawPortHeight; // gesamthÃ¶he des Textes
+        int contentDrawPortHeight; // gesamthöhe des Textes
+        int contentTextHeight;
         bool contentHasScrollbar;
         bool contentShown;
         bool contentFixedFont;
@@ -142,6 +143,7 @@ class cFlatBaseRender
         int ContentScrollOffset(void);
         int ContentVisibleLines(void);
         int ContentGetHeight(void);
+        int ContentGetTextHeight(void);
         bool ContentScroll(bool Up, bool Page);
         void ContentClear(void);
         

@@ -521,8 +521,12 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
     if( ContentScrollable() )
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
 
-    DecorBorderDraw(cLeft, cTop, cWidth, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
-        Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
+    if( Config.MenuContentFullSize || ContentScrollable() )
+        DecorBorderDraw(cLeft, cTop, cWidth, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+            Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
+    else
+        DecorBorderDraw(cLeft, cTop, cWidth, ContentGetTextHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+            Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
 }
 
 void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
@@ -589,9 +593,14 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     RecordingBorder.ColorBg = Config.decorBorderMenuContentBg;
     RecordingBorder.From = BorderMenuRecord;
     
-    DecorBorderDraw(RecordingBorder.Left, RecordingBorder.Top, RecordingBorder.Width, RecordingBorder.Height,
-        RecordingBorder.Size, RecordingBorder.Type,
-        RecordingBorder.ColorFg, RecordingBorder.ColorBg, RecordingBorder.From);
+    if( Config.MenuContentFullSize || ContentScrollable() )
+        DecorBorderDraw(RecordingBorder.Left, RecordingBorder.Top, RecordingBorder.Width, RecordingBorder.Height,
+            RecordingBorder.Size, RecordingBorder.Type,
+            RecordingBorder.ColorFg, RecordingBorder.ColorBg, RecordingBorder.From);
+    else
+        DecorBorderDraw(RecordingBorder.Left, RecordingBorder.Top, RecordingBorder.Width, ContentGetTextHeight(),
+            RecordingBorder.Size, RecordingBorder.Type,
+            RecordingBorder.ColorFg, RecordingBorder.ColorBg, RecordingBorder.From);
 }
 
 void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
@@ -622,8 +631,12 @@ void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
     if( ContentScrollable() )
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
 
-    DecorBorderDraw(Left, Top, Width, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
-        Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
+    if( Config.MenuContentFullSize || ContentScrollable() )
+        DecorBorderDraw(cLeft, cTop, cWidth, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+            Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
+    else
+        DecorBorderDraw(cLeft, cTop, cWidth, ContentGetTextHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+            Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
 }
 
 int cFlatDisplayMenu::GetTextAreaWidth(void) const {

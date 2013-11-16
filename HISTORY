@@ -9,6 +9,8 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] add free minutes in disk usage
 - [add] add topbar font size option
 - [add] add message bottom offset option
+- [add] add menu items symbols for rec, timer, etc. Lent code from skin elchi (thank you!)
+- [add] add option menu content full size background
 
 2013-23-09: Version 0.0.1
 difference to skinflat

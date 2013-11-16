@@ -298,6 +298,7 @@ void cFlatBaseRender::ContentSet(const char *Text, bool FixedFont, tColor ColorF
     contentColorBg = ColorBg;
 
     int contentWrapperHeight = (contentWrapper.Lines()+1) * fontHeight;
+    contentTextHeight = (contentWrapper.Lines()) * fontHeight + marginItem;
     if( contentFixedFont )
         contentWrapperHeight = (contentWrapper.Lines()+1) * fontFixedHeight;
         
@@ -315,7 +316,12 @@ void cFlatBaseRender::ContentSet(const char *Text, bool FixedFont, tColor ColorF
     contentPixmap = osd->CreatePixmap(2, cRect(contentLeft, contentTop, contentWidth, contentHeight),
             cRect(0, 0, contentWidth, contentDrawPortHeight));
 
-    contentPixmap->Fill(contentColorBg);
+    if( Config.MenuContentFullSize || contentHasScrollbar ) {
+        contentPixmap->Fill(contentColorBg);
+    } else {
+        contentPixmap->Fill(clrTransparent);
+        contentPixmap->DrawRectangle(cRect(0, 0, contentWidth, contentTextHeight), contentColorBg);
+    }
 
     contentDraw();
     contentShown = true;
@@ -344,6 +350,10 @@ bool cFlatBaseRender::ContentScrollable(void) {
 
 int cFlatBaseRender::ContentGetHeight(void) {
     return contentHeight;
+}
+
+int cFlatBaseRender::ContentGetTextHeight(void) {
+    return contentTextHeight;
 }
 
 double cFlatBaseRender::ScrollbarSize(void) {

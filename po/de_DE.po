@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2013-11-16 14:19+0100\n"
+"POT-Creation-Date: 2013-11-16 23:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -176,6 +176,9 @@ msgstr "Signal Progress Größe"
 
 msgid "Menuitem padding"
 msgstr "Menüitem Abstand"
+
+msgid "Menu content fullsize background"
+msgstr "Menü Content voller Hintergrund"
 
 msgid "Menuitem border by theme?"
 msgstr "Menüitem Rand vom Theme?"
