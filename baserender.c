@@ -219,6 +219,8 @@ void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char 
     }
     
     x += buttonWidth + marginItem + Config.decorBorderButtonSize*2;
+    if( x + buttonWidth + Config.decorBorderButtonSize*2 < buttonsWidth )
+        buttonWidth += buttonsWidth - (x + buttonWidth + Config.decorBorderButtonSize*2);
     if( !(!Config.ButtonsShowEmpty && !Blue) ) {
         buttonsPixmap->DrawText(cPoint(x, 0), Blue, Theme.Color(clrButtonFont), Theme.Color(clrButtonBg), font, buttonWidth, fontHeight + marginButtonColor, taCenter);
         buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonBlue));
