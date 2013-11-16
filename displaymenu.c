@@ -103,6 +103,7 @@ void cFlatDisplayMenu::Clear(void) {
     contentHeadPixmap->Fill(clrTransparent);
     ContentClear();
     DecorBorderClearAll();
+    isScrolling = false;
     // DecorBorderClearByFrom( BorderMenuItem );
 }
 
@@ -203,8 +204,10 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
     ib.Left = Config.decorBorderMenuItemSize;
     ib.Top = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize + y;
     ib.Width = menuWidth - Config.decorBorderMenuItemSize*2;
-    if( isScrolling )
+    if( isScrolling ) {
         ib.Width -= scrollBarWidth;
+    }
+
     ib.Height = fontHeight;
     ib.Size = Config.decorBorderMenuItemSize;
     ib.Type = Config.decorBorderMenuItemType;
@@ -225,7 +228,9 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
     DecorBorderDraw(ib.Left, ib.Top, ib.Width, ib.Height,
         ib.Size, ib.Type, ib.ColorFg, ib.ColorBg, BorderMenuItem);
     
-    ItemBorderInsertUnique(ib);
+    if( !isScrolling ) {
+        ItemBorderInsertUnique(ib);
+    }
     
     SetEditableWidth(menuWidth - Tab(1));
 }
@@ -530,10 +535,20 @@ void cFlatDisplayMenu::Flush(void) {
 void cFlatDisplayMenu::ItemBorderInsertUnique(sDecorBorder ib) {
     std::list<sDecorBorder>::iterator it;
     for( it = ItemsBorder.begin(); it != ItemsBorder.end(); it++ ) {
-        if( (*it).Left == ib.Left && (*it).Width == ib.Width && (*it).Top == ib.Top && (*it).Height == ib.Height ) {
+        if( (*it).Left == ib.Left && (*it).Top == ib.Top ) {
+            (*it).Left = ib.Left;
+            (*it).Top = ib.Top;
+            (*it).Width = ib.Width;
+            (*it).Height = ib.Height;
+            (*it).Size = ib.Size;
+            (*it).Type = ib.Type;
+            (*it).ColorFg = ib.ColorFg;
+            (*it).ColorBg = ib.ColorBg;
+            (*it).From = ib.From;
             return;
         }
     }
+    
     ItemsBorder.push_back(ib);
 }
 
@@ -541,6 +556,14 @@ void cFlatDisplayMenu::ItemBorderDrawAllWithScrollbar(void) {
     std::list<sDecorBorder>::iterator it;
     for( it = ItemsBorder.begin(); it != ItemsBorder.end(); it++ ) {
         DecorBorderDraw((*it).Left, (*it).Top, (*it).Width - scrollBarWidth, (*it).Height, (*it).Size, (*it).Type,
+            (*it).ColorFg, (*it).ColorBg, BorderMenuItem);
+    }
+}
+
+void cFlatDisplayMenu::ItemBorderDrawAllWithoutScrollbar(void) {
+    std::list<sDecorBorder>::iterator it;
+    for( it = ItemsBorder.begin(); it != ItemsBorder.end(); it++ ) {
+        DecorBorderDraw((*it).Left, (*it).Top, (*it).Width + scrollBarWidth, (*it).Height, (*it).Size, (*it).Type,
             (*it).ColorFg, (*it).ColorBg, BorderMenuItem);
     }
 }

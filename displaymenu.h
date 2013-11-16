@@ -29,6 +29,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
     
         void ItemBorderInsertUnique(sDecorBorder ib);
         void ItemBorderDrawAllWithScrollbar(void);
+        void ItemBorderDrawAllWithoutScrollbar(void);
         void ItemBorderClear(void);
         
         void DrawScrollbar(int Total, int Offset, int Shown, int Top, int Height, bool CanScrollUp, bool CanScrollDown);
