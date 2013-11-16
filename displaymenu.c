@@ -632,10 +632,10 @@ void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
 
     if( Config.MenuContentFullSize || ContentScrollable() )
-        DecorBorderDraw(cLeft, cTop, cWidth, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+        DecorBorderDraw(Left, Top, Width, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
             Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
     else
-        DecorBorderDraw(cLeft, cTop, cWidth, ContentGetTextHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+        DecorBorderDraw(Left, Top, Width, ContentGetTextHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
             Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
 }
 
