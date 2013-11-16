@@ -1,5 +1,20 @@
 #include "displaymenu.h"
 
+#include "symbols/720/Bvpssml.xpm"
+#include "symbols/1080/Cnew.xpm"
+#include "symbols/1080/Carrowturn.xpm"
+#include "symbols/1080/Crec.xpm"
+#include "symbols/1080/Cclock.xpm"
+#include "symbols/1080/Cclocksml.xpm"
+#include "symbols/1080/Cvpssml.xpm"
+
+cBitmap cFlatDisplayMenu::bmCNew(Cnew_xpm);
+cBitmap cFlatDisplayMenu::bmCArrowTurn(Carrowturn_xpm);
+cBitmap cFlatDisplayMenu::bmCRec(Crec_xpm);
+cBitmap cFlatDisplayMenu::bmCClock(Cclock_xpm);
+cBitmap cFlatDisplayMenu::bmCClocksml(Cclocksml_xpm);
+cBitmap cFlatDisplayMenu::bmCVPS(Bvpssml_xpm);
+
 cFlatDisplayMenu::cFlatDisplayMenu(void) {
     CreateFullOsd();
     TopBarCreate();
@@ -36,6 +51,13 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     scrollbarPixmap->Fill(clrTransparent);
     
     menuCategory = mcUndefined;
+
+    bmNew       = &bmCNew;
+    bmRec       = &bmCRec;
+    bmArrowTurn = &bmCArrowTurn;
+    bmClock     = &bmCClock;
+    bmClocksml  = &bmCClocksml;
+    bmVPS       = &bmCVPS;
 }
 
 cFlatDisplayMenu::~cFlatDisplayMenu() {
@@ -172,13 +194,99 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
             ColorBg = Theme.Color(clrItemBg);
         }
     }
-
-    for (int i = 0; i < MaxTabs; i++)
-    {
+    menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, Width, fontHeight), ColorBg);
+    int lh = fontHeight;
+    int x1 = 0;
+    int xOff = x1;
+    for (int i = 0; i < MaxTabs; i++) {
         const char *s = GetTabbedText(Text, i);
-        if (s) {
+        if( s ) {
+            // from skinelchi
+            char buffer[9];
+            bool istimer = false;
+            bool isnewrecording = false;
+            bool hasEventtimer = false;
+            bool haspartEventtimer = false;
+            bool isRecording = false;
+            bool hasVPS = false;
+            bool isRunning = false;
+            
             int xt = Tab(i);
-            if( CheckProgressBar( s ) ) {
+
+            if( true ) {
+                // check if timer info symbols: " !#>"
+                if (i == 0 && strlen(s) == 1 && strchr(" !#>", s[0])) {
+                    istimer = true; // update status
+                } else if (  (strlen(s) == 6 && s[5] == '*' && s[2] == ':' && isdigit(*s)
+                    && isdigit(*(s + 1)) && isdigit(*(s + 3)) && isdigit(*(s + 4)))
+                    || (strlen(s) == 5 && s[4] == '*' && s[1] == ':' && isdigit(*s)
+                    && isdigit(*(s + 2)) && isdigit(*(s + 3)))
+                    || (strlen(s) == 9 && s[8] == '*' && s[5] == '.' && s[2] == '.'
+                    && isdigit(*s) && isdigit(*(s + 1)) && isdigit(*(s + 3))
+                    && isdigit(*(s + 4)) && isdigit(*(s + 6)) && isdigit(*(s + 7)))) {
+                    // check if new recording: "10:10*", "1:10*", "01.01.06*"
+                    
+                    isnewrecording = true;  // update status
+                    strncpy(buffer, s, strlen(s));   // make a copy
+                    buffer[strlen(s) - 1] = '\0';  // remove the '*' character
+                } else if ( (strlen(s) == 3) && ( i == 2 || i == 3 || i == 4) ) {
+                     if (s[0] == 'R') isRecording = true;
+                     if (s[0] == 'T') hasEventtimer = true;
+                     if (s[0] == 't') haspartEventtimer = true;
+                     if (s[1] == 'V') hasVPS = true;
+                     if (s[2] == '*') isRunning = true;
+                } else if ( (strlen(s) == 4) && ( i == 3 ) ) { //epgsearch What's on now default
+                        if (s[1] == 'R') isRecording = true;
+                        if (s[1] == 'T') hasEventtimer = true;
+                        if (s[1] == 't') haspartEventtimer = true;
+                        if (s[2] == 'V') hasVPS = true;
+                        if (s[3] == '*') isRunning = true;
+                }
+            }
+            xOff = x1 + Tab(i) + Config.decorBorderMenuItemSize;
+            if( istimer ) {
+                // timer menu
+                switch( s[0] ) {
+                    case '!':
+                       menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmArrowTurn->Height()) / 2), *bmArrowTurn, ColorFg, ColorBg);
+                       break;
+                    case '#':
+                       menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmRec->Height()) / 2), *bmRec, ColorFg, ColorBg);
+                       break;
+                    case '>':
+                       menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmClock->Height()) / 2), *bmClock, ColorFg, ColorBg);
+                       break;
+                    case ' ':
+                    default:
+                       break;
+                }
+            } else if (isRecording || hasEventtimer || haspartEventtimer || hasVPS || isRunning) {
+                // program schedule menu
+                if (isRecording)
+                   menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmRec->Height()) / 2), *bmRec, ColorFg, ColorBg);
+                else {
+                   if (hasEventtimer)
+                      menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmClock->Height()) / 2), *bmClock, ColorFg, ColorBg);
+                   if (haspartEventtimer)
+                      menuPixmap->DrawBitmap(cPoint(xOff + (bmClock->Height() - bmClocksml->Height()) / 2, y + (lh - bmClocksml->Height()) / 2), *bmClocksml, ColorFg, ColorBg);
+                }
+                xOff += bmClock->Width(); // clock is wider than rec
+
+                if (hasVPS)
+                   menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmVPS->Height()) / 2), *bmVPS, ColorFg, ColorBg);
+                xOff += bmVPS->Width();
+
+                if( isRunning )
+                    menuPixmap->DrawText(cPoint(xOff, y), "*", ColorFg, ColorBg, font, xOff);
+            
+            } else if (isnewrecording) {
+                // recordings menu
+                menuPixmap->DrawText(cPoint(xOff, y), buffer, ColorFg, ColorBg, font, xOff);
+                
+                // draw symbol "new" centered
+                int gap = std::max(0, (Tab(i+1)-Tab(i)- font->Width(buffer) - bmNew->Width()) / 2);
+                menuPixmap->DrawBitmap(cPoint(xOff + font->Width(buffer) + gap, y + (lh - bmNew->Height()) / 2), *bmNew, ColorFg, ColorBg);
+            } else if( CheckProgressBar( s ) ) {
                 int colWidth = Tab(i+1) - Tab(i);
 
                 tColor ColorFg = Config.decorProgressMenuItemFg;

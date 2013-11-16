@@ -36,6 +36,10 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         int ItemsHeight(void);
         bool CheckProgressBar(const char *text);
         void DrawProgressBarFromText(int Top, int Left, int Width, const char *bar, tColor ColorFg, tColor ColorBarFg, tColor ColorBg);
+
+        cBitmap *bmNew, *bmRec, *bmArrowTurn, *bmClock, *bmClocksml, *bmVPS;
+        static cBitmap bmCNew, bmCRec, bmCArrowTurn, bmCClock, bmCClocksml, bmCHD, bmCVPS;
+
     public:
         cFlatDisplayMenu(void);
         virtual ~cFlatDisplayMenu();
