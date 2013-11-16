@@ -84,10 +84,16 @@ void cFlatBaseRender::CreateOsd(int left, int top, int width, int height) {
 }
 
 void cFlatBaseRender::TopBarCreate(void) {
-    if( fontHeight > fontSmlHeight*2 )
-        topBarHeight = fontHeight;
+    int fs = int(round(cOsd::OsdHeight() * Config.TopBarFontSize));
+    topBarFont = cFont::CreateFont(Setup.FontOsd, fs);
+    topBarFontSml = cFont::CreateFont(Setup.FontOsd, fs / 2);
+    topBarFontHeight = topBarFont->Height();
+    topBarFontSmlHeight = topBarFontSml->Height();
+
+    if( topBarFontHeight > topBarFontSmlHeight*2 )
+        topBarHeight = topBarFontHeight;
     else
-        topBarHeight = fontSmlHeight * 2;
+        topBarHeight = topBarFontSmlHeight * 2;
 
     topBarPixmap = osd->CreatePixmap(1, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
     topBarExtraIconPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
@@ -124,24 +130,24 @@ void cFlatBaseRender::TopBarUpdate(void) {
         topBarUpdateTitle = false;
         topBarLastDate = curDate;
 
-        int fontTop = (topBarHeight - fontHeight) / 2;
-        int fontSmlTop = (topBarHeight - fontSmlHeight*2) / 2;
+        int fontTop = (topBarHeight - topBarFontHeight) / 2;
+        int fontSmlTop = (topBarHeight - topBarFontSmlHeight*2) / 2;
 
         topBarPixmap->Fill(Theme.Color(clrTopBarBg));
-        topBarPixmap->DrawText(cPoint(marginItem*2, fontTop), topBarTitle, Theme.Color(clrTopBarFont), Theme.Color(clrTopBarBg), font);
+        topBarPixmap->DrawText(cPoint(marginItem*2, fontTop), topBarTitle, Theme.Color(clrTopBarFont), Theme.Color(clrTopBarBg), topBarFont);
 
-        int extra1Width = fontSml->Width(tobBarTitleExtra1);
-        int extra2Width = fontSml->Width(tobBarTitleExtra2);
+        int extra1Width = topBarFontSml->Width(tobBarTitleExtra1);
+        int extra2Width = topBarFontSml->Width(tobBarTitleExtra2);
         int extraMaxWidth = max(extra1Width, extra2Width);
         
         int extraLeft = TopBarWidth/2 - extraMaxWidth/2;
-        topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop), tobBarTitleExtra1, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, extraMaxWidth, 0, taRight);
-        topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop + fontSmlHeight), tobBarTitleExtra2, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, extraMaxWidth, 0, taRight);
+        topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop), tobBarTitleExtra1, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
+        topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop + topBarFontSmlHeight), tobBarTitleExtra2, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
 
         topBarExtraIconPixmap->Fill(clrTransparent);
         if( topBarExtraIconSet ) {
             int extraIconLeft = extraLeft + extraMaxWidth + marginItem;
-            if (imgLoader.LoadIcon(*topBarExtraIcon)) {
+            if (imgLoader.LoadIcon(*topBarExtraIcon, topBarHeight)) {
                 int iconTop = topBarHeight / 2 - imgLoader.Height()/2;
                 topBarExtraIconPixmap->DrawImage(cPoint(extraIconLeft, iconTop), imgLoader.GetImage());
             }
@@ -152,19 +158,19 @@ void cFlatBaseRender::TopBarUpdate(void) {
         cString time = TimeString(t);
         cString time2 = cString::sprintf("%s %s", *time, tr("clock"));
 
-        int timeWidth = font->Width(*time2) + marginItem*2;
-        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth, fontTop), time2, Theme.Color(clrTopBarTimeFont), Theme.Color(clrTopBarBg), font);
+        int timeWidth = topBarFont->Width(*time2) + marginItem*2;
+        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth, fontTop), time2, Theme.Color(clrTopBarTimeFont), Theme.Color(clrTopBarBg), topBarFont);
 
         cString weekday = WeekDayNameFull(t);
-        int weekdayWidth = fontSml->Width(*weekday);
+        int weekdayWidth = topBarFontSml->Width(*weekday);
 
         cString date = ShortDateString(t);
-        int dateWidth = fontSml->Width(*date);
+        int dateWidth = topBarFontSml->Width(*date);
 
         int fullWidth = max(weekdayWidth, dateWidth);
 
-        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop), weekday, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, fullWidth, 0, taRight);
-        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop + fontSmlHeight), date, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), fontSml, fullWidth, 0, taRight);
+        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop), weekday, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, fullWidth, 0, taRight);
+        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop + topBarFontSmlHeight), date, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, fullWidth, 0, taRight);
 
         DecorBorderDraw(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight, Config.decorBorderTopBarSize, Config.decorBorderTopBarType, Config.decorBorderTopBarFg, Config.decorBorderTopBarBg);
     }

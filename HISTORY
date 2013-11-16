@@ -4,6 +4,9 @@ VDR Plugin 'skinflatplus' Revision History
 2013-XX-XX: Version 0.0.2
 - [fix] marker position
 - [fix] borders displaced
+- [fix] menu has full width if no scrollbar is needed
+- [update] TopBar title align right
+- [add] add free minutes in disk usage
 
 2013-23-09: Version 0.0.1
 difference to skinflat

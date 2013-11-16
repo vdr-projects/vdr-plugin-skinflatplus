@@ -131,7 +131,7 @@ void cFlatSetup::Store(void) {
     SetupStore("MenuItemPadding", Config.MenuItemPadding);
     SetupStore("marginOsdVer", Config.marginOsdVer);
     SetupStore("marginOsdHor", Config.marginOsdHor);
-
+    SetupStore("TopBarFontSize", dtoa(Config.TopBarFontSize));
     Config.Init();
 }
 
@@ -162,6 +162,7 @@ void cFlatSetupGeneral::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show Diskusage stats"), &SetupConfig->DiskUsageShow));
     Add(new cMenuEditIntItem(tr("OSD vertical margin"), &SetupConfig->marginOsdVer));
     Add(new cMenuEditIntItem(tr("OSD horizontal margin"), &SetupConfig->marginOsdHor));
+    Add(new cMenuEditPrcItem(tr("TopBar font size"), &SetupConfig->TopBarFontSize, 0.01, 0.2, 1));
 
     Add(new cMenuEditBoolItem(tr("TopBar border by theme?"), &SetupConfig->decorBorderTopBarByTheme));
     if( SetupConfig->decorBorderTopBarByTheme ) {
