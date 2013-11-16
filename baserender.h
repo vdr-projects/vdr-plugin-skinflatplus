@@ -7,12 +7,14 @@
 enum eBorder {
     BorderMenuItem = 1,
     BorderRecordJump = 2,
-    BorderMenuRecord = 3
+    BorderMenuRecord = 3,
+    BorderMessage = 4
 };
 
-struct sBorderFrom {
+struct sDecorBorder {
+    int Left, Top, Width, Height, Size, Type;
+    tColor ColorFg, ColorBg;
     int From;
-    int Left, Top, Width, Height, Size;
 };
 
 class cFlatBaseRender
@@ -78,7 +80,7 @@ class cFlatBaseRender
         cTextWrapper contentWrapper;
 
         cPixmap *decorPixmap;
-        std::list<sBorderFrom> Borders; // for clear specific Borders (clear only MenuItems and not TopBar)
+        std::list<sDecorBorder> Borders; // for clear specific Borders (clear only MenuItems and not TopBar)
 
         void contentDraw(void);
         double ScrollbarSize(void);
@@ -143,8 +145,9 @@ class cFlatBaseRender
         bool ContentScroll(bool Up, bool Page);
         void ContentClear(void);
         
-        void DecorBorderDraw(int Left, int Top, int Width, int Height, int Size, int Type, tColor ColorFg, tColor ColorBg, int From = 0);
+        void DecorBorderDraw(int Left, int Top, int Width, int Height, int Size, int Type, tColor ColorFg, tColor ColorBg, int From = 0, bool Store = true);
         void DecorBorderClear(int Left, int Top, int Width, int Height, int Size);
         void DecorBorderClearAll(void);
+        void DecorBorderRedrawAll(void);
         void DecorBorderClearByFrom(int From);
 };

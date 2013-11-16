@@ -150,6 +150,7 @@ class cFlatConfig
         
         int MenuItemPadding;
         int marginOsdVer, marginOsdHor;
+        int MessageOffset;
         
         double TopBarFontSize;
 };

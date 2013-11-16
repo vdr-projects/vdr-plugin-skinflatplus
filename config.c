@@ -15,6 +15,7 @@ cFlatConfig::cFlatConfig(void) {
     marginOsdVer = 5;
     marginOsdHor = 5;
     TopBarFontSize = 0.05;
+    MessageOffset = 50;
     
     decorBorderChannelByTheme = 1;
     decorBorderChannelTypeUser = 0;
@@ -136,6 +137,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MenuItemPadding") == 0)                      MenuItemPadding = atoi(Value);
     else if (strcmp(Name, "marginOsdVer") == 0)                         marginOsdVer = atoi(Value);
     else if (strcmp(Name, "marginOsdHor") == 0)                         marginOsdHor = atoi(Value);
+    else if (strcmp(Name, "MessageOffset") == 0)                        MessageOffset = atoi(Value);
     else if (strcmp(Name, "TopBarFontSize") == 0)                       TopBarFontSize = atod(Value);
     else return false;
     return true;

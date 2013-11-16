@@ -3,12 +3,6 @@
 #include "baserender.h"
 #include <list>
 
-struct sDecorBorder {
-    int Left, Top, Width, Height, Size, Type;
-    tColor ColorFg, ColorBg;
-    int From;
-};
-
 class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
     private:
         cPixmap *menuPixmap;

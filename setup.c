@@ -132,6 +132,8 @@ void cFlatSetup::Store(void) {
     SetupStore("marginOsdVer", Config.marginOsdVer);
     SetupStore("marginOsdHor", Config.marginOsdHor);
     SetupStore("TopBarFontSize", dtoa(Config.TopBarFontSize));
+    SetupStore("MessageOffset", Config.MessageOffset);
+    
     Config.Init();
 }
 
@@ -163,7 +165,8 @@ void cFlatSetupGeneral::Setup(void) {
     Add(new cMenuEditIntItem(tr("OSD vertical margin"), &SetupConfig->marginOsdVer));
     Add(new cMenuEditIntItem(tr("OSD horizontal margin"), &SetupConfig->marginOsdHor));
     Add(new cMenuEditPrcItem(tr("TopBar font size"), &SetupConfig->TopBarFontSize, 0.01, 0.2, 1));
-
+    Add(new cMenuEditIntItem(tr("Message bottom offset"), &SetupConfig->MessageOffset));
+    
     Add(new cMenuEditBoolItem(tr("TopBar border by theme?"), &SetupConfig->decorBorderTopBarByTheme));
     if( SetupConfig->decorBorderTopBarByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("TopBar border type"), Bordertypes[SetupConfig->decorBorderTopBarTypeTheme]);

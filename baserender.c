@@ -229,7 +229,7 @@ void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char 
 
 void cFlatBaseRender::MessageCreate(void) {
     messageHeight = fontHeight + marginItem*2;
-    int top = osdHeight - osdHeight/10 - messageHeight;
+    int top = osdHeight - Config.MessageOffset - messageHeight - Config.decorBorderMessageSize;
     messagePixmap = osd->CreatePixmap(5, cRect(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight));
     messagePixmap->Fill(clrTransparent);
 }
@@ -258,14 +258,14 @@ void cFlatBaseRender::MessageSet(eMessageType Type, const char *Text) {
     int textWidth = font->Width(Text);
     messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2, marginItem), Text, Theme.Color(clrMessageFont), Theme.Color(clrMessageBg), font);
 
-    int top = osdHeight - osdHeight/10 - messageHeight;
-    DecorBorderDraw(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight, Config.decorBorderMessageSize, Config.decorBorderMessageType, Config.decorBorderMessageFg, Config.decorBorderMessageBg);
+    int top = osdHeight - Config.MessageOffset - messageHeight - Config.decorBorderMessageSize;
+    DecorBorderDraw(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight, Config.decorBorderMessageSize, Config.decorBorderMessageType, Config.decorBorderMessageFg, Config.decorBorderMessageBg, BorderMessage);
 }
 
 void cFlatBaseRender::MessageClear(void) {
     messagePixmap->Fill(clrTransparent);
-    int top = osdHeight - osdHeight/10 - messageHeight;
-    DecorBorderClear(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight, Config.decorBorderMessageSize);
+    DecorBorderClearByFrom(BorderMessage);
+    DecorBorderRedrawAll();
 }
 
 void cFlatBaseRender::ContentCreate(int Left, int Top, int Width, int Height, bool FixedFont) {
@@ -792,7 +792,7 @@ void cFlatBaseRender::DecorBorderClear(int Left, int Top, int Width, int Height,
 }
 
 void cFlatBaseRender::DecorBorderClearByFrom(int From) {
-    std::list<sBorderFrom>::iterator it;
+    std::list<sDecorBorder>::iterator it;
     for( it = Borders.begin(); it != Borders.end(); ) {
         if( (*it).From == From ) {
             DecorBorderClear((*it).Left, (*it).Top, (*it).Width, (*it).Height, (*it).Size);
@@ -802,24 +802,36 @@ void cFlatBaseRender::DecorBorderClearByFrom(int From) {
     }
 }
 
+void cFlatBaseRender::DecorBorderRedrawAll(void) {
+    std::list<sDecorBorder>::iterator it;
+    for( it = Borders.begin(); it != Borders.end(); it++) {
+        DecorBorderDraw((*it).Left, (*it).Top, (*it).Width, (*it).Height, (*it).Size, (*it).Type, (*it).ColorFg, (*it).ColorBg, (*it).From, false);
+    }
+}
+
 void cFlatBaseRender::DecorBorderClearAll(void) {
     if( decorPixmap )
         decorPixmap->Fill(clrTransparent);
 }
 
-void cFlatBaseRender::DecorBorderDraw(int Left, int Top, int Width, int Height, int Size, int Type, tColor ColorFg, tColor ColorBg, int From) {
+void cFlatBaseRender::DecorBorderDraw(int Left, int Top, int Width, int Height, int Size, int Type, tColor ColorFg, tColor ColorBg, int From, bool Store) {
     if( Size == 0 || Type <= 0 )
         return;
     
-    sBorderFrom f;
-    f.Left = Left;
-    f.Top = Top;
-    f.Width = Width;
-    f.Height = Height;
-    f.Size = Size;
-    f.From = From;
-    
-    Borders.push_back(f);
+    if( Store ) {
+        sDecorBorder f;
+        f.Left = Left;
+        f.Top = Top;
+        f.Width = Width;
+        f.Height = Height;
+        f.Size = Size;
+        f.Type = Type;
+        f.ColorFg = ColorFg;
+        f.ColorBg = ColorBg;
+        f.From = From;
+        
+        Borders.push_back(f);
+    }
     
     int LeftDecor = Left - Size;
     int TopDecor = Top - Size;
