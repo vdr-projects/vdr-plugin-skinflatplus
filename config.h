@@ -156,4 +156,6 @@ class cFlatConfig
         double TopBarFontSize;
         
         int ResolutionAspectShow;
+        int RecordingAdditionalInfoShow;
+        int EpgAdditionalInfoShow;
 };

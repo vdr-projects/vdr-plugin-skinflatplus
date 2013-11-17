@@ -1,5 +1,11 @@
 #include "displaymenu.h"
 
+#include <ctype.h>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
+using namespace std;
+
 #include "symbols/720/Bvpssml.xpm"
 #include "symbols/1080/Cnew.xpm"
 #include "symbols/1080/Carrowturn.xpm"
@@ -14,6 +20,18 @@ cBitmap cFlatDisplayMenu::bmCRec(Crec_xpm);
 cBitmap cFlatDisplayMenu::bmCClock(Cclock_xpm);
 cBitmap cFlatDisplayMenu::bmCClocksml(Cclocksml_xpm);
 cBitmap cFlatDisplayMenu::bmCVPS(Bvpssml_xpm);
+
+/* Possible values of the stream content descriptor according to ETSI EN 300 468 */
+enum stream_content
+{
+	sc_reserved       = 0x00,
+	sc_video_MPEG2    = 0x01,
+	sc_audio_MP2      = 0x02, // MPEG 1 Layer 2 audio
+	sc_subtitle       = 0x03,
+	sc_audio_AC3      = 0x04,
+	sc_video_H264_AVC = 0x05,
+	sc_audio_HEAAC    = 0x06,
+};
 
 cFlatDisplayMenu::cFlatDisplayMenu(void) {
     CreateFullOsd();
@@ -491,13 +509,6 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + 
         chHeight + Config.decorBorderMenuContentHeadSize*2 + Config.decorBorderMenuContentSize*2);
 
-    bool contentScrollable = ContentWillItBeScrollable(cWidth, cHeight, Event->Description(), false);
-    if( contentScrollable ) {
-        cWidth -= scrollBarWidth;
-    }
-
-    ContentCreate(cLeft, cTop, cWidth, cHeight, false);
-    
     contentHeadPixmap->Fill(clrTransparent);
     contentHeadPixmap->DrawRectangle(cRect(0, 0, menuWidth, fontHeight + fontSmlHeight*2 + marginItem*2), Theme.Color(clrScrollbarBg));
 
@@ -517,7 +528,89 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
     DecorBorderDraw(chLeft, chTop, chWidth, chHeight, Config.decorBorderMenuContentHeadSize, Config.decorBorderMenuContentHeadType,
         Config.decorBorderMenuContentHeadFg, Config.decorBorderMenuContentHeadBg);
     
-    ContentSet( Event->Description(), false, Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
+    // Description
+    ostringstream text;
+    if( !isempty(Event->Description()) ) {
+        text << Event->Description();
+    }
+   
+    if( Config.EpgAdditionalInfoShow ) {
+        text << endl;
+        const cComponents *Components = Event->Components();
+        if (Components) {
+            ostringstream audio;
+            bool firstAudio = true;
+            const char *audio_type = NULL;
+            ostringstream subtitle;
+            bool firstSubtitle = true;
+            for (int i = 0; i < Components->NumComponents(); i++) {
+                const tComponent *p = Components->Component(i);
+                switch (p->stream) {
+                    case sc_video_MPEG2:
+                        if (p->description)
+                            text << endl << tr("Video") << ": " <<  p->description << " (MPEG2)";
+                        else
+                            text << endl << tr("Video") << ": MPEG2";
+                        break;
+                    case sc_video_H264_AVC:
+                        if (p->description)
+                            text << endl << tr("Video") << ": " <<  p->description << " (H.264)";
+                        else
+                            text << endl << tr("Video") << ": H.264";
+                        break;
+
+                    case sc_audio_MP2:
+                    case sc_audio_AC3:
+                    case sc_audio_HEAAC:
+                        if (firstAudio)
+                            firstAudio = false;
+                        else
+                            audio << ", ";
+                        switch (p->stream) {
+                            case sc_audio_MP2:
+                                // workaround for wrongfully used stream type X 02 05 for AC3
+                                if (p->type == 5)
+                                    audio_type = "AC3";
+                                else
+                                    audio_type = "MP2";
+                                break;
+                            case sc_audio_AC3:
+                                audio_type = "AC3"; break;
+                            case sc_audio_HEAAC:
+                                audio_type = "HEAAC"; break;
+                        }
+                        if (p->description)
+                            audio << p->description << " (" << audio_type << ", " << p->language << ")";
+                        else
+                            audio << p->language << " (" << audio_type << ")";
+                        break;
+                    case sc_subtitle:
+                        if (firstSubtitle)
+                            firstSubtitle = false;
+                        else
+                            subtitle << ", ";
+                        if (p->description)
+                            subtitle << p->description << " (" << p->language << ")";
+                        else
+                            subtitle << p->language;
+                        break;
+                }
+            }
+            if (audio.str().length() > 0)
+                text << endl << tr("Audio") << ": "<< audio.str();
+            if (subtitle.str().length() > 0)
+                text << endl << tr("Subtitle") << ": "<< subtitle.str();
+        }
+    }
+    
+    bool contentScrollable = ContentWillItBeScrollable(cWidth, cHeight, text.str().c_str(), false);
+    if( contentScrollable ) {
+        cWidth -= scrollBarWidth;
+    }
+
+    ContentCreate(cLeft, cTop, cWidth, cHeight, false);
+    
+    ContentSet( text.str().c_str(), false, Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
     if( ContentScrollable() )
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
 
@@ -527,6 +620,18 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
     else
         DecorBorderDraw(cLeft, cTop, cWidth, ContentGetTextHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
             Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
+}
+
+// returns the string between start and end or an empty string if not found
+string xml_substring(string source, const char* str_start, const char* str_end) {
+    size_t start = source.find(str_start);
+    size_t end   = source.find(str_end);
+
+    if (string::npos != start && string::npos != end) {
+        return (source.substr(start + strlen(str_start), end - start - strlen(str_start)));
+    }
+
+    return string();
 }
 
 void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
@@ -554,7 +659,196 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + 
         chHeight + Config.decorBorderMenuContentHeadSize*2 + Config.decorBorderMenuContentSize*2);
 
-    bool contentScrollable = ContentWillItBeScrollable(cWidth, cHeight, recInfo->Description(), false);
+    ostringstream text;
+    text.imbue(std::locale(""));
+
+    if (!isempty(recInfo->Description()))
+        text << recInfo->Description() << endl << endl;
+    
+    // lent from skinelchi
+    if( Config.RecordingAdditionalInfoShow ) {
+        cChannel *channel = Channels.GetByChannelID(((cRecordingInfo *)recInfo)->ChannelID());
+        if (channel)
+            text << trVDR("Channel") << ": " << channel->Number() << " - " << channel->Name() << endl;
+
+        cMarks marks;
+        bool hasMarks = marks.Load(Recording->FileName(), Recording->FramesPerSecond(), Recording->IsPesRecording()) && marks.Count();
+        cIndexFile *index = new cIndexFile(Recording->FileName(), false, Recording->IsPesRecording());
+
+        int lastIndex = 0;
+
+        int cuttedLength = 0;
+        long cutinframe = 0;
+        unsigned long long recsize = 0;
+        unsigned long long recsizecutted = 0;
+        unsigned long long cutinoffset = 0;
+        unsigned long long filesize[100000];
+        filesize[0] = 0;
+
+        int i = 0;
+        int imax = 999;
+        struct stat filebuf;
+        cString filename;
+        int rc = 0;
+
+        do {
+            if (Recording->IsPesRecording())
+                filename = cString::sprintf("%s/%03d.vdr", Recording->FileName(), ++i);
+            else {
+                filename = cString::sprintf("%s/%05d.ts", Recording->FileName(), ++i);
+                imax = 99999;
+            }
+            rc=stat(filename, &filebuf);
+            if (rc == 0)
+                filesize[i] = filesize[i-1] + filebuf.st_size;
+            else {
+                if (ENOENT != errno) {
+                    esyslog ("skinelchi: error determining file size of \"%s\" %d (%s)", (const char *)filename, errno, strerror(errno));
+                    recsize = 0;
+                }
+            }
+        } while( i <= imax && !rc );
+        recsize = filesize[i-1];
+
+        if (hasMarks && index) {
+            uint16_t FileNumber;
+            off_t FileOffset;
+
+            bool cutin = true;
+            cMark *mark = marks.First();
+            while (mark) {
+                long position = mark->Position();
+                index->Get(position, &FileNumber, &FileOffset);
+                if (cutin) {
+                    cutinframe = position;
+                    cutin = false;
+                    cutinoffset = filesize[FileNumber-1] + FileOffset;
+                } else {
+                    cuttedLength += position - cutinframe;
+                    cutin = true;
+                    recsizecutted += filesize[FileNumber-1] + FileOffset - cutinoffset;
+                }
+                cMark *nextmark = marks.Next(mark);
+                mark = nextmark;
+            }
+            if( !cutin ) {
+                cuttedLength += index->Last() - cutinframe;
+                index->Get(index->Last() - 1, &FileNumber, &FileOffset);
+                recsizecutted += filesize[FileNumber-1] + FileOffset - cutinoffset;
+            }
+        }
+        if (index) {
+            lastIndex = index->Last();
+            text << tr("Length") << ": " << *IndexToHMSF(lastIndex, false, Recording->FramesPerSecond());
+            if (hasMarks)
+                text << " (" << tr("cutted") << ": " << *IndexToHMSF(cuttedLength, false, Recording->FramesPerSecond()) << ")";
+            text << endl;
+        }
+        delete index;
+
+        if (recsize > MEGABYTE(1023))
+            text << tr("Size") << ": " << fixed << setprecision(2) << (float)recsize / MEGABYTE(1024) << " GB";
+        else
+            text << tr("Size") << ": " << recsize / MEGABYTE(1) << " MB";
+        if( hasMarks )
+            if (recsize > MEGABYTE(1023))
+                text << " (" <<  tr("cutted") << ": " << fixed << setprecision(2) <<  (float)recsizecutted/MEGABYTE(1024) << " GB)";
+            else
+                text << " (" << tr("cutted") << ": " <<  recsizecutted/MEGABYTE(1) << " MB)";
+
+        text << endl << trVDR("Priority") << ": " << Recording->Priority() << ", " << trVDR("Lifetime") << ": " << Recording->Lifetime() << endl;
+
+        if( lastIndex ) {
+            text << tr("format") << ": " << (Recording->IsPesRecording() ? "PES" : "TS") << ", " << tr("bit rate") << ": ~ " << fixed << setprecision (2) << (float)recsize/lastIndex*Recording->FramesPerSecond()*8/MEGABYTE(1) << " MBit/s (Video + Audio)";
+        }
+        const cComponents *Components = recInfo->Components();
+        if( Components ) {
+            ostringstream audio;
+            bool firstAudio = true;
+            const char *audio_type = NULL;
+            ostringstream subtitle;
+            bool firstSubtitle = true;
+            for (int i = 0; i < Components->NumComponents(); i++) {
+                const tComponent *p = Components->Component(i);
+
+                switch (p->stream) {
+                    case sc_video_MPEG2:
+                        text << endl << tr("Video") << ": " <<  p->description << " (MPEG2)";
+                        break;
+                    case sc_video_H264_AVC:
+                        text << endl << tr("Video") << ": " <<  p->description << " (H.264)";
+                        break;
+                    case sc_audio_MP2:
+                    case sc_audio_AC3:
+                    case sc_audio_HEAAC:
+                        if (firstAudio)
+                            firstAudio = false;
+                        else
+                            audio << ", ";
+                        switch (p->stream) {
+                            case sc_audio_MP2:
+                                // workaround for wrongfully used stream type X 02 05 for AC3
+                                if (p->type == 5)
+                                    audio_type = "AC3";
+                                else
+                                    audio_type = "MP2";
+                                break;
+                            case sc_audio_AC3:
+                                audio_type = "AC3"; break;
+                            case sc_audio_HEAAC:
+                                audio_type = "HEAAC"; break;
+                        }
+                        if (p->description)
+                            audio << p->description << " (" << audio_type << ", " << p->language << ")";
+                        else
+                            audio << p->language << " (" << audio_type << ")";
+                        break;
+                    case sc_subtitle:
+                        if (firstSubtitle)
+                            firstSubtitle = false;
+                        else
+                            subtitle << ", ";
+                        if (p->description)
+                            subtitle << p->description << " (" << p->language << ")";
+                        else
+                            subtitle << p->language;
+                        break;
+                }
+            }
+            if (audio.str().length() > 0)
+                text << endl << tr("Audio") << ": "<< audio.str();
+            if (subtitle.str().length() > 0)
+                text << endl << tr("Subtitle") << ": "<< subtitle.str();
+        }
+        if (recInfo->Aux()) {
+            string str_epgsearch = xml_substring(recInfo->Aux(), "<epgsearch>", "</epgsearch>");
+            string channel, searchtimer, pattern;
+
+            if (!str_epgsearch.empty()) {
+                channel = xml_substring(str_epgsearch, "<channel>", "</channel>");
+                searchtimer = xml_substring(str_epgsearch, "<searchtimer>", "</searchtimer>");
+                if (searchtimer.empty())
+                    searchtimer = xml_substring(str_epgsearch, "<Search timer>", "</Search timer>");
+            }
+
+            string str_vdradmin = xml_substring(recInfo->Aux(), "<vdradmin-am>", "</vdradmin-am>");
+            if (!str_vdradmin.empty()) {
+                pattern = xml_substring(str_vdradmin, "<pattern>", "</pattern>");
+            }
+
+            if ((!channel.empty() && !searchtimer.empty()) || !pattern.empty())  {
+                text << endl << endl << tr("additional information") << ":" << endl;
+                if (!channel.empty() && !searchtimer.empty()) {
+                    text << "EPGsearch: " << tr("channel") << ": " << channel << ", " << tr("search pattern") << ": " << searchtimer;
+                }
+                if (!pattern.empty()) {
+                    text << "VDRadmin-AM: " << tr("search pattern") << ": " << pattern;
+                }
+            }
+        }
+    }
+
+    bool contentScrollable = ContentWillItBeScrollable(cWidth, cHeight, text.str().c_str(), false);
     if( contentScrollable ) {
         cWidth -= scrollBarWidth;
     }
@@ -578,7 +872,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     DecorBorderDraw(chLeft, chTop, chWidth, chHeight, Config.decorBorderMenuContentHeadSize, Config.decorBorderMenuContentHeadType,
         Config.decorBorderMenuContentHeadFg, Config.decorBorderMenuContentHeadBg);
     
-    ContentSet( recInfo->Description(), false, Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg) );
+    ContentSet( text.str().c_str(), false, Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg) );
     if( ContentScrollable() ) {
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
     }

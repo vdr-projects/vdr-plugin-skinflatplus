@@ -14,6 +14,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] option menu content full size background
 - [add] option to display resolution & aspect
 - [add] default logo for channels without channel logo
+- [add] use icon from default theme if current theme does not have the icon
 
 2013-23-09: Version 0.0.1
 difference to skinflat

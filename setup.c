@@ -135,10 +135,11 @@ void cFlatSetup::Store(void) {
     SetupStore("MessageOffset", Config.MessageOffset);
     SetupStore("MenuContentFullSize", Config.MenuContentFullSize);
     SetupStore("ResolutionAspectShow", Config.ResolutionAspectShow);
+    SetupStore("RecordingAdditionalInfoShow", Config.RecordingAdditionalInfoShow);
+    SetupStore("EpgAdditionalInfoShow", Config.EpgAdditionalInfoShow);
     
     Config.Init();
 }
-
 
 //------------------------------------------------------------------------------------------------------------------
 
@@ -319,6 +320,8 @@ void cFlatSetupMenu::Setup(void) {
 
     Add(new cMenuEditIntItem(tr("Menuitem padding"), &SetupConfig->MenuItemPadding));
     Add(new cMenuEditBoolItem(tr("Menu content fullsize background"), &SetupConfig->MenuContentFullSize));
+    Add(new cMenuEditBoolItem(tr("Show additional recording info"), &SetupConfig->RecordingAdditionalInfoShow));
+    Add(new cMenuEditBoolItem(tr("Show additional EPG info"), &SetupConfig->EpgAdditionalInfoShow));
 
     Add(new cMenuEditBoolItem(tr("Menuitem border by theme?"), &SetupConfig->decorBorderMenuItemByTheme));
     if( SetupConfig->decorBorderMenuItemByTheme ) {

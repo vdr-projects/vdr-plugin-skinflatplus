@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2013-11-17 16:20+0100\n"
+"POT-Creation-Date: 2013-11-17 18:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,6 +23,39 @@ msgstr "Plattennutzung"
 
 msgid "free"
 msgstr "frei"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Subtitle"
+msgstr "Untertitel"
+
+msgid "Length"
+msgstr "Länge"
+
+msgid "cutted"
+msgstr "geschnitten"
+
+msgid "Size"
+msgstr "Größe"
+
+msgid "format"
+msgstr "Format"
+
+msgid "bit rate"
+msgstr "Bitrate"
+
+msgid "additional information"
+msgstr "Zusatzinformationen"
+
+msgid "channel"
+msgstr "Kanal"
+
+msgid "search pattern"
+msgstr "Suchmuster"
 
 msgid "Volume"
 msgstr "Lautstärke"
@@ -182,6 +215,12 @@ msgstr "Menüitem Abstand"
 
 msgid "Menu content fullsize background"
 msgstr "Menü Content voller Hintergrund"
+
+msgid "Show additional recording info"
+msgstr "Zeige Zusatzinfo bei Aufnahmen"
+
+msgid "Show additional EPG info"
+msgstr "Zeige Zusatzinfo bei EPG"
 
 msgid "Menuitem border by theme?"
 msgstr "Menüitem Rand vom Theme?"
