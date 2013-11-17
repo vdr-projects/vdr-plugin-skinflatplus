@@ -18,6 +18,8 @@ cFlatConfig::cFlatConfig(void) {
     RecordingAdditionalInfoShow = true;
     EpgAdditionalInfoShow = true;
     
+    TopBarRecordingShow = true;
+    
     MenuItemPadding = 5;
     marginOsdVer = 5;
     marginOsdHor = 5;
@@ -150,6 +152,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "ResolutionAspectShow") == 0)                 ResolutionAspectShow = atoi(Value);
     else if (strcmp(Name, "RecordingAdditionalInfoShow") == 0)          RecordingAdditionalInfoShow = atoi(Value);
     else if (strcmp(Name, "EpgAdditionalInfoShow") == 0)                EpgAdditionalInfoShow = atoi(Value);
+    else if (strcmp(Name, "TopBarRecordingShow") == 0)                  TopBarRecordingShow = atoi(Value);
     else return false;
     return true;
 }

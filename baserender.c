@@ -1,6 +1,9 @@
 #include "baserender.h"
 #include "flat.h"
 
+#include "symbols/1080/Crecording.xpm"
+cBitmap cFlatBaseRender::bmCRecording(Crecording_xpm);
+
 cFlatBaseRender::cFlatBaseRender(void) {
     font = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize );
     fontSml = cFont::CreateFont(Setup.FontSml, Setup.FontSmlSize);
@@ -16,6 +19,7 @@ cFlatBaseRender::cFlatBaseRender(void) {
     topBarLastDate = "";
     topBarUpdateTitle = false;
     topBarHeight = 0;
+    bmRecording    = &bmCRecording;
 
     marginItem = 5;
 
@@ -173,6 +177,29 @@ void cFlatBaseRender::TopBarUpdate(void) {
         topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop + topBarFontSmlHeight), date, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, fullWidth, 0, taRight);
 
         DecorBorderDraw(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight, Config.decorBorderTopBarSize, Config.decorBorderTopBarType, Config.decorBorderTopBarFg, Config.decorBorderTopBarBg);
+        
+        // look for timers
+        bool isRec = false, isRecPresent = false;
+        for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
+            isRec = true;
+            if( ti->Matches(t) ) {
+                isRecPresent = true;
+                break;
+            }
+        }
+        
+        if( isRec && Config.TopBarRecordingShow ) {
+            int left = TopBarWidth - timeWidth - fullWidth - marginItem*3 - bmRecording->Width();
+            int top = (topBarHeight - bmRecording->Height()) / 2;
+            if( isRecPresent ) {
+                topBarPixmap->DrawBitmap(cPoint(left, top), *bmRecording,
+                    Theme.Color(clrTopBarRecordingPresent), Theme.Color(clrTopBarBg));
+            } else {
+                topBarPixmap->DrawBitmap(cPoint(left, top), *bmRecording,
+                    Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg));
+            }
+        }
+        
     }
 }
 

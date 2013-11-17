@@ -1,5 +1,8 @@
 #include "displaychannel.h"
 
+#include "symbols/1080/Crecording.xpm"
+cBitmap cFlatDisplayChannel::bmCRecording(Crecording_xpm);
+
 cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     present = NULL;
     channelName = "";
@@ -11,6 +14,8 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     isGroup = false;
     isRecording = false,
     isRadioChannel = false;
+
+    bmRecording    = &bmCRecording;
     
     screenWidth = lastScreenWidth = -1;
     
@@ -137,24 +142,6 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
 
     int left = channelWidth - width - marginItem;
 
-    // look for timers & records
-    time_t t = time(NULL);
-    for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
-        if(ti->Matches(t) && (ti->Channel() == Channel)) {
-            if( ti->Recording() ) {
-                isRecording = true;
-                if( !Resolution ) {
-                    if (imgLoader.LoadIcon("record", width)) {
-                        int imageTop = top + (height - imgLoader.Height())/2;
-                        chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
-                    }
-                }
-            }
-        }
-    }
-    if( isRecording )
-        left -= marginItem + width;
-    
     if( !Resolution && Channel ) {
         if (Channel->Ca()) {
             if (imgLoader.LoadIcon("crypted", width)) {
@@ -222,6 +209,8 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
     chanInfoBottomPixmap->Fill(Theme.Color(clrChannelBg));
     chanIconsPixmap->Fill( clrTransparent );
 
+    bool isRec = false;
+    
 /*    chanLogoPixmap->Fill(clrTransparent);
     int imageHeight = heightImageLogo - marginItem*2;
     int imageLeft = marginItem;
@@ -251,6 +240,11 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
 
         int epgWidth = font->Width(Present->Title());
         int epgShortWidth = fontSml->Width(Present->ShortText());
+
+        if( Present->HasTimer() ) {
+            isRec = true;
+            epgWidth -= marginItem + bmRecording->Width();
+        }
         
         int s = (int)(time(NULL) - Present->StartTime()) / 60;
         int sleft = (Present->Duration() / 60) - s;
@@ -263,6 +257,7 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
             cTextWrapper epgInfoWrapper(Present->Title(), font, channelWidth - left - timeStringWidth - dotsWidth);
             epg = epgInfoWrapper.GetLine(0);
             epg = cString::sprintf("%s...", *epg);
+            epgWidth = font->Width(*epg);
         } else {
             epg = Present->Title();
         }
@@ -284,16 +279,27 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         chanInfoBottomPixmap->DrawText(cPoint(left, 0), *epg, Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), font);
         chanInfoBottomPixmap->DrawText(cPoint(left, fontHeight), *epgShort, Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontSml);
 
+        if( isRec ) {
+            chanInfoBottomPixmap->DrawBitmap(cPoint(left + epgWidth + marginItem + bmRecording->Width(), 0), *bmRecording,
+                Theme.Color(clrChannelRecordingPresent), Theme.Color(clrChannelBg));
+        }
     }
+    
     if( Following ) {
+        isRec = false;
         cString startTime = Following->GetTimeString();
         cString endTime = Following->GetEndTimeString();
 
         cString timeString = cString::sprintf("%s - %s", *startTime, *endTime);
         int timeStringWidth = fontSml->Width(*timeString);
 
-        int epgWidth = fontSml->Width(Following->Title());
+        int epgWidth = font->Width(Following->Title());
         int epgShortWidth = fontSml->Width(Following->ShortText());
+
+        if( Following->HasTimer() ) {
+            epgWidth -= marginItem + bmRecording->Width();
+            isRec = true;
+        }
         
         cString dur = cString::sprintf("%d min", Following->Duration() / 60);
         int durWidth = fontSml->Width(*dur);
@@ -324,6 +330,11 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
                 Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), font);
         chanInfoBottomPixmap->DrawText(cPoint(left, fontHeight*2 + fontSmlHeight), *epgShort,
                 Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), fontSml);
+
+        if( isRec ) {
+            chanInfoBottomPixmap->DrawBitmap(cPoint(left + epgWidth + marginItem + bmRecording->Width(), fontHeight + fontSmlHeight), *bmRecording,
+                Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg));
+        }
     }
     if( Config.ChannelIconsShow && CurChannel ) {
         ChannelIconsDraw(CurChannel, false);

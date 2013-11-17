@@ -158,4 +158,5 @@ class cFlatConfig
         int ResolutionAspectShow;
         int RecordingAdditionalInfoShow;
         int EpgAdditionalInfoShow;
+        int TopBarRecordingShow;
 };

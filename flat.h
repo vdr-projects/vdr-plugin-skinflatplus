@@ -31,6 +31,8 @@ THEME_CLR(Theme, clrTopBarBorderBg,         0xC0101010);
 THEME_CLR(Theme, clrTopBarBorderType,       0x00000000);
 THEME_CLR(Theme, clrTopBarBorderSize,       0x00000000);
 
+THEME_CLR(Theme, clrTopBarRecordingPresent, 0xFFAA0000);
+
 // Buttons
 THEME_CLR(Theme, clrButtonBg,               0xC0101010);
 THEME_CLR(Theme, clrButtonFont,             0xFFEEEEEE);
@@ -80,6 +82,8 @@ THEME_CLR(Theme, clrChannelSignalProgressBarFg,   0xFFA0A0A0);
 THEME_CLR(Theme, clrChannelSignalProgressBg,      0xC0101010);
 THEME_CLR(Theme, clrChannelSignalProgressType,    0x00000002);
 THEME_CLR(Theme, clrChannelSignalProgressSize,    0x0000000A);
+
+THEME_CLR(Theme, clrChannelRecordingPresent,      0xFFAA0000);
 
 // Menu
 THEME_CLR(Theme, clrItemBg,                 0xC0909090);

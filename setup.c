@@ -137,6 +137,7 @@ void cFlatSetup::Store(void) {
     SetupStore("ResolutionAspectShow", Config.ResolutionAspectShow);
     SetupStore("RecordingAdditionalInfoShow", Config.RecordingAdditionalInfoShow);
     SetupStore("EpgAdditionalInfoShow", Config.EpgAdditionalInfoShow);
+    SetupStore("TopBarRecordingShow", Config.TopBarRecordingShow);
     
     Config.Init();
 }
@@ -168,6 +169,7 @@ void cFlatSetupGeneral::Setup(void) {
     Add(new cMenuEditIntItem(tr("OSD vertical margin"), &SetupConfig->marginOsdVer));
     Add(new cMenuEditIntItem(tr("OSD horizontal margin"), &SetupConfig->marginOsdHor));
     Add(new cMenuEditPrcItem(tr("TopBar font size"), &SetupConfig->TopBarFontSize, 0.01, 0.2, 1));
+    Add(new cMenuEditBoolItem(tr("TopBar show recording"), &SetupConfig->TopBarRecordingShow));
     Add(new cMenuEditIntItem(tr("Message bottom offset"), &SetupConfig->MessageOffset));
     
     Add(new cMenuEditBoolItem(tr("TopBar border by theme?"), &SetupConfig->decorBorderTopBarByTheme));

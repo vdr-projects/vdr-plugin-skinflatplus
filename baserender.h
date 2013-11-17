@@ -48,6 +48,9 @@ class cFlatBaseRender
         cString topBarLastDate;
         int topBarHeight;
 
+        cBitmap *bmRecording;
+        static cBitmap bmCRecording;
+
         // Progressbar
         cPixmap *progressBarPixmap;
         cPixmap *progressBarPixmapBg;

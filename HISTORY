@@ -15,6 +15,10 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] option to display resolution & aspect
 - [add] default logo for channels without channel logo
 - [add] use icon from default theme if current theme does not have the icon
+- [add] option to show additional info in epg menu. Lent code from skin elchi (thank you!)
+- [add] option to show additional info in recording menu. Lent code from skin elchi (thank you!)
+- [update] show recording in display channel for present and following
+- [add] option to show active recording in TopBar
 
 2013-23-09: Version 0.0.1
 difference to skinflat
