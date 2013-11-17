@@ -202,11 +202,11 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
     if( Config.ResolutionAspectShow && Resolution && !isRadioChannel && screenWidth > 0 ) {
         cString asp = "";
         if( screenAspect == 4.0/3.0 )
-            asp = "4/3";
+            asp = "4:3";
         else if( screenAspect == 16.0/9.0 )
-            asp = "16/9";
+            asp = "16:9";
         else if( screenAspect == 2.21 )
-            asp = "2.21/1";
+            asp = "2.21:1";
         cString resasp = cString::sprintf("%dx%d %s", screenWidth, screenHeight, *asp);
         int w = fontSml->Width(*resasp);
         left -= w;
