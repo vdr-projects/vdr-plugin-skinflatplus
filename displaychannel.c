@@ -123,10 +123,7 @@ void cFlatDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
 void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolution) {
     if( !Resolution ) {
         chanIconsPixmap->Fill( clrTransparent );
-        printf("no resolution\n");
-    } else
-        printf("resolution width: %d\n", screenWidth);
-    
+    }
 
     int width = fontSmlHeight;
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;

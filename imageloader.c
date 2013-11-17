@@ -49,8 +49,12 @@ bool cImageLoader::LoadIcon(const char *cIcon, int size) {
         return false;
     cString iconThemePath = cString::sprintf("%s%s/", *Config.iconPath, Setup.OSDTheme);
     bool success = LoadImage(cString(cIcon), iconThemePath, "png");
-    if (!success)
-        return false;
+    if( !success ) {
+        iconThemePath = cString::sprintf("%s%s/", *Config.iconPath, "default");
+        success = LoadImage(cString(cIcon), iconThemePath, "png");
+        if( !success )
+            return false;
+    }
     if( size >= 0 )
         buffer.sample(Geometry(size, size));
     return true;
@@ -62,8 +66,12 @@ bool cImageLoader::LoadIcon(const char *cIcon, int width, int height, bool prese
         return false;
     cString iconThemePath = cString::sprintf("%s%s/", *Config.iconPath, Setup.OSDTheme);
     bool success = LoadImage(cString(cIcon), iconThemePath, "png");
-    if (!success)
-        return false;
+    if( !success ) {
+        iconThemePath = cString::sprintf("%s%s/", *Config.iconPath, "default");
+        success = LoadImage(cString(cIcon), iconThemePath, "png");
+        if( !success )
+            return false;
+    }
     if (preserveAspect) {
         buffer.sample(Geometry(width, height));
     } else {
