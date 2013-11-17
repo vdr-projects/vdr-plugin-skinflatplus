@@ -124,9 +124,9 @@ void cFlatDisplayMenu::Clear(void) {
     scrollbarPixmap->Fill(clrTransparent);
     contentHeadPixmap->Fill(clrTransparent);
     ContentClear();
+    DecorBorderClearByFrom(BorderMenuItem);
     DecorBorderClearAll();
     isScrolling = false;
-    // DecorBorderClearByFrom( BorderMenuItem );
 }
 
 void cFlatDisplayMenu::SetTitle(const char *Title) {

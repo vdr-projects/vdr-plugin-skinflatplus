@@ -154,4 +154,6 @@ class cFlatConfig
         
         int MenuContentFullSize;
         double TopBarFontSize;
+        
+        int ResolutionAspectShow;
 };

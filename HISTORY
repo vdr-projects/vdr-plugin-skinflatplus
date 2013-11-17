@@ -5,12 +5,15 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] marker position
 - [fix] borders displaced
 - [fix] menu has full width if no scrollbar is needed
+- [fix] small fixes in channel display
 - [update] TopBar title align right
-- [add] add free minutes in disk usage
-- [add] add topbar font size option
-- [add] add message bottom offset option
-- [add] add menu items symbols for rec, timer, etc. Lent code from skin elchi (thank you!)
-- [add] add option menu content full size background
+- [add] free minutes in disk usage
+- [add] topbar font size option
+- [add] message bottom offset option
+- [add] menu items symbols for rec, timer, etc. Lent code from skin elchi (thank you!)
+- [add] option menu content full size background
+- [add] option to display resolution & aspect
+- [add] default logo for channels without channel logo
 
 2013-23-09: Version 0.0.1
 difference to skinflat

@@ -134,6 +134,7 @@ void cFlatSetup::Store(void) {
     SetupStore("TopBarFontSize", dtoa(Config.TopBarFontSize));
     SetupStore("MessageOffset", Config.MessageOffset);
     SetupStore("MenuContentFullSize", Config.MenuContentFullSize);
+    SetupStore("ResolutionAspectShow", Config.ResolutionAspectShow);
     
     Config.Init();
 }
@@ -242,6 +243,7 @@ void cFlatSetupChannelInfo::Setup(void) {
 
     Add(new cMenuEditBoolItem(tr("Show Channelinfo icons"), &SetupConfig->ChannelIconsShow));
     Add(new cMenuEditBoolItem(tr("Show signal quality"), &SetupConfig->SignalQualityShow));
+    Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->ResolutionAspectShow));
 
     Add(new cMenuEditBoolItem(tr("Channelinfo border by theme?"), &SetupConfig->decorBorderChannelByTheme));
     if( SetupConfig->decorBorderChannelByTheme ) {

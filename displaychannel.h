@@ -7,7 +7,7 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         const cEvent *present;
 
         int channelWidth, channelHeight;
-    
+
         cString channelName;
         const cChannel *CurChannel;
     
@@ -17,9 +17,14 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         cPixmap *chanIconsPixmap;
     
         int screenWidth, lastScreenWidth;
-        int heightBottom;
+        int screenHeight;
+        double screenAspect;
+        int heightBottom, heightImageLogo;
     
         bool isRecording;
+        bool isRadioChannel;
+        bool isGroup;
+    
         void SignalQualityDraw(void);
         void ChannelIconsDraw(const cChannel *Channel, bool Resolution);
     

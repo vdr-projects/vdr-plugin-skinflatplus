@@ -474,6 +474,10 @@ void cFlatBaseRender::ProgressBarDraw(int Current, int Total) {
         Current, Total, progressBarColorFg, progressBarColorBarFg, progressBarColorBg, ProgressType);
 }
 
+void cFlatBaseRender::ProgressBarDrawBgColor(void) {
+    progressBarPixmapBg->Fill(progressBarColorBg);
+}
+
 void cFlatBaseRender::ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRect rect, cRect rectBg, int Current, int Total, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type) {
     int Middle = rect.Height()/2;
     
