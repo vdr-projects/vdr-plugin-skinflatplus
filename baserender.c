@@ -1,8 +1,6 @@
 #include "baserender.h"
 #include "flat.h"
-
-#include "symbols/1080/Crecording.xpm"
-cBitmap cFlatBaseRender::bmCRecording(Crecording_xpm);
+#include <vdr/menu.h>
 
 cFlatBaseRender::cFlatBaseRender(void) {
     font = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize );
@@ -19,7 +17,6 @@ cFlatBaseRender::cFlatBaseRender(void) {
     topBarLastDate = "";
     topBarUpdateTitle = false;
     topBarHeight = 0;
-    bmRecording    = &bmCRecording;
 
     marginItem = 5;
 
@@ -59,8 +56,8 @@ cFlatBaseRender::~cFlatBaseRender(void) {
             osd->DestroyPixmap(progressBarPixmapBg);
         if( decorPixmap )
             osd->DestroyPixmap(decorPixmap);
-        if( topBarExtraIconPixmap )
-            osd->DestroyPixmap(topBarExtraIconPixmap);
+        if( topBarIconPixmap )
+            osd->DestroyPixmap(topBarIconPixmap);
         
         delete osd;
     }
@@ -100,7 +97,7 @@ void cFlatBaseRender::TopBarCreate(void) {
         topBarHeight = topBarFontSmlHeight * 2;
 
     topBarPixmap = osd->CreatePixmap(1, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
-    topBarExtraIconPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
+    topBarIconPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
     topBarPixmap->Fill(clrTransparent);
 }
 
@@ -109,8 +106,10 @@ void cFlatBaseRender::TopBarSetTitle(cString title) {
     tobBarTitleExtra1 = "";
     tobBarTitleExtra2 = "";
     topBarExtraIcon = "";
+    topBarMenuIcon = "";
     topBarUpdateTitle = true;
     topBarExtraIconSet = false;
+    topBarMenuIconSet = false;
 }
 
 void cFlatBaseRender::TopBarSetTitleExtra(cString extra1, cString extra2) {
@@ -125,20 +124,30 @@ void cFlatBaseRender::TopBarSetExtraIcon(cString icon) {
     topBarUpdateTitle = true;
 }
 
+void cFlatBaseRender::TopBarSetMenuIcon(cString icon) {
+    topBarMenuIcon = icon;
+    topBarMenuIconSet = true;
+    topBarUpdateTitle = true;
+}
+
 // sollte bei jedum "Flush" aufgerufen werden!
 void cFlatBaseRender::TopBarUpdate(void) {
     cString curDate = DayDateTime();
     int TopBarWidth = osdWidth - Config.decorBorderTopBarSize*2;
+    int MenuIconWidth = 0;
     
     if ( strcmp(curDate, topBarLastDate) || topBarUpdateTitle ) {
         topBarUpdateTitle = false;
         topBarLastDate = curDate;
 
+        int TitleWidthLeft = TopBarWidth;
+        
         int fontTop = (topBarHeight - topBarFontHeight) / 2;
         int fontSmlTop = (topBarHeight - topBarFontSmlHeight*2) / 2;
 
+        int RecLeft = TopBarWidth / 2;
+        
         topBarPixmap->Fill(Theme.Color(clrTopBarBg));
-        topBarPixmap->DrawText(cPoint(marginItem*2, fontTop), topBarTitle, Theme.Color(clrTopBarFont), Theme.Color(clrTopBarBg), topBarFont);
 
         int extra1Width = topBarFontSml->Width(tobBarTitleExtra1);
         int extra2Width = topBarFontSml->Width(tobBarTitleExtra2);
@@ -147,15 +156,30 @@ void cFlatBaseRender::TopBarUpdate(void) {
         int extraLeft = TopBarWidth/2 - extraMaxWidth/2;
         topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop), tobBarTitleExtra1, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
         topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop + topBarFontSmlHeight), tobBarTitleExtra2, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
-
-        topBarExtraIconPixmap->Fill(clrTransparent);
+        
+        RecLeft = extraLeft + extraMaxWidth + marginItem;
+        
+        topBarIconPixmap->Fill(clrTransparent);
         if( topBarExtraIconSet ) {
             int extraIconLeft = extraLeft + extraMaxWidth + marginItem;
-            if (imgLoader.LoadIcon(*topBarExtraIcon, topBarHeight)) {
+            if (imgLoader.LoadIcon(*topBarExtraIcon, 999, topBarHeight)) {
                 int iconTop = topBarHeight / 2 - imgLoader.Height()/2;
-                topBarExtraIconPixmap->DrawImage(cPoint(extraIconLeft, iconTop), imgLoader.GetImage());
+                topBarIconPixmap->DrawImage(cPoint(extraIconLeft, iconTop), imgLoader.GetImage());
+                
+                RecLeft += topBarHeight + marginItem;
             }
         }
+
+        if( topBarMenuIconSet && Config.TopBarMenuIconShow ) {
+            int IconLeft = marginItem;
+            if (imgLoader.LoadIcon(*topBarMenuIcon, 999, topBarHeight)) {
+                int iconTop = topBarHeight / 2 - imgLoader.Height()/2;
+                topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), imgLoader.GetImage());
+                MenuIconWidth = imgLoader.Width();
+                TitleWidthLeft -= MenuIconWidth + marginItem;
+            }
+        }
+        
         time_t t;
         time(&t);
 
@@ -164,7 +188,9 @@ void cFlatBaseRender::TopBarUpdate(void) {
 
         int timeWidth = topBarFont->Width(*time2) + marginItem*2;
         topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth, fontTop), time2, Theme.Color(clrTopBarTimeFont), Theme.Color(clrTopBarBg), topBarFont);
-
+        
+        TitleWidthLeft -= timeWidth;
+        
         cString weekday = WeekDayNameFull(t);
         int weekdayWidth = topBarFontSml->Width(*weekday);
 
@@ -172,32 +198,48 @@ void cFlatBaseRender::TopBarUpdate(void) {
         int dateWidth = topBarFontSml->Width(*date);
 
         int fullWidth = max(weekdayWidth, dateWidth);
+        TitleWidthLeft -= fullWidth;
 
         topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop), weekday, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, fullWidth, 0, taRight);
         topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop + topBarFontSmlHeight), date, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, fullWidth, 0, taRight);
 
         DecorBorderDraw(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight, Config.decorBorderTopBarSize, Config.decorBorderTopBarType, Config.decorBorderTopBarFg, Config.decorBorderTopBarBg);
-        
+
         // look for timers
-        bool isRec = false, isRecPresent = false;
+        int numRec = 0;
         for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
-            isRec = true;
             if( ti->Matches(t) ) {
-                isRecPresent = true;
-                break;
-            }
+                numRec++;
+            }        
+        }        
+
+        int RecW = 0;
+        if( numRec > 0 && Config.TopBarRecordingShow ) {
+            cString Rec = cString::sprintf("REC %d", numRec);
+            RecW = topBarFont->Width(*Rec);
+            TitleWidthLeft -= RecW + marginItem*2;
         }
         
-        if( isRec && Config.TopBarRecordingShow ) {
-            int left = TopBarWidth - timeWidth - fullWidth - marginItem*3 - bmRecording->Width();
-            int top = (topBarHeight - bmRecording->Height()) / 2;
-            if( isRecPresent ) {
-                topBarPixmap->DrawBitmap(cPoint(left, top), *bmRecording,
-                    Theme.Color(clrTopBarRecordingPresent), Theme.Color(clrTopBarBg));
-            } else {
-                topBarPixmap->DrawBitmap(cPoint(left, top), *bmRecording,
-                    Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg));
-            }
+        int TitleWidth = topBarFont->Width(topBarTitle);
+        if( TitleWidth > TitleWidthLeft ) {
+            int dotsWidth = topBarFont->Width("... ");
+            cTextWrapper TitleWrapper(topBarTitle, topBarFont, TitleWidthLeft - dotsWidth);
+            topBarTitle = TitleWrapper.GetLine(0);
+            topBarTitle = cString::sprintf("%s...", *topBarTitle);
+            TitleWidth = topBarFont->Width(topBarTitle);
+        }
+        
+        topBarPixmap->DrawText(cPoint(MenuIconWidth + marginItem*2, fontTop), topBarTitle, Theme.Color(clrTopBarFont), Theme.Color(clrTopBarBg), topBarFont);
+        
+        if( numRec > 0 && Config.TopBarRecordingShow ) {
+            if( TitleWidth > RecLeft )
+                RecLeft = TitleWidth + marginItem*2;
+            
+            cString Rec = cString::sprintf("REC");
+            RecW = topBarFont->Width(*Rec);
+            cString RecNum = cString::sprintf("%d", numRec);
+            topBarPixmap->DrawText(cPoint(RecLeft, fontTop), Rec, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFont);
+            topBarPixmap->DrawText(cPoint(RecLeft + RecW + marginItem, fontSmlTop), RecNum, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFontSml);
         }
         
     }
@@ -510,6 +552,7 @@ void cFlatBaseRender::ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRe
     
     double percentLeft = ((double)Current) / (double)Total;
 
+    /*
     if( PixmapBg )
         PixmapBg->DrawRectangle(cRect( rectBg.Left(), rectBg.Top(), rectBg.Width(), rectBg.Height()), ColorBg);
     
@@ -517,7 +560,7 @@ void cFlatBaseRender::ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRe
         Pixmap->DrawRectangle(cRect( rect.Left(), rect.Top(), rect.Width(), rect.Height()), ColorBg);
     else
         Pixmap->DrawRectangle(cRect( rect.Left(), rect.Top(), rect.Width(), rect.Height()), clrTransparent);
-        
+    */    
     switch( Type ) {
         case 0: // small line + big line
         {

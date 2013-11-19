@@ -134,10 +134,15 @@ void cFlatSetup::Store(void) {
     SetupStore("TopBarFontSize", dtoa(Config.TopBarFontSize));
     SetupStore("MessageOffset", Config.MessageOffset);
     SetupStore("MenuContentFullSize", Config.MenuContentFullSize);
-    SetupStore("ResolutionAspectShow", Config.ResolutionAspectShow);
+    SetupStore("ChannelResolutionAspectShow", Config.ChannelResolutionAspectShow);
+    SetupStore("ChannelFormatShow", Config.ChannelFormatShow);
+    SetupStore("RecordingResolutionAspectShow", Config.RecordingResolutionAspectShow);
+    SetupStore("RecordingFormatShow", Config.RecordingFormatShow);
     SetupStore("RecordingAdditionalInfoShow", Config.RecordingAdditionalInfoShow);
     SetupStore("EpgAdditionalInfoShow", Config.EpgAdditionalInfoShow);
     SetupStore("TopBarRecordingShow", Config.TopBarRecordingShow);
+    SetupStore("MenuItemIconsShow", Config.MenuItemIconsShow);
+    SetupStore("TopBarMenuIconShow", Config.TopBarMenuIconShow);
     
     Config.Init();
 }
@@ -165,13 +170,15 @@ void cFlatSetupGeneral::Setup(void) {
     Clear();
 
     Add(new cMenuEditBoolItem(tr("Show empty color-buttons"), &SetupConfig->ButtonsShowEmpty));
+    Add(new cMenuEditBoolItem(tr("Show TopBar menu icons"), &SetupConfig->TopBarMenuIconShow));
     Add(new cMenuEditBoolItem(tr("Show Diskusage stats"), &SetupConfig->DiskUsageShow));
     Add(new cMenuEditIntItem(tr("OSD vertical margin"), &SetupConfig->marginOsdVer));
     Add(new cMenuEditIntItem(tr("OSD horizontal margin"), &SetupConfig->marginOsdHor));
     Add(new cMenuEditPrcItem(tr("TopBar font size"), &SetupConfig->TopBarFontSize, 0.01, 0.2, 1));
     Add(new cMenuEditBoolItem(tr("TopBar show recording"), &SetupConfig->TopBarRecordingShow));
     Add(new cMenuEditIntItem(tr("Message bottom offset"), &SetupConfig->MessageOffset));
-    
+
+
     Add(new cMenuEditBoolItem(tr("TopBar border by theme?"), &SetupConfig->decorBorderTopBarByTheme));
     if( SetupConfig->decorBorderTopBarByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("TopBar border type"), Bordertypes[SetupConfig->decorBorderTopBarTypeTheme]);
@@ -246,7 +253,8 @@ void cFlatSetupChannelInfo::Setup(void) {
 
     Add(new cMenuEditBoolItem(tr("Show Channelinfo icons"), &SetupConfig->ChannelIconsShow));
     Add(new cMenuEditBoolItem(tr("Show signal quality"), &SetupConfig->SignalQualityShow));
-    Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->ResolutionAspectShow));
+    Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->ChannelResolutionAspectShow));
+    Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->ChannelFormatShow));
 
     Add(new cMenuEditBoolItem(tr("Channelinfo border by theme?"), &SetupConfig->decorBorderChannelByTheme));
     if( SetupConfig->decorBorderChannelByTheme ) {
@@ -321,6 +329,7 @@ void cFlatSetupMenu::Setup(void) {
     Clear();
 
     Add(new cMenuEditIntItem(tr("Menuitem padding"), &SetupConfig->MenuItemPadding));
+    Add(new cMenuEditBoolItem(tr("Show mainmenu item icons"), &SetupConfig->MenuItemIconsShow));
     Add(new cMenuEditBoolItem(tr("Menu content fullsize background"), &SetupConfig->MenuContentFullSize));
     Add(new cMenuEditBoolItem(tr("Show additional recording info"), &SetupConfig->RecordingAdditionalInfoShow));
     Add(new cMenuEditBoolItem(tr("Show additional EPG info"), &SetupConfig->EpgAdditionalInfoShow));
@@ -410,6 +419,9 @@ void cFlatSetupReplay::Setup(void) {
     Clear();
 
     Add(new cMenuEditBoolItem(tr("Replay border by theme?"), &SetupConfig->decorBorderReplayByTheme));
+    Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->RecordingResolutionAspectShow));
+    Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->RecordingFormatShow));
+    
     if( SetupConfig->decorBorderReplayByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Replay border type"), Bordertypes[SetupConfig->decorBorderReplayTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));

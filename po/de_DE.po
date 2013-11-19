@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2013-11-17 19:36+0100\n"
+"POT-Creation-Date: 2013-11-19 21:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -132,6 +132,9 @@ msgstr "Audiospur Einstellungen"
 msgid "Show empty color-buttons"
 msgstr "Zeige leere Farbtasten"
 
+msgid "Show TopBar menu icons"
+msgstr "Zeige TopBar menu Icons"
+
 msgid "Show Diskusage stats"
 msgstr "Zeige HDD Verbrauch"
 
@@ -186,6 +189,9 @@ msgstr "Zeige Signalqualität"
 msgid "Show resolution & aspect"
 msgstr "Zeige Auflösung & Aspect"
 
+msgid "Show format (hd/sd)"
+msgstr "Zeige Format (hd/sd)"
+
 msgid "Channelinfo border by theme?"
 msgstr "Kanalinfo Rand vom Theme?"
 
@@ -215,6 +221,9 @@ msgstr "Signal Progress Größe"
 
 msgid "Menuitem padding"
 msgstr "Menüitem Abstand"
+
+msgid "Show mainmenu item icons"
+msgstr "Zeige Mainmenüitem Icons"
 
 msgid "Menu content fullsize background"
 msgstr "Menü Content voller Hintergrund"

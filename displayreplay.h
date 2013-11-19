@@ -10,9 +10,14 @@ class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay {
         cPixmap *labelPixmap;
         cPixmap *labelJump;
         cPixmap *iconsPixmap;
+
+        int screenWidth, lastScreenWidth;
+        int screenHeight;
+        double screenAspect;
     
         bool ProgressShown;
         void UpdateInfo(void);
+        void ResolutionAspectDraw(void);
     public:
         cFlatDisplayReplay(bool ModeOnly);
         virtual ~cFlatDisplayReplay();

@@ -1,24 +1,31 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
-2013-XX-XX: Version 0.0.2
+2013-XX-XX: Version 0.1.0
+- [fix] many small fixes
 - [fix] marker position
 - [fix] borders displaced
 - [fix] menu has full width if no scrollbar is needed
-- [fix] small fixes in channel display
+- [fix] icon size in channel display
 - [update] TopBar title align right
+- [update] channel display icons
 - [update] show recording in display channel for present and following
 - [add] free minutes in disk usage
 - [add] topbar font size option
 - [add] message bottom offset option
 - [add] menu items symbols for rec, timer, etc. Lent code from skin elchi (thank you!)
 - [add] option menu content full size background
-- [add] option to display resolution & aspect
+- [add] option to display resolution & aspect in display channel
+- [add] option do display format (hd/sd) in display channel
+- [add] option to display resolution & aspect in replay
+- [add] option do display format (hd/sd) in replay
 - [add] default logo for channels without channel logo
 - [add] use icon from default theme if current theme does not have the icon
 - [add] option to show additional info in epg menu. Lent code from skin elchi (thank you!)
 - [add] option to show additional info in recording menu. Lent code from skin elchi (thank you!)
 - [add] option to show active recording in TopBar
+- [add] menu icons
+- [add] TopBar menu icons
 
 2013-23-09: Version 0.0.1
 difference to skinflat

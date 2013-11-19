@@ -1,8 +1,5 @@
 #include "displaychannel.h"
 
-#include "symbols/1080/Crecording.xpm"
-cBitmap cFlatDisplayChannel::bmCRecording(Crecording_xpm);
-
 cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     present = NULL;
     channelName = "";
@@ -15,8 +12,6 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     isRecording = false,
     isRadioChannel = false;
 
-    bmRecording    = &bmCRecording;
-    
     screenWidth = lastScreenWidth = -1;
     
     CreateFullOsd();
@@ -133,6 +128,7 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
     int width = fontSmlHeight;
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
     int height = fontSmlHeight;
+    int imageTop = 0;
     
     if( Config.SignalQualityShow ) {
         top += max(fontSmlHeight, Config.decorProgressSignalSize) / 2 - fontSmlHeight / 2;
@@ -140,64 +136,77 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
     } else
         top += fontSmlHeight / 2 - fontSmlHeight / 2;
 
-    int left = channelWidth - width - marginItem;
+    int left = channelWidth - width - marginItem*2;
 
-    if( !Resolution && Channel ) {
+    if( Channel ) {
         if (Channel->Ca()) {
-            if (imgLoader.LoadIcon("crypted", width)) {
-                int imageTop = top + (height - imgLoader.Height())/2;
+            if (imgLoader.LoadIcon("crypted", 999, height)) {
+                imageTop = top + (height - imgLoader.Height())/2;
                 chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+                left -= marginItem*2;
             }
         } else {
-            if (imgLoader.LoadIcon("uncrypted", width)) {
-                int imageTop = top + (height - imgLoader.Height())/2;
+            if (imgLoader.LoadIcon("uncrypted", 999, height)) {
+                imageTop = top + (height - imgLoader.Height())/2;
                 chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+                left -= marginItem*2;
             }
         }
     }
-    left -= marginItem + width;
 
-    if( Resolution ) {
-        chanIconsPixmap->DrawRectangle(cRect(0, top, left, height), clrTransparent);
-    }
-    
-    if( Resolution && !isRadioChannel && screenWidth > 0 ) {
+    if( Resolution && !isRadioChannel && Config.ChannelFormatShow && screenWidth > 0 ) {
         cString iconName("");
         switch (screenWidth) {
             case 1920:
             case 1440:
             case 1280:
-                iconName = "hd3";
+                iconName = "hd";
                 break;
             case 720:
-                iconName = "sd3";
+                iconName = "sd";
                 break;
             default:
-                iconName = "sd3";
+                iconName = "sd";
                 break;
         }
-        if (imgLoader.LoadIcon(*iconName, width)) {
-            int imageTop = top + (height - imgLoader.Height())/2;
-            //chanIconsPixmap->DrawRectangle(cRect(left, 0, imgLoader.Height(), height), Theme.Color(clrChannelBg));
+        if (imgLoader.LoadIcon(*iconName, 999, height)) {
+            imageTop = top + (height - imgLoader.Height())/2;
+            left -= imgLoader.Width();
             chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
-            left -= marginItem*2 ;
+            left -= marginItem*2;
         }
     }
-    if( Config.ResolutionAspectShow && Resolution && !isRadioChannel && screenWidth > 0 ) {
+    if( Config.ChannelResolutionAspectShow && Resolution && !isRadioChannel && screenWidth > 0 ) {
         cString asp = "";
         if( screenAspect == 4.0/3.0 )
-            asp = "4:3";
+            asp = "43";
         else if( screenAspect == 16.0/9.0 )
-            asp = "16:9";
+            asp = "169";
         else if( screenAspect == 2.21 )
-            asp = "2.21:1";
-        cString resasp = cString::sprintf("%dx%d %s", screenWidth, screenHeight, *asp);
-        int w = fontSml->Width(*resasp);
-        left -= w;
-        chanIconsPixmap->DrawText(cPoint(left, top), *resasp,
-                Theme.Color(clrChannelFontEpg), clrTransparent, fontSml);
+            asp = "221";
+        if (imgLoader.LoadIcon(*asp, 999, height)) {
+            imageTop = top + (height - imgLoader.Height())/2;
+            left -= imgLoader.Width();
+            chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+            left -= marginItem*2;
+        }
 
-        left -= marginItem + width;
+        cString res = "";
+        if( screenHeight == 480 )
+            res = "480";
+        else if( screenHeight == 576 )
+            res = "576";
+        else if( screenHeight == 720 )
+            res = "720";
+        else if( screenHeight == 1080 )
+            res = "1080";
+        
+        if (imgLoader.LoadIcon(*res, 999, height)) {
+            imageTop = top + (height - imgLoader.Height())/2;
+            left -= imgLoader.Width();
+            chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+            left -= marginItem*2;
+        }
     }
 }
 
@@ -210,25 +219,8 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
     chanIconsPixmap->Fill( clrTransparent );
 
     bool isRec = false;
+    int RecWidth = fontSml->Width("REC");
     
-/*    chanLogoPixmap->Fill(clrTransparent);
-    int imageHeight = heightImageLogo - marginItem*2;
-    int imageLeft = marginItem;
-    int imageTop = marginItem;
-    if( imgLoader.LoadLogo(*channelName, imageHeight, imageHeight) ) {
-        chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), imgLoader.GetImage() );
-    } else { // draw default logo
-        if( isRadioChannel ) {
-            if( imgLoader.LoadIcon("radio", imageHeight, imageHeight) ) {
-                chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), imgLoader.GetImage() );
-            }
-        } else {
-            if( imgLoader.LoadIcon("tv", imageHeight, imageHeight) ) {
-                chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), imgLoader.GetImage() );
-            }
-        }
-    }
-*/
     int left = heightBottom + marginItem;
 
     if( Present ) {
@@ -243,7 +235,7 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
 
         if( Present->HasTimer() ) {
             isRec = true;
-            epgWidth -= marginItem + bmRecording->Width();
+            epgWidth += marginItem + RecWidth;
         }
         
         int s = (int)(time(NULL) - Present->StartTime()) / 60;
@@ -258,6 +250,10 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
             epg = epgInfoWrapper.GetLine(0);
             epg = cString::sprintf("%s...", *epg);
             epgWidth = font->Width(*epg);
+            if( Present->HasTimer() ) {
+                isRec = true;
+                epgWidth += marginItem + RecWidth;
+            }
         } else {
             epg = Present->Title();
         }
@@ -280,8 +276,8 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         chanInfoBottomPixmap->DrawText(cPoint(left, fontHeight), *epgShort, Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontSml);
 
         if( isRec ) {
-            chanInfoBottomPixmap->DrawBitmap(cPoint(left + epgWidth + marginItem + bmRecording->Width(), 0), *bmRecording,
-                Theme.Color(clrChannelRecordingPresent), Theme.Color(clrChannelBg));
+            chanInfoBottomPixmap->DrawText(cPoint(left + epgWidth + marginItem - RecWidth, 0), "REC",
+                Theme.Color(clrChannelRecordingPresentFg), Theme.Color(clrChannelRecordingPresentBg), fontSml);
         }
     }
     
@@ -297,7 +293,7 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         int epgShortWidth = fontSml->Width(Following->ShortText());
 
         if( Following->HasTimer() ) {
-            epgWidth -= marginItem + bmRecording->Width();
+            epgWidth += marginItem + RecWidth;
             isRec = true;
         }
         
@@ -309,6 +305,11 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
             cTextWrapper epgInfoWrapper(Following->Title(), font, channelWidth - left - timeStringWidth - dotsWidth);
             epg = epgInfoWrapper.GetLine(0);
             epg = cString::sprintf("%s...", *epg);
+            epgWidth = font->Width(*epg);
+            if( Following->HasTimer() ) {
+                isRec = true;
+                epgWidth += marginItem + RecWidth;
+            }
         } else {
             epg = Following->Title();
         }
@@ -332,8 +333,8 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
                 Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), fontSml);
 
         if( isRec ) {
-            chanInfoBottomPixmap->DrawBitmap(cPoint(left + epgWidth + marginItem + bmRecording->Width(), fontHeight + fontSmlHeight), *bmRecording,
-                Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg));
+            chanInfoBottomPixmap->DrawText(cPoint(left + epgWidth + marginItem - RecWidth, fontHeight + fontSmlHeight), "REC",
+                Theme.Color(clrChannelRecordingFollowFg), Theme.Color(clrChannelRecordingFollowBg), fontSml);
         }
     }
     if( Config.ChannelIconsShow && CurChannel ) {

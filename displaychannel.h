@@ -28,9 +28,6 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         void SignalQualityDraw(void);
         void ChannelIconsDraw(const cChannel *Channel, bool Resolution);
 
-        cBitmap *bmRecording;
-        static cBitmap bmCRecording;
-
     public:
         cFlatDisplayChannel(bool WithInfo);
         virtual ~cFlatDisplayChannel();

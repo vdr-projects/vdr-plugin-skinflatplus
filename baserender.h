@@ -35,7 +35,7 @@ class cFlatBaseRender
 
         // TopBar
         cPixmap *topBarPixmap;
-        cPixmap *topBarExtraIconPixmap;
+        cPixmap *topBarIconPixmap;
         cFont *topBarFont, *topBarFontSml;
         int topBarFontHeight, topBarFontSmlHeight;
     
@@ -43,13 +43,12 @@ class cFlatBaseRender
         cString tobBarTitleExtra1, tobBarTitleExtra2;
         cString topBarExtraIcon;
         bool topBarExtraIconSet;
+        cString topBarMenuIcon;
+        bool topBarMenuIconSet;
         
         bool topBarUpdateTitle;
         cString topBarLastDate;
         int topBarHeight;
-
-        cBitmap *bmRecording;
-        static cBitmap bmCRecording;
 
         // Progressbar
         cPixmap *progressBarPixmap;
@@ -119,6 +118,7 @@ class cFlatBaseRender
         void TopBarCreate(void);
         void TopBarSetTitle(cString title);
         void TopBarSetTitleExtra(cString extra1, cString extra2);
+        void TopBarSetMenuIcon(cString icon);
         void TopBarSetExtraIcon(cString icon);
         void TopBarUpdate(void);
 

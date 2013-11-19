@@ -10,6 +10,8 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
     TopBarCreate();
     MessageCreate();
 
+    screenWidth = lastScreenWidth = -1;
+
     labelPixmap = osd->CreatePixmap(1, cRect(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorBorderReplaySize,
         osdWidth - Config.decorBorderReplaySize*2, labelHeight));
     iconsPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorBorderReplaySize,
@@ -56,7 +58,6 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
         left /= 2;
 
         iconsPixmap->Fill(clrTransparent);
-
         labelPixmap->DrawRectangle(cRect( left - font->Width("33") - marginItem, 0, fontHeight*4 + marginItem*6 + font->Width("33")*2, fontHeight), Theme.Color(clrReplayBg) );
 
         cString rewind, pause, play, forward;
@@ -111,7 +112,7 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
             osdWidth - Config.decorBorderReplaySize*2, labelHeight,
             Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg);
         
-        
+    ResolutionAspectDraw();
 }
 
 void cFlatDisplayReplay::SetProgress(int Current, int Total) {
@@ -154,6 +155,67 @@ void cFlatDisplayReplay::SetJump(const char *Jump) {
         Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg, BorderRecordJump);
 }
 
+void cFlatDisplayReplay::ResolutionAspectDraw(void) {
+    int left = osdWidth - Config.decorBorderReplaySize*2;
+    int imageTop = 0;
+    if( screenWidth > 0 && Config.RecordingFormatShow ) {
+        cString iconName("");
+        switch (screenWidth) {
+            case 1920:
+            case 1440:
+            case 1280:
+                iconName = "hd";
+                break;
+            case 720:
+                iconName = "sd";
+                break;
+            default:
+                iconName = "sd";
+                break;
+        }
+        if (imgLoader.LoadIcon(*iconName, 999, fontSmlHeight)) {
+            imageTop = fontHeight + (fontSmlHeight - imgLoader.Height())/2;
+            left -= imgLoader.Width();
+            iconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+            left -= marginItem*2 ;
+        }
+    }
+    if( screenWidth > 0 && Config.RecordingResolutionAspectShow ) {
+        cString asp = "";
+        if( screenAspect == 4.0/3.0 )
+            asp = "43";
+        else if( screenAspect == 16.0/9.0 )
+            asp = "169";
+        else if( screenAspect == 2.21 )
+            asp = "221";
+        if (imgLoader.LoadIcon(*asp, 999, fontSmlHeight)) {
+            imageTop = fontHeight + (fontSmlHeight - imgLoader.Height())/2;
+            left -= imgLoader.Width();
+            iconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+            left -= marginItem*2;
+        }
+
+        cString res = "";
+        if( screenHeight == 480 )
+            res = "480";
+        else if( screenHeight == 576 )
+            res = "576";
+        else if( screenHeight == 720 )
+            res = "720";
+        else if( screenHeight == 1080 )
+            res = "1080";
+        
+        //printf("Width: %d Height: %d Aspect: %.2f\n", screenWidth, screenHeight, screenAspect);
+        
+        if (imgLoader.LoadIcon(*res, 999, fontSmlHeight)) {
+            imageTop = fontHeight + (fontSmlHeight - imgLoader.Height())/2;
+            left -= imgLoader.Width();
+            iconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+            left -= marginItem*2;
+        }
+    }
+}
+
 void cFlatDisplayReplay::SetMessage(eMessageType Type, const char *Text) {
     if (Text)
         MessageSet(Type, Text);
@@ -163,5 +225,14 @@ void cFlatDisplayReplay::SetMessage(eMessageType Type, const char *Text) {
 
 void cFlatDisplayReplay::Flush(void) {
     TopBarUpdate();
+
+    if( Config.RecordingResolutionAspectShow ) {
+        cDevice::PrimaryDevice()->GetVideoSize(screenWidth, screenHeight, screenAspect);
+        if (screenWidth != lastScreenWidth) {
+            lastScreenWidth = screenWidth;
+            ResolutionAspectDraw();
+        }
+    }
+
     osd->Flush();
 }

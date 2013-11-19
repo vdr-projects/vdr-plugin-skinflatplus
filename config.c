@@ -13,12 +13,18 @@ cFlatConfig::cFlatConfig(void) {
     
     MenuContentFullSize = true;
     
-    ResolutionAspectShow = false;
-
+    ChannelFormatShow = true;
+    ChannelResolutionAspectShow = true;
+    RecordingResolutionAspectShow = true;
+    RecordingFormatShow = true;
+    
     RecordingAdditionalInfoShow = true;
     EpgAdditionalInfoShow = true;
     
     TopBarRecordingShow = true;
+    
+    MenuItemIconsShow = true;
+    TopBarMenuIconShow = true;
     
     MenuItemPadding = 5;
     marginOsdVer = 5;
@@ -149,10 +155,15 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MessageOffset") == 0)                        MessageOffset = atoi(Value);
     else if (strcmp(Name, "TopBarFontSize") == 0)                       TopBarFontSize = atod(Value);
     else if (strcmp(Name, "MenuContentFullSize") == 0)                  MenuContentFullSize = atoi(Value);
-    else if (strcmp(Name, "ResolutionAspectShow") == 0)                 ResolutionAspectShow = atoi(Value);
+    else if (strcmp(Name, "ChannelResolutionAspectShow") == 0)          ChannelResolutionAspectShow = atoi(Value);
+    else if (strcmp(Name, "ChannelFormatShow") == 0)                    ChannelFormatShow = atoi(Value);
+    else if (strcmp(Name, "RecordingResolutionAspectShow") == 0)        RecordingResolutionAspectShow = atoi(Value);
+    else if (strcmp(Name, "RecordingFormatShow") == 0)                  RecordingFormatShow = atoi(Value);
     else if (strcmp(Name, "RecordingAdditionalInfoShow") == 0)          RecordingAdditionalInfoShow = atoi(Value);
     else if (strcmp(Name, "EpgAdditionalInfoShow") == 0)                EpgAdditionalInfoShow = atoi(Value);
     else if (strcmp(Name, "TopBarRecordingShow") == 0)                  TopBarRecordingShow = atoi(Value);
+    else if (strcmp(Name, "MenuItemIconsShow") == 0)                    MenuItemIconsShow = atoi(Value);
+    else if (strcmp(Name, "TopBarMenuIconShow") == 0)                   TopBarMenuIconShow = atoi(Value);
     else return false;
     return true;
 }

@@ -1,5 +1,5 @@
 /* XPM */
-static const char *const Crecsml_xpm [] = {
+static const char *const Cvpssml_xpm [] = {
 /* columns rows colors chars-per-pixel */
 "33 42 2 1 ",
 ". c #000000",

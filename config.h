@@ -155,8 +155,13 @@ class cFlatConfig
         int MenuContentFullSize;
         double TopBarFontSize;
         
-        int ResolutionAspectShow;
+        int ChannelResolutionAspectShow;
+        int ChannelFormatShow;
+        int RecordingResolutionAspectShow;
+        int RecordingFormatShow;
         int RecordingAdditionalInfoShow;
         int EpgAdditionalInfoShow;
         int TopBarRecordingShow;
+        int MenuItemIconsShow;
+        int TopBarMenuIconShow;
 };

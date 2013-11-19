@@ -6,6 +6,7 @@
 class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
     private:
         cPixmap *menuPixmap;
+        cPixmap *menuIconsPixmap;
         int menuTop, menuWidth;
 
         eMenuCategory menuCategory;
@@ -31,7 +32,11 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         void ItemBorderDrawAllWithScrollbar(void);
         void ItemBorderDrawAllWithoutScrollbar(void);
         void ItemBorderClear(void);
-        
+
+        static std::string items[16];
+        std::string MainMenuText(std::string Text);
+        cString GetIconName(std::string element);
+
         void DrawScrollbar(int Total, int Offset, int Shown, int Top, int Height, bool CanScrollUp, bool CanScrollDown);
         int ItemsHeight(void);
         bool CheckProgressBar(const char *text);

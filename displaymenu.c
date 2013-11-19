@@ -6,7 +6,6 @@
 #include <iomanip>
 using namespace std;
 
-#include "symbols/720/Bvpssml.xpm"
 #include "symbols/1080/Cnew.xpm"
 #include "symbols/1080/Carrowturn.xpm"
 #include "symbols/1080/Crec.xpm"
@@ -19,7 +18,7 @@ cBitmap cFlatDisplayMenu::bmCArrowTurn(Carrowturn_xpm);
 cBitmap cFlatDisplayMenu::bmCRec(Crec_xpm);
 cBitmap cFlatDisplayMenu::bmCClock(Cclock_xpm);
 cBitmap cFlatDisplayMenu::bmCClocksml(Cclocksml_xpm);
-cBitmap cFlatDisplayMenu::bmCVPS(Bvpssml_xpm);
+cBitmap cFlatDisplayMenu::bmCVPS(Cvpssml_xpm);
 
 /* Possible values of the stream content descriptor according to ETSI EN 300 468 */
 enum stream_content
@@ -56,6 +55,7 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     menuWidth = osdWidth;
     menuTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize;
     menuPixmap = osd->CreatePixmap(1, cRect(0, menuTop, menuWidth, scrollBarHeight ));
+    menuIconsPixmap = osd->CreatePixmap(2, cRect(0, menuTop, menuWidth, scrollBarHeight ));
     
     chLeft = Config.decorBorderMenuContentHeadSize;
     chTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentHeadSize;
@@ -66,6 +66,7 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     scrollbarPixmap = osd->CreatePixmap(2, cRect(osdWidth - scrollBarWidth, scrollBarTop, scrollBarWidth, scrollBarHeight));
 
     menuPixmap->Fill(clrTransparent);
+    menuIconsPixmap->Fill(clrTransparent);
     scrollbarPixmap->Fill(clrTransparent);
     
     menuCategory = mcUndefined;
@@ -80,6 +81,7 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
 
 cFlatDisplayMenu::~cFlatDisplayMenu() {
     osd->DestroyPixmap(menuPixmap);
+    osd->DestroyPixmap(menuIconsPixmap);
     osd->DestroyPixmap(scrollbarPixmap);
     osd->DestroyPixmap(contentHeadPixmap);
 }
@@ -139,6 +141,7 @@ int cFlatDisplayMenu::ItemsHeight(void) {
 void cFlatDisplayMenu::Clear(void) {
     textScroller.Reset();
     menuPixmap->Fill(clrTransparent);
+    menuIconsPixmap->Fill(clrTransparent);
     scrollbarPixmap->Fill(clrTransparent);
     contentHeadPixmap->Fill(clrTransparent);
     ContentClear();
@@ -173,8 +176,40 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
         TopBarSetTitle(Title);
         TopBarSetTitleExtra(extra1, extra2);
         TopBarSetExtraIcon(iconName);
-    } else
+    } else {
         TopBarSetTitle(Title);
+    }
+    
+    if( Config.TopBarMenuIconShow ) {
+        cString icon;
+        switch( menuCategory ) {
+            case mcMain:
+                icon = "menuIcons/vdrlogo";
+                break;
+            case mcScheduleNow:
+            case mcScheduleNext:
+                icon = "menuIcons/Schedule";
+                break;
+            case mcChannel:
+                icon = "menuIcons/Channels";
+                break;
+            case mcTimer:
+                icon = "menuIcons/Timers";
+                break;
+            case mcRecording:
+                icon = "menuIcons/Recordings";
+                break;
+            case mcSetup:
+                icon = "menuIcons/Setup";
+                break;
+            case mcCommand:
+                icon = "menuIcons/Commands";
+                break;
+            default:
+                icon = "";
+        }
+        TopBarSetMenuIcon(icon);
+    }
 }
 
 void cFlatDisplayMenu::SetButtons(const char *Red, const char *Green, const char *Yellow, const char *Blue) {
@@ -318,8 +353,22 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                 DrawProgressBarFromText(y + (itemHeight-Config.MenuItemPadding)/2 - Config.decorProgressMenuItemSize/2 - Config.decorBorderMenuItemSize,
                     xt + Config.decorBorderMenuItemSize, colWidth, s, ColorFg, ColorBarFg, ColorBg);
             } else {
-                menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
-                    Width - xt);
+                if( (menuCategory == mcMain || menuCategory == mcSetup) && Config.MenuItemIconsShow) {
+
+                    cString cIcon = GetIconName( MainMenuText(s) );
+                    cImageLoader imgLoader;
+                    if (imgLoader.LoadIcon(*cIcon, fontHeight)) {
+                        //printf("icon %s\n", *cIcon);
+                        menuIconsPixmap->DrawImage(cPoint(xt + Config.decorBorderMenuItemSize, y), imgLoader.GetImage());
+                    }// else
+                        //printf("no icon %s\n", *cIcon);
+                    
+                    menuPixmap->DrawText(cPoint(fontHeight + marginItem + xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
+                        Width - xt - marginItem - fontHeight );
+                } else {
+                    menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
+                        Width - xt);
+                }
             }
         }
         if (!Tab(i + 1))
@@ -361,9 +410,87 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
     SetEditableWidth(menuWidth - Tab(1));
 }
 
+std::string cFlatDisplayMenu::items[16] = { "Schedule", "Channels", "Timers", "Recordings", "Setup", "Commands",
+                                                "OSD", "EPG", "DVB", "LNB", "CAM", "Recording", "Replay", "Miscellaneous", "Plugins", "Restart"};
+
+std::string cFlatDisplayMenu::MainMenuText(std::string Text) {
+    std::string text = skipspace(Text.c_str());
+    std::string menuEntry;
+    std::string menuNumber;
+    bool found = false;
+    bool doBreak = false;
+    size_t i = 0;
+    for (; i < text.length(); i++) {
+        char s = text.at(i);
+        if (i==0) {
+            //if text directly starts with nonnumeric, break
+            if (!(s >= '0' && s <= '9')) {
+                break;
+            }
+        }
+        if (found) {
+            if (!(s >= '0' && s <= '9')) {
+                doBreak = true;
+            }           
+        }
+        if (s >= '0' && s <= '9') {
+            found = true;
+        }
+        if (doBreak)
+            break;
+        if (i>4)
+            break;
+    }
+    if (found) {
+        menuNumber = skipspace(text.substr(0,i).c_str());
+        menuEntry = skipspace(text.substr(i).c_str());
+    } else {
+        menuNumber = "";
+        menuEntry = text.c_str();       
+    }
+    return menuEntry;
+}
+
+cString cFlatDisplayMenu::GetIconName(std::string element) {
+    //check for standard menu entries
+    for (int i=0; i<16; i++) {
+        std::string s = trVDR(items[i].c_str());
+        if (s == element) {
+            cString menuIcon = cString::sprintf("menuIcons/%s", items[i].c_str());
+            return menuIcon;
+        }
+    }
+    //check for special main menu entries "stop recording", "stop replay"
+    std::string stopRecording = skipspace(trVDR(" Stop recording "));
+    std::string stopReplay = skipspace(trVDR(" Stop replaying"));
+    try {
+        if (element.substr(0, stopRecording.size()) == stopRecording)
+            return "menuIcons/StopRecording";
+        if (element.substr(0, stopReplay.size()) == stopReplay)
+            return "menuIcons/StopReplay";
+    } catch (...) {}
+    //check for Plugins
+    for (int i = 0; ; i++) {
+        cPlugin *p = cPluginManager::GetPlugin(i);
+        if (p) {
+            const char *mainMenuEntry = p->MainMenuEntry();
+            if (mainMenuEntry) {
+                std::string plugMainEntry = mainMenuEntry;
+                try {
+                    if (element.substr(0, plugMainEntry.size()) == plugMainEntry) {
+                        return cString::sprintf("pluginIcons/%s", p->Name());
+                    }
+                } catch (...) {}
+            } 
+        } else
+            break;
+    }
+    return cString::sprintf("extraIcons/%s", element.c_str());
+}
+
 bool cFlatDisplayMenu::CheckProgressBar(const char *text) {
     if (strlen(text) > 5 
-        && text[0] == '[' 
+        && text[0] == '['
         && ((text[1] == '|')||(text[1] == ' ')) 
         && ((text[2] == '|')||(text[2] == ' ')) 
         && text[strlen(text) - 1] == ']')
