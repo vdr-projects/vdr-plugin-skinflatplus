@@ -184,8 +184,10 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
         cString icon;
         switch( menuCategory ) {
             case mcMain:
+                TopBarSetTitle("");
                 icon = "menuIcons/vdrlogo";
                 break;
+            case mcSchedule:
             case mcScheduleNow:
             case mcScheduleNext:
                 icon = "menuIcons/Schedule";
@@ -360,7 +362,12 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                     if (imgLoader.LoadIcon(*cIcon, fontHeight)) {
                         //printf("icon %s\n", *cIcon);
                         menuIconsPixmap->DrawImage(cPoint(xt + Config.decorBorderMenuItemSize, y), imgLoader.GetImage());
-                    }// else
+                    } else {
+                        if (imgLoader.LoadIcon("menuIcons/blank", fontHeight)) {
+                            //printf("icon %s\n", *cIcon);
+                            menuIconsPixmap->DrawImage(cPoint(xt + Config.decorBorderMenuItemSize, y), imgLoader.GetImage());
+                        }
+                    }
                         //printf("no icon %s\n", *cIcon);
                     
                     menuPixmap->DrawText(cPoint(fontHeight + marginItem + xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
@@ -1036,7 +1043,7 @@ void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
     contentHeadPixmap->Fill(clrTransparent);
 
     int Left = Config.decorBorderMenuContentSize;
-    int Top = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentHeadSize;
+    int Top = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentSize;
     int Width = menuWidth - Config.decorBorderMenuContentSize*2;
     int Height = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
         buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3);
