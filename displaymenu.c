@@ -360,16 +360,12 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                     cString cIcon = GetIconName( MainMenuText(s) );
                     cImageLoader imgLoader;
                     if (imgLoader.LoadIcon(*cIcon, fontHeight)) {
-                        //printf("icon %s\n", *cIcon);
                         menuIconsPixmap->DrawImage(cPoint(xt + Config.decorBorderMenuItemSize, y), imgLoader.GetImage());
                     } else {
                         if (imgLoader.LoadIcon("menuIcons/blank", fontHeight)) {
-                            //printf("icon %s\n", *cIcon);
                             menuIconsPixmap->DrawImage(cPoint(xt + Config.decorBorderMenuItemSize, y), imgLoader.GetImage());
                         }
                     }
-                        //printf("no icon %s\n", *cIcon);
-                    
                     menuPixmap->DrawText(cPoint(fontHeight + marginItem + xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
                         Width - xt - marginItem - fontHeight );
                 } else {

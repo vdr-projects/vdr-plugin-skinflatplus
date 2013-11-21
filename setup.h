@@ -29,6 +29,8 @@ class cMenuSetupSubMenu : public cOsdMenu {
 };
 
 class cFlatSetupGeneral : public cMenuSetupSubMenu {
+    private:
+        cStringList DecorDescriptions;
     protected:
         void Setup(void);
     public:

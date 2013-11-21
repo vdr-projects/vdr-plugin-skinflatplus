@@ -50,6 +50,8 @@ void cFlatDisplayReplay::SetRecording(const cRecording *Recording) {
 
 void cFlatDisplayReplay::SetTitle(const char *Title) {
     TopBarSetTitle(Title);
+    TopBarSetMenuIcon("menuIcons/Recordings");
+    
 }
 
 void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {

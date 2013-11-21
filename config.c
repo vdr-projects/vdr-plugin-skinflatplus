@@ -4,6 +4,9 @@ cFlatConfig::cFlatConfig(void) {
     logoPath = "";
     iconPath = "";
     
+    DecorCurrent = -1;
+    DecorIndex = 0;
+    
     ButtonsShowEmpty = true;
 
     ChannelIconsShow = true;
@@ -93,7 +96,6 @@ cFlatConfig::cFlatConfig(void) {
     decorProgressSignalSizeUser = 20;
 
     ThemeCurrent = "";
-    ThemeInit();
 }
 
 cFlatConfig::~cFlatConfig(void) {
@@ -164,7 +166,9 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "TopBarRecordingShow") == 0)                  TopBarRecordingShow = atoi(Value);
     else if (strcmp(Name, "MenuItemIconsShow") == 0)                    MenuItemIconsShow = atoi(Value);
     else if (strcmp(Name, "TopBarMenuIconShow") == 0)                   TopBarMenuIconShow = atoi(Value);
+    else if (strcmp(Name, "DecorIndex") == 0)                           DecorIndex = atoi(Value);
     else return false;
+    
     return true;
 }
 
@@ -176,41 +180,175 @@ void cFlatConfig::ThemeCheckAndInit(void) {
     }
 }
 
+void cFlatConfig::DecorCheckAndInit(void) {
+    if( DecorCurrent != DecorIndex ) {
+        DecorCurrent = DecorIndex;
+        DecorLoadCurrent();
+
+        if( decorBorderChannelByTheme ) {
+            decorBorderChannelType = decorBorderChannelTypeTheme;
+            decorBorderChannelSize = decorBorderChannelSizeTheme;
+        } else {
+            decorBorderChannelType = decorBorderChannelTypeUser;
+            decorBorderChannelSize = decorBorderChannelSizeUser;
+        }
+        
+        if( decorBorderTopBarByTheme ) {
+            decorBorderTopBarType = decorBorderTopBarTypeTheme;
+            decorBorderTopBarSize = decorBorderTopBarSizeTheme;
+        } else {
+            decorBorderTopBarType = decorBorderTopBarTypeUser;
+            decorBorderTopBarSize = decorBorderTopBarSizeUser;
+        }
+
+        if( decorBorderMessageByTheme ) {
+            decorBorderMessageType = decorBorderMessageTypeTheme;
+            decorBorderMessageSize = decorBorderMessageSizeTheme;
+        } else {
+            decorBorderMessageType = decorBorderMessageTypeUser;
+            decorBorderMessageSize = decorBorderMessageSizeUser;
+        }
+        
+        if( decorBorderVolumeByTheme ) {
+            decorBorderVolumeType = decorBorderVolumeTypeTheme;
+            decorBorderVolumeSize = decorBorderVolumeSizeTheme;
+        } else {
+            decorBorderVolumeType = decorBorderVolumeTypeUser;
+            decorBorderVolumeSize = decorBorderVolumeSizeUser;
+        }
+        
+        if( decorBorderTrackByTheme ) {
+            decorBorderTrackType = decorBorderTrackTypeTheme;
+            decorBorderTrackSize = decorBorderTrackSizeTheme;
+        } else {
+            decorBorderTrackType = decorBorderTrackTypeUser;
+            decorBorderTrackSize = decorBorderTrackSizeUser;
+        }
+        
+        if( decorBorderReplayByTheme ) {
+            decorBorderReplayType = decorBorderReplayTypeTheme;
+            decorBorderReplaySize = decorBorderReplaySizeTheme;
+        } else {
+            decorBorderReplayType = decorBorderReplayTypeUser;
+            decorBorderReplaySize = decorBorderReplaySizeUser;
+        }
+
+        if( decorBorderMenuItemByTheme ) {
+            decorBorderMenuItemType = decorBorderMenuItemTypeTheme;
+            decorBorderMenuItemSize = decorBorderMenuItemSizeTheme;
+        } else {
+            decorBorderMenuItemType = decorBorderMenuItemTypeUser;
+            decorBorderMenuItemSize = decorBorderMenuItemSizeUser;
+        }
+        
+        if( decorBorderMenuContentHeadByTheme ) {
+            decorBorderMenuContentHeadType = decorBorderMenuContentHeadTypeTheme;
+            decorBorderMenuContentHeadSize = decorBorderMenuContentHeadSizeTheme;
+        } else {
+            decorBorderMenuContentHeadType = decorBorderMenuContentHeadTypeUser;
+            decorBorderMenuContentHeadSize = decorBorderMenuContentHeadSizeUser;
+        }
+        
+        if( decorBorderMenuContentByTheme ) {
+            decorBorderMenuContentType = decorBorderMenuContentTypeTheme;
+            decorBorderMenuContentSize = decorBorderMenuContentSizeTheme;
+        } else {
+            decorBorderMenuContentType = decorBorderMenuContentTypeUser;
+            decorBorderMenuContentSize = decorBorderMenuContentSizeUser;
+        }
+        
+        if( decorBorderButtonByTheme ) {
+            decorBorderButtonType = decorBorderButtonTypeTheme;
+            decorBorderButtonSize = decorBorderButtonSizeTheme;
+        } else {
+            decorBorderButtonType = decorBorderButtonTypeUser;
+            decorBorderButtonSize = decorBorderButtonSizeUser;
+        }
+        
+        if( decorProgressChannelByTheme ) {
+            decorProgressChannelType = decorProgressChannelTypeTheme;
+            decorProgressChannelSize = decorProgressChannelSizeTheme;
+        } else {
+            decorProgressChannelType = decorProgressChannelTypeUser;
+            decorProgressChannelSize = decorProgressChannelSizeUser;
+        }
+        
+        if( decorProgressVolumeByTheme ) {
+            decorProgressVolumeType = decorProgressVolumeTypeTheme;
+            decorProgressVolumeSize = decorProgressVolumeSizeTheme;
+        } else {
+            decorProgressVolumeType = decorProgressVolumeTypeUser;
+            decorProgressVolumeSize = decorProgressVolumeSizeUser;
+        }
+        
+        if( decorProgressMenuItemByTheme ) {
+            decorProgressMenuItemType = decorProgressMenuItemTypeTheme;
+            decorProgressMenuItemSize = decorProgressMenuItemSizeTheme;
+        } else {
+            decorProgressMenuItemType = decorProgressMenuItemTypeUser;
+            decorProgressMenuItemSize = decorProgressMenuItemSizeUser;
+        }
+        
+        if( decorProgressReplayByTheme ) {
+            decorProgressReplayType = decorProgressReplayTypeTheme;
+            decorProgressReplaySize = decorProgressReplaySizeTheme;
+        } else {
+            decorProgressReplayType = decorProgressReplayTypeUser;
+            decorProgressReplaySize = decorProgressReplaySizeUser;
+        }
+        
+        if( decorProgressSignalByTheme ) {
+            decorProgressSignalType = decorProgressSignalTypeTheme;
+            decorProgressSignalSize = decorProgressSignalSizeTheme;
+        } else {
+            decorProgressSignalType = decorProgressSignalTypeUser;
+            decorProgressSignalSize = decorProgressSignalSizeUser;
+        }
+        
+        if( decorBorderChannelType == 0 )
+            decorBorderChannelSize = 0;
+        if( decorBorderTopBarType == 0 )
+            decorBorderTopBarSize = 0;
+        if( decorBorderMessageType == 0 )
+            decorBorderMessageSize = 0;
+        if( decorBorderVolumeType == 0 )
+            decorBorderVolumeSize = 0;
+        if( decorBorderTrackType == 0 )
+            decorBorderTrackSize = 0;
+        if( decorBorderReplayType == 0 )
+            decorBorderReplaySize = 0;
+        if( decorBorderMenuItemType == 0 )
+            decorBorderMenuItemSize = 0;
+        if( decorBorderMenuContentHeadType == 0 )
+            decorBorderMenuContentHeadSize = 0;
+        if( decorBorderMenuContentType == 0 )
+            decorBorderMenuContentSize = 0;
+        if( decorBorderButtonType == 0 )
+            decorBorderButtonSize = 0;
+    }
+}
+
 void cFlatConfig::ThemeInit(void) {
-    decorBorderChannelTypeTheme = Theme.Color(clrChannelBorderType) & 0x000000FF;
-    decorBorderChannelSizeTheme = Theme.Color(clrChannelBorderSize) & 0x000000FF;
     decorBorderChannelFg = Theme.Color(clrChannelBorderFg);
     decorBorderChannelBg = Theme.Color(clrChannelBorderBg);
 
-    decorBorderTopBarTypeTheme = Theme.Color(clrTopBarBorderType) & 0x000000FF;
-    decorBorderTopBarSizeTheme = Theme.Color(clrTopBarBorderSize) & 0x000000FF;
     decorBorderTopBarFg = Theme.Color(clrTopBarBorderFg);
     decorBorderTopBarBg = Theme.Color(clrTopBarBorderBg);
 
-    decorBorderMessageTypeTheme = Theme.Color(clrMessageBorderType) & 0x000000FF;
-    decorBorderMessageSizeTheme = Theme.Color(clrMessageBorderSize) & 0x000000FF;
     decorBorderMessageFg = Theme.Color(clrMessageBorderFg);
     decorBorderMessageBg = Theme.Color(clrMessageBorderBg);
 
-    decorBorderVolumeTypeTheme = Theme.Color(clrVolumeBorderType) & 0x000000FF;
-    decorBorderVolumeSizeTheme = Theme.Color(clrVolumeBorderSize) & 0x000000FF;
     decorBorderVolumeFg = Theme.Color(clrVolumeBorderFg);
     decorBorderVolumeBg = Theme.Color(clrVolumeBorderBg);
 
-    decorBorderTrackTypeTheme = Theme.Color(clrTrackItemBorderType) & 0x000000FF;
-    decorBorderTrackSizeTheme = Theme.Color(clrTrackItemBorderSize) & 0x000000FF;
     decorBorderTrackFg = Theme.Color(clrTrackItemBorderFg);
     decorBorderTrackBg = Theme.Color(clrTrackItemBorderBg);
     decorBorderTrackCurFg = Theme.Color(clrTrackItemCurrentBorderFg);
     decorBorderTrackCurBg = Theme.Color(clrTrackItemCurrentBorderBg);
 
-    decorBorderReplayTypeTheme = Theme.Color(clrReplayBorderType) & 0x000000FF;
-    decorBorderReplaySizeTheme = Theme.Color(clrReplayBorderSize) & 0x000000FF;
     decorBorderReplayFg = Theme.Color(clrReplayBorderFg);
     decorBorderReplayBg = Theme.Color(clrReplayBorderBg);
 
-    decorBorderMenuItemTypeTheme = Theme.Color(clrMenuItemBorderType) & 0x000000FF;
-    decorBorderMenuItemSizeTheme = Theme.Color(clrMenuItemBorderSize) & 0x000000FF;
     decorBorderMenuItemFg = Theme.Color(clrMenuItemBorderFg);
     decorBorderMenuItemBg = Theme.Color(clrMenuItemBorderBg);
     decorBorderMenuItemSelFg = Theme.Color(clrMenuItemSelableBorderFg);
@@ -218,35 +356,23 @@ void cFlatConfig::ThemeInit(void) {
     decorBorderMenuItemCurFg = Theme.Color(clrMenuItemCurrentBorderFg);
     decorBorderMenuItemCurBg = Theme.Color(clrMenuItemCurrentBorderBg);
 
-    decorBorderMenuContentHeadTypeTheme = Theme.Color(clrMenuContentHeadBorderType) & 0x000000FF;
-    decorBorderMenuContentHeadSizeTheme = Theme.Color(clrMenuContentHeadBorderSize) & 0x000000FF;
     decorBorderMenuContentHeadFg = Theme.Color(clrMenuContentHeadBorderFg);
     decorBorderMenuContentHeadBg = Theme.Color(clrMenuContentHeadBorderBg);
 
-    decorBorderMenuContentTypeTheme = Theme.Color(clrMenuContentBorderType) & 0x000000FF;
-    decorBorderMenuContentSizeTheme = Theme.Color(clrMenuContentBorderSize) & 0x000000FF;
     decorBorderMenuContentFg = Theme.Color(clrMenuContentBorderFg);
     decorBorderMenuContentBg = Theme.Color(clrMenuContentBorderBg);
 
-    decorBorderButtonTypeTheme = Theme.Color(clrButtonBorderType) & 0x000000FF;
-    decorBorderButtonSizeTheme = Theme.Color(clrButtonBorderSize) & 0x000000FF;
     decorBorderButtonFg = Theme.Color(clrButtonBorderFg);
     decorBorderButtonBg = Theme.Color(clrButtonBorderBg);
     
-    decorProgressChannelTypeTheme = Theme.Color(clrChannelProgressType) & 0x000000FF;
-    decorProgressChannelSizeTheme = Theme.Color(clrChannelProgressSize) & 0x000000FF;
     decorProgressChannelFg = Theme.Color(clrChannelProgressFg);
     decorProgressChannelBarFg = Theme.Color(clrChannelProgressBarFg);
     decorProgressChannelBg = Theme.Color(clrChannelProgressBg);
 
-    decorProgressVolumeTypeTheme = Theme.Color(clrVolumeProgressType) & 0x000000FF;
-    decorProgressVolumeSizeTheme = Theme.Color(clrVolumeProgressSize) & 0x000000FF;
     decorProgressVolumeFg = Theme.Color(clrVolumeProgressFg);
     decorProgressVolumeBarFg = Theme.Color(clrVolumeProgressBarFg);
     decorProgressVolumeBg = Theme.Color(clrVolumeProgressBg);
 
-    decorProgressMenuItemTypeTheme = Theme.Color(clrMenuItemProgressType) & 0x000000FF;
-    decorProgressMenuItemSizeTheme = Theme.Color(clrMenuItemProgressSize) & 0x000000FF;
     decorProgressMenuItemFg = Theme.Color(clrMenuItemProgressFg);
     decorProgressMenuItemBarFg = Theme.Color(clrMenuItemProgressBarFg);
     decorProgressMenuItemBg = Theme.Color(clrMenuItemProgressBg);
@@ -254,158 +380,13 @@ void cFlatConfig::ThemeInit(void) {
     decorProgressMenuItemCurBarFg = Theme.Color(clrMenuItemCurProgressBarFg);
     decorProgressMenuItemCurBg = Theme.Color(clrMenuItemCurProgressBg);
 
-    decorProgressReplayTypeTheme = Theme.Color(clrReplayProgressType) & 0x000000FF;
-    decorProgressReplaySizeTheme = Theme.Color(clrReplayProgressSize) & 0x000000FF;
     decorProgressReplayFg = Theme.Color(clrReplayProgressFg);
     decorProgressReplayBarFg = Theme.Color(clrReplayProgressBarFg);
     decorProgressReplayBg = Theme.Color(clrReplayProgressBg);
 
-    decorProgressSignalTypeTheme = Theme.Color(clrChannelSignalProgressType) & 0x000000FF;
-    decorProgressSignalSizeTheme = Theme.Color(clrChannelSignalProgressSize) & 0x000000FF;
     decorProgressSignalFg = Theme.Color(clrChannelSignalProgressFg);
     decorProgressSignalBarFg = Theme.Color(clrChannelSignalProgressBarFg);
     decorProgressSignalBg = Theme.Color(clrChannelSignalProgressBg);
-
-    if( decorBorderChannelByTheme ) {
-        decorBorderChannelType = decorBorderChannelTypeTheme;
-        decorBorderChannelSize = decorBorderChannelSizeTheme;
-    } else {
-        decorBorderChannelType = decorBorderChannelTypeUser;
-        decorBorderChannelSize = decorBorderChannelSizeUser;
-    }
-    
-    if( decorBorderTopBarByTheme ) {
-        decorBorderTopBarType = decorBorderTopBarTypeTheme;
-        decorBorderTopBarSize = decorBorderTopBarSizeTheme;
-    } else {
-        decorBorderTopBarType = decorBorderTopBarTypeUser;
-        decorBorderTopBarSize = decorBorderTopBarSizeUser;
-    }
-
-    if( decorBorderMessageByTheme ) {
-        decorBorderMessageType = decorBorderMessageTypeTheme;
-        decorBorderMessageSize = decorBorderMessageSizeTheme;
-    } else {
-        decorBorderMessageType = decorBorderMessageTypeUser;
-        decorBorderMessageSize = decorBorderMessageSizeUser;
-    }
-    
-    if( decorBorderVolumeByTheme ) {
-        decorBorderVolumeType = decorBorderVolumeTypeTheme;
-        decorBorderVolumeSize = decorBorderVolumeSizeTheme;
-    } else {
-        decorBorderVolumeType = decorBorderVolumeTypeUser;
-        decorBorderVolumeSize = decorBorderVolumeSizeUser;
-    }
-    
-    if( decorBorderTrackByTheme ) {
-        decorBorderTrackType = decorBorderTrackTypeTheme;
-        decorBorderTrackSize = decorBorderTrackSizeTheme;
-    } else {
-        decorBorderTrackType = decorBorderTrackTypeUser;
-        decorBorderTrackSize = decorBorderTrackSizeUser;
-    }
-    
-    if( decorBorderReplayByTheme ) {
-        decorBorderReplayType = decorBorderReplayTypeTheme;
-        decorBorderReplaySize = decorBorderReplaySizeTheme;
-    } else {
-        decorBorderReplayType = decorBorderReplayTypeUser;
-        decorBorderReplaySize = decorBorderReplaySizeUser;
-    }
-
-    if( decorBorderMenuItemByTheme ) {
-        decorBorderMenuItemType = decorBorderMenuItemTypeTheme;
-        decorBorderMenuItemSize = decorBorderMenuItemSizeTheme;
-    } else {
-        decorBorderMenuItemType = decorBorderMenuItemTypeUser;
-        decorBorderMenuItemSize = decorBorderMenuItemSizeUser;
-    }
-    
-    if( decorBorderMenuContentHeadByTheme ) {
-        decorBorderMenuContentHeadType = decorBorderMenuContentHeadTypeTheme;
-        decorBorderMenuContentHeadSize = decorBorderMenuContentHeadSizeTheme;
-    } else {
-        decorBorderMenuContentHeadType = decorBorderMenuContentHeadTypeUser;
-        decorBorderMenuContentHeadSize = decorBorderMenuContentHeadSizeUser;
-    }
-    
-    if( decorBorderMenuContentByTheme ) {
-        decorBorderMenuContentType = decorBorderMenuContentTypeTheme;
-        decorBorderMenuContentSize = decorBorderMenuContentSizeTheme;
-    } else {
-        decorBorderMenuContentType = decorBorderMenuContentTypeUser;
-        decorBorderMenuContentSize = decorBorderMenuContentSizeUser;
-    }
-    
-    if( decorBorderButtonByTheme ) {
-        decorBorderButtonType = decorBorderButtonTypeTheme;
-        decorBorderButtonSize = decorBorderButtonSizeTheme;
-    } else {
-        decorBorderButtonType = decorBorderButtonTypeUser;
-        decorBorderButtonSize = decorBorderButtonSizeUser;
-    }
-    
-    if( decorProgressChannelByTheme ) {
-        decorProgressChannelType = decorProgressChannelTypeTheme;
-        decorProgressChannelSize = decorProgressChannelSizeTheme;
-    } else {
-        decorProgressChannelType = decorProgressChannelTypeUser;
-        decorProgressChannelSize = decorProgressChannelSizeUser;
-    }
-    
-    if( decorProgressVolumeByTheme ) {
-        decorProgressVolumeType = decorProgressVolumeTypeTheme;
-        decorProgressVolumeSize = decorProgressVolumeSizeTheme;
-    } else {
-        decorProgressVolumeType = decorProgressVolumeTypeUser;
-        decorProgressVolumeSize = decorProgressVolumeSizeUser;
-    }
-    
-    if( decorProgressMenuItemByTheme ) {
-        decorProgressMenuItemType = decorProgressMenuItemTypeTheme;
-        decorProgressMenuItemSize = decorProgressMenuItemSizeTheme;
-    } else {
-        decorProgressMenuItemType = decorProgressMenuItemTypeUser;
-        decorProgressMenuItemSize = decorProgressMenuItemSizeUser;
-    }
-    
-    if( decorProgressReplayByTheme ) {
-        decorProgressReplayType = decorProgressReplayTypeTheme;
-        decorProgressReplaySize = decorProgressReplaySizeTheme;
-    } else {
-        decorProgressReplayType = decorProgressReplayTypeUser;
-        decorProgressReplaySize = decorProgressReplaySizeUser;
-    }
-    
-    if( decorProgressSignalByTheme ) {
-        decorProgressSignalType = decorProgressSignalTypeTheme;
-        decorProgressSignalSize = decorProgressSignalSizeTheme;
-    } else {
-        decorProgressSignalType = decorProgressSignalTypeUser;
-        decorProgressSignalSize = decorProgressSignalSizeUser;
-    }
-    
-    if( decorBorderChannelType == 0 )
-        decorBorderChannelSize = 0;
-    if( decorBorderTopBarType == 0 )
-        decorBorderTopBarSize = 0;
-    if( decorBorderMessageType == 0 )
-        decorBorderMessageSize = 0;
-    if( decorBorderVolumeType == 0 )
-        decorBorderVolumeSize = 0;
-    if( decorBorderTrackType == 0 )
-        decorBorderTrackSize = 0;
-    if( decorBorderReplayType == 0 )
-        decorBorderReplaySize = 0;
-    if( decorBorderMenuItemType == 0 )
-        decorBorderMenuItemSize = 0;
-    if( decorBorderMenuContentHeadType == 0 )
-        decorBorderMenuContentHeadSize = 0;
-    if( decorBorderMenuContentType == 0 )
-        decorBorderMenuContentSize = 0;
-    if( decorBorderButtonType == 0 )
-        decorBorderButtonSize = 0;
 }
 
 void cFlatConfig::Init(void) {
@@ -417,6 +398,152 @@ void cFlatConfig::Init(void) {
     //dsyslog("skinflat: iconPath: %s", *iconPath);
 
     ThemeInit();
+    DecorCheckAndInit();
+}
+
+void cFlatConfig::DecorDescriptions(cStringList &Decors) {
+    cString decorPath = cString::sprintf("%s/decors", PLUGINRESOURCEPATH);
+
+    cReadDir d(decorPath);
+    struct dirent *e;
+    while ((e = d.Next()) != NULL) {
+        cString FileName = AddDirectory(decorPath, e->d_name);
+        cString Desc = DecorDescription(FileName);
+        Decors.Append(strdup(*Desc));
+    }    
+}
+
+cString cFlatConfig::DecorDescription(cString File) {
+    cString description;
+    FILE *f = fopen(File, "r");
+    if( f ) {
+        int line = 0;
+        char *s;
+        cReadLine ReadLine;
+        while( (s = ReadLine.Read(f)) != NULL ) {
+            line++;
+            char *p = strchr(s, '#');
+            if (p)
+                *p = 0;
+            s = stripspace(skipspace(s));
+            if (!isempty(s)) {
+                char *n = s;
+                char *v = strchr(s, '=');
+                if (v) {
+                    *v++ = 0;
+                    n = stripspace(skipspace(n));
+                    v = stripspace(skipspace(v));
+                    if (strstr(n, "Description") == n) {
+                        description = strdup(v);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return description;
+}
+
+void cFlatConfig::DecorLoadCurrent(void) {
+    cString decorPath = cString::sprintf("%s/decors", PLUGINRESOURCEPATH);
+
+    cReadDir d(decorPath);
+    struct dirent *e;
+    int index = 0;
+    while( (e = d.Next()) != NULL ) {
+        if( DecorIndex == index ) {
+            cString FileName = AddDirectory(decorPath, e->d_name);
+            DecorLoadFile( FileName );
+            break;
+        }
+        index++;
+    }    
+}
+
+void cFlatConfig::DecorLoadFile(cString File) {
+    FILE *f = fopen(File, "r");
+    if( f ) {
+        int line = 0;
+        char *s;
+        cReadLine ReadLine;
+        while( (s = ReadLine.Read(f)) != NULL ) {
+            line++;
+            char *p = strchr(s, '#');
+            if (p)
+                *p = 0;
+            s = stripspace(skipspace(s));
+            if (!isempty(s)) {
+                char *n = s;
+                char *v = strchr(s, '=');
+                if (v) {
+                    *v++ = 0;
+                    n = stripspace(skipspace(n));
+                    v = stripspace(skipspace(v));
+                    int value = atoi( v );
+                    if( strstr(n, "ChannelBorderType") == n ) {
+                        decorBorderChannelTypeTheme = value; continue; }
+                    if( strstr(n, "ChannelBorderSize") == n ) {
+                        decorBorderChannelSizeTheme = value; continue; }
+                    if( strstr(n, "TopBarBorderType") == n ) {
+                        decorBorderTopBarTypeTheme = value; continue; }
+                    if( strstr(n, "TopBarBorderSize") == n ) {
+                        decorBorderTopBarSizeTheme = value; continue; }
+                    if( strstr(n, "MessageBorderType") == n ) {
+                        decorBorderMessageTypeTheme = value; continue; }
+                    if( strstr(n, "MessageBorderSize") == n ) {
+                        decorBorderMessageSizeTheme = value; continue; }
+                    if( strstr(n, "VolumeBorderType") == n ) {
+                        decorBorderVolumeTypeTheme = value; continue; }
+                    if( strstr(n, "VolumeBorderSize") == n ) {
+                        decorBorderVolumeSizeTheme = value; continue; }
+                    if( strstr(n, "TrackItemBorderType") == n ) {
+                        decorBorderTrackTypeTheme = value; continue; }
+                    if( strstr(n, "TrackItemBorderSize") == n ) {
+                        decorBorderTrackSizeTheme = value; continue; }
+                    if( strstr(n, "ReplayBorderType") == n ) {
+                        decorBorderReplayTypeTheme = value; continue; }
+                    if( strstr(n, "ReplayBorderSize") == n ) {
+                        decorBorderReplaySizeTheme = value; continue; }
+                    if( strstr(n, "MenuItemBorderType") == n ) {
+                        decorBorderMenuItemTypeTheme = value; continue; }
+                    if( strstr(n, "MenuItemBorderSize") == n ) {
+                        decorBorderMenuItemSizeTheme = value; continue; }
+                    if( strstr(n, "MenuContentHeadBorderType") == n ) {
+                        decorBorderMenuContentHeadTypeTheme = value; continue; }
+                    if( strstr(n, "MenuContentHeadBorderSize") == n ) {
+                        decorBorderMenuContentHeadSizeTheme = value; continue; }
+                    if( strstr(n, "MenuContentBorderType") == n ) {
+                        decorBorderMenuContentTypeTheme = value; continue; }
+                    if( strstr(n, "MenuContentBorderSize") == n ) {
+                        decorBorderMenuContentSizeTheme = value; continue; }
+                    if( strstr(n, "ButtonBorderType") == n ) {
+                        decorBorderButtonTypeTheme = value; continue; }
+                    if( strstr(n, "ButtonBorderSize") == n ) {
+                        decorBorderButtonSizeTheme = value; continue; }
+                    if( strstr(n, "ChannelProgressType") == n ) {
+                        decorProgressChannelTypeTheme = value; continue; }
+                    if( strstr(n, "ChannelProgressSize") == n ) {
+                        decorProgressChannelSizeTheme = value; continue; }
+                    if( strstr(n, "VolumeProgressType") == n ) {
+                        decorProgressVolumeTypeTheme = value; continue; }
+                    if( strstr(n, "VolumeProgressSize") == n ) {
+                        decorProgressVolumeSizeTheme = value; continue; }
+                    if( strstr(n, "MenuItemProgressType") == n ) {
+                        decorProgressMenuItemTypeTheme = value; continue; }
+                    if( strstr(n, "MenuItemProgressSize") == n ) {
+                        decorProgressMenuItemSizeTheme = value; continue; }
+                    if( strstr(n, "ReplayProgressType") == n ) {
+                        decorProgressReplayTypeTheme = value; continue; }
+                    if( strstr(n, "ReplayProgressSize") == n ) {
+                        decorProgressReplaySizeTheme = value; continue; }
+                    if( strstr(n, "ChannelSignalProgressType") == n ) {
+                        decorProgressSignalTypeTheme = value; continue; }
+                    if( strstr(n, "ChannelSignalProgressSize") == n ) {
+                        decorProgressSignalSizeTheme = value; continue; }
+                }
+            }
+        }
+    }
 }
 
 void cFlatConfig::SetLogoPath(cString path) {

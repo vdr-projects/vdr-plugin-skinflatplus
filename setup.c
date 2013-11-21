@@ -143,6 +143,7 @@ void cFlatSetup::Store(void) {
     SetupStore("TopBarRecordingShow", Config.TopBarRecordingShow);
     SetupStore("MenuItemIconsShow", Config.MenuItemIconsShow);
     SetupStore("TopBarMenuIconShow", Config.TopBarMenuIconShow);
+    SetupStore("DecorIndex", Config.DecorIndex);
     
     Config.Init();
 }
@@ -169,6 +170,12 @@ cFlatSetupGeneral::cFlatSetupGeneral(cFlatConfig* data)  : cMenuSetupSubMenu(tr(
 void cFlatSetupGeneral::Setup(void) {
     Clear();
 
+    SetupConfig->DecorDescriptions( DecorDescriptions );
+    if( SetupConfig->DecorIndex < 0 || SetupConfig->DecorIndex > DecorDescriptions.Size() )
+        SetupConfig->DecorIndex = 0;
+    
+    Add(new cMenuEditStraItem(tr("Decorfile"), &SetupConfig->DecorIndex, DecorDescriptions.Size(), &DecorDescriptions[0]));
+
     Add(new cMenuEditBoolItem(tr("Show empty color-buttons"), &SetupConfig->ButtonsShowEmpty));
     Add(new cMenuEditBoolItem(tr("Show TopBar menu icons"), &SetupConfig->TopBarMenuIconShow));
     Add(new cMenuEditBoolItem(tr("Show Diskusage stats"), &SetupConfig->DiskUsageShow));
@@ -179,7 +186,7 @@ void cFlatSetupGeneral::Setup(void) {
     Add(new cMenuEditIntItem(tr("Message bottom offset"), &SetupConfig->MessageOffset));
 
 
-    Add(new cMenuEditBoolItem(tr("TopBar border by theme?"), &SetupConfig->decorBorderTopBarByTheme));
+    Add(new cMenuEditBoolItem(tr("TopBar border by decor-file?"), &SetupConfig->decorBorderTopBarByTheme));
     if( SetupConfig->decorBorderTopBarByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("TopBar border type"), Bordertypes[SetupConfig->decorBorderTopBarTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -190,7 +197,7 @@ void cFlatSetupGeneral::Setup(void) {
         Add(new cMenuEditIntItem(tr("TopBar border size"), &SetupConfig->decorBorderTopBarSizeUser));
     }
 
-    Add(new cMenuEditBoolItem(tr("Message border by theme?"), &SetupConfig->decorBorderMessageByTheme));
+    Add(new cMenuEditBoolItem(tr("Message border by decor-file?"), &SetupConfig->decorBorderMessageByTheme));
     if( SetupConfig->decorBorderMessageByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Message border type"), Bordertypes[SetupConfig->decorBorderMessageTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -201,7 +208,7 @@ void cFlatSetupGeneral::Setup(void) {
         Add(new cMenuEditIntItem(tr("Message border size"), &SetupConfig->decorBorderMessageSizeUser));
     }
 
-    Add(new cMenuEditBoolItem(tr("Button border by theme?"), &SetupConfig->decorBorderButtonByTheme));
+    Add(new cMenuEditBoolItem(tr("Button border by decor-file?"), &SetupConfig->decorBorderButtonByTheme));
     if( SetupConfig->decorBorderButtonByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Button border type"), Bordertypes[SetupConfig->decorBorderButtonTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -232,9 +239,9 @@ eOSState cFlatSetupGeneral::ProcessKey(eKeys Key) {
     }
     if( Key == kLeft || Key == kRight ) {
         const char* ItemText = Get(Current())->Text();
-        if( strstr(ItemText, tr("TopBar border by theme?")) != NULL ||
-            strstr(ItemText, tr("Message border by theme?")) != NULL ||
-            strstr(ItemText, tr("Button border by theme?")) != NULL
+        if( strstr(ItemText, tr("TopBar border by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Message border by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Button border by decor-file?")) != NULL
         ) {
             ItemLastSel = Current();
             Setup();
@@ -256,7 +263,7 @@ void cFlatSetupChannelInfo::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->ChannelResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->ChannelFormatShow));
 
-    Add(new cMenuEditBoolItem(tr("Channelinfo border by theme?"), &SetupConfig->decorBorderChannelByTheme));
+    Add(new cMenuEditBoolItem(tr("Channelinfo border by decor-file?"), &SetupConfig->decorBorderChannelByTheme));
     if( SetupConfig->decorBorderChannelByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Channelinfo border type"), Bordertypes[SetupConfig->decorBorderChannelTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -267,7 +274,7 @@ void cFlatSetupChannelInfo::Setup(void) {
         Add(new cMenuEditIntItem(tr("Channelinfo border size"), &SetupConfig->decorBorderChannelSizeUser));
     }
 
-    Add(new cMenuEditBoolItem(tr("Channelinfo progress by theme?"), &SetupConfig->decorProgressChannelByTheme));
+    Add(new cMenuEditBoolItem(tr("Channelinfo progress by decor-file?"), &SetupConfig->decorProgressChannelByTheme));
     if( SetupConfig->decorProgressChannelByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Channelinfo progress type"), Progresstypes[SetupConfig->decorProgressChannelTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -278,7 +285,7 @@ void cFlatSetupChannelInfo::Setup(void) {
         Add(new cMenuEditIntItem(tr("Channelinfo progress size"), &SetupConfig->decorProgressChannelSizeUser));
     }
 
-    Add(new cMenuEditBoolItem(tr("Signalquality progress by theme?"), &SetupConfig->decorProgressSignalByTheme));
+    Add(new cMenuEditBoolItem(tr("Signalquality progress by decor-file?"), &SetupConfig->decorProgressSignalByTheme));
     if( SetupConfig->decorProgressSignalByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Signalquality progress type"), Progresstypes[SetupConfig->decorProgressSignalTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -309,9 +316,9 @@ eOSState cFlatSetupChannelInfo::ProcessKey(eKeys Key) {
     }
     if( Key == kLeft || Key == kRight ) {
         const char* ItemText = Get(Current())->Text();
-        if( strstr(ItemText, tr("Channelinfo border by theme?")) != NULL ||
-            strstr(ItemText, tr("Channelinfo progress by theme?")) != NULL ||
-            strstr(ItemText, tr("Signalquality progress by theme?")) != NULL
+        if( strstr(ItemText, tr("Channelinfo border by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Channelinfo progress by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Signalquality progress by decor-file?")) != NULL
         ) {
             ItemLastSel = Current();
             Setup();
@@ -334,7 +341,7 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show additional recording info"), &SetupConfig->RecordingAdditionalInfoShow));
     Add(new cMenuEditBoolItem(tr("Show additional EPG info"), &SetupConfig->EpgAdditionalInfoShow));
 
-    Add(new cMenuEditBoolItem(tr("Menuitem border by theme?"), &SetupConfig->decorBorderMenuItemByTheme));
+    Add(new cMenuEditBoolItem(tr("Menuitem border by decor-file?"), &SetupConfig->decorBorderMenuItemByTheme));
     if( SetupConfig->decorBorderMenuItemByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Menuitem border type"), Bordertypes[SetupConfig->decorBorderMenuItemTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -345,7 +352,7 @@ void cFlatSetupMenu::Setup(void) {
         Add(new cMenuEditIntItem(tr("Menuitem border size"), &SetupConfig->decorBorderMenuItemSizeUser));
     }
     
-    Add(new cMenuEditBoolItem(tr("Menucont. border by theme?"), &SetupConfig->decorBorderMenuContentByTheme));
+    Add(new cMenuEditBoolItem(tr("Menucont. border by decor-file?"), &SetupConfig->decorBorderMenuContentByTheme));
     if( SetupConfig->decorBorderMenuContentByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Menucont. border type"), Bordertypes[SetupConfig->decorBorderMenuContentTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -356,7 +363,7 @@ void cFlatSetupMenu::Setup(void) {
         Add(new cMenuEditIntItem(tr("Menucont. border size"), &SetupConfig->decorBorderMenuContentSizeUser));
     }
 
-    Add(new cMenuEditBoolItem(tr("Menucont. head border by theme?"), &SetupConfig->decorBorderMenuContentHeadByTheme));
+    Add(new cMenuEditBoolItem(tr("Menucont. head border by decor-file?"), &SetupConfig->decorBorderMenuContentHeadByTheme));
     if( SetupConfig->decorBorderMenuContentHeadByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Menucont. head border type"), Bordertypes[SetupConfig->decorBorderMenuContentHeadTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -367,7 +374,7 @@ void cFlatSetupMenu::Setup(void) {
         Add(new cMenuEditIntItem(tr("Menucont. head border size"), &SetupConfig->decorBorderMenuContentHeadSizeUser));
     }
 
-    Add(new cMenuEditBoolItem(tr("Menuitem progress by theme?"), &SetupConfig->decorProgressMenuItemByTheme));
+    Add(new cMenuEditBoolItem(tr("Menuitem progress by decor-file?"), &SetupConfig->decorProgressMenuItemByTheme));
     if( SetupConfig->decorProgressMenuItemByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Menuitem progress type"), Progresstypes[SetupConfig->decorProgressMenuItemTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -398,10 +405,10 @@ eOSState cFlatSetupMenu::ProcessKey(eKeys Key) {
     }
     if( Key == kLeft || Key == kRight ) {
         const char* ItemText = Get(Current())->Text();
-        if( strstr(ItemText, tr("Menuitem border by theme?")) != NULL ||
-            strstr(ItemText, tr("Menucont. border by theme?")) != NULL ||
-            strstr(ItemText, tr("Menucont. head border by theme?")) != NULL ||
-            strstr(ItemText, tr("Menuitem progress by theme?")) != NULL
+        if( strstr(ItemText, tr("Menuitem border by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Menucont. border by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Menucont. head border by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Menuitem progress by decor-file?")) != NULL
         ) {
             ItemLastSel = Current();
             Setup();
@@ -418,7 +425,7 @@ cFlatSetupReplay::cFlatSetupReplay(cFlatConfig* data)  : cMenuSetupSubMenu(tr("R
 void cFlatSetupReplay::Setup(void) {
     Clear();
 
-    Add(new cMenuEditBoolItem(tr("Replay border by theme?"), &SetupConfig->decorBorderReplayByTheme));
+    Add(new cMenuEditBoolItem(tr("Replay border by decor-file?"), &SetupConfig->decorBorderReplayByTheme));
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->RecordingResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->RecordingFormatShow));
     
@@ -432,7 +439,7 @@ void cFlatSetupReplay::Setup(void) {
         Add(new cMenuEditIntItem(tr("Replay border size"), &SetupConfig->decorBorderReplaySizeUser));
     }
 
-    Add(new cMenuEditBoolItem(tr("Replay progress by theme?"), &SetupConfig->decorProgressReplayByTheme));
+    Add(new cMenuEditBoolItem(tr("Replay progress by decor-file?"), &SetupConfig->decorProgressReplayByTheme));
     if( SetupConfig->decorProgressReplayByTheme ) {
         cString size = cString::sprintf("%s:\t%d", tr("Replay progress size"), SetupConfig->decorProgressReplaySizeTheme);
         Add(new cOsdItem(size, osUnknown, false));
@@ -460,8 +467,8 @@ eOSState cFlatSetupReplay::ProcessKey(eKeys Key) {
     }
     if( Key == kLeft || Key == kRight ) {
         const char* ItemText = Get(Current())->Text();
-        if( strstr(ItemText, tr("Replay border by theme?")) != NULL ||
-            strstr(ItemText, tr("Replay progress by theme?")) != NULL
+        if( strstr(ItemText, tr("Replay border by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Replay progress by decor-file?")) != NULL
         ) {
             ItemLastSel = Current();
             Setup();
@@ -478,7 +485,7 @@ cFlatSetupVolume::cFlatSetupVolume(cFlatConfig* data)  : cMenuSetupSubMenu(tr("V
 void cFlatSetupVolume::Setup(void) {
     Clear();
 
-    Add(new cMenuEditBoolItem(tr("Volume border by theme?"), &SetupConfig->decorBorderVolumeByTheme));
+    Add(new cMenuEditBoolItem(tr("Volume border by decor-file?"), &SetupConfig->decorBorderVolumeByTheme));
     if( SetupConfig->decorBorderVolumeByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Volume border type"), Bordertypes[SetupConfig->decorBorderVolumeTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -489,7 +496,7 @@ void cFlatSetupVolume::Setup(void) {
         Add(new cMenuEditIntItem(tr("Volume border size"), &SetupConfig->decorBorderVolumeSizeUser));
     }
 
-    Add(new cMenuEditBoolItem(tr("Volume progress by theme?"), &SetupConfig->decorProgressVolumeByTheme));
+    Add(new cMenuEditBoolItem(tr("Volume progress by decor-file?"), &SetupConfig->decorProgressVolumeByTheme));
     if( SetupConfig->decorProgressVolumeByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Volume progress type"), Progresstypes[SetupConfig->decorProgressVolumeTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -520,8 +527,8 @@ eOSState cFlatSetupVolume::ProcessKey(eKeys Key) {
     }
     if( Key == kLeft || Key == kRight ) {
         const char* ItemText = Get(Current())->Text();
-        if( strstr(ItemText, tr("Volume border by theme?")) != NULL ||
-            strstr(ItemText, tr("Volume progress by theme?")) != NULL
+        if( strstr(ItemText, tr("Volume border by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Volume progress by decor-file?")) != NULL
         ) {
             ItemLastSel = Current();
             Setup();
@@ -538,7 +545,7 @@ cFlatSetupTracks::cFlatSetupTracks(cFlatConfig* data)  : cMenuSetupSubMenu(tr("T
 void cFlatSetupTracks::Setup(void) {
     Clear();
 
-    Add(new cMenuEditBoolItem(tr("Tracks border by theme?"), &SetupConfig->decorBorderTrackByTheme));
+    Add(new cMenuEditBoolItem(tr("Tracks border by decor-file?"), &SetupConfig->decorBorderTrackByTheme));
     if( SetupConfig->decorBorderTrackByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Tracks border type"), Bordertypes[SetupConfig->decorBorderTrackTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -569,7 +576,7 @@ eOSState cFlatSetupTracks::ProcessKey(eKeys Key) {
     }
     if( Key == kLeft || Key == kRight ) {
         const char* ItemText = Get(Current())->Text();
-        if( strstr(ItemText, tr("Tracks border by theme?")) != NULL
+        if( strstr(ItemText, tr("Tracks border by decor-file?")) != NULL
         ) {
             ItemLastSel = Current();
             Setup();

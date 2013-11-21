@@ -33,6 +33,7 @@ cFlatBaseRender::cFlatBaseRender(void) {
     decorPixmap = NULL;
     
     Config.ThemeCheckAndInit();
+    Config.DecorCheckAndInit();
 }
 
 cFlatBaseRender::~cFlatBaseRender(void) {
@@ -175,8 +176,8 @@ void cFlatBaseRender::TopBarUpdate(void) {
             if (imgLoader.LoadIcon(*topBarMenuIcon, 999, topBarHeight)) {
                 int iconTop = topBarHeight / 2 - imgLoader.Height()/2;
                 topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), imgLoader.GetImage());
-                MenuIconWidth = imgLoader.Width();
-                TitleWidthLeft -= MenuIconWidth + marginItem;
+                MenuIconWidth = imgLoader.Width()+marginItem*2;
+                TitleWidthLeft -= MenuIconWidth + marginItem*3;
             }
         }
         

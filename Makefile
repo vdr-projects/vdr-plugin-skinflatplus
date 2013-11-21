@@ -115,11 +115,15 @@ install-themes:
 	mkdir -p $(DESTDIR)$(VDRCONFDIR)/themes
 	cp themes/* $(DESTDIR)$(VDRCONFDIR)/themes
 
+install-decors:
+	mkdir -p $(DESTDIR)$(PLGRESDIR)/decors
+	cp decors/* $(DESTDIR)$(PLGRESDIR)/decors
+
 install-icons:
 	mkdir -p $(DESTDIR)$(PLGRESDIR)/icons
 	cp -r icons/* $(DESTDIR)$(PLGRESDIR)/icons
 	
-install: install-lib install-i18n install-themes install-icons
+install: install-lib install-i18n install-themes install-icons install-decors
 
 dist: $(I18Npo) clean
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)

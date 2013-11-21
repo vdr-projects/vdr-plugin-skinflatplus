@@ -13,6 +13,8 @@ class cFlatConfig
 {
     private:
         cString checkSlashAtEnd(std::string path);
+
+        int DecorCurrent;
     public:
         cFlatConfig(void);
         ~cFlatConfig(void);
@@ -23,7 +25,13 @@ class cFlatConfig
     
         void ThemeCheckAndInit(void);
         void ThemeInit(void);
+        void DecorDescriptions(cStringList &Decors);
+        cString DecorDescription(cString File);
+        void DecorLoadFile(cString File);
+        void DecorLoadCurrent(void);
+        void DecorCheckAndInit(void);
     public:
+
         cString ThemeCurrent;
         cString logoPath;
         cString iconPath;
@@ -164,4 +172,6 @@ class cFlatConfig
         int TopBarRecordingShow;
         int MenuItemIconsShow;
         int TopBarMenuIconShow;
+        
+        int DecorIndex;
 };

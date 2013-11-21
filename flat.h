@@ -28,8 +28,6 @@ THEME_CLR(Theme, clrTopBarTimeFont,         0xFFEEEEEE);
 THEME_CLR(Theme, clrTopBarDateFont,         0xFFA0A0A0);
 THEME_CLR(Theme, clrTopBarBorderFg,         0xC0101010);
 THEME_CLR(Theme, clrTopBarBorderBg,         0xC0101010);
-THEME_CLR(Theme, clrTopBarBorderType,       0x00000000);
-THEME_CLR(Theme, clrTopBarBorderSize,       0x00000000);
 
 THEME_CLR(Theme, clrTopBarRecordingActiveFg,  0xFF880000);
 THEME_CLR(Theme, clrTopBarRecordingActiveBg,  0xC0101010);
@@ -44,8 +42,6 @@ THEME_CLR(Theme, clrButtonBlue,             CLR_BUTTONBLUE);
 
 THEME_CLR(Theme, clrButtonBorderFg,        0xC0101010);
 THEME_CLR(Theme, clrButtonBorderBg,        0xC0101010);
-THEME_CLR(Theme, clrButtonBorderType,      0x00000000);
-THEME_CLR(Theme, clrButtonBorderSize,      0x00000000);
 
 // Messages
 THEME_CLR(Theme, clrMessageBg,              0xC0101010);
@@ -58,8 +54,6 @@ THEME_CLR(Theme, clrMessageError,           CLR_MESSAGEERROR);
 
 THEME_CLR(Theme, clrMessageBorderFg,        0xC0101010);
 THEME_CLR(Theme, clrMessageBorderBg,        0xC0101010);
-THEME_CLR(Theme, clrMessageBorderType,      0x00000000);
-THEME_CLR(Theme, clrMessageBorderSize,      0x00000000);
 
 // Channel
 THEME_CLR(Theme, clrChannelBg,              0xC0101010);
@@ -69,20 +63,14 @@ THEME_CLR(Theme, clrChannelFontEpgFollow,   0xFFA0A0A0);
 THEME_CLR(Theme, clrChannelProgressFg,      0xFF3090B0);
 THEME_CLR(Theme, clrChannelProgressBarFg,   0xFF3090B0);
 THEME_CLR(Theme, clrChannelProgressBg,      0xC0101010);
-THEME_CLR(Theme, clrChannelProgressType,    0x00000000);
-THEME_CLR(Theme, clrChannelProgressSize,    0x0000000A);
 
 THEME_CLR(Theme, clrChannelBorderFg,        0xC03090B0);
 THEME_CLR(Theme, clrChannelBorderBg,        0xC03090B0);
-THEME_CLR(Theme, clrChannelBorderType,      0x00000000);
-THEME_CLR(Theme, clrChannelBorderSize,      0x00000000);
 
 THEME_CLR(Theme, clrChannelSignalFont,            0xFFA0A0A0);
 THEME_CLR(Theme, clrChannelSignalProgressFg,      0xFFA0A0A0);
 THEME_CLR(Theme, clrChannelSignalProgressBarFg,   0xFFA0A0A0);
 THEME_CLR(Theme, clrChannelSignalProgressBg,      0xC0101010);
-THEME_CLR(Theme, clrChannelSignalProgressType,    0x00000002);
-THEME_CLR(Theme, clrChannelSignalProgressSize,    0x0000000A);
 
 THEME_CLR(Theme, clrChannelRecordingPresentFg,    0xFFAA0000);
 THEME_CLR(Theme, clrChannelRecordingPresentBg,    0xC0101010);
@@ -113,13 +101,9 @@ THEME_CLR(Theme, clrMenuTextFont,           0xFFEEEEEE);
 
 THEME_CLR(Theme, clrMenuContentHeadBorderFg,        0xC03090B0);
 THEME_CLR(Theme, clrMenuContentHeadBorderBg,        0xC03090B0);
-THEME_CLR(Theme, clrMenuContentHeadBorderType,      0x00000000);
-THEME_CLR(Theme, clrMenuContentHeadBorderSize,      0x00000000);
 
 THEME_CLR(Theme, clrMenuContentBorderFg,        0xC03090B0);
 THEME_CLR(Theme, clrMenuContentBorderBg,        0xC03090B0);
-THEME_CLR(Theme, clrMenuContentBorderType,      0x00000000);
-THEME_CLR(Theme, clrMenuContentBorderSize,      0x00000000);
 
 // Menu Items
 THEME_CLR(Theme, clrMenuItemProgressFg,      0xFFEEEEEE);
@@ -128,11 +112,7 @@ THEME_CLR(Theme, clrMenuItemProgressBg,      0xC0101010);
 THEME_CLR(Theme, clrMenuItemCurProgressFg,      0xFFEEEEEE);
 THEME_CLR(Theme, clrMenuItemCurProgressBarFg,   0xFFEEEEEE);
 THEME_CLR(Theme, clrMenuItemCurProgressBg,      0xC03090B0);
-THEME_CLR(Theme, clrMenuItemProgressType,    0x00000002);
-THEME_CLR(Theme, clrMenuItemProgressSize,    0x00000014);
 
-THEME_CLR(Theme, clrMenuItemBorderType,    0x00000000);
-THEME_CLR(Theme, clrMenuItemBorderSize,    0x00000000);
 THEME_CLR(Theme, clrMenuItemBorderFg,      0xC0909090);
 THEME_CLR(Theme, clrMenuItemBorderBg,      0xC0909090);
 THEME_CLR(Theme, clrMenuItemSelableBorderFg,      0xC0101010);
@@ -150,13 +130,9 @@ THEME_CLR(Theme, clrReplayProgressBarCurFg, 0xFF3090B0);
 THEME_CLR(Theme, clrReplayProgressBg,       0xC0101010);
 THEME_CLR(Theme, clrReplayMarkFg,           0xFFEEEEEE);
 THEME_CLR(Theme, clrReplayMarkCurrentFg,    0xFF3090B0);
-THEME_CLR(Theme, clrReplayProgressType,     0x00000000);
-THEME_CLR(Theme, clrReplayProgressSize,     0x00000028);
 
 THEME_CLR(Theme, clrReplayBorderFg,         0xC0101010);
 THEME_CLR(Theme, clrReplayBorderBg,         0xC0101010);
-THEME_CLR(Theme, clrReplayBorderType,       0x00000000);
-THEME_CLR(Theme, clrReplayBorderSize,       0x00000000);
 
 // Tracks
 THEME_CLR(Theme, clrTrackItemBg,            0xC0101010);
@@ -166,8 +142,6 @@ THEME_CLR(Theme, clrTrackItemCurrentFont,   0xFFEEEEEE);
 
 THEME_CLR(Theme, clrTrackItemBorderFg,      0xC0101010);
 THEME_CLR(Theme, clrTrackItemBorderBg,      0xC0101010);
-THEME_CLR(Theme, clrTrackItemBorderType,    0x00000000);
-THEME_CLR(Theme, clrTrackItemBorderSize,    0x00000000);
 THEME_CLR(Theme, clrTrackItemCurrentBorderFg,      0xC03090B0);
 THEME_CLR(Theme, clrTrackItemCurrentBorderBg,      0xC03090B0);
 
@@ -177,13 +151,9 @@ THEME_CLR(Theme, clrVolumeFont,             0xFFEEEEEE);
 THEME_CLR(Theme, clrVolumeProgressFg,       0xFF3090B0);
 THEME_CLR(Theme, clrVolumeProgressBarFg,    0xFF3090B0);
 THEME_CLR(Theme, clrVolumeProgressBg,       0xC0101010);
-THEME_CLR(Theme, clrVolumeProgressType,    0x00000000);
-THEME_CLR(Theme, clrVolumeProgressSize,    0x0000000A);
 
 THEME_CLR(Theme, clrVolumeBorderFg,         0xC0101010);
 THEME_CLR(Theme, clrVolumeBorderBg,         0xC0101010);
-THEME_CLR(Theme, clrVolumeBorderType,       0x00000000);
-THEME_CLR(Theme, clrVolumeBorderSize,       0x00000000);
 
 class cFlat : public cSkin {
     private:
