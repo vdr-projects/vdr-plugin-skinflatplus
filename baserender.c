@@ -518,7 +518,7 @@ void cFlatBaseRender::contentDraw(void) {
     }
 }
 
-void cFlatBaseRender::ProgressBarCreate(int Left, int Top, int Width, int Height, int MarginHor, int MarginVer, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type) {
+void cFlatBaseRender::ProgressBarCreate(int Left, int Top, int Width, int Height, int MarginHor, int MarginVer, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground) {
     progressBarTop = Top;
     progressBarWidth = Width;
     progressBarHeight = Height;
@@ -529,6 +529,8 @@ void cFlatBaseRender::ProgressBarCreate(int Left, int Top, int Width, int Height
     progressBarColorFg = ColorFg;
     progressBarColorBarFg = ColorBarFg;
     progressBarColorBg = ColorBg;
+    
+    progressBarSetBackground = SetBackground;
     
     progressBarColorBarCurFg = Theme.Color(clrReplayProgressBarCurFg);
     
@@ -553,15 +555,16 @@ void cFlatBaseRender::ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRe
     
     double percentLeft = ((double)Current) / (double)Total;
 
-    /*
-    if( PixmapBg )
+    if( PixmapBg && progressBarSetBackground )
         PixmapBg->DrawRectangle(cRect( rectBg.Left(), rectBg.Top(), rectBg.Width(), rectBg.Height()), ColorBg);
     
-    if( PixmapBg == Pixmap )
-        Pixmap->DrawRectangle(cRect( rect.Left(), rect.Top(), rect.Width(), rect.Height()), ColorBg);
-    else
-        Pixmap->DrawRectangle(cRect( rect.Left(), rect.Top(), rect.Width(), rect.Height()), clrTransparent);
-    */    
+    if( progressBarSetBackground ) {
+        if( PixmapBg == Pixmap )
+            Pixmap->DrawRectangle(cRect( rect.Left(), rect.Top(), rect.Width(), rect.Height()), ColorBg);
+        else
+            Pixmap->DrawRectangle(cRect( rect.Left(), rect.Top(), rect.Width(), rect.Height()), clrTransparent);
+    }
+        
     switch( Type ) {
         case 0: // small line + big line
         {

@@ -17,7 +17,7 @@ cFlatDisplayVolume::cFlatDisplayVolume(void) {
     muteLogoPixmap = osd->CreatePixmap(2, cRect(0, top, osdWidth, labelHeight));
 
     ProgressBarCreate(left, osdHeight - 50 - Config.decorProgressVolumeSize, width, Config.decorProgressVolumeSize, marginItem, marginItem,
-        Config.decorProgressVolumeFg, Config.decorProgressVolumeBarFg, Config.decorProgressVolumeBg, Config.decorProgressVolumeType);
+        Config.decorProgressVolumeFg, Config.decorProgressVolumeBarFg, Config.decorProgressVolumeBg, Config.decorProgressVolumeType, true);
 }
 
 cFlatDisplayVolume::~cFlatDisplayVolume() {
