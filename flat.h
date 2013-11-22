@@ -5,6 +5,7 @@
 
 #include "config.h"
 extern class cFlatConfig Config;
+extern bool firstDisplay;
 
 class cFlatDisplayMenu;
 extern cTheme Theme;

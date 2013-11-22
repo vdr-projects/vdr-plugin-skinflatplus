@@ -359,15 +359,15 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
 
                     cString cIcon = GetIconName( MainMenuText(s) );
                     cImageLoader imgLoader;
-                    if (imgLoader.LoadIcon(*cIcon, fontHeight)) {
-                        menuIconsPixmap->DrawImage(cPoint(xt + Config.decorBorderMenuItemSize, y), imgLoader.GetImage());
+                    if (imgLoader.LoadIcon(*cIcon, fontHeight -marginItem*2)) {
+                        menuIconsPixmap->DrawImage(cPoint(xt + Config.decorBorderMenuItemSize + marginItem, y + marginItem), imgLoader.GetImage());
                     } else {
                         if (imgLoader.LoadIcon("menuIcons/blank", fontHeight)) {
-                            menuIconsPixmap->DrawImage(cPoint(xt + Config.decorBorderMenuItemSize, y), imgLoader.GetImage());
+                            menuIconsPixmap->DrawImage(cPoint(xt + Config.decorBorderMenuItemSize + marginItem, y + marginItem), imgLoader.GetImage());
                         }
                     }
-                    menuPixmap->DrawText(cPoint(fontHeight + marginItem + xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
-                        Width - xt - marginItem - fontHeight );
+                    menuPixmap->DrawText(cPoint(fontHeight + marginItem*2 + xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
+                        Width - xt - marginItem*2 - fontHeight );
                 } else {
                     menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
                         Width - xt);

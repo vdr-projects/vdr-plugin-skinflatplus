@@ -24,6 +24,7 @@ cFlatBaseRender::cFlatBaseRender(void) {
     
     buttonsHeight = 0;
     
+    osd = NULL;
     topBarPixmap = NULL;
     buttonsPixmap = NULL;
     messagePixmap = NULL;

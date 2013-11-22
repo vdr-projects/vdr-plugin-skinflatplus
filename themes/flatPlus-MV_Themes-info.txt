@@ -1,0 +1,130 @@
+flatPlus-MV_Themen erstellt am 22.11.2013 14:05
+Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
+
+=> Installationshimnweise am Ende der Datei! <=
+
+Thema: Blue, Farbe: 0050EF
+Thema: LightBlue, Farbe: 1BA1E2
+Thema: Cyan, Farbe: 149BAF
+Thema: Green 2, Farbe: 008A00, Hintergrund: 112211
+Thema: LightGreen, Farbe: 70AD11
+Thema: Mint, Farbe: A4C400
+Thema: Olive, Farbe: 6D8764
+Thema: Grey, Farbe: 647687
+Thema: Purple, Farbe: 6C0AAB
+Thema: PurpleGrey, Farbe: 76608A
+Thema: Pflaume, Farbe: 6A00FF
+Thema: Berry, Farbe: A61D4D
+Thema: Chocolate, Farbe: 825A2C
+Thema: Cappuchino, Farbe: 87794E
+Thema: Nuts, Farbe: BF9217
+Thema: Rauchglas 2, Farbe: 825A2C, Hintergrund: 200F02
+Thema: Rauchglas, Farbe: 825A2C
+Thema: Grapefruit, Farbe: C3461B
+Thema: Blood 2, Farbe: 911D10, Hintergrund: 221111
+Thema: Blood, Farbe: 911D10
+Thema: Red, Farbe: E51400
+Thema: Pumpkin, Farbe: F0A30A
+Thema: HelloKitty 2, Farbe: F472D0, Hintergrund: FF80F0
+Thema: HelloKitty, Farbe: F472D0
+20 Themen erstellt
+4 Themen mit Hintergrund erstellt
+24 Themen insgesamt
+Ornder fuer Thema flatPlus-MVBerry.theme verlinkt
+Ornder fuer Thema flatPlus-MVBlood2.theme verlinkt
+Ornder fuer Thema flatPlus-MVBlood.theme verlinkt
+Ornder fuer Thema flatPlus-MVBlue.theme verlinkt
+Ornder fuer Thema flatPlus-MVCappuchino.theme verlinkt
+Ornder fuer Thema flatPlus-MVChocolate.theme verlinkt
+Ornder fuer Thema flatPlus-MVCyan.theme verlinkt
+Ornder fuer Thema flatPlus-MVGrapefruit.theme verlinkt
+Ornder fuer Thema flatPlus-MVGreen2.theme verlinkt
+Ornder fuer Thema flatPlus-MVGreen.theme verlinkt
+Ornder fuer Thema flatPlus-MVGrey.theme verlinkt
+Ornder fuer Thema flatPlus-MVHelloKitty2.theme verlinkt
+Ornder fuer Thema flatPlus-MVHelloKitty.theme verlinkt
+Ornder fuer Thema flatPlus-MVLightBlue.theme verlinkt
+Ornder fuer Thema flatPlus-MVLightGreen.theme verlinkt
+Ornder fuer Thema flatPlus-MVMint.theme verlinkt
+Ornder fuer Thema flatPlus-MVNuts.theme verlinkt
+Ornder fuer Thema flatPlus-MVOlive.theme verlinkt
+Ornder fuer Thema flatPlus-MVPflaume.theme verlinkt
+Ornder fuer Thema flatPlus-MVPumpkin.theme verlinkt
+Ornder fuer Thema flatPlus-MVPurpleGrey.theme verlinkt
+Ornder fuer Thema flatPlus-MVPurple.theme verlinkt
+Ornder fuer Thema flatPlus-MVRauchglas2.theme verlinkt
+Ornder fuer Thema flatPlus-MVRauchglas.theme verlinkt
+Ornder fuer Thema flatPlus-MVRed.theme verlinkt
+Insgesamt 25 Icon-Ordner verlinkt (25 neu)
+
+Installationshinweise:
+ - Alle *.theme aus dem Ordner themes nach <vdrconfigdir>/themes kopieren.
+ - Alle *.decor aus dem Ordner decors nach <vdrconfigdir>/plugins/skinflatplus/decors kopieren.
+ - Den Ordner MVdefault nach <vdrconfigdir>/plugins/skinflatplus/icons kopieren.
+ - Alle Symlinks zu MVdefault nach <vdrconfigdir>/plugins/skinflatplus/icons kopieren.
+
+Optional (Pfade evtl. Anpassen!):
+ - Schrift(en) aus dem Ordner contrib nach /usr/share/fonts kopieren.
+   Die Schriften enthalten auch die VDR-Symbole.
+
+Empfohlene Einstellungen im skin-flatplus-Plugin:
+skinflatplus.ButtonsShowEmpty = 0
+skinflatplus.ChannelFormatShow = 1
+skinflatplus.ChannelIconsShow = 1
+skinflatplus.ChannelResolutionAspectShow = 1
+skinflatplus.decorBorderButtonByTheme = 1
+skinflatplus.decorBorderChannelByTheme = 1
+skinflatplus.decorBorderMenuContentByTheme = 1
+skinflatplus.decorBorderMenuContentHeadByTheme = 1
+skinflatplus.decorBorderMenuItemByTheme = 1
+skinflatplus.decorBorderMessageByTheme = 1
+skinflatplus.decorBorderReplayByTheme = 1
+skinflatplus.decorBorderTopBarByTheme = 1
+skinflatplus.decorBorderTrackByTheme = 1
+skinflatplus.decorBorderVolumeByTheme = 1
+skinflatplus.DecorIndex = 2 # MV rect sml
+skinflatplus.decorProgressChannelByTheme = 1
+skinflatplus.decorProgressMenuItemByTheme = 1
+skinflatplus.decorProgressReplayByTheme = 1
+skinflatplus.decorProgressSignalByTheme = 1
+skinflatplus.decorProgressVolumeByTheme = 1
+skinflatplus.DiskUsageShow = 1
+skinflatplus.EpgAdditionalInfoShow = 1
+skinflatplus.marginOsdHor = 0
+skinflatplus.marginOsdVer = 0
+skinflatplus.MenuContentFullSize = 0
+skinflatplus.MenuItemIconsShow = 1
+skinflatplus.MenuItemPadding = 0
+skinflatplus.MessageOffset = 0
+skinflatplus.RecordingAdditionalInfoShow = 1
+skinflatplus.RecordingFormatShow = 1
+skinflatplus.RecordingResolutionAspectShow = 1
+skinflatplus.ResolutionAspectShow = 1
+skinflatplus.SignalQualityShow = 1
+skinflatplus.TopBarFontSize = 0.048000
+skinflatplus.TopBarMenuIconShow = 1
+skinflatplus.TopBarRecordingShow = 1
+
+Empfohlene Einstellungen im VDR (Menue - Einstellungen - OSD):
+FontFix = Nimbus Mono L:Bold
+FontFixSize = 33
+FontFixSizeP = 0.031000
+FontOsd = VDRPT Sans:Regular
+FontOsdSize = 42
+FontOsdSizeP = 0.039000
+FontSml = VDRPT Sans:Regular
+FontSmlSize = 33
+FontSmlSizeP = 0.031000
+OSDAspect = 1.000000
+OSDHeight = 1080
+OSDHeightP = 1.000000
+OSDLanguage = de_DE
+OSDLeft = 0
+OSDLeftP = 0.000000
+OSDMessageTime = 5
+OSDSkin = flatPlus
+OSDTheme = MVPumpkin
+OSDTop = 0
+OSDTopP = 0.000000
+OSDWidth = 1920
+OSDWidthP = 1.000000

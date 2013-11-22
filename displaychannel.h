@@ -1,9 +1,11 @@
 #pragma once
 
 #include "baserender.h"
+#include "flat.h"
 
 class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
     private:
+        bool doOutput;
         const cEvent *present;
 
         int channelWidth, channelHeight;

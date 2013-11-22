@@ -14,6 +14,7 @@ class cFlatConfig Config;
 
 cTheme Theme;
 static bool menuActive = false;
+bool firstDisplay = true;
 
 cFlat::cFlat(void) : cSkin("flatPlus", &::Theme) {
     displayMenu = NULL;

@@ -1,6 +1,13 @@
 #include "displaychannel.h"
 
 cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
+    if (firstDisplay) {
+        firstDisplay = false;
+        doOutput = false;
+        return;
+    } else
+        doOutput = true;  
+
     present = NULL;
     channelName = "";
     chanInfoTopPixmap = NULL;
@@ -64,6 +71,8 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
 }
 
 cFlatDisplayChannel::~cFlatDisplayChannel() {
+    if( !doOutput )
+        return;
     if (osd) {
         if( chanInfoTopPixmap )
             osd->DestroyPixmap(chanInfoTopPixmap);
@@ -77,6 +86,8 @@ cFlatDisplayChannel::~cFlatDisplayChannel() {
 }
 
 void cFlatDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
+    if( !doOutput )
+        return;
     cString channelNumber("");
     isRecording = false;
     chanIconsPixmap->Fill( clrTransparent );
@@ -211,6 +222,9 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
 }
 
 void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Following) {
+    if( !doOutput )
+        return;
+
     present = Present;
     cString epgShort("");
     cString epg("");
@@ -343,6 +357,9 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
 }
 
 void cFlatDisplayChannel::SetMessage(eMessageType Type, const char *Text) {
+    if( !doOutput )
+        return;
+
     // Wenn es einen Text gibt, diesen Anzeigen ansonsten Message ausblenden
     if( Text )
         MessageSet(Type, Text);
@@ -381,6 +398,9 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
 }
 
 void cFlatDisplayChannel::Flush(void) {
+    if( !doOutput )
+        return;
+
     int Current = 0;
     int Total = 0;
     if( present ) {
