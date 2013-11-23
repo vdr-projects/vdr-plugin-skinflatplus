@@ -1,33 +1,43 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
-2013-XX-XX: Version 0.1.0
+2013-11-24: Version 0.1.0 - MegaV0lt Version
+Special thanks to MegaV0lt@VDR-Portal for
+detailed bug reports, feature requests, testing and themes + icons
+
 - [fix] many small fixes
 - [fix] marker position
 - [fix] borders displaced
-- [fix] menu has full width if no scrollbar is needed
 - [fix] icon size in channel display
-- [update] TopBar title align right
+- [update] menu has full width if no scrollbar is needed
+- [update] TopBar date align right
 - [update] channel display icons
 - [update] show recording in display channel for present and following
-- [add] free minutes in disk usage
-- [add] topbar font size option
-- [add] message bottom offset option
+- [update] do not DisplayChannel for the first time
+- [update] remove decor settings from themes and add separately decor files.
+           You can select decor file from plugin settings.
+           WARNING: Please delete all old themes!
+- [add] free minutes in disk usage TopBar
+- [add] TopBar font size option (select individual font size for TopBar)
+- [add] message bottom offset option (select the offset of bottom screen for messages)
 - [add] menu items symbols for rec, timer, etc. Lent code from skin elchi (thank you!)
-- [add] option menu content full size background
+- [add] option menu content full size background (draw menu background for full menu size
+        or only for content size)
 - [add] option to display resolution & aspect in display channel
 - [add] option do display format (hd/sd) in display channel
 - [add] option to display resolution & aspect in replay
 - [add] option do display format (hd/sd) in replay
-- [add] default logo for channels without channel logo
+- [add] default logo for channels without channel logo (logo for tv and radio)
 - [add] use icon from default theme if current theme does not have the icon
 - [add] option to show additional info in epg menu. Lent code from skin elchi (thank you!)
 - [add] option to show additional info in recording menu. Lent code from skin elchi (thank you!)
 - [add] option to show active recording in TopBar
-- [add] menu icons
+- [add] menu icons (lent some code from skin nopacity, thanks!)
 - [add] TopBar menu icons
+- [add] many themes, icons, etc. - many thanks for MegaV0lt!
 
-2013-23-09: Version 0.0.1
+
+2013-09-23: Version 0.0.1
 difference to skinflat
 - [add] configurable borders
         - any window have its own border with separate size and type

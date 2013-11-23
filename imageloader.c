@@ -124,10 +124,8 @@ bool cImageLoader::LoadImage(cString FileName, cString Path, cString Extension) 
     try {
         cString File = cString::sprintf("%s%s.%s", *Path, *FileName, *Extension);
         dsyslog("imageloader: trying to load: %s", *File);
-        //printf("imageloader: trying to load: %s\n", *File);
         buffer.read(*File);
         dsyslog("imageloader: %s sucessfully loaded", *File);
-        //printf("imageloader: %s sucessfully loaded\n", *File);
     } catch (...) {     
         return false;
     }

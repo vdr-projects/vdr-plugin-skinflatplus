@@ -173,8 +173,8 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
 }
 
 void cFlatConfig::ThemeCheckAndInit(void) {
-    if( strcmp(Theme.Name(), *ThemeCurrent) != 0 )
-    {
+    if( strcmp(Theme.Name(), *ThemeCurrent) != 0 ) {
+        dsyslog("skinflatplus: load theme: %s", *ThemeCurrent);
         ThemeCurrent = Theme.Name();
         ThemeInit();
     }
@@ -390,12 +390,14 @@ void cFlatConfig::ThemeInit(void) {
 }
 
 void cFlatConfig::Init(void) {
-    if( !strcmp(logoPath, "") )
+    if( !strcmp(logoPath, "") ) {
         logoPath = cString::sprintf("%s/logos/", PLUGINRESOURCEPATH);
-    //dsyslog("skinflat: logopath: %s", *logoPath);
-    if( !strcmp(iconPath, "") )
+        dsyslog("skinflatplus: logoPath: %s", *logoPath);
+    }
+    if( !strcmp(iconPath, "") ) {
         iconPath = cString::sprintf("%s/icons/", PLUGINRESOURCEPATH);
-    //dsyslog("skinflat: iconPath: %s", *iconPath);
+        dsyslog("skinflatplus: iconPath: %s", *iconPath);
+    }
 
     ThemeInit();
     DecorCheckAndInit();
@@ -461,6 +463,8 @@ void cFlatConfig::DecorLoadCurrent(void) {
 }
 
 void cFlatConfig::DecorLoadFile(cString File) {
+    dsyslog("skinflatplus: load decor file: %s", *File);
+
     FILE *f = fopen(File, "r");
     if( f ) {
         int line = 0;

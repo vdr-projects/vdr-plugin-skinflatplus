@@ -66,7 +66,6 @@ cFlatBaseRender::~cFlatBaseRender(void) {
 }
 
 void cFlatBaseRender::CreateFullOsd(void) {
-    //printf("left: %d top: %d width: %d height: %d", cOsd::OsdLeft(), cOsd::OsdTop(), cOsd::OsdWidth(), cOsd::OsdHeight());
     CreateOsd(cOsd::OsdLeft() + Config.marginOsdHor, cOsd::OsdTop() + Config.marginOsdVer, cOsd::OsdWidth() - Config.marginOsdHor*2, cOsd::OsdHeight() - Config.marginOsdVer*2);
 }
 
@@ -80,9 +79,11 @@ void cFlatBaseRender::CreateOsd(int left, int top, int width, int height) {
     if (osd) {
         tArea Area = { 0, 0, width, height,  32 };
         if (osd->SetAreas(&Area, 1) == oeOk) {  
+            dsyslog("skinflatplus: create osd SUCESS left: %d top: %d width: %d height: %d", left, top, width, height);
             return;
         }
     }
+    dsyslog("skinflatplus: create osd FAILED left: %d top: %d width: %d height: %d", left, top, width, height);
     return;
 }
 
@@ -174,8 +175,8 @@ void cFlatBaseRender::TopBarUpdate(void) {
 
         if( topBarMenuIconSet && Config.TopBarMenuIconShow ) {
             int IconLeft = marginItem;
-            if (imgLoader.LoadIcon(*topBarMenuIcon, 999, topBarHeight)) {
-                int iconTop = topBarHeight / 2 - imgLoader.Height()/2;
+            if (imgLoader.LoadIcon(*topBarMenuIcon, 999, topBarHeight - marginItem*2)) {
+                int iconTop = (topBarHeight / 2 - imgLoader.Height()/2);
                 topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), imgLoader.GetImage());
                 MenuIconWidth = imgLoader.Width()+marginItem*2;
                 TitleWidthLeft -= MenuIconWidth + marginItem*3;

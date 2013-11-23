@@ -15,7 +15,7 @@
 #include "flat.h"
 #include "setup.h"
 
-static const char *VERSION        = "0.0.1";
+static const char *VERSION        = "0.1.0";
 static const char *DESCRIPTION    = "skin flatplus";
 
 class cPluginFlat : public cPlugin {
@@ -82,10 +82,10 @@ bool cPluginFlat::Initialize(void) {
 
 bool cPluginFlat::Start(void) {
     if (!cOsdProvider::SupportsTrueColor()) {
-        esyslog("skinflat: No TrueColor OSD found! Aborting!");
+        esyslog("skinflatplus: No TrueColor OSD found! Aborting!");
         return false;
     } else
-        dsyslog("skinflat: TrueColor OSD found");
+        dsyslog("skinflatplus: TrueColor OSD found");
     flat = new cFlat;
     return flat;
 }
