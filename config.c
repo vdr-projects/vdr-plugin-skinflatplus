@@ -1,5 +1,7 @@
 #include "config.h"
 
+#include <vector>
+#include <algorithm>
 cFlatConfig::cFlatConfig(void) {
     logoPath = "";
     iconPath = "";
@@ -403,16 +405,34 @@ void cFlatConfig::Init(void) {
     DecorCheckAndInit();
 }
 
+bool stringCompare( const std::string &left, const std::string &right ){
+   for( std::string::const_iterator lit = left.begin(), rit = right.begin(); lit != left.end() && rit != right.end(); ++lit, ++rit )
+      if( tolower( *lit ) < tolower( *rit ) )
+         return true;
+      else if( tolower( *lit ) > tolower( *rit ) )
+         return false;
+   if( left.size() < right.size() )
+      return true;
+   return false;
+}
+
 void cFlatConfig::DecorDescriptions(cStringList &Decors) {
     cString decorPath = cString::sprintf("%s/decors", PLUGINRESOURCEPATH);
-
+    std::vector<std::string> files;
+    
     cReadDir d(decorPath);
     struct dirent *e;
     while ((e = d.Next()) != NULL) {
         cString FileName = AddDirectory(decorPath, e->d_name);
-        cString Desc = DecorDescription(FileName);
+        files.push_back(*FileName);
+    }
+    
+    std::sort(files.begin(), files.end(), stringCompare);
+    for (unsigned i = 0; i < files.size(); i++) {
+        std::string FileName = files.at(i);
+        cString Desc = DecorDescription(FileName.c_str());
         Decors.Append(strdup(*Desc));
-    }    
+    }
 }
 
 cString cFlatConfig::DecorDescription(cString File) {
@@ -448,18 +468,20 @@ cString cFlatConfig::DecorDescription(cString File) {
 
 void cFlatConfig::DecorLoadCurrent(void) {
     cString decorPath = cString::sprintf("%s/decors", PLUGINRESOURCEPATH);
-
+    std::vector<std::string> files;
+    
     cReadDir d(decorPath);
     struct dirent *e;
-    int index = 0;
-    while( (e = d.Next()) != NULL ) {
-        if( DecorIndex == index ) {
-            cString FileName = AddDirectory(decorPath, e->d_name);
-            DecorLoadFile( FileName );
-            break;
-        }
-        index++;
-    }    
+    while ((e = d.Next()) != NULL) {
+        cString FileName = AddDirectory(decorPath, e->d_name);
+        files.push_back(*FileName);
+    }
+    
+    std::sort(files.begin(), files.end(), stringCompare);
+    if( DecorIndex >= 0 && DecorIndex < (int)files.size() ) {
+        std::string FileName = files.at(DecorIndex);
+        DecorLoadFile( FileName.c_str() );
+    }
 }
 
 void cFlatConfig::DecorLoadFile(cString File) {
