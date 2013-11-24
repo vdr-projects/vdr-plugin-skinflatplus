@@ -5,6 +5,10 @@ VDR Plugin 'skinflatplus' Revision History
 Special thanks to MegaV0lt@VDR-Portal for
 detailed bug reports, feature requests, testing and themes + icons
 
+!!!
+Please delete previous themes and icons!
+!!!
+
 - [fix] many small fixes
 - [fix] marker position
 - [fix] borders displaced
