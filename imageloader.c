@@ -123,9 +123,9 @@ void cImageLoader::toLowerCase(std::string &str) {
 bool cImageLoader::LoadImage(cString FileName, cString Path, cString Extension) {
     try {
         cString File = cString::sprintf("%s%s.%s", *Path, *FileName, *Extension);
-        dsyslog("imageloader: trying to load: %s", *File);
+        //dsyslog("imageloader: trying to load: %s", *File);
         buffer.read(*File);
-        dsyslog("imageloader: %s sucessfully loaded", *File);
+        //dsyslog("imageloader: %s sucessfully loaded", *File);
     } catch (...) {     
         return false;
     }

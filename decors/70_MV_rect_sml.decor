@@ -62,6 +62,6 @@ TrackItemBorderSize = 5
 
 # Display Volume
 VolumeBorderType = 1
-VolumeBorderSize = 5
+VolumeBorderSize = 15
 VolumeProgressType = 0
-VolumeProgressSize = 20
+VolumeProgressSize = 25

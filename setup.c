@@ -151,7 +151,9 @@ void cFlatSetup::Store(void) {
     SetupStore("DecorIndex", Config.DecorIndex);
     SetupStore("MainMenuItemScale", dtoa(Config.MainMenuItemScale));
     SetupStore("MenuChannelType", Config.MenuChannelType);
-   
+    SetupStore("ChannelSimpleAspectFormat", Config.ChannelSimpleAspectFormat);
+    SetupStore("RecordingSimpleAspectFormat", Config.RecordingSimpleAspectFormat);
+    
     Config.Init();
 }
 
@@ -269,7 +271,8 @@ void cFlatSetupChannelInfo::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show signal quality"), &SetupConfig->SignalQualityShow));
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->ChannelResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->ChannelFormatShow));
-
+    Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->ChannelSimpleAspectFormat));
+    
     Add(new cMenuEditBoolItem(tr("Channelinfo border by decor-file?"), &SetupConfig->decorBorderChannelByTheme));
     if( SetupConfig->decorBorderChannelByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Channelinfo border type"), Bordertypes[SetupConfig->decorBorderChannelTypeTheme]);
@@ -349,7 +352,7 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show additional EPG info"), &SetupConfig->EpgAdditionalInfoShow));
     Add(new cMenuEditPrcItem(tr("Main menuitem scale"), &SetupConfig->MainMenuItemScale, 0.2, 1, 0));
 
-    Add(new cMenuEditStraItem(tr("Menu channel type"), &SetupConfig->MenuChannelType, MenuChannelTypes.Size(), &MenuChannelTypes[0]));
+    Add(new cMenuEditStraItem(tr("Menu channel view"), &SetupConfig->MenuChannelType, MenuChannelTypes.Size(), &MenuChannelTypes[0]));
 
     Add(new cMenuEditBoolItem(tr("Menuitem border by decor-file?"), &SetupConfig->decorBorderMenuItemByTheme));
     if( SetupConfig->decorBorderMenuItemByTheme ) {
@@ -438,6 +441,7 @@ void cFlatSetupReplay::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Replay border by decor-file?"), &SetupConfig->decorBorderReplayByTheme));
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->RecordingResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->RecordingFormatShow));
+    Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->RecordingSimpleAspectFormat));
     
     if( SetupConfig->decorBorderReplayByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Replay border type"), Bordertypes[SetupConfig->decorBorderReplayTypeTheme]);

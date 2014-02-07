@@ -165,58 +165,93 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
         }
     }
 
-    if( Resolution && !isRadioChannel && Config.ChannelFormatShow && screenWidth > 0 ) {
-        cString iconName("");
-        switch (screenWidth) {
-            case 1920:
-            case 1440:
-            case 1280:
-                iconName = "hd";
-                break;
-            case 720:
-                iconName = "sd";
-                break;
-            default:
-                iconName = "sd";
-                break;
-        }
-        if (imgLoader.LoadIcon(*iconName, 999, height)) {
-            imageTop = top + (height - imgLoader.Height())/2;
-            left -= imgLoader.Width();
-            chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
-            left -= marginItem*2;
-        }
-    }
-    if( Config.ChannelResolutionAspectShow && Resolution && !isRadioChannel && screenWidth > 0 ) {
-        cString asp = "";
-        if( screenAspect == 4.0/3.0 )
-            asp = "43";
-        else if( screenAspect == 16.0/9.0 )
-            asp = "169";
-        else if( screenAspect == 2.21 )
-            asp = "221";
-        if (imgLoader.LoadIcon(*asp, 999, height)) {
-            imageTop = top + (height - imgLoader.Height())/2;
-            left -= imgLoader.Width();
-            chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
-            left -= marginItem*2;
+    if( Resolution && !isRadioChannel && screenWidth > 0 ) {
+        if( Config.ChannelResolutionAspectShow ) {     // Show Aspect
+            cString asp = "unknown_asp";                 // ???
+            if(Config.ChannelSimpleAspectFormat && screenWidth > 720) {
+                asp = "hd";                                // No aspect for HD
+            } else {
+                if( screenAspect == 4.0/3.0 )
+                    asp = "43";
+                else if( screenAspect == 16.0/9.0 )
+                    asp = "169";
+                else if( screenAspect == 2.21 )
+                    asp = "221";
+            }
+            if (imgLoader.LoadIcon(*asp, 999, height)) {
+                imageTop = top + (height - imgLoader.Height())/2;
+                left -= imgLoader.Width();
+                chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+                left -= marginItem*2;
+            }
         }
 
-        cString res = "";
-        if( screenHeight == 480 )
-            res = "480";
-        else if( screenHeight == 576 )
-            res = "576";
-        else if( screenHeight == 720 )
-            res = "720";
-        else if( screenHeight == 1080 )
-            res = "1080";
-        
-        if (imgLoader.LoadIcon(*res, 999, height)) {
-            imageTop = top + (height - imgLoader.Height())/2;
-            left -= imgLoader.Width();
-            chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
-            left -= marginItem*2;
+        if( Config.ChannelResolutionAspectShow ) {    // Show Resolution
+            cString res = "";
+
+            switch (screenWidth) {
+            case 1920:                        // 1920x1080 (HD1080 Full HDTV)
+                res = "1920x1080";
+                break;
+            case 1440:                        // 1440x1080 (HD1080 DV)
+                res = "1440x1080";
+                break;
+            case 1280:                        // 1280x720 (HD720)
+                res = "1280x720";
+                break;
+            case 960:                         // 960x720 (HD720 DV)
+                res = "960x720";
+                break;
+            case 720:                         // 720x576 (PAL)
+                res = "720x576";
+                break;
+            case 544:                         // 544x576 (PAL)
+                res = "544x576";
+                break;
+            case 528:                         // 528x576 (PAL)
+                res = "528x576";
+                break;
+            case 480:                         // 480x576 (PAL SVCD)
+                res = "480x576";
+                break;
+            case 352:                         // 352x576 (PAL CVD)
+                res = "352x576";
+                break;
+            default:
+                res = "unknown_res";         // TODO: Add Log line of resolution
+                dsyslog("unkown resolution Width: %d Height: %d Aspect: %.2f\n", screenWidth, screenHeight, screenAspect);
+                break;
+            }
+
+            if (imgLoader.LoadIcon(*res, 999, height)) {
+                imageTop = top + (height - imgLoader.Height())/2;
+                left -= imgLoader.Width();
+                chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+                left -= marginItem*2;
+            }
+        }
+        if( Config.ChannelFormatShow && !Config.ChannelSimpleAspectFormat) {
+            cString iconName("");      // Show Format
+            switch (screenWidth) {
+                case 1920:
+                case 1440:
+                case 1280:
+                    iconName = "hd";
+                    break;
+                case 720:
+                    iconName = "sd";
+                    break;
+                default:
+                    iconName = "sd";
+                    break;
+            }
+
+            if (imgLoader.LoadIcon(*iconName, 999, height)) {
+                imageTop = top + (height - imgLoader.Height())/2;
+                left -= imgLoader.Width();
+                chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+                left -= marginItem*2;
+            }
         }
     }
 }

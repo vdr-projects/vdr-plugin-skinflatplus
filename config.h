@@ -165,8 +165,10 @@ class cFlatConfig
         
         int ChannelResolutionAspectShow;
         int ChannelFormatShow;
+        int ChannelSimpleAspectFormat;
         int RecordingResolutionAspectShow;
         int RecordingFormatShow;
+        int RecordingSimpleAspectFormat;
         int RecordingAdditionalInfoShow;
         int EpgAdditionalInfoShow;
         int TopBarRecordingShow;

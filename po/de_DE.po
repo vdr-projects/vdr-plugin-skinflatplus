@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-02-07 20:48+0100\n"
+"POT-Creation-Date: 2014-02-07 21:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,13 +112,13 @@ msgid "big line + alpha blend"
 msgstr ""
 
 msgid "VDR default"
-msgstr ""
+msgstr "VDR standard"
 
 msgid "flatPlus long"
-msgstr ""
+msgstr "flatPlus lang"
 
 msgid "flatPlus short"
-msgstr ""
+msgstr "flatPlus kurz"
 
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
@@ -204,6 +204,9 @@ msgstr "Zeige Auflösung & Aspect"
 msgid "Show format (hd/sd)"
 msgstr "Zeige Format (hd/sd)"
 
+msgid "Simple aspect & format"
+msgstr "Einfache Aspekt und Formatanzeige"
+
 msgid "Channelinfo border by decor-file?"
 msgstr "Kanalinfo Rand von Decordatei?"
 
@@ -249,8 +252,8 @@ msgstr "Zeige Zusatzinfo bei EPG"
 msgid "Main menuitem scale"
 msgstr ""
 
-msgid "Menu channel type"
-msgstr ""
+msgid "Menu channel view"
+msgstr "Menü Kanal Ansicht"
 
 msgid "Menuitem border by decor-file?"
 msgstr "Menüitem Rand von Decordatei?"
@@ -262,7 +265,7 @@ msgid "Menuitem border size"
 msgstr "Menüitem Rand Größe"
 
 msgid "Menucont. border by decor-file?"
-msgstr ""
+msgstr "Menücont. Rand von Decordatei?"
 
 msgid "Menucont. border type"
 msgstr "Menü Rand Typ"

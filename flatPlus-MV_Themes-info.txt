@@ -1,0 +1,131 @@
+flatPlus-MV_Themen erstellt am 05.02.2014 12:28
+Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
+
+=> Installationshimnweise am Ende der Datei! <=
+
+Thema: Blue, Farbe: 0050EF 
+Thema: LightBlue, Farbe: 1BA1E2 
+Thema: Cyan, Farbe: 149BAF 
+Thema: Pflaume, Farbe: 6A00FF 
+Thema: Fog, Farbe: 111111, Hintergrund: DEDEDE Schriftfarbe: 647887
+Thema: Green 2, Farbe: 008A00, Hintergrund: 112211 
+Thema: LightGreen, Farbe: 70AD11 
+Thema: Mint, Farbe: A4C400 
+Thema: Olive, Farbe: 6D8764 
+Thema: Grey, Farbe: 647687 
+Thema: Purple, Farbe: 6C0AAB 
+Thema: PurpleGrey, Farbe: 76608A 
+Thema: Berry, Farbe: A61D4D 
+Thema: Chocolate, Farbe: 825A2C 
+Thema: XMAS, Farbe: CC1111, Hintergrund: 114511 
+Thema: Cappuchino, Farbe: 87794E 
+Thema: Nuts, Farbe: BF9217 
+Thema: Rauchglas, Farbe: 825A2C, Hintergrund: 200F02 
+Thema: Grapefruit, Farbe: C3461B 
+Thema: Blood, Farbe: 911D10, Hintergrund: 221111 
+Thema: Red, Farbe: E51400 
+Thema: Pumpkin, Farbe: F0A30A 
+Thema: HelloKitty 2, Farbe: F472D0, Hintergrund: FF80F0 
+Thema: HelloKitty, Farbe: F472D0 
+24 Themen erstellt. 6 davon mit Hintergrund.
+Insgesamt 25 Icon-Ordner erstellt
+
+Installationshinweise:
+ - Alle *.theme aus dem Ordner themes nach <vdrconfigdir>/themes kopieren.
+ - Alle *.decor aus dem Ordner decors nach <vdrconfigdir>/plugins/skinflatplus/decors kopieren.
+ - Alle MV* Ordner aus dem Ordner icons nach <vdrconfigdir>/plugins/skinflatplus/icons kopieren.
+
+Optional (Pfade evtl. Anpassen!):
+ - Schrift(en) aus dem Ordner contrib nach /usr/share/fonts kopieren.
+   Die Schriften enthalten auch die VDR-Symbole.
+
+Empfohlene Einstellungen im skin-flatplus-Plugin:
+skinflatplus.ButtonsShowEmpty = 0
+skinflatplus.ChannelFormatShow = 1
+skinflatplus.ChannelIconsShow = 1
+skinflatplus.ChannelResolutionAspectShow = 1
+skinflatplus.decorBorderButtonByTheme = 1
+skinflatplus.decorBorderButtonSizeUser = 5
+skinflatplus.decorBorderButtonTypeUser = 0
+skinflatplus.decorBorderChannelByTheme = 1
+skinflatplus.decorBorderChannelSizeUser = 5
+skinflatplus.decorBorderChannelTypeUser = 1
+skinflatplus.decorBorderMenuContentByTheme = 1
+skinflatplus.decorBorderMenuContentHeadByTheme = 1
+skinflatplus.decorBorderMenuContentHeadSizeUser = 0
+skinflatplus.decorBorderMenuContentHeadTypeUser = 0
+skinflatplus.decorBorderMenuContentSizeUser = 0
+skinflatplus.decorBorderMenuContentTypeUser = 0
+skinflatplus.decorBorderMenuItemByTheme = 1
+skinflatplus.decorBorderMenuItemSizeUser = 2
+skinflatplus.decorBorderMenuItemTypeUser = 1
+skinflatplus.decorBorderMessageByTheme = 1
+skinflatplus.decorBorderMessageSizeUser = 0
+skinflatplus.decorBorderMessageTypeUser = 0
+skinflatplus.decorBorderReplayByTheme = 1
+skinflatplus.decorBorderReplaySizeUser = 0
+skinflatplus.decorBorderReplayTypeUser = 1
+skinflatplus.decorBorderTopBarByTheme = 1
+skinflatplus.decorBorderTopBarSizeUser = 5
+skinflatplus.decorBorderTopBarTypeUser = 1
+skinflatplus.decorBorderTrackByTheme = 1
+skinflatplus.decorBorderTrackSizeUser = 0
+skinflatplus.decorBorderTrackTypeUser = 0
+skinflatplus.decorBorderVolumeByTheme = 1
+skinflatplus.decorBorderVolumeSizeUser = 0
+skinflatplus.decorBorderVolumeTypeUser = 0
+skinflatplus.DecorIndex = 18
+skinflatplus.decorProgressChannelByTheme = 1
+skinflatplus.decorProgressChannelSizeUser = 20
+skinflatplus.decorProgressChannelTypeUser = 0
+skinflatplus.decorProgressMenuItemByTheme = 1
+skinflatplus.decorProgressMenuItemSizeUser = 20
+skinflatplus.decorProgressMenuItemTypeUser = 0
+skinflatplus.decorProgressReplayByTheme = 1
+skinflatplus.decorProgressReplaySizeUser = 20
+skinflatplus.decorProgressReplayTypeUser = 0
+skinflatplus.decorProgressSignalByTheme = 1
+skinflatplus.decorProgressSignalSizeUser = 20
+skinflatplus.decorProgressSignalTypeUser = 0
+skinflatplus.decorProgressVolumeByTheme = 1
+skinflatplus.decorProgressVolumeSizeUser = 20
+skinflatplus.decorProgressVolumeTypeUser = 0
+skinflatplus.DiskUsageShow = 1
+skinflatplus.EpgAdditionalInfoShow = 1
+skinflatplus.marginOsdHor = 0
+skinflatplus.marginOsdVer = 0
+skinflatplus.MenuContentFullSize = 0
+skinflatplus.MenuItemIconsShow = 1
+skinflatplus.MenuItemPadding = 0
+skinflatplus.MessageOffset = 0
+skinflatplus.RecordingAdditionalInfoShow = 1
+skinflatplus.RecordingFormatShow = 1
+skinflatplus.RecordingResolutionAspectShow = 1
+skinflatplus.SignalQualityShow = 1
+skinflatplus.TopBarFontSize = 0.048000
+skinflatplus.TopBarMenuIconShow = 1
+skinflatplus.TopBarRecordingShow = 1
+
+Empfohlene Einstellungen im VDR (Menue - Einstellungen - OSD):
+FontFix = Nimbus Mono L:Bold
+FontFixSize = 33
+FontFixSizeP = 0.031000
+FontOsd = VDRPT Sans:Regular
+FontOsdSize = 42
+FontOsdSizeP = 0.039000
+FontSml = VDRPT Sans:Regular
+FontSmlSize = 33
+FontSmlSizeP = 0.031000
+OSDAspect = 1.000000
+OSDHeight = 1080
+OSDHeightP = 1.000000
+OSDLanguage = de_DE
+OSDLeft = 0
+OSDLeftP = 0.000000
+OSDMessageTime = 5
+OSDSkin = flatPlus
+OSDTheme = MVPumpkin
+OSDTop = 0
+OSDTopP = 0.000000
+OSDWidth = 1920
+OSDWidthP = 1.000000

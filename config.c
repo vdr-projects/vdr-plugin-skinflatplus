@@ -20,8 +20,11 @@ cFlatConfig::cFlatConfig(void) {
     
     ChannelFormatShow = true;
     ChannelResolutionAspectShow = true;
+    ChannelSimpleAspectFormat = true;
+    
     RecordingResolutionAspectShow = true;
     RecordingFormatShow = true;
+    RecordingSimpleAspectFormat = true;
     
     RecordingAdditionalInfoShow = true;
     EpgAdditionalInfoShow = true;
@@ -175,6 +178,8 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "DecorIndex") == 0)                           DecorIndex = atoi(Value);
     else if (strcmp(Name, "MainMenuItemScale") == 0)                    MainMenuItemScale = atod(Value);
     else if (strcmp(Name, "MenuChannelType") == 0)                      MenuChannelType = atoi(Value);
+    else if (strcmp(Name, "ChannelSimpleAspectFormat") == 0)            ChannelSimpleAspectFormat = atoi(Value);
+    else if (strcmp(Name, "RecordingSimpleAspectFormat") == 0)          RecordingSimpleAspectFormat = atoi(Value);
    
     else return false;
     
