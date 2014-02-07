@@ -1,6 +1,11 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
+2013-12-XX: Version 0.1.1
+
+- [fix] load user decor settings
+- [fix] menu scrollbar size and margin
+
 2013-11-24: Version 0.1.0 - MegaV0lt Version
 Special thanks to MegaV0lt@VDR-Portal for
 detailed bug reports, feature requests, testing and themes + icons

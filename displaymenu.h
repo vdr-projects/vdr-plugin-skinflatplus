@@ -8,7 +8,8 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         cPixmap *menuPixmap;
         cPixmap *menuIconsPixmap;
         int menuTop, menuWidth;
-
+        int menuItemWidth;
+    
         eMenuCategory menuCategory;
         int VideoDiskUsageState;
     
@@ -62,7 +63,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         
         //virtual bool SetItemEvent(const cEvent *Event, int Index, bool Current, bool Selectable, const cChannel *Channel, bool WithDate, eTimerMatch TimerMatch);
         //virtual bool SetItemTimer(const cTimer *Timer, int Index, bool Current, bool Selectable);
-        //virtual bool SetItemChannel(const cChannel *Channel, int Index, bool Current, bool Selectable, bool WithProvider);
+        virtual bool SetItemChannel(const cChannel *Channel, int Index, bool Current, bool Selectable, bool WithProvider);
         //virtual bool SetItemRecording(const cRecording *Recording, int Index, bool Current, bool Selectable, int Level, int Total, int New);
 
         virtual void SetScrollbar(int Total, int Offset);

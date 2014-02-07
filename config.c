@@ -37,6 +37,10 @@ cFlatConfig::cFlatConfig(void) {
     TopBarFontSize = 0.05;
     MessageOffset = 50;
     
+    MainMenuItemScale = 1.0;
+    
+    MenuChannelType = 1;
+    
     decorBorderChannelByTheme = 1;
     decorBorderChannelTypeUser = 0;
     decorBorderChannelSizeUser = 0;
@@ -169,6 +173,9 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MenuItemIconsShow") == 0)                    MenuItemIconsShow = atoi(Value);
     else if (strcmp(Name, "TopBarMenuIconShow") == 0)                   TopBarMenuIconShow = atoi(Value);
     else if (strcmp(Name, "DecorIndex") == 0)                           DecorIndex = atoi(Value);
+    else if (strcmp(Name, "MainMenuItemScale") == 0)                    MainMenuItemScale = atod(Value);
+    else if (strcmp(Name, "MenuChannelType") == 0)                      MenuChannelType = atoi(Value);
+   
     else return false;
     
     return true;
@@ -186,7 +193,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
     if( DecorCurrent != DecorIndex ) {
         DecorCurrent = DecorIndex;
         DecorLoadCurrent();
-
+    }
         if( decorBorderChannelByTheme ) {
             decorBorderChannelType = decorBorderChannelTypeTheme;
             decorBorderChannelSize = decorBorderChannelSizeTheme;
@@ -327,7 +334,6 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorBorderMenuContentSize = 0;
         if( decorBorderButtonType == 0 )
             decorBorderButtonSize = 0;
-    }
 }
 
 void cFlatConfig::ThemeInit(void) {

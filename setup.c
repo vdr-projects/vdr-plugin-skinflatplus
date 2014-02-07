@@ -2,6 +2,7 @@
 
 cStringList Bordertypes;
 cStringList Progresstypes;
+cStringList MenuChannelTypes;
 
 cFlatSetup::cFlatSetup(void) {
     SetupConfig = Config;
@@ -36,6 +37,10 @@ void cFlatSetup::Setup(void) {
     Progresstypes.Append( strdup(tr("outline + dot")) );
     Progresstypes.Append( strdup(tr("small line + big line + alpha blend")) );
     Progresstypes.Append( strdup(tr("big line + alpha blend")) );
+
+    MenuChannelTypes.Append( strdup(tr("VDR default")) );
+    MenuChannelTypes.Append( strdup(tr("flatPlus long")) );
+    MenuChannelTypes.Append( strdup(tr("flatPlus short")) );
 
     Add(new cOsdItem(tr("General settings"), osUnknown, true));
     Add(new cOsdItem(tr("Channelinfo settings"), osUnknown, true));
@@ -144,7 +149,9 @@ void cFlatSetup::Store(void) {
     SetupStore("MenuItemIconsShow", Config.MenuItemIconsShow);
     SetupStore("TopBarMenuIconShow", Config.TopBarMenuIconShow);
     SetupStore("DecorIndex", Config.DecorIndex);
-    
+    SetupStore("MainMenuItemScale", dtoa(Config.MainMenuItemScale));
+    SetupStore("MenuChannelType", Config.MenuChannelType);
+   
     Config.Init();
 }
 
@@ -340,6 +347,9 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Menu content fullsize background"), &SetupConfig->MenuContentFullSize));
     Add(new cMenuEditBoolItem(tr("Show additional recording info"), &SetupConfig->RecordingAdditionalInfoShow));
     Add(new cMenuEditBoolItem(tr("Show additional EPG info"), &SetupConfig->EpgAdditionalInfoShow));
+    Add(new cMenuEditPrcItem(tr("Main menuitem scale"), &SetupConfig->MainMenuItemScale, 0.2, 1, 0));
+
+    Add(new cMenuEditStraItem(tr("Menu channel type"), &SetupConfig->MenuChannelType, MenuChannelTypes.Size(), &MenuChannelTypes[0]));
 
     Add(new cMenuEditBoolItem(tr("Menuitem border by decor-file?"), &SetupConfig->decorBorderMenuItemByTheme));
     if( SetupConfig->decorBorderMenuItemByTheme ) {

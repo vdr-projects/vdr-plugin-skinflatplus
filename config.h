@@ -173,5 +173,9 @@ class cFlatConfig
         int MenuItemIconsShow;
         int TopBarMenuIconShow;
         
+        double MainMenuItemScale;
+        
+        int MenuChannelType;
+        
         int DecorIndex;
 };

@@ -847,7 +847,7 @@ void cFlatBaseRender::ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Heig
         int scrollHeight = max(int((Height) * double(Shown) / Total + 0.5), 5);
         int scrollTop = min(int(Top + (Height) * double(Offset) / Total + 0.5), Top + Height - scrollHeight);
 
-        //Pixmap->Fill(clrTransparent);
+        Pixmap->Fill(clrTransparent);
         Pixmap->DrawRectangle(cRect(Left, Top, scrollBarWidth, Height), Theme.Color(clrScrollbarBg));
 
         if( scrollBarWidth <= 10 )
