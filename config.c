@@ -416,7 +416,7 @@ void cFlatConfig::Init(void) {
     DecorCheckAndInit();
 }
 
-bool stringCompare( const std::string &left, const std::string &right ){
+bool stringCompare( const std::string &left, const std::string &right ) {
    for( std::string::const_iterator lit = left.begin(), rit = right.begin(); lit != left.end() && rit != right.end(); ++lit, ++rit )
       if( tolower( *lit ) < tolower( *rit ) )
          return true;

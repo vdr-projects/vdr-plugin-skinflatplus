@@ -246,8 +246,21 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
     int y = Index * itemHeight;
     menuItemWidth = menuWidth - Config.decorBorderMenuItemSize*2;
 
-    //if( menuCategory == mcMain )
-    //    menuItemWidth *= 0.5;
+    switch( menuCategory ) {
+        case mcMain:
+        case mcSchedule:
+        case mcScheduleNow:
+        case mcScheduleNext:
+        case mcChannel:
+        case mcTimer:
+        case mcRecording:
+        case mcCommand:
+        case mcEvent:
+            menuItemWidth *= Config.MainMenuItemScale;
+            break;
+        default:
+            break;
+    }
     
     int AvailableTextWidth = menuItemWidth - scrollBarWidth;
     if( isScrolling )
