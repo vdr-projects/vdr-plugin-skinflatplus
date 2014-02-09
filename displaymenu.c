@@ -44,8 +44,8 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     itemChannelHeight = fontHeight + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
     
     scrollBarWidth = ScrollBarWidth() + marginItem;
-    scrollBarHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 + 
-        buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 );
+    scrollBarHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 + marginItem*3 + buttonsHeight + Config.decorBorderButtonSize*2);
+
     scrollBarTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2;
     isScrolling = false;
     ShowEvent = false;
@@ -62,8 +62,8 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     chWidth = menuWidth - Config.decorBorderMenuContentHeadSize*2;
     chHeight = fontHeight + fontSmlHeight*2 + marginItem*2;
     contentHeadPixmap = osd->CreatePixmap(1, cRect(chLeft, chTop, chWidth, chHeight));
-    
-    scrollbarPixmap = osd->CreatePixmap(2, cRect(0, scrollBarTop, menuWidth, scrollBarHeight));
+        
+    scrollbarPixmap = osd->CreatePixmap(2, cRect(0, scrollBarTop, menuWidth, scrollBarHeight + buttonsHeight + Config.decorBorderButtonSize*2));
 
     menuPixmap->Fill(clrTransparent);
     menuIconsPixmap->Fill(clrTransparent);
@@ -90,11 +90,11 @@ void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
     menuCategory = MenuCategory;
     
     if( menuCategory == mcChannel ) {
-        if( Config.MenuChannelType == 0 )
+        if( Config.MenuChannelView == 0 )
             itemChannelHeight = fontHeight + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
-        else if( Config.MenuChannelType == 1 )
+        else if( Config.MenuChannelView == 1 )
             itemChannelHeight = fontHeight + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
-        else if( Config.MenuChannelType == 2 )
+        else if( Config.MenuChannelView == 2 || Config.MenuChannelView == 3 )
             itemChannelHeight = fontHeight + fontSmlHeight + marginItem + Config.decorProgressMenuItemSize + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
         
     }
@@ -122,13 +122,10 @@ void cFlatDisplayMenu::SetScrollbar(int Total, int Offset) {
 
 void cFlatDisplayMenu::Scroll(bool Up, bool Page) {
     // Wird das Menü gescrollt oder Content?
-    if( ContentIsShown() )
-    {
+    if( ContentIsShown() ) {
         bool scrolled = ContentScroll(Up, Page);
         if( scrolled )
-        {
             DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
-        }
     } else {
         cSkinDisplayMenu::Scroll(Up, Page);
     }
@@ -552,21 +549,22 @@ void cFlatDisplayMenu::DrawProgressBarFromText(int Top, int Left, int Width, con
 }
 
 bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool Current, bool Selectable, bool WithProvider) {
-    if( Config.MenuChannelType == 0 || !Channel )
+    if( Config.MenuChannelView == 0 || !Channel )
         return false;
     
     cSchedulesLock schedulesLock;
     const cSchedules *schedules = cSchedules::Schedules(schedulesLock);
-
+    const cEvent *Event = NULL;
+    
     cString buffer;
     int y = Index * itemChannelHeight;
 
     int Height = fontHeight;
-    if( Config.MenuChannelType == 2 )
+    if( Config.MenuChannelView == 2 || Config.MenuChannelView == 3 )
         Height = fontHeight + fontSmlHeight + marginItem + Config.decorProgressMenuItemSize;
     
     menuItemWidth = menuWidth - Config.decorBorderMenuItemSize*2;
-    if( Config.MenuChannelType == 2 )
+    if( Config.MenuChannelView == 2 || Config.MenuChannelView == 3 )
         menuItemWidth *= 0.5;
 
     if( isScrolling )
@@ -654,7 +652,7 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
     // event from channel
     const cSchedule *Schedule = schedules->GetSchedule( Channel->GetChannelID() );
     if( Schedule ) {
-        const cEvent *Event = Schedule->GetPresentEvent();
+        Event = Schedule->GetPresentEvent();
         if( Event ) {
             // calculate progress bar
             progress = (int)roundf( (float)(time(NULL) - Event->StartTime()) / (float) (Event->Duration()) * 100.0);
@@ -676,7 +674,7 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
     if( isScrolling )
         Width = (menuItemWidth + scrollBarWidth) / 10*2;
     
-    if( Config.MenuChannelType == 2 )
+    if( Config.MenuChannelView == 2 || Config.MenuChannelView == 3 )
         Width = menuItemWidth - LeftName;
     
     menuPixmap->DrawText(cPoint(LeftName, Top), buffer, ColorFg, ColorBg, font, Width);
@@ -687,7 +685,7 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
         int PBTop = y + (itemChannelHeight-Config.MenuItemPadding)/2 - Config.decorProgressMenuItemSize/2 - Config.decorBorderMenuItemSize;
         int PBLeft = Left;
         int PBWidth = menuItemWidth/10;
-        if( Config.MenuChannelType == 2 ) {
+        if( Config.MenuChannelView == 2 || Config.MenuChannelView == 3 ) {
             PBTop = Top + fontHeight + fontSmlHeight;
             PBLeft = Left - Width - marginItem;
             PBWidth = menuItemWidth - LeftName - marginItem*2;
@@ -710,7 +708,7 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
         Left += Width + marginItem;
     }
 
-    if( Config.MenuChannelType == 2 ) {
+    if( Config.MenuChannelView == 2 || Config.MenuChannelView == 3 ) {
         Left = LeftName;
         Top += fontHeight;
         menuPixmap->DrawText(cPoint(Left, Top), EventTitle, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem );
@@ -753,7 +751,104 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
         ItemBorderInsertUnique(ib);
     }
 
+    if( (Config.MenuChannelView == 2 || Config.MenuChannelView == 3) && Event && Current ) {
+        SetItemChannelDrawEvent(Event);
+    }
+    
     return true;
+}
+
+void cFlatDisplayMenu::SetItemChannelDrawEvent(const cEvent *Event) {
+
+    cLeft = menuItemWidth + Config.decorBorderMenuItemSize*2 + Config.decorBorderMenuContentSize + marginItem;
+    if( isScrolling )
+        cLeft += scrollBarWidth;
+    cTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentSize;
+    cWidth = menuWidth - cLeft - Config.decorBorderMenuContentSize;
+    cHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
+        buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + Config.decorBorderMenuContentSize*2);
+
+    // Description
+    ostringstream text;
+    if( !isempty(Event->Description()) ) {
+        text << Event->Description();
+    }
+   
+    if( Config.EpgAdditionalInfoShow ) {
+        text << endl;
+        const cComponents *Components = Event->Components();
+        if (Components) {
+            ostringstream audio;
+            bool firstAudio = true;
+            const char *audio_type = NULL;
+            ostringstream subtitle;
+            bool firstSubtitle = true;
+            for (int i = 0; i < Components->NumComponents(); i++) {
+                const tComponent *p = Components->Component(i);
+                switch (p->stream) {
+                    case sc_video_MPEG2:
+                        if (p->description)
+                            text << endl << tr("Video") << ": " <<  p->description << " (MPEG2)";
+                        else
+                            text << endl << tr("Video") << ": MPEG2";
+                        break;
+                    case sc_video_H264_AVC:
+                        if (p->description)
+                            text << endl << tr("Video") << ": " <<  p->description << " (H.264)";
+                        else
+                            text << endl << tr("Video") << ": H.264";
+                        break;
+
+                    case sc_audio_MP2:
+                    case sc_audio_AC3:
+                    case sc_audio_HEAAC:
+                        if (firstAudio)
+                            firstAudio = false;
+                        else
+                            audio << ", ";
+                        switch (p->stream) {
+                            case sc_audio_MP2:
+                                // workaround for wrongfully used stream type X 02 05 for AC3
+                                if (p->type == 5)
+                                    audio_type = "AC3";
+                                else
+                                    audio_type = "MP2";
+                                break;
+                            case sc_audio_AC3:
+                                audio_type = "AC3"; break;
+                            case sc_audio_HEAAC:
+                                audio_type = "HEAAC"; break;
+                        }
+                        if (p->description)
+                            audio << p->description << " (" << audio_type << ", " << p->language << ")";
+                        else
+                            audio << p->language << " (" << audio_type << ")";
+                        break;
+                    case sc_subtitle:
+                        if (firstSubtitle)
+                            firstSubtitle = false;
+                        else
+                            subtitle << ", ";
+                        if (p->description)
+                            subtitle << p->description << " (" << p->language << ")";
+                        else
+                            subtitle << p->language;
+                        break;
+                }
+            }
+            if (audio.str().length() > 0)
+                text << endl << tr("Audio") << ": "<< audio.str();
+            if (subtitle.str().length() > 0)
+                text << endl << tr("Subtitle") << ": "<< subtitle.str();
+        }
+    }
+    
+    ContentCreate(cLeft, cTop, cWidth, cHeight, 2);
+    
+    ContentSet( text.str().c_str(), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
+
+    DecorBorderDraw(cLeft, cTop, cWidth, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+        Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
 }
 
 void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
@@ -772,6 +867,11 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
     cHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
         buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + 
         chHeight + Config.decorBorderMenuContentHeadSize*2 + Config.decorBorderMenuContentSize*2);
+
+    if( !ButtonsDrawn() )
+        cHeight += buttonsHeight + Config.decorBorderButtonSize*2;
+
+    menuItemWidth = cWidth;
 
     contentHeadPixmap->Fill(clrTransparent);
     contentHeadPixmap->DrawRectangle(cRect(0, 0, menuWidth, fontHeight + fontSmlHeight*2 + marginItem*2), Theme.Color(clrScrollbarBg));
@@ -867,16 +967,17 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         }
     }
     
-    bool contentScrollable = ContentWillItBeScrollable(cWidth, cHeight, text.str().c_str(), false);
+    bool contentScrollable = ContentWillItBeScrollable(cWidth, cHeight, text.str().c_str(), 0);
     if( contentScrollable ) {
         cWidth -= scrollBarWidth;
     }
 
-    ContentCreate(cLeft, cTop, cWidth, cHeight, false);
+    ContentCreate(cLeft, cTop, cWidth, cHeight, 0);
     
-    ContentSet( text.str().c_str(), false, Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
-    if( ContentScrollable() )
+    ContentSet( text.str().c_str(), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
+    if( ContentScrollable() ) {
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
+    }
 
     if( Config.MenuContentFullSize || ContentScrollable() )
         DecorBorderDraw(cLeft, cTop, cWidth, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
@@ -914,7 +1015,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     chWidth = menuWidth - Config.decorBorderMenuContentHeadSize*2;
     chHeight = fontHeight + fontSmlHeight*2 + marginItem*2;
     contentHeadPixmap = osd->CreatePixmap(1, cRect(chLeft, chTop, chWidth, chHeight));
-    
+
     cLeft = Config.decorBorderMenuContentSize;
     cTop = chTop + marginItem*3 + fontHeight + fontSmlHeight*2 +
         Config.decorBorderMenuContentSize + Config.decorBorderMenuContentHeadSize;
@@ -922,6 +1023,11 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     cHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
         buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + 
         chHeight + Config.decorBorderMenuContentHeadSize*2 + Config.decorBorderMenuContentSize*2);
+
+    if( !ButtonsDrawn() )
+        cHeight += buttonsHeight + Config.decorBorderButtonSize*2;
+
+    menuItemWidth = cWidth;
 
     ostringstream text;
     text.imbue(std::locale(""));
@@ -1112,12 +1218,12 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         }
     }
 
-    bool contentScrollable = ContentWillItBeScrollable(cWidth, cHeight, text.str().c_str(), false);
+    bool contentScrollable = ContentWillItBeScrollable(cWidth, cHeight, text.str().c_str(), 0);
     if( contentScrollable ) {
         cWidth -= scrollBarWidth;
     }
 
-    ContentCreate(cLeft, cTop, cWidth, cHeight, false);
+    ContentCreate(cLeft, cTop, cWidth, cHeight, 0);
     
     contentHeadPixmap->Fill(clrTransparent);
     contentHeadPixmap->DrawRectangle(cRect(0, 0, menuWidth, fontHeight + fontSmlHeight*2 + marginItem*2), Theme.Color(clrScrollbarBg));
@@ -1136,7 +1242,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     DecorBorderDraw(chLeft, chTop, chWidth, chHeight, Config.decorBorderMenuContentHeadSize, Config.decorBorderMenuContentHeadType,
         Config.decorBorderMenuContentHeadFg, Config.decorBorderMenuContentHeadBg);
     
-    ContentSet( text.str().c_str(), false, Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg) );
+    ContentSet( text.str().c_str(), Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg) );
     if( ContentScrollable() ) {
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
     }
@@ -1176,16 +1282,23 @@ void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
     int Top = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentSize;
     int Width = menuWidth - Config.decorBorderMenuContentSize*2;
     int Height = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
-        buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3);
+        buttonsHeight + Config.decorBorderButtonSize*2 + Config.decorBorderMenuContentSize*2 + marginItem);
+
+    if( !ButtonsDrawn() )
+        Height += buttonsHeight + Config.decorBorderButtonSize*2;
 
     bool contentScrollable = ContentWillItBeScrollable(Width, Height, Text, FixedFont);
     if( contentScrollable ) {
         Width -= scrollBarWidth;
     }
 
-    ContentCreate(Left, Top, Width, Height, FixedFont);
+    if( FixedFont )
+        ContentCreate(Left, Top, Width, Height, 2);
+    else
+        ContentCreate(Left, Top, Width, Height, 2);
 
-    ContentSet( Text, FixedFont, Theme.Color(clrMenuTextFont), Theme.Color(clrMenuTextBg) );
+    ContentSet( Text, Theme.Color(clrMenuTextFont), Theme.Color(clrMenuTextBg) );
+    
     if( ContentScrollable() )
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
 

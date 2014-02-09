@@ -23,6 +23,7 @@ cFlatBaseRender::cFlatBaseRender(void) {
     scrollBarWidth = 10;
     
     buttonsHeight = 0;
+    buttonsDrawn = false;
     
     osd = NULL;
     topBarPixmap = NULL;
@@ -265,13 +266,16 @@ void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char 
     int buttonWidth = (WidthMargin / 4) - Config.decorBorderButtonSize*2;
 
     buttonsPixmap->Fill(clrTransparent);
-
+    
+    buttonsDrawn = false;
+    
     int x = 0;
     if( !(!Config.ButtonsShowEmpty && !Red) ) {
         buttonsPixmap->DrawText(cPoint(x, 0), Red, Theme.Color(clrButtonFont), Theme.Color(clrButtonBg), font, buttonWidth, fontHeight + marginButtonColor, taCenter);
         buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonRed));
         DecorBorderDraw(x + Config.decorBorderButtonSize, buttonsTop, buttonWidth, buttonsHeight, Config.decorBorderButtonSize, Config.decorBorderButtonType,
             Config.decorBorderButtonFg, Config.decorBorderButtonBg);
+        buttonsDrawn = true;
     }
 
     x += buttonWidth + marginItem + Config.decorBorderButtonSize*2;
@@ -280,6 +284,7 @@ void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char 
         buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonGreen));
         DecorBorderDraw(x + Config.decorBorderButtonSize, buttonsTop, buttonWidth, buttonsHeight, Config.decorBorderButtonSize, Config.decorBorderButtonType,
             Config.decorBorderButtonFg, Config.decorBorderButtonBg);
+        buttonsDrawn = true;
     }
     
     x += buttonWidth + marginItem + Config.decorBorderButtonSize*2;
@@ -288,6 +293,7 @@ void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char 
         buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonYellow));
         DecorBorderDraw(x + Config.decorBorderButtonSize, buttonsTop, buttonWidth, buttonsHeight, Config.decorBorderButtonSize, Config.decorBorderButtonType,
             Config.decorBorderButtonFg, Config.decorBorderButtonBg);
+        buttonsDrawn = true;
     }
     
     x += buttonWidth + marginItem + Config.decorBorderButtonSize*2;
@@ -298,7 +304,12 @@ void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char 
         buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonBlue));
         DecorBorderDraw(x + Config.decorBorderButtonSize, buttonsTop, buttonWidth, buttonsHeight, Config.decorBorderButtonSize, Config.decorBorderButtonType,
             Config.decorBorderButtonFg, Config.decorBorderButtonBg);
+        buttonsDrawn = true;
     }
+}
+
+bool cFlatBaseRender::ButtonsDrawn(void) {
+    return buttonsDrawn;
 }
 
 void cFlatBaseRender::MessageCreate(void) {
@@ -342,10 +353,10 @@ void cFlatBaseRender::MessageClear(void) {
     DecorBorderRedrawAll();
 }
 
-void cFlatBaseRender::ContentCreate(int Left, int Top, int Width, int Height, bool FixedFont) {
+void cFlatBaseRender::ContentCreate(int Left, int Top, int Width, int Height, int FontType) {
     contentHasScrollbar = false;
     contentShown = false;
-    contentFixedFont = FixedFont;
+    contentFontType = FontType;
 
     contentLeft = Left;
     contentTop = Top;
@@ -353,26 +364,37 @@ void cFlatBaseRender::ContentCreate(int Left, int Top, int Width, int Height, bo
     contentHeight = Height;
     int lines = ContentVisibleLines();
     
-    contentHeight = lines * fontHeight;
-    if( contentFixedFont )
+    if( contentFontType == 0 )
+        contentHeight = lines * fontHeight;
+    else if( contentFontType == 1 )
         contentHeight = lines * fontFixedHeight;
+    else if( contentFontType == 2 )
+        contentHeight = lines * fontSmlHeight;
 
 }
 
-void cFlatBaseRender::ContentSet(const char *Text, bool FixedFont, tColor ColorFg, tColor ColorBg) {
-    contentFixedFont = FixedFont;
-    if( contentFixedFont )
-        contentWrapper.Set(Text, fontFixed, contentWidth - marginItem*2);
-    else
+void cFlatBaseRender::ContentSet(const char *Text, tColor ColorFg, tColor ColorBg) {
+    if( contentFontType == 0 )
         contentWrapper.Set(Text, font, contentWidth - marginItem*2);
+    else if( contentFontType == 1 )
+        contentWrapper.Set(Text, fontFixed, contentWidth - marginItem*2);
+    else if( contentFontType == 2 )
+        contentWrapper.Set(Text, fontSml, contentWidth - marginItem*2);
     
     contentColorFg = ColorFg;
     contentColorBg = ColorBg;
 
-    int contentWrapperHeight = (contentWrapper.Lines()+1) * fontHeight;
-    contentTextHeight = (contentWrapper.Lines()) * fontHeight + marginItem;
-    if( contentFixedFont )
+    int contentWrapperHeight = 0;
+    if( contentFontType == 0 ) {
+        contentWrapperHeight = (contentWrapper.Lines()+1) * fontHeight;
+        contentTextHeight = (contentWrapper.Lines()) * fontHeight + marginItem;
+    } else if( contentFontType == 1 ) {
         contentWrapperHeight = (contentWrapper.Lines()+1) * fontFixedHeight;
+        contentTextHeight = (contentWrapper.Lines()) * fontFixedHeight + marginItem;
+    } else if( contentFontType == 2 ) {
+        contentWrapperHeight = (contentWrapper.Lines()+1) * fontSmlHeight;
+        contentTextHeight = (contentWrapper.Lines()) * fontSmlHeight + marginItem;
+    }
         
     if( contentWrapperHeight > contentHeight ) {
         contentDrawPortHeight = contentWrapperHeight;
@@ -399,16 +421,22 @@ void cFlatBaseRender::ContentSet(const char *Text, bool FixedFont, tColor ColorF
     contentShown = true;
 }
 
-bool cFlatBaseRender::ContentWillItBeScrollable(int Width, int Height, const char *Text, bool FixedFont) {
+bool cFlatBaseRender::ContentWillItBeScrollable(int Width, int Height, const char *Text, int FontType) {
     cTextWrapper wrapper;
-    if( FixedFont )
-        wrapper.Set(Text, fontFixed, Width - marginItem*2);
-    else
+    if( FontType == 0 )
         wrapper.Set(Text, font, Width - marginItem*2);
+    else if( FontType == 1 )
+        wrapper.Set(Text, fontFixed, Width - marginItem*2);
+    else if( FontType == 2 )
+        wrapper.Set(Text, fontSml, Width - marginItem*2);
 
-    int VisibleLines = Height / fontHeight;
-    if( FixedFont )
+    int VisibleLines = 0;
+    if( FontType == 0 )
+        VisibleLines = Height / fontHeight;
+    else if( FontType == 1 )
         VisibleLines = Height / fontFixedHeight;
+    else if( FontType == 2 )
+        VisibleLines = Height / fontSmlHeight;
 
     if( wrapper.Lines() > 0 && wrapper.Lines() > VisibleLines )
         return true;
@@ -438,9 +466,13 @@ int cFlatBaseRender::ContentScrollTotal(void) {
 
 int cFlatBaseRender::ContentScrollOffset(void) {
     double offset;
-    int h = fontHeight;
-    if( contentFixedFont )
+    int h = 0;
+    if( contentFontType == 0 )
+        h = fontHeight;
+    else if( contentFontType == 1 )
         h = fontFixedHeight;
+    else if( contentFontType == 2 )
+        h = fontSmlHeight;
     
     if ( ((-1)*contentPixmap->DrawPort().Point().Y() + contentHeight + h) > contentDrawPortHeight) {
         offset = (double)1 - ScrollbarSize();
@@ -452,42 +484,51 @@ int cFlatBaseRender::ContentScrollOffset(void) {
 }
 
 int cFlatBaseRender::ContentVisibleLines(void) {
-    if( contentFixedFont )
-        return contentHeight / fontFixedHeight;
-    else
+    if( contentFontType == 0 )
         return contentHeight / fontHeight;
+    else if( contentFontType == 1 )
+        return contentHeight / fontFixedHeight;
+    else if( contentFontType == 2 )
+        return contentHeight / fontSmlHeight;
+    return 0;
 }
 
 bool cFlatBaseRender::ContentScroll(bool Up, bool Page) {
     int aktHeight = contentPixmap->DrawPort().Point().Y();
     int totalHeight = contentPixmap->DrawPort().Height();
     int screenHeight = contentPixmap->ViewPort().Height();
-    int lineHeight = fontHeight;
-    if( contentFixedFont )
+    int lineHeight = 0;
+    
+    if( contentFontType == 0 )
+        lineHeight = fontHeight;
+    else if( contentFontType == 1 )
         lineHeight = fontFixedHeight;
+    else if( contentFontType == 2 )
+        lineHeight = fontSmlHeight;
+
     bool scrolled = false;
-    if (Up) {
-        if (Page) {
+    if( Up ) {
+        if( Page ) {
             int newY = aktHeight + screenHeight;
-            if (newY > 0)
+            if( newY > 0 )
                 newY = 0;
             contentPixmap->SetDrawPortPoint(cPoint(0, newY));
             scrolled = true;
         } else {
-            if (aktHeight < 0) {
+            if( aktHeight < 0 ) {
                 contentPixmap->SetDrawPortPoint(cPoint(0, aktHeight + lineHeight));
                 scrolled = true;
             }
         }
     } else {
-        if (Page) {
+        if( Page ) {
             int newY = aktHeight - screenHeight;
-            if ((-1)*newY > totalHeight - screenHeight)
+            if( (-1)*newY > totalHeight - screenHeight )
                 newY = (-1)*(totalHeight - screenHeight);
             contentPixmap->SetDrawPortPoint(cPoint(0, newY));
             scrolled = true;
         } else {
-            if (totalHeight - ((-1)*aktHeight + lineHeight) > screenHeight) {
+            if( totalHeight - ((-1)*aktHeight + lineHeight) > screenHeight ) {
                 contentPixmap->SetDrawPortPoint(cPoint(0, aktHeight - lineHeight));
                 scrolled = true;
             }
@@ -510,12 +551,15 @@ void cFlatBaseRender::contentDraw(void) {
     int linesText = contentWrapper.Lines();
     int currentHeight = 0;
     for (int i=0; i < linesText; i++) {
-        if( contentFixedFont ) {
-            currentHeight = (i)*fontFixedHeight;
-            contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, fontFixed, contentWidth - marginItem*2);
-        } else {
+        if( contentFontType == 0 ) {
             currentHeight = (i)*fontHeight;
             contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, font, contentWidth - marginItem*2);
+        } else if( contentFontType == 1 ) {
+            currentHeight = (i)*fontFixedHeight;
+            contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, fontFixed, contentWidth - marginItem*2);
+        } else if( contentFontType == 2 ) {
+            currentHeight = (i)*fontSmlHeight;
+            contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, fontSml, contentWidth - marginItem*2);
         }
     }
 }
@@ -843,6 +887,9 @@ void cFlatBaseRender::ProgressBarDrawMark(int posMark, int posMarkLast, int posC
 }
 
 void cFlatBaseRender::ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Height, int Total, int Offset, int Shown, bool CanScrollUp, bool CanScrollDown) {
+    if( !Pixmap )
+        return;
+
     if (Total > 0 && Total > Shown) {
         int scrollHeight = max(int((Height) * double(Shown) / Total + 0.5), 5);
         int scrollTop = min(int(Top + (Height) * double(Offset) / Total + 0.5), Top + Height - scrollHeight);

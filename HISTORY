@@ -5,6 +5,9 @@ VDR Plugin 'skinflatplus' Revision History
 
 - [fix] load user decor settings
 - [fix] menu scrollbar size and margin
+- [fix] no scrollbar in some situations
+- [add] add support for menu SetItemChannel
+- [update] add Patch from MegaV0lt, support for simple aspect & format, new icons
 
 2013-11-24: Version 0.1.0 - MegaV0lt Version
 Special thanks to MegaV0lt@VDR-Portal for

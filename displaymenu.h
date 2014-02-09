@@ -45,7 +45,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
 
         cBitmap *bmNew, *bmRec, *bmArrowTurn, *bmClock, *bmClocksml, *bmVPS;
         static cBitmap bmCNew, bmCRec, bmCArrowTurn, bmCClock, bmCClocksml, bmCHD, bmCVPS;
-
+        void SetItemChannelDrawEvent(const cEvent *Event);
     public:
         cFlatDisplayMenu(void);
         virtual ~cFlatDisplayMenu();

@@ -66,7 +66,8 @@ class cFlatBaseRender
         cPixmap *buttonsPixmap;
         int buttonsWidth, buttonsHeight, buttonsTop;
         int marginButtonColor, buttonColorHeight;
-
+        bool buttonsDrawn;
+        
         // Nachricht
         cPixmap *messagePixmap;
         int messageWidth, messageHeight;
@@ -78,7 +79,7 @@ class cFlatBaseRender
         int contentTextHeight;
         bool contentHasScrollbar;
         bool contentShown;
-        bool contentFixedFont;
+        int contentFontType;
         
         tColor contentColorFg, contentColorBg;
         cTextWrapper contentWrapper;
@@ -125,7 +126,8 @@ class cFlatBaseRender
 
         void ButtonsCreate(void);
         void ButtonsSet(const char *Red, const char *Green = NULL, const char *Yellow = NULL, const char *Blue = NULL);
-
+        bool ButtonsDrawn(void);
+        
         void MessageCreate(void);
         void MessageSet(eMessageType Type, const char *Text);
         void MessageClear(void);
@@ -139,11 +141,17 @@ class cFlatBaseRender
         void ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Height, int Total, int Offset, int Shown, bool CanScrollUp, bool CanScrollDown);
         int ScrollBarWidth(void);
         
-        void ContentCreate(int Left, int Top, int Width, int Height, bool FixedFont);
-        void ContentSet(const char *Text, bool FixedFont, tColor ColorFg, tColor ColorBg);
+        /* int FontType
+         * 0 = NormalFont
+         * 1 = FixedFont
+         * 2 = SmallFont
+         */
+        
+        void ContentCreate(int Left, int Top, int Width, int Height, int FontType);
+        void ContentSet(const char *Text, tColor ColorFg, tColor ColorBg);
         bool ContentIsShown(void);
         bool ContentScrollable(void);
-        bool ContentWillItBeScrollable(int Width, int Height, const char *Text, bool FixedFont);
+        bool ContentWillItBeScrollable(int Width, int Height, const char *Text, int FontType);
         int ContentScrollTotal(void);
         int ContentScrollOffset(void);
         int ContentVisibleLines(void);

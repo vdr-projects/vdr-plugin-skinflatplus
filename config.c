@@ -42,7 +42,7 @@ cFlatConfig::cFlatConfig(void) {
     
     MainMenuItemScale = 1.0;
     
-    MenuChannelType = 1;
+    MenuChannelView = 1;
     
     decorBorderChannelByTheme = 1;
     decorBorderChannelTypeUser = 0;
@@ -177,7 +177,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "TopBarMenuIconShow") == 0)                   TopBarMenuIconShow = atoi(Value);
     else if (strcmp(Name, "DecorIndex") == 0)                           DecorIndex = atoi(Value);
     else if (strcmp(Name, "MainMenuItemScale") == 0)                    MainMenuItemScale = atod(Value);
-    else if (strcmp(Name, "MenuChannelType") == 0)                      MenuChannelType = atoi(Value);
+    else if (strcmp(Name, "MenuChannelView") == 0)                      MenuChannelView = atoi(Value);
     else if (strcmp(Name, "ChannelSimpleAspectFormat") == 0)            ChannelSimpleAspectFormat = atoi(Value);
     else if (strcmp(Name, "RecordingSimpleAspectFormat") == 0)          RecordingSimpleAspectFormat = atoi(Value);
    

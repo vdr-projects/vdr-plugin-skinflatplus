@@ -2,7 +2,7 @@
 
 cStringList Bordertypes;
 cStringList Progresstypes;
-cStringList MenuChannelTypes;
+cStringList MenuChannelViews;
 
 cFlatSetup::cFlatSetup(void) {
     SetupConfig = Config;
@@ -38,9 +38,10 @@ void cFlatSetup::Setup(void) {
     Progresstypes.Append( strdup(tr("small line + big line + alpha blend")) );
     Progresstypes.Append( strdup(tr("big line + alpha blend")) );
 
-    MenuChannelTypes.Append( strdup(tr("VDR default")) );
-    MenuChannelTypes.Append( strdup(tr("flatPlus long")) );
-    MenuChannelTypes.Append( strdup(tr("flatPlus short")) );
+    MenuChannelViews.Append( strdup(tr("VDR default")) );
+    MenuChannelViews.Append( strdup(tr("flatPlus long")) );
+    MenuChannelViews.Append( strdup(tr("flatPlus short")) );
+    MenuChannelViews.Append( strdup(tr("flatPlus short + EPG")) );
 
     Add(new cOsdItem(tr("General settings"), osUnknown, true));
     Add(new cOsdItem(tr("Channelinfo settings"), osUnknown, true));
@@ -150,7 +151,7 @@ void cFlatSetup::Store(void) {
     SetupStore("TopBarMenuIconShow", Config.TopBarMenuIconShow);
     SetupStore("DecorIndex", Config.DecorIndex);
     SetupStore("MainMenuItemScale", dtoa(Config.MainMenuItemScale));
-    SetupStore("MenuChannelType", Config.MenuChannelType);
+    SetupStore("MenuChannelView", Config.MenuChannelView);
     SetupStore("ChannelSimpleAspectFormat", Config.ChannelSimpleAspectFormat);
     SetupStore("RecordingSimpleAspectFormat", Config.RecordingSimpleAspectFormat);
     
@@ -352,7 +353,7 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show additional EPG info"), &SetupConfig->EpgAdditionalInfoShow));
     Add(new cMenuEditPrcItem(tr("Main menuitem scale"), &SetupConfig->MainMenuItemScale, 0.2, 1, 0));
 
-    Add(new cMenuEditStraItem(tr("Menu channel view"), &SetupConfig->MenuChannelType, MenuChannelTypes.Size(), &MenuChannelTypes[0]));
+    Add(new cMenuEditStraItem(tr("Menu channel view"), &SetupConfig->MenuChannelView, MenuChannelViews.Size(), &MenuChannelViews[0]));
 
     Add(new cMenuEditBoolItem(tr("Menuitem border by decor-file?"), &SetupConfig->decorBorderMenuItemByTheme));
     if( SetupConfig->decorBorderMenuItemByTheme ) {

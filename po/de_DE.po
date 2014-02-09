@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-02-07 21:51+0100\n"
+"POT-Creation-Date: 2014-02-08 13:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -119,6 +119,9 @@ msgstr "flatPlus lang"
 
 msgid "flatPlus short"
 msgstr "flatPlus kurz"
+
+msgid "flatPlus short + EPG"
+msgstr ""
 
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
@@ -274,7 +277,7 @@ msgid "Menucont. border size"
 msgstr "Menü Rand Größe"
 
 msgid "Menucont. head border by decor-file?"
-msgstr "Menü Rand von Decordatei?"
+msgstr "Menükopf Rand von Decordatei?"
 
 msgid "Menucont. head border type"
 msgstr "Menükopf Rand Typ"
