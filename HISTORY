@@ -7,7 +7,9 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] menu scrollbar size and margin
 - [fix] no scrollbar in some situations
 - [fix] remove button border if button is not shown
+- [fix] menuitem progressbar overlay itemtext
 - [add] add support for menu SetItemChannel
+- [add] add support for menu SetItemTimer
 - [update] add Patch from MegaV0lt, support for simple aspect & format, new icons
 - [update] only log not loaded images
 

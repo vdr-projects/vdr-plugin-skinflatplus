@@ -80,11 +80,11 @@ void cFlatBaseRender::CreateOsd(int left, int top, int width, int height) {
     if (osd) {
         tArea Area = { 0, 0, width, height,  32 };
         if (osd->SetAreas(&Area, 1) == oeOk) {  
-            dsyslog("skinflatplus: create osd SUCESS left: %d top: %d width: %d height: %d", left, top, width, height);
+            dsyslog("skinflatplus: create osd SUCCESS left: %d top: %d width: %d height: %d", left, top, width, height);
             return;
         }
     }
-    dsyslog("skinflatplus: create osd FAILED left: %d top: %d width: %d height: %d", left, top, width, height);
+    esyslog("skinflatplus: create osd FAILED left: %d top: %d width: %d height: %d", left, top, width, height);
     return;
 }
 

@@ -297,6 +297,9 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
             bool isRunning = false;
             
             int xt = Tab(i);
+            int xt2 = Tab(i+1);
+            if( xt2 == 0 )
+                xt2 = menuItemWidth;
             
             if( xt >= menuItemWidth )
                 continue;
@@ -389,7 +392,6 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                     xt + Config.decorBorderMenuItemSize, colWidth, s, ColorFg, ColorBarFg, ColorBg);
             } else {
                 if( (menuCategory == mcMain || menuCategory == mcSetup) && Config.MenuItemIconsShow) {
-
                     cString cIcon = GetIconName( MainMenuText(s) );
                     cImageLoader imgLoader;
                     if (imgLoader.LoadIcon(*cIcon, fontHeight -marginItem*2)) {
@@ -402,8 +404,7 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                     menuPixmap->DrawText(cPoint(fontHeight + marginItem*2 + xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
                         AvailableTextWidth - xt - marginItem*2 - fontHeight);
                 } else {
-                    menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
-                        AvailableTextWidth - xt);
+                    menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font, xt2 - xt);
                 }
             }
         }
