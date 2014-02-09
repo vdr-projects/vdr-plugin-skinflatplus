@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-02-08 13:52+0100\n"
+"POT-Creation-Date: 2014-02-09 15:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,11 +117,14 @@ msgstr "VDR standard"
 msgid "flatPlus long"
 msgstr "flatPlus lang"
 
+msgid "flatPlus long + EPG"
+msgstr "flatPlus lang + EPG"
+
 msgid "flatPlus short"
 msgstr "flatPlus kurz"
 
 msgid "flatPlus short + EPG"
-msgstr ""
+msgstr "flatPlus kurz + EPG"
 
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
@@ -253,10 +256,13 @@ msgid "Show additional EPG info"
 msgstr "Zeige Zusatzinfo bei EPG"
 
 msgid "Main menuitem scale"
-msgstr ""
+msgstr "Hauptmenüeintrag Scale"
 
 msgid "Menu channel view"
 msgstr "Menü Kanal Ansicht"
+
+msgid "Menu timer view"
+msgstr "Menü Timer Ansicht"
 
 msgid "Menuitem border by decor-file?"
 msgstr "Menüitem Rand von Decordatei?"

@@ -178,6 +178,7 @@ class cFlatConfig
         double MainMenuItemScale;
         
         int MenuChannelView;
+        int MenuTimerView;
         
         int DecorIndex;
 };

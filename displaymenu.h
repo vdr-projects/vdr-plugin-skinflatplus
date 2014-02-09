@@ -21,7 +21,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         cPixmap *scrollbarPixmap;
         int scrollBarTop, scrollBarWidth, scrollBarHeight;
 
-        int itemHeight, itemChannelHeight;
+        int itemHeight, itemChannelHeight, itemTimerHeight;
 
         std::list<sDecorBorder> ItemsBorder;
         sDecorBorder EventBorder, RecordingBorder, TextBorder;
@@ -45,7 +45,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
 
         cBitmap *bmNew, *bmRec, *bmArrowTurn, *bmClock, *bmClocksml, *bmVPS;
         static cBitmap bmCNew, bmCRec, bmCArrowTurn, bmCClock, bmCClocksml, bmCHD, bmCVPS;
-        void SetItemChannelDrawEvent(const cEvent *Event);
+        void DrawItemExtraEvent(const cEvent *Event);
     public:
         cFlatDisplayMenu(void);
         virtual ~cFlatDisplayMenu();
@@ -62,7 +62,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         virtual void SetItem(const char *Text, int Index, bool Current, bool Selectable);
         
         //virtual bool SetItemEvent(const cEvent *Event, int Index, bool Current, bool Selectable, const cChannel *Channel, bool WithDate, eTimerMatch TimerMatch);
-        //virtual bool SetItemTimer(const cTimer *Timer, int Index, bool Current, bool Selectable);
+        virtual bool SetItemTimer(const cTimer *Timer, int Index, bool Current, bool Selectable);
         virtual bool SetItemChannel(const cChannel *Channel, int Index, bool Current, bool Selectable, bool WithProvider);
         //virtual bool SetItemRecording(const cRecording *Recording, int Index, bool Current, bool Selectable, int Level, int Total, int New);
 

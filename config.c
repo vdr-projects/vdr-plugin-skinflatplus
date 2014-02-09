@@ -34,7 +34,7 @@ cFlatConfig::cFlatConfig(void) {
     MenuItemIconsShow = true;
     TopBarMenuIconShow = true;
     
-    MenuItemPadding = 5;
+    MenuItemPadding = 3;
     marginOsdVer = 5;
     marginOsdHor = 5;
     TopBarFontSize = 0.05;
@@ -43,6 +43,7 @@ cFlatConfig::cFlatConfig(void) {
     MainMenuItemScale = 1.0;
     
     MenuChannelView = 1;
+    MenuTimerView = 3;
     
     decorBorderChannelByTheme = 1;
     decorBorderChannelTypeUser = 0;

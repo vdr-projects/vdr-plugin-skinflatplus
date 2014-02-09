@@ -3,6 +3,7 @@
 cStringList Bordertypes;
 cStringList Progresstypes;
 cStringList MenuChannelViews;
+cStringList MenuTimerViews;
 
 cFlatSetup::cFlatSetup(void) {
     SetupConfig = Config;
@@ -40,8 +41,14 @@ void cFlatSetup::Setup(void) {
 
     MenuChannelViews.Append( strdup(tr("VDR default")) );
     MenuChannelViews.Append( strdup(tr("flatPlus long")) );
+    MenuChannelViews.Append( strdup(tr("flatPlus long + EPG")) );
     MenuChannelViews.Append( strdup(tr("flatPlus short")) );
     MenuChannelViews.Append( strdup(tr("flatPlus short + EPG")) );
+
+    MenuTimerViews.Append( strdup(tr("VDR default")) );
+    MenuTimerViews.Append( strdup(tr("flatPlus long")) );
+    MenuTimerViews.Append( strdup(tr("flatPlus short")) );
+    MenuTimerViews.Append( strdup(tr("flatPlus short + EPG")) );
 
     Add(new cOsdItem(tr("General settings"), osUnknown, true));
     Add(new cOsdItem(tr("Channelinfo settings"), osUnknown, true));
@@ -354,6 +361,7 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditPrcItem(tr("Main menuitem scale"), &SetupConfig->MainMenuItemScale, 0.2, 1, 0));
 
     Add(new cMenuEditStraItem(tr("Menu channel view"), &SetupConfig->MenuChannelView, MenuChannelViews.Size(), &MenuChannelViews[0]));
+    Add(new cMenuEditStraItem(tr("Menu timer view"), &SetupConfig->MenuTimerView, MenuTimerViews.Size(), &MenuTimerViews[0]));
 
     Add(new cMenuEditBoolItem(tr("Menuitem border by decor-file?"), &SetupConfig->decorBorderMenuItemByTheme));
     if( SetupConfig->decorBorderMenuItemByTheme ) {

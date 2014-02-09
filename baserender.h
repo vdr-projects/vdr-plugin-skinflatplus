@@ -8,7 +8,8 @@ enum eBorder {
     BorderMenuItem = 1,
     BorderRecordJump = 2,
     BorderMenuRecord = 3,
-    BorderMessage = 4
+    BorderMessage = 4,
+    BorderButton = 5
 };
 
 struct sDecorBorder {
