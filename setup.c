@@ -159,9 +159,10 @@ void cFlatSetup::Store(void) {
     SetupStore("DecorIndex", Config.DecorIndex);
     SetupStore("MainMenuItemScale", dtoa(Config.MainMenuItemScale));
     SetupStore("MenuChannelView", Config.MenuChannelView);
+    SetupStore("MenuTimerView", Config.MenuTimerView);
     SetupStore("ChannelSimpleAspectFormat", Config.ChannelSimpleAspectFormat);
     SetupStore("RecordingSimpleAspectFormat", Config.RecordingSimpleAspectFormat);
-    
+
     Config.Init();
 }
 

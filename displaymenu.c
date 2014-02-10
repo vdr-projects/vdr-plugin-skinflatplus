@@ -782,79 +782,80 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event) {
 
     // Description
     ostringstream text;
-    if( !isempty(Event->Description()) ) {
-        text << Event->Description();
-    }
-   
-    if( Config.EpgAdditionalInfoShow ) {
-        text << endl;
-        const cComponents *Components = Event->Components();
-        if (Components) {
-            ostringstream audio;
-            bool firstAudio = true;
-            const char *audio_type = NULL;
-            ostringstream subtitle;
-            bool firstSubtitle = true;
-            for (int i = 0; i < Components->NumComponents(); i++) {
-                const tComponent *p = Components->Component(i);
-                switch (p->stream) {
-                    case sc_video_MPEG2:
-                        if (p->description)
-                            text << endl << tr("Video") << ": " <<  p->description << " (MPEG2)";
-                        else
-                            text << endl << tr("Video") << ": MPEG2";
-                        break;
-                    case sc_video_H264_AVC:
-                        if (p->description)
-                            text << endl << tr("Video") << ": " <<  p->description << " (H.264)";
-                        else
-                            text << endl << tr("Video") << ": H.264";
-                        break;
+    if( Event ) {
+        if( !isempty(Event->Description()) ) {
+            text << Event->Description();
+        }
+       
+        if( Config.EpgAdditionalInfoShow ) {
+            text << endl;
+            const cComponents *Components = Event->Components();
+            if (Components) {
+                ostringstream audio;
+                bool firstAudio = true;
+                const char *audio_type = NULL;
+                ostringstream subtitle;
+                bool firstSubtitle = true;
+                for (int i = 0; i < Components->NumComponents(); i++) {
+                    const tComponent *p = Components->Component(i);
+                    switch (p->stream) {
+                        case sc_video_MPEG2:
+                            if (p->description)
+                                text << endl << tr("Video") << ": " <<  p->description << " (MPEG2)";
+                            else
+                                text << endl << tr("Video") << ": MPEG2";
+                            break;
+                        case sc_video_H264_AVC:
+                            if (p->description)
+                                text << endl << tr("Video") << ": " <<  p->description << " (H.264)";
+                            else
+                                text << endl << tr("Video") << ": H.264";
+                            break;
 
-                    case sc_audio_MP2:
-                    case sc_audio_AC3:
-                    case sc_audio_HEAAC:
-                        if (firstAudio)
-                            firstAudio = false;
-                        else
-                            audio << ", ";
-                        switch (p->stream) {
-                            case sc_audio_MP2:
-                                // workaround for wrongfully used stream type X 02 05 for AC3
-                                if (p->type == 5)
-                                    audio_type = "AC3";
-                                else
-                                    audio_type = "MP2";
-                                break;
-                            case sc_audio_AC3:
-                                audio_type = "AC3"; break;
-                            case sc_audio_HEAAC:
-                                audio_type = "HEAAC"; break;
-                        }
-                        if (p->description)
-                            audio << p->description << " (" << audio_type << ", " << p->language << ")";
-                        else
-                            audio << p->language << " (" << audio_type << ")";
-                        break;
-                    case sc_subtitle:
-                        if (firstSubtitle)
-                            firstSubtitle = false;
-                        else
-                            subtitle << ", ";
-                        if (p->description)
-                            subtitle << p->description << " (" << p->language << ")";
-                        else
-                            subtitle << p->language;
-                        break;
+                        case sc_audio_MP2:
+                        case sc_audio_AC3:
+                        case sc_audio_HEAAC:
+                            if (firstAudio)
+                                firstAudio = false;
+                            else
+                                audio << ", ";
+                            switch (p->stream) {
+                                case sc_audio_MP2:
+                                    // workaround for wrongfully used stream type X 02 05 for AC3
+                                    if (p->type == 5)
+                                        audio_type = "AC3";
+                                    else
+                                        audio_type = "MP2";
+                                    break;
+                                case sc_audio_AC3:
+                                    audio_type = "AC3"; break;
+                                case sc_audio_HEAAC:
+                                    audio_type = "HEAAC"; break;
+                            }
+                            if (p->description)
+                                audio << p->description << " (" << audio_type << ", " << p->language << ")";
+                            else
+                                audio << p->language << " (" << audio_type << ")";
+                            break;
+                        case sc_subtitle:
+                            if (firstSubtitle)
+                                firstSubtitle = false;
+                            else
+                                subtitle << ", ";
+                            if (p->description)
+                                subtitle << p->description << " (" << p->language << ")";
+                            else
+                                subtitle << p->language;
+                            break;
+                    }
                 }
+                if (audio.str().length() > 0)
+                    text << endl << tr("Audio") << ": "<< audio.str();
+                if (subtitle.str().length() > 0)
+                    text << endl << tr("Subtitle") << ": "<< subtitle.str();
             }
-            if (audio.str().length() > 0)
-                text << endl << tr("Audio") << ": "<< audio.str();
-            if (subtitle.str().length() > 0)
-                text << endl << tr("Subtitle") << ": "<< subtitle.str();
         }
     }
-    
     ContentCreate(cLeft, cTop, cWidth, cHeight, 2);
     
     ContentSet( text.str().c_str(), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
@@ -922,6 +923,15 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
         Left += imageHeight + marginItem * 2;
     }
 
+    cString ws = cString::sprintf("%d", Channels.MaxNumber());
+    int w = font->Width(ws);
+    buffer = cString::sprintf("%d", Channel->Number());
+    int Width = font->Width(buffer);
+    if( Width < w )
+        Width = w;
+    menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, Width, fontHeight, taRight);
+    Left += Width + marginItem;
+
     imageLeft = Left;
     
     if( imgLoader.LoadLogo(Channel->Name(), imageHeight, imageHeight) ) {
@@ -951,26 +961,43 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
             }
         }
     }
-    time_t tStart, tStop;
     
-    tStart = Timer->StartTime();
-    tStop = Timer->StopTime();
-    
-    cString StartString = cString::sprintf("%s %s", *ShortDateString(tStart), *TimeString(tStart));
-    cString StopString = cString::sprintf("%s", *TimeString(tStop));
+    cString day, name("");
+    if (Timer->WeekDays())
+        day = Timer->PrintDay(0, Timer->WeekDays(), false);
+    else if (Timer->Day() - time(NULL) < 28 * SECSINDAY) {
+        day = itoa(Timer->GetMDay(Timer->Day()));
+        name = WeekDayName(Timer->Day());
+    } else {
+        struct tm tm_r;
+        time_t Day = Timer->Day();
+        localtime_r(&Day, &tm_r);
+        char buffer[16];
+        strftime(buffer, sizeof(buffer), "%Y%m%d", &tm_r);
+        day = buffer;
+    }    
+    const char *File = Setup.FoldersInTimerMenu ? NULL : strrchr(Timer->File(), FOLDERDELIMCHAR);
+    if (File && strcmp(File + 1, TIMERMACRO_TITLE) && strcmp(File + 1, TIMERMACRO_EPISODE))
+        File++;
+    else 
+        File = Timer->File();
 
-    cString EventTitle = "";
-    if( Event )
-        EventTitle = Event->Title();
-    
     if( Config.MenuTimerView == 1 ) {
-        buffer = cString::sprintf("%s - %s - %s", *StartString, *StopString, *EventTitle);
+        buffer = cString::sprintf("%s%s%s  %02d:%02d  %02d:%02d  %s",
+                    *name, *name && **name ? " " : "", *day,
+                    Timer->Start() / 100, Timer->Start() % 100,
+                    Timer->Stop() / 100, Timer->Stop() % 100,
+                    File);
         menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
     } else if( Config.MenuTimerView == 2 || Config.MenuTimerView == 3 ) {
-        buffer = cString::sprintf("%s - %s", *StartString, *StopString);
+        buffer = cString::sprintf("%s%s%s  %02d:%02d  %02d:%02d",
+                    *name, *name && **name ? " " : "", *day,
+                    Timer->Start() / 100, Timer->Start() % 100,
+                    Timer->Stop() / 100, Timer->Stop() % 100);
         menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
-        menuPixmap->DrawText(cPoint(Left, Top + fontHeight), EventTitle, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+        menuPixmap->DrawText(cPoint(Left, Top + fontHeight), File, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
     }
+  
     
     sDecorBorder ib;
     ib.Left = Config.decorBorderMenuItemSize;
@@ -1008,7 +1035,7 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
         ItemBorderInsertUnique(ib);
     }
     
-    if( Config.MenuTimerView == 3 && Event && Current ) {
+    if( Config.MenuTimerView == 3 && Current ) {
         DrawItemExtraEvent(Event);
     }
     

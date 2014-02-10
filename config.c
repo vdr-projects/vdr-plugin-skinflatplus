@@ -179,6 +179,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "DecorIndex") == 0)                           DecorIndex = atoi(Value);
     else if (strcmp(Name, "MainMenuItemScale") == 0)                    MainMenuItemScale = atod(Value);
     else if (strcmp(Name, "MenuChannelView") == 0)                      MenuChannelView = atoi(Value);
+    else if (strcmp(Name, "MenuTimerView") == 0)                        MenuTimerView = atoi(Value);
     else if (strcmp(Name, "ChannelSimpleAspectFormat") == 0)            ChannelSimpleAspectFormat = atoi(Value);
     else if (strcmp(Name, "RecordingSimpleAspectFormat") == 0)          RecordingSimpleAspectFormat = atoi(Value);
    
