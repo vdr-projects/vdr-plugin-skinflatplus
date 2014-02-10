@@ -24,9 +24,12 @@ bool cImageLoader::LoadLogo(const char *logo, int width = -1, int height = -1) {
         return false;
     std::string logoLower = logo;
     toLowerCase(logoLower);
-    bool success = LoadImage(logoLower.c_str(), Config.logoPath, logoExtension);
-    if( !success )
+    cString File = cString::sprintf("%s/%s.%s", *Config.logoPath, logoLower.c_str(), *logoExtension);
+    bool success = LoadImage(File);
+    if( !success ) {
+        dsyslog("imageloader LoadLogo: %s could not be loaded", *File);
         return false;
+    }
 
     if( height != 0 || width != 0 ) {
         buffer.sample( Geometry(width, height) );
@@ -47,13 +50,15 @@ int cImageLoader::Width(void) {
 bool cImageLoader::LoadIcon(const char *cIcon, int size) {
 	if (size==0)
         return false;
-    cString iconThemePath = cString::sprintf("%s%s/", *Config.iconPath, Setup.OSDTheme);
-    bool success = LoadImage(cString(cIcon), iconThemePath, "png");
+    cString File = cString::sprintf("%s%s/%s.%s", *Config.iconPath, Setup.OSDTheme, cIcon, *logoExtension);
+    bool success = LoadImage(File);
     if( !success ) {
-        iconThemePath = cString::sprintf("%s%s/", *Config.iconPath, "default");
-        success = LoadImage(cString(cIcon), iconThemePath, "png");
-        if( !success )
+        File = cString::sprintf("%s%s/%s.%s", *Config.iconPath, "default", cIcon, *logoExtension);
+        success = LoadImage(File);
+        if( !success ) {
+            dsyslog("imageloader LoadIcon: %s could not be loaded", *File);
             return false;
+        }
     }
     if( size >= 0 )
         buffer.sample(Geometry(size, size));
@@ -61,28 +66,31 @@ bool cImageLoader::LoadIcon(const char *cIcon, int size) {
 }
 
 bool cImageLoader::LoadIcon(const char *cIcon, int width, int height, bool preserveAspect) {
-  try {
-    if ((width == 0)||(height==0))
-        return false;
-    cString iconThemePath = cString::sprintf("%s%s/", *Config.iconPath, Setup.OSDTheme);
-    bool success = LoadImage(cString(cIcon), iconThemePath, "png");
-    if( !success ) {
-        iconThemePath = cString::sprintf("%s%s/", *Config.iconPath, "default");
-        success = LoadImage(cString(cIcon), iconThemePath, "png");
-        if( !success )
+    try {
+        if ((width == 0)||(height==0))
             return false;
+        cString File = cString::sprintf("%s%s/%s.%s", *Config.iconPath, Setup.OSDTheme, cIcon, *logoExtension);
+
+        bool success = LoadImage(File);
+        if( !success ) {
+            File = cString::sprintf("%s%s/%s.%s", *Config.iconPath, "default", cIcon, *logoExtension);
+            success = LoadImage(File);
+            if( !success ) {
+                dsyslog("imageloader LoadIcon: %s could not be loaded", *File);
+                return false;
+            }
+        }
+        if (preserveAspect) {
+            buffer.sample(Geometry(width, height));
+        } else {
+            cString geometry = cString::sprintf("%dx%d!", width, height);
+            buffer.scale(Geometry(*geometry));
+        }
+        return true;
     }
-    if (preserveAspect) {
-        buffer.sample(Geometry(width, height));
-    } else {
-        cString geometry = cString::sprintf("%dx%d!", width, height);
-        buffer.scale(Geometry(*geometry));
+    catch (...) {
+        return false;
     }
-    return true;
-  }
-  catch (...) {
-    return false;
-  }
 }
 
 cImage cImageLoader::GetImage() {
@@ -120,15 +128,10 @@ void cImageLoader::toLowerCase(std::string &str) {
     }
 }
 
-bool cImageLoader::LoadImage(cString FileName, cString Path, cString Extension) {
-    cString File = "";
+bool cImageLoader::LoadImage(cString File) {
     try {
-        File = cString::sprintf("%s%s.%s", *Path, *FileName, *Extension);
-        //dsyslog("imageloader: trying to load: %s", *File);
         buffer.read(*File);
-        //dsyslog("imageloader: %s sucessfully loaded", *File);
     } catch (...) {
-        dsyslog("imageloader: %s could not be loaded", *File);
         return false;
     }
     return true;

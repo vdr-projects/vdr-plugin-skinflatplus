@@ -419,7 +419,7 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
     int progressWidth = signalWidth / 2 - progressLeft - marginItem;
     ProgressBarDrawRaw(chanInfoBottomPixmap, chanInfoBottomPixmap, cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize),
         cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize), SignalStrength, 100,
-        Config.decorProgressSignalFg, Config.decorProgressSignalBarFg, Config.decorProgressSignalBg, Config.decorProgressSignalType);
+        Config.decorProgressSignalFg, Config.decorProgressSignalBarFg, Config.decorProgressSignalBg, Config.decorProgressSignalType, false);
 
     left = signalWidth / 2 + marginItem;
     chanInfoBottomPixmap->DrawText(cPoint(left, top), "SNR",
@@ -429,7 +429,7 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
     
     ProgressBarDrawRaw(chanInfoBottomPixmap, chanInfoBottomPixmap, cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize),
         cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize), SignalQuality, 100,
-        Config.decorProgressSignalFg, Config.decorProgressSignalBarFg, Config.decorProgressSignalBg, Config.decorProgressSignalType);
+        Config.decorProgressSignalFg, Config.decorProgressSignalBarFg, Config.decorProgressSignalBg, Config.decorProgressSignalType, false);
 }
 
 void cFlatDisplayChannel::Flush(void) {

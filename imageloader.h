@@ -31,5 +31,5 @@ private:
     Image buffer;
     Color Argb2Color(tColor col);
     void toLowerCase(std::string &str);
-    bool LoadImage(cString FileName, cString Path, cString Extension);
+    bool LoadImage(cString File);
 };

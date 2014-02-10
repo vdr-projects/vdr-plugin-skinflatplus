@@ -5,11 +5,12 @@
 #include <list>
 
 enum eBorder {
-    BorderMenuItem = 1,
-    BorderRecordJump = 2,
-    BorderMenuRecord = 3,
-    BorderMessage = 4,
-    BorderButton = 5
+    BorderMenuItem,
+    BorderRecordJump,
+    BorderMenuRecord,
+    BorderMessage,
+    BorderButton,
+    BorderContent
 };
 
 struct sDecorBorder {
@@ -133,7 +134,7 @@ class cFlatBaseRender
         void MessageSet(eMessageType Type, const char *Text);
         void MessageClear(void);
 
-        void ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRect rec, cRect recBg, int Current, int Total, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type);
+        void ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRect rec, cRect recBg, int Current, int Total, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground);
         void ProgressBarCreate(int Left, int Top, int Width, int Height, int MarginHor, int MarginVer, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground = false);
         void ProgressBarDrawBgColor(void);
         void ProgressBarDraw(int Current, int Total);

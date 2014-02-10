@@ -88,10 +88,10 @@ cFlatDisplayMenu::~cFlatDisplayMenu() {
 }
 
 void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
-    if( menuCategory == 8 && MenuCategory == 7 ) {
-        DecorBorderClearByFrom(BorderMenuItem);
+    //if( menuCategory == 8 && MenuCategory == 7 ) {
+    //    DecorBorderClearByFrom(BorderMenuItem);
         ItemBorderClear();
-    }
+    //}
         
     menuCategory = MenuCategory;
     
@@ -297,9 +297,6 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
             bool isRunning = false;
             
             int xt = Tab(i);
-            int xt2 = Tab(i+1);
-            if( xt2 == 0 )
-                xt2 = menuItemWidth;
             
             if( xt >= menuItemWidth )
                 continue;
@@ -351,26 +348,26 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                     default:
                        break;
                 }
-            } else if (isRecording || hasEventtimer || haspartEventtimer || hasVPS || isRunning) {
+            } else if( isRecording || hasEventtimer || haspartEventtimer || hasVPS || isRunning ) {
                 // program schedule menu
-                if (isRecording)
+                if( isRecording )
                    menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmRec->Height()) / 2), *bmRec, ColorFg, ColorBg);
                 else {
-                   if (hasEventtimer)
+                   if( hasEventtimer )
                       menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmClock->Height()) / 2), *bmClock, ColorFg, ColorBg);
-                   if (haspartEventtimer)
+                   if( haspartEventtimer )
                       menuPixmap->DrawBitmap(cPoint(xOff + (bmClock->Height() - bmClocksml->Height()) / 2, y + (lh - bmClocksml->Height()) / 2), *bmClocksml, ColorFg, ColorBg);
                 }
                 xOff += bmClock->Width(); // clock is wider than rec
 
-                if (hasVPS)
+                if( hasVPS )
                    menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmVPS->Height()) / 2), *bmVPS, ColorFg, ColorBg);
                 xOff += bmVPS->Width();
 
                 if( isRunning )
                     menuPixmap->DrawText(cPoint(xOff, y), "*", ColorFg, ColorBg, font, AvailableTextWidth - xOff);
             
-            } else if (isnewrecording) {
+            } else if( isnewrecording ) {
                 // recordings menu
                 menuPixmap->DrawText(cPoint(xOff, y), buffer, ColorFg, ColorBg, font, AvailableTextWidth - xOff);
                 
@@ -388,13 +385,18 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                     ColorBarFg = Config.decorProgressMenuItemCurBarFg;
                     ColorBg = Config.decorProgressMenuItemCurBg;
                 }
-                DrawProgressBarFromText(y + (itemHeight-Config.MenuItemPadding)/2 - Config.decorProgressMenuItemSize/2 - Config.decorBorderMenuItemSize,
-                    xt + Config.decorBorderMenuItemSize, colWidth, s, ColorFg, ColorBarFg, ColorBg);
+                cRect rec = cRect(xt + Config.decorBorderMenuItemSize,
+                    y + (itemHeight-Config.MenuItemPadding)/2 - Config.decorProgressMenuItemSize/2 - Config.decorBorderMenuItemSize,
+                    colWidth, Config.decorProgressMenuItemSize);
+                cRect recBG = cRect(xt + Config.decorBorderMenuItemSize - marginItem, y,
+                    colWidth + marginItem*2, fontHeight);
+
+                DrawProgressBarFromText(rec, recBG, s, ColorFg, ColorBarFg, ColorBg);
             } else {
                 if( (menuCategory == mcMain || menuCategory == mcSetup) && Config.MenuItemIconsShow) {
                     cString cIcon = GetIconName( MainMenuText(s) );
                     cImageLoader imgLoader;
-                    if (imgLoader.LoadIcon(*cIcon, fontHeight -marginItem*2)) {
+                    if (imgLoader.LoadIcon(*cIcon, fontHeight - marginItem*2)) {
                         menuIconsPixmap->DrawImage(cPoint(xt + Config.decorBorderMenuItemSize + marginItem, y + marginItem), imgLoader.GetImage());
                     } else {
                         if (imgLoader.LoadIcon("menuIcons/blank", fontHeight)) {
@@ -404,7 +406,7 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                     menuPixmap->DrawText(cPoint(fontHeight + marginItem*2 + xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
                         AvailableTextWidth - xt - marginItem*2 - fontHeight);
                 } else {
-                    menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font, xt2 - xt);
+                    menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font);
                 }
             }
         }
@@ -538,7 +540,7 @@ bool cFlatDisplayMenu::CheckProgressBar(const char *text) {
     return false;
 }
 
-void cFlatDisplayMenu::DrawProgressBarFromText(int Top, int Left, int Width, const char *bar, tColor ColorFg, tColor ColorBarFg, tColor ColorBg) {
+void cFlatDisplayMenu::DrawProgressBarFromText(cRect rec, cRect recBg, const char *bar, tColor ColorFg, tColor ColorBarFg, tColor ColorBg) {
     const char *p = bar + 1;
     bool isProgressbar = true;
     int total = 0;
@@ -554,10 +556,9 @@ void cFlatDisplayMenu::DrawProgressBarFromText(int Top, int Left, int Width, con
         }
     }
     if (isProgressbar) {
-        double progress = (double)now/(double)total;
-        ProgressBarDrawRaw(menuPixmap, menuPixmap, cRect(Left, Top, Width, Config.decorProgressMenuItemSize),
-            cRect(Left, Top, Width, Config.decorProgressMenuItemSize), progress*total, total,
-            ColorFg, ColorBarFg, ColorBg, Config.decorProgressMenuItemType);
+        double progress = (double)now / (double)total;
+        ProgressBarDrawRaw(menuPixmap, menuPixmap, rec, recBg, progress*total, total,
+            ColorFg, ColorBarFg, ColorBg, Config.decorProgressMenuItemType, true);
     }
 }
 
@@ -711,11 +712,11 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
             if( Current )
                 ProgressBarDrawRaw(menuPixmap, menuPixmap, cRect( PBLeft, PBTop, PBWidth, Config.decorProgressMenuItemSize),
                     cRect( PBLeft, PBTop, PBWidth, Config.decorProgressMenuItemSize), progress, 100,
-                    Config.decorProgressMenuItemCurFg, Config.decorProgressMenuItemCurBarFg, Config.decorProgressMenuItemCurBg, Config.decorProgressMenuItemType);
+                    Config.decorProgressMenuItemCurFg, Config.decorProgressMenuItemCurBarFg, Config.decorProgressMenuItemCurBg, Config.decorProgressMenuItemType, false);
             else
                 ProgressBarDrawRaw(menuPixmap, menuPixmap, cRect( PBLeft, PBTop, PBWidth, Config.decorProgressMenuItemSize),
                     cRect( PBLeft, PBTop, PBWidth, Config.decorProgressMenuItemSize), progress, 100,
-                    Config.decorProgressMenuItemFg, Config.decorProgressMenuItemBarFg, Config.decorProgressMenuItemBg, Config.decorProgressMenuItemType);
+                    Config.decorProgressMenuItemFg, Config.decorProgressMenuItemBarFg, Config.decorProgressMenuItemBg, Config.decorProgressMenuItemType, false);
             Left += Width + marginItem;
         }
 
@@ -860,8 +861,13 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event) {
     
     ContentSet( text.str().c_str(), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
 
-    DecorBorderDraw(cLeft, cTop, cWidth, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
-        Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
+    DecorBorderClearByFrom(BorderContent);
+    if( Config.MenuContentFullSize )
+        DecorBorderDraw(cLeft, cTop, cWidth, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+            Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg, BorderContent);
+    else
+        DecorBorderDraw(cLeft, cTop, cWidth, ContentGetTextHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+            Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg, BorderContent);
 }
 
 bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current, bool Selectable) {
@@ -1484,9 +1490,9 @@ void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
     }
 
     if( FixedFont )
-        ContentCreate(Left, Top, Width, Height, 2);
+        ContentCreate(Left, Top, Width, Height, 1);
     else
-        ContentCreate(Left, Top, Width, Height, 2);
+        ContentCreate(Left, Top, Width, Height, 1);
 
     ContentSet( Text, Theme.Color(clrMenuTextFont), Theme.Color(clrMenuTextBg) );
     

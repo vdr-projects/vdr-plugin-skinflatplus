@@ -17,6 +17,8 @@ cFlatBaseRender::cFlatBaseRender(void) {
     topBarLastDate = "";
     topBarUpdateTitle = false;
     topBarHeight = 0;
+    topBarExtraIconSet = false;
+    topBarMenuIconSet = false;
 
     marginItem = 5;
 
@@ -129,6 +131,8 @@ void cFlatBaseRender::TopBarSetExtraIcon(cString icon) {
 }
 
 void cFlatBaseRender::TopBarSetMenuIcon(cString icon) {
+    if( !strcmp(*icon, "") )
+        return;
     topBarMenuIcon = icon;
     topBarMenuIconSet = true;
     topBarUpdateTitle = true;
@@ -590,22 +594,22 @@ void cFlatBaseRender::ProgressBarCreate(int Left, int Top, int Width, int Height
 void cFlatBaseRender::ProgressBarDraw(int Current, int Total) {
     ProgressBarDrawRaw(progressBarPixmap, progressBarPixmapBg, cRect(0, 0, progressBarWidth, progressBarHeight),
         cRect(0, 0, progressBarWidth+progressBarMarginVer*2, progressBarHeight+progressBarMarginHor*2),
-        Current, Total, progressBarColorFg, progressBarColorBarFg, progressBarColorBg, ProgressType);
+        Current, Total, progressBarColorFg, progressBarColorBarFg, progressBarColorBg, ProgressType, progressBarSetBackground);
 }
 
 void cFlatBaseRender::ProgressBarDrawBgColor(void) {
     progressBarPixmapBg->Fill(progressBarColorBg);
 }
 
-void cFlatBaseRender::ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRect rect, cRect rectBg, int Current, int Total, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type) {
+void cFlatBaseRender::ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRect rect, cRect rectBg, int Current, int Total, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground) {
     int Middle = rect.Height()/2;
     
     double percentLeft = ((double)Current) / (double)Total;
 
-    if( PixmapBg && progressBarSetBackground )
+    if( PixmapBg && SetBackground )
         PixmapBg->DrawRectangle(cRect( rectBg.Left(), rectBg.Top(), rectBg.Width(), rectBg.Height()), ColorBg);
     
-    if( progressBarSetBackground ) {
+    if( SetBackground ) {
         if( PixmapBg == Pixmap )
             Pixmap->DrawRectangle(cRect( rect.Left(), rect.Top(), rect.Width(), rect.Height()), ColorBg);
         else

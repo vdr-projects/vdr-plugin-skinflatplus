@@ -41,7 +41,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         void DrawScrollbar(int Total, int Offset, int Shown, int Top, int Height, bool CanScrollUp, bool CanScrollDown);
         int ItemsHeight(void);
         bool CheckProgressBar(const char *text);
-        void DrawProgressBarFromText(int Top, int Left, int Width, const char *bar, tColor ColorFg, tColor ColorBarFg, tColor ColorBg);
+        void DrawProgressBarFromText(cRect rec, cRect recBg, const char *bar, tColor ColorFg, tColor ColorBarFg, tColor ColorBg);
 
         cBitmap *bmNew, *bmRec, *bmArrowTurn, *bmClock, *bmClocksml, *bmVPS;
         static cBitmap bmCNew, bmCRec, bmCArrowTurn, bmCClock, bmCClocksml, bmCHD, bmCVPS;
