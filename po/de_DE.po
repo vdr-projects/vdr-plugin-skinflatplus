@@ -34,7 +34,7 @@ msgid "Subtitle"
 msgstr "Untertitel"
 
 msgid "timer not enabled"
-msgstr ""
+msgstr "Timer nicht aktiv"
 
 msgid "Length"
 msgstr "Länge"

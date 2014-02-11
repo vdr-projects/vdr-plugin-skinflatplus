@@ -14,6 +14,7 @@
 
 #include "flat.h"
 #include "setup.h"
+#include "imageloader.h"
 
 static const char *VERSION        = "0.1.0";
 static const char *DESCRIPTION    = "skin flatplus";
@@ -86,11 +87,15 @@ bool cPluginFlat::Start(void) {
         return false;
     } else
         dsyslog("skinflatplus: TrueColor OSD found");
+    
+    imgCache.Create();
+    
     flat = new cFlat;
     return flat;
 }
 
 void cPluginFlat::Stop(void) {
+    imgCache.Clear();
 }
 
 void cPluginFlat::Housekeeping(void) {

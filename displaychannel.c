@@ -112,20 +112,23 @@ void cFlatDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
     chanInfoTopPixmap->Fill(Theme.Color(clrChannelBg));
     chanInfoTopPixmap->DrawText(cPoint(50, 0), channelString, Theme.Color(clrChannelFontTitle), Theme.Color(clrChannelBg), font);
 
+    chanLogoPixmap->Fill(clrTransparent);
     int imageHeight = heightImageLogo - marginItem*2;
     int imageLeft = marginItem*2;
     int imageTop = marginItem;
-    if( imgLoader.LoadLogo(*channelName, imageHeight, imageHeight) ) {
-        
-        chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), imgLoader.GetImage() );
+    cImage *img = imgLoader.LoadLogo(*channelName, imageHeight, imageHeight);
+    if( img ) {
+        chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
     } else if( !isGroup ) { // draw default logo
         if( isRadioChannel ) {
-            if( imgLoader.LoadIcon("radio", imageHeight, imageHeight) ) {
-                chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), imgLoader.GetImage() );
+            img = imgLoader.LoadIcon("radio", imageHeight, imageHeight);
+            if( img ) {
+                chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
             }
         } else {
-            if( imgLoader.LoadIcon("tv", imageHeight, imageHeight) ) {
-                chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), imgLoader.GetImage() );
+            img = imgLoader.LoadIcon("tv", imageHeight, imageHeight);
+            if( img ) {
+                chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
             }
         }
     }
@@ -140,6 +143,7 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
     int height = fontSmlHeight;
     int imageTop = 0;
+    cImage *img = NULL;
     
     if( Config.SignalQualityShow ) {
         top += max(fontSmlHeight, Config.decorProgressSignalSize) / 2 - fontSmlHeight / 2;
@@ -151,15 +155,17 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
 
     if( Channel ) {
         if (Channel->Ca()) {
-            if (imgLoader.LoadIcon("crypted", 999, height)) {
-                imageTop = top + (height - imgLoader.Height())/2;
-                chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+            img = imgLoader.LoadIcon("crypted", 999, height);
+            if( img ) {
+                imageTop = top + (height - img->Height())/2;
+                chanIconsPixmap->DrawImage(cPoint(left, imageTop), *img);
                 left -= marginItem*2;
             }
         } else {
-            if (imgLoader.LoadIcon("uncrypted", 999, height)) {
-                imageTop = top + (height - imgLoader.Height())/2;
-                chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+             img = imgLoader.LoadIcon("uncrypted", 999, height);
+            if( img ) {
+                imageTop = top + (height - img->Height())/2;
+                chanIconsPixmap->DrawImage(cPoint(left, imageTop), *img);
                 left -= marginItem*2;
             }
         }
@@ -178,10 +184,11 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
                 else if( screenAspect == 2.21 )
                     asp = "221";
             }
-            if (imgLoader.LoadIcon(*asp, 999, height)) {
-                imageTop = top + (height - imgLoader.Height())/2;
-                left -= imgLoader.Width();
-                chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+            img = imgLoader.LoadIcon(*asp, 999, height);
+            if( img ) {
+                imageTop = top + (height - img->Height())/2;
+                left -= img->Width();
+                chanIconsPixmap->DrawImage(cPoint(left, imageTop), *img);
                 left -= marginItem*2;
             }
         }
@@ -223,10 +230,11 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
                 break;
             }
 
-            if (imgLoader.LoadIcon(*res, 999, height)) {
-                imageTop = top + (height - imgLoader.Height())/2;
-                left -= imgLoader.Width();
-                chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+            img = imgLoader.LoadIcon(*res, 999, height);
+            if( img ) {
+                imageTop = top + (height - img->Height())/2;
+                left -= img->Width();
+                chanIconsPixmap->DrawImage(cPoint(left, imageTop), *img);
                 left -= marginItem*2;
             }
         }
@@ -246,10 +254,11 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
                     break;
             }
 
-            if (imgLoader.LoadIcon(*iconName, 999, height)) {
-                imageTop = top + (height - imgLoader.Height())/2;
-                left -= imgLoader.Width();
-                chanIconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+            img = imgLoader.LoadIcon(*iconName, 999, height);
+            if( img ) {
+                imageTop = top + (height - img->Height())/2;
+                left -= img->Width();
+                chanIconsPixmap->DrawImage(cPoint(left, imageTop), *img);
                 left -= marginItem*2;
             }
         }

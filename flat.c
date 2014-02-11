@@ -11,6 +11,7 @@
 #include "displayvolume.h"
 
 class cFlatConfig Config;
+class cImageCache imgCache;
 
 cTheme Theme;
 static bool menuActive = false;

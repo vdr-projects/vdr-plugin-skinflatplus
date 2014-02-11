@@ -4,7 +4,10 @@
 #include <vdr/videodir.h>
 
 #include "config.h"
+#include "imagecache.h"
+
 extern class cFlatConfig Config;
+extern class cImageCache imgCache;
 extern bool firstDisplay;
 
 class cFlatDisplayMenu;

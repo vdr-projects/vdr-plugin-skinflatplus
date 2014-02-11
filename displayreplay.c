@@ -93,15 +93,21 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
                 labelPixmap->DrawText(cPoint(left - font->Width(speed) - marginItem, 0), speed, Theme.Color(clrReplayFontSpeed), Theme.Color(clrReplayBg), font);
             }                
         }
+        cImage *img = imgLoader.LoadIcon(*rewind, fontHeight, fontHeight);
+        if( img )
+            iconsPixmap->DrawImage( cPoint(left, 0), *img );
 
-        if( imgLoader.LoadIcon(*rewind, fontHeight, fontHeight) )
-            iconsPixmap->DrawImage( cPoint(left, 0), imgLoader.GetImage() );
-        if( imgLoader.LoadIcon(*pause, fontHeight, fontHeight) )
-            iconsPixmap->DrawImage( cPoint(left + fontHeight + marginItem, 0), imgLoader.GetImage() );
-        if( imgLoader.LoadIcon(*play, fontHeight, fontHeight) )
-            iconsPixmap->DrawImage( cPoint(left + fontHeight*2 + marginItem*2, 0), imgLoader.GetImage() );
-        if( imgLoader.LoadIcon(*forward, fontHeight, fontHeight) )
-            iconsPixmap->DrawImage( cPoint(left + fontHeight*3 + marginItem*3, 0), imgLoader.GetImage() );
+        img = imgLoader.LoadIcon(*pause, fontHeight, fontHeight);
+        if( img )
+            iconsPixmap->DrawImage( cPoint(left + fontHeight + marginItem, 0), *img );
+
+        img = imgLoader.LoadIcon(*play, fontHeight, fontHeight);
+        if( img )
+            iconsPixmap->DrawImage( cPoint(left + fontHeight*2 + marginItem*2, 0), *img );
+
+        img = imgLoader.LoadIcon(*forward, fontHeight, fontHeight);
+        if( img )
+            iconsPixmap->DrawImage( cPoint(left + fontHeight*3 + marginItem*3, 0), *img );
 
     }
     
@@ -160,6 +166,8 @@ void cFlatDisplayReplay::SetJump(const char *Jump) {
 void cFlatDisplayReplay::ResolutionAspectDraw(void) {
     int left = osdWidth - Config.decorBorderReplaySize*2;
     int imageTop = 0;
+    cImage *img = NULL;
+    
     if( screenWidth > 0 ) {
     if( Config.RecordingResolutionAspectShow ) {         // Show Aspect
         cString asp = "unknown_asp";                     // ???
@@ -173,10 +181,11 @@ void cFlatDisplayReplay::ResolutionAspectDraw(void) {
             else if( screenAspect == 2.21 )
                 asp = "221";
         }
-        if (imgLoader.LoadIcon(*asp, 999, fontSmlHeight)) {
-            imageTop = fontHeight + (fontSmlHeight - imgLoader.Height())/2;
-            left -= imgLoader.Width();
-            iconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+        img = imgLoader.LoadIcon(*asp, 999, fontSmlHeight);
+        if( img ) {
+            imageTop = fontHeight + (fontSmlHeight - img->Height())/2;
+            left -= img->Width();
+            iconsPixmap->DrawImage(cPoint(left, imageTop), *img);
             left -= marginItem*2;
         }
     }
@@ -219,10 +228,11 @@ void cFlatDisplayReplay::ResolutionAspectDraw(void) {
 
             //printf("Width: %d Height: %d Aspect: %.2f\n", screenWidth, screenHeight, screenAspect);
         
-            if (imgLoader.LoadIcon(*res, 999, fontSmlHeight)) {
-                imageTop = fontHeight + (fontSmlHeight - imgLoader.Height())/2;
-                left -= imgLoader.Width();
-                iconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+            img = imgLoader.LoadIcon(*res, 999, fontSmlHeight);
+            if (img) {
+                imageTop = fontHeight + (fontSmlHeight - img->Height())/2;
+                left -= img->Width();
+                iconsPixmap->DrawImage(cPoint(left, imageTop), *img);
                 left -= marginItem*2;
             }
         }
@@ -242,10 +252,11 @@ void cFlatDisplayReplay::ResolutionAspectDraw(void) {
                     break;
             }
 
-            if (imgLoader.LoadIcon(*iconName, 999, fontSmlHeight)) {
-                imageTop = fontHeight + (fontSmlHeight - imgLoader.Height())/2;
-                left -= imgLoader.Width();
-                iconsPixmap->DrawImage(cPoint(left, imageTop), imgLoader.GetImage());
+            img = imgLoader.LoadIcon(*iconName, 999, fontSmlHeight);
+            if( img ) {
+                imageTop = fontHeight + (fontSmlHeight - img->Height())/2;
+                left -= img->Width();
+                iconsPixmap->DrawImage(cPoint(left, imageTop), *img);
                 left -= marginItem*2 ;
             }
         }

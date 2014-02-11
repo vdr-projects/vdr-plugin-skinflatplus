@@ -2,34 +2,35 @@
 
 #define X_DISPLAY_MISSING
 
+
 #include <vdr/osd.h>
 #include <vdr/skins.h>
 
 #include <Magick++.h>
+#include "imagemagickwrapper.h"
 
 #include "flat.h"
 
 using namespace Magick;
- 
-class cImageLoader {
+
+class cImageLoader : public cImageMagickWrapper {
 public:
     cImageLoader();
     ~cImageLoader();
-    cImage GetImage();
-    bool LoadLogo(const char *logo, int width, int height);
-    bool LoadIcon(const char *cIcon, int size = -1);
-    bool LoadIcon(const char *cIcon, int width, int height, bool preserveAspect = true);
+    
+    cImage* LoadLogo(const char *logo, int width, int height);
+    cImage* LoadIcon(const char *cIcon, int width, int height, bool preserveAspect = true);
+    
+    //cImage GetImage();
+    //cImage GetImage(int width, int height, bool preserveAspect = true);
+
+    //bool LoadIcon(const char *cIcon, int size = -1);
+    //bool LoadIcon2(const char *cIcon);
    
-    int Height(void);
-    int Width(void);
 private:
     int epgImageWidthLarge, epgImageHeightLarge;
     int epgImageWidth, epgImageHeight;
-    int logoWidth, logoHeight;
     cString logoExtension;
 
-    Image buffer;
-    Color Argb2Color(tColor col);
     void toLowerCase(std::string &str);
-    bool LoadImage(cString File);
 };

@@ -9,11 +9,13 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] remove button border if button is not shown
 - [fix] menuitem progressbar overlay itemtext
 - [fix] fixes in TopBar while icon set
-- [add] add support for menu SetItemChannel
-- [add] add support for menu SetItemTimer
 - [update] add Patch from MegaV0lt, support for simple aspect & format, new icons
 - [update] only log not loaded images
 - [update] imageloader logging
+- [add] add support for menu SetItemChannel
+- [add] add support for menu SetItemTimer
+- [add] imagescaler from skin nopacity (thank you!)
+- [add] imagecache for faster image loading
 
 2013-11-24: Version 0.1.0 - MegaV0lt Version
 Special thanks to MegaV0lt@VDR-Portal for

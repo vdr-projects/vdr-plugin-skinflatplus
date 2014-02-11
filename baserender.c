@@ -170,9 +170,11 @@ void cFlatBaseRender::TopBarUpdate(void) {
         topBarIconPixmap->Fill(clrTransparent);
         if( topBarExtraIconSet ) {
             int extraIconLeft = extraLeft + extraMaxWidth + marginItem;
-            if (imgLoader.LoadIcon(*topBarExtraIcon, 999, topBarHeight)) {
-                int iconTop = topBarHeight / 2 - imgLoader.Height()/2;
-                topBarIconPixmap->DrawImage(cPoint(extraIconLeft, iconTop), imgLoader.GetImage());
+//            if (imgLoader.LoadIcon(*topBarExtraIcon, 999, topBarHeight)) {
+            cImage *img = imgLoader.LoadIcon(*topBarExtraIcon, 999, topBarHeight);
+            if( img ) {
+                int iconTop = 0;
+                topBarIconPixmap->DrawImage(cPoint(extraIconLeft, iconTop), *img);
                 
                 RecLeft += topBarHeight + marginItem;
             }
@@ -180,10 +182,11 @@ void cFlatBaseRender::TopBarUpdate(void) {
 
         if( topBarMenuIconSet && Config.TopBarMenuIconShow ) {
             int IconLeft = marginItem;
-            if (imgLoader.LoadIcon(*topBarMenuIcon, 999, topBarHeight - marginItem*2)) {
-                int iconTop = (topBarHeight / 2 - imgLoader.Height()/2);
-                topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), imgLoader.GetImage());
-                MenuIconWidth = imgLoader.Width()+marginItem*2;
+            cImage *img = imgLoader.LoadIcon(*topBarMenuIcon, 999, topBarHeight - marginItem*2);
+            if( img ) {
+                int iconTop = (topBarHeight / 2 - img->Height()/2);
+                topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), *img);
+                MenuIconWidth = img->Width()+marginItem*2;
                 TitleWidthLeft -= MenuIconWidth + marginItem*3;
             }
         }
