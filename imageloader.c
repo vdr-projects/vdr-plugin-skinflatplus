@@ -18,7 +18,6 @@ cImageLoader::~cImageLoader() {
 cImage* cImageLoader::LoadLogo(const char *logo, int width, int height) {
     if( (width == 0) || (height==0) )
         return NULL;
-    dsyslog("imageloader LoadLogo: %s", logo);
     std::string logoLower = logo;
     toLowerCase(logoLower);
     cString File = cString::sprintf("%s/%s.%s", *Config.logoPath, logoLower.c_str(), *logoExtension);

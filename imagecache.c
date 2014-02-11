@@ -41,12 +41,9 @@ void cImageCache::InsertImage(cImage *Image, std::string Name, int Width, int He
     CacheName[InsertIndex] = Name;
     CacheWidth[InsertIndex] = Width;
     CacheHeight[InsertIndex] = Height;
-    
-    dsyslog("imagecache InsertImage");
 
     InsertIndex++;
     if( InsertIndex >= MAX_IMAGE_CACHE ) {
         InsertIndex = 0;
-        dsyslog("imagecache overflow");
     }
 }
