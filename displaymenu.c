@@ -765,13 +765,13 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
     }
 
     if( Config.MenuChannelView == 4 && Event && Current ) {
-        DrawItemExtraEvent(Event);
+        DrawItemExtraEvent(Event, "");
     }
     
     return true;
 }
 
-void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event) {
+void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText) {
 
     cLeft = menuItemWidth + Config.decorBorderMenuItemSize*2 + Config.decorBorderMenuContentSize + marginItem;
     if( isScrolling )
@@ -856,7 +856,8 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event) {
                     text << endl << tr("Subtitle") << ": "<< subtitle.str();
             }
         }
-    }
+    } else
+        text << *EmptyText;
     ContentCreate(cLeft, cTop, cWidth, cHeight, 2);
     
     ContentSet( text.str().c_str(), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
@@ -916,11 +917,13 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
     int imageTop = Top;
     
     cString TimerIconName("");
-    if (!(Timer->HasFlags(tfActive)))
+    if (!(Timer->HasFlags(tfActive))) {
         TimerIconName = "timerInactive";
-    else if (Timer->Recording())
+        ColorFg = Theme.Color( clrMenuTimerItemDisabledFont );
+    } else if (Timer->Recording()) {
         TimerIconName = "timerRecording";
-    else
+        ColorFg = Theme.Color( clrMenuTimerItemRecordingFont );
+    } else
         TimerIconName = "timerActive";
     
     if( imgLoader.LoadIcon(TimerIconName, imageHeight, imageHeight) ) {
@@ -1042,7 +1045,7 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
     }
     
     if( Config.MenuTimerView == 3 && Current ) {
-        DrawItemExtraEvent(Event);
+        DrawItemExtraEvent(Event, tr("timer not enabled"));
     }
     
     return true;
