@@ -6,6 +6,10 @@
 #include <iomanip>
 using namespace std;
 
+#ifndef VDRLOGO
+    #define VDRLOGO "vdrlogo_default"
+#endif
+
 #include "symbols/1080/Cnew.xpm"
 #include "symbols/1080/Carrowturn.xpm"
 #include "symbols/1080/Crec.xpm"
@@ -212,7 +216,7 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
         switch( menuCategory ) {
             case mcMain:
                 TopBarSetTitle("");
-                icon = "menuIcons/vdrlogo";
+                icon = cString::sprintf("menuIcons/%s", VDRLOGO);
                 break;
             case mcSchedule:
             case mcScheduleNow:

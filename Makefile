@@ -50,7 +50,21 @@ SOFILE = libvdr-$(PLUGIN).so
 
 INCLUDES += $(shell pkg-config --cflags Magick++)
 
-DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
+# define vdrlogo for menu topbar
+# if not defined vdrlogo_default will be used
+# available logos are
+#   vdrlogo_debian
+#   vdrlogo_default
+#   vdrlogo_easyvdr
+#   vdrlogo_gen2vdr
+#   vdrlogo_shine
+#   vdrlogo_xubuntu
+#   vdrlogo_xubuntu2
+#   vdrlogo_yavdr
+
+VDRLOGO = -DVDRLOGO=\"vdrlogo_default\"
+
+DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' $(VDRLOGO)
 
 LIBS += $(shell pkg-config --libs Magick++)
 
