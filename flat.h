@@ -102,6 +102,7 @@ THEME_CLR(Theme, clrMenuRecFontInfo,        0xFFEEEEEE);
 // Menu Text (Multiline)
 THEME_CLR(Theme, clrMenuTextBg,             0xC0101010);
 THEME_CLR(Theme, clrMenuTextFont,           0xFFEEEEEE);
+THEME_CLR(Theme, clrMenuTextFixedFont,      0xFFEEEEEE);
 
 THEME_CLR(Theme, clrMenuContentHeadBorderFg,        0xC03090B0);
 THEME_CLR(Theme, clrMenuContentHeadBorderBg,        0xC03090B0);

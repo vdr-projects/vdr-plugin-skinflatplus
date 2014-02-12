@@ -880,6 +880,7 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText
 bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current, bool Selectable) {
     if( Config.MenuTimerView == 0 || !Timer )
         return false;
+    dsyslog("SetItemTimer View: %d", Config.MenuTimerView);
     const cChannel *Channel = Timer->Channel();
     const cEvent *Event = Timer->Event();
     
@@ -912,6 +913,7 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
         }
     }
 
+    dsyslog("ItemWidth: %d ItemHeight: %d", menuItemWidth, Height);
     menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, menuItemWidth, Height), ColorBg);
     
     int Left, Top;
@@ -1001,6 +1003,11 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
         File++;
     else 
         File = Timer->File();
+
+    dsyslog("day: %s", *day);
+    dsyslog("name: %s", *name);
+    dsyslog("File: %s", File);
+    dsyslog("Left: %d Top: %d", Left, Top);
 
     if( Config.MenuTimerView == 1 ) {
         buffer = cString::sprintf("%s%s%s  %02d:%02d  %02d:%02d  %s",
@@ -1503,12 +1510,14 @@ void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
         Width -= scrollBarWidth;
     }
 
-    if( FixedFont )
+    if( FixedFont ) {
         ContentCreate(Left, Top, Width, Height, 1);
-    else
+        ContentSet( Text, Theme.Color(clrMenuTextFixedFont), Theme.Color(clrMenuTextBg) );
+    } else {
         ContentCreate(Left, Top, Width, Height, 1);
+        ContentSet( Text, Theme.Color(clrMenuTextFont), Theme.Color(clrMenuTextBg) );
+    }
 
-    ContentSet( Text, Theme.Color(clrMenuTextFont), Theme.Color(clrMenuTextBg) );
     
     if( ContentScrollable() )
         DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());

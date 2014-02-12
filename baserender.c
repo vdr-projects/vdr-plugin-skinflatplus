@@ -125,6 +125,8 @@ void cFlatBaseRender::TopBarSetTitleExtra(cString extra1, cString extra2) {
 }
 
 void cFlatBaseRender::TopBarSetExtraIcon(cString icon) {
+    if( !strcmp(*icon, "") )
+        return;
     topBarExtraIcon = icon;
     topBarExtraIconSet = true;
     topBarUpdateTitle = true;
