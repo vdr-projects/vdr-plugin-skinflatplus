@@ -62,9 +62,9 @@ INCLUDES += $(shell pkg-config --cflags Magick++)
 #   vdrlogo_xubuntu2
 #   vdrlogo_yavdr
 
-VDRLOGO = -DVDRLOGO=\"vdrlogo_default\"
+VDRLOGO = vdrlogo_default
 
-DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' $(VDRLOGO)
+DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' -DVDRLOGO=\"$(VDRLOGO)\"
 
 LIBS += $(shell pkg-config --libs Magick++)
 
