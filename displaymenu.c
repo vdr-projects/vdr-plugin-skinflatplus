@@ -108,20 +108,28 @@ void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
     }
 }
 
-void cFlatDisplayMenu::DrawScrollbar(int Total, int Offset, int Shown, int Top, int Height, bool CanScrollUp, bool CanScrollDown) {
+void cFlatDisplayMenu::DrawScrollbar(int Total, int Offset, int Shown, int Top, int Height, bool CanScrollUp, bool CanScrollDown, bool isContent) {
     if( Total > 0 && Total > Shown ) {
         if( isScrolling == false && ShowEvent == false && ShowRecording == false && ShowText == false ) {
             isScrolling = true;
             DecorBorderClearByFrom(BorderMenuItem);
             ItemBorderDrawAllWithScrollbar();
             ItemBorderClear();
-            menuPixmap->DrawRectangle(cRect(menuItemWidth - scrollBarWidth + Config.decorBorderMenuItemSize, 0, scrollBarWidth + marginItem, scrollBarHeight), clrTransparent);
+            if( isContent )
+                menuPixmap->DrawRectangle(cRect(menuItemWidth - scrollBarWidth + Config.decorBorderMenuContentSize, 0, scrollBarWidth + marginItem, scrollBarHeight), clrTransparent);
+            else
+                menuPixmap->DrawRectangle(cRect(menuItemWidth - scrollBarWidth + Config.decorBorderMenuItemSize, 0, scrollBarWidth + marginItem, scrollBarHeight), clrTransparent);
+            
         }
     } else if( ShowEvent == false && ShowRecording == false && ShowText == false ) {
         isScrolling = false;
     }
 
-    ScrollbarDraw(scrollbarPixmap, menuItemWidth - scrollBarWidth + Config.decorBorderMenuItemSize*2 + marginItem, Top, Height, Total, Offset, Shown, CanScrollUp, CanScrollDown);
+    if( isContent )
+        ScrollbarDraw(scrollbarPixmap, menuItemWidth - scrollBarWidth + Config.decorBorderMenuContentSize*2 + marginItem, Top, Height, Total, Offset, Shown, CanScrollUp, CanScrollDown);
+    else
+        ScrollbarDraw(scrollbarPixmap, menuItemWidth - scrollBarWidth + Config.decorBorderMenuItemSize*2 + marginItem, Top, Height, Total, Offset, Shown, CanScrollUp, CanScrollDown);
+    
 }
 
 void cFlatDisplayMenu::SetScrollbar(int Total, int Offset) {
@@ -880,7 +888,6 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText
 bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current, bool Selectable) {
     if( Config.MenuTimerView == 0 || !Timer )
         return false;
-    dsyslog("SetItemTimer View: %d", Config.MenuTimerView);
     const cChannel *Channel = Timer->Channel();
     const cEvent *Event = Timer->Event();
     
@@ -913,7 +920,6 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
         }
     }
 
-    dsyslog("ItemWidth: %d ItemHeight: %d", menuItemWidth, Height);
     menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, menuItemWidth, Height), ColorBg);
     
     int Left, Top;
@@ -1004,20 +1010,15 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
     else 
         File = Timer->File();
 
-    dsyslog("day: %s", *day);
-    dsyslog("name: %s", *name);
-    dsyslog("File: %s", File);
-    dsyslog("Left: %d Top: %d", Left, Top);
-
     if( Config.MenuTimerView == 1 ) {
-        buffer = cString::sprintf("%s%s%s  %02d:%02d  %02d:%02d  %s",
+        buffer = cString::sprintf("%s%s%s.  %02d:%02d - %02d:%02d  %s",
                     *name, *name && **name ? " " : "", *day,
                     Timer->Start() / 100, Timer->Start() % 100,
                     Timer->Stop() / 100, Timer->Stop() % 100,
                     File);
         menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
     } else if( Config.MenuTimerView == 2 || Config.MenuTimerView == 3 ) {
-        buffer = cString::sprintf("%s%s%s  %02d:%02d  %02d:%02d",
+        buffer = cString::sprintf("%s%s%s.  %02d:%02d - %02d:%02d",
                     *name, *name && **name ? " " : "", *day,
                     Timer->Start() / 100, Timer->Start() % 100,
                     Timer->Stop() / 100, Timer->Stop() % 100);
@@ -1194,7 +1195,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
     
     ContentSet( text.str().c_str(), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
     if( ContentScrollable() ) {
-        DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
+        DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal(), true);
     }
 
     if( Config.MenuContentFullSize || ContentScrollable() )
@@ -1462,7 +1463,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     
     ContentSet( text.str().c_str(), Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg) );
     if( ContentScrollable() ) {
-        DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
+        DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal(), true);
     }
 
     RecordingBorder.Left = cLeft;
@@ -1505,6 +1506,8 @@ void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
     if( !ButtonsDrawn() )
         Height += buttonsHeight + Config.decorBorderButtonSize*2;
 
+    menuItemWidth = Width;
+
     bool contentScrollable = ContentWillItBeScrollable(Width, Height, Text, FixedFont);
     if( contentScrollable ) {
         Width -= scrollBarWidth;
@@ -1520,7 +1523,7 @@ void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
 
     
     if( ContentScrollable() )
-        DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
+        DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal(), true);
 
     if( Config.MenuContentFullSize || ContentScrollable() )
         DecorBorderDraw(Left, Top, Width, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
