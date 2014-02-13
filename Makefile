@@ -52,6 +52,7 @@ INCLUDES += $(shell pkg-config --cflags Magick++)
 
 # define vdrlogo for menu topbar
 # if not defined vdrlogo_default will be used
+# define here or use make VDRLOGO=\"vdrlogo_default\"
 # available logos are
 #   vdrlogo_debian
 #   vdrlogo_default
@@ -61,7 +62,6 @@ INCLUDES += $(shell pkg-config --cflags Magick++)
 #   vdrlogo_xubuntu
 #   vdrlogo_xubuntu2
 #   vdrlogo_yavdr
-
 VDRLOGO = vdrlogo_default
 
 DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' -DVDRLOGO=\"$(VDRLOGO)\"

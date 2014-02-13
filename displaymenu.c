@@ -145,7 +145,7 @@ void cFlatDisplayMenu::Scroll(bool Up, bool Page) {
     if( ContentIsShown() ) {
         bool scrolled = ContentScroll(Up, Page);
         if( scrolled )
-            DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal());
+            DrawScrollbar(ContentScrollTotal(), ContentScrollOffset(), ContentVisibleLines(), contentTop - scrollBarTop, ContentGetHeight(), ContentScrollOffset() > 0, ContentScrollOffset() + ContentVisibleLines() < ContentScrollTotal(), true);
     } else {
         cSkinDisplayMenu::Scroll(Up, Page);
     }
