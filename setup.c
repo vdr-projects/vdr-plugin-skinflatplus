@@ -4,6 +4,7 @@ cStringList Bordertypes;
 cStringList Progresstypes;
 cStringList MenuChannelViews;
 cStringList MenuTimerViews;
+cStringList MenuEventViews;
 
 cFlatSetup::cFlatSetup(void) {
     SetupConfig = Config;
@@ -49,6 +50,11 @@ void cFlatSetup::Setup(void) {
     MenuTimerViews.Append( strdup(tr("flatPlus long")) );
     MenuTimerViews.Append( strdup(tr("flatPlus short")) );
     MenuTimerViews.Append( strdup(tr("flatPlus short + EPG")) );
+
+    MenuEventViews.Append( strdup(tr("VDR default")) );
+    MenuEventViews.Append( strdup(tr("flatPlus long")) );
+    MenuEventViews.Append( strdup(tr("flatPlus short")) );
+    MenuEventViews.Append( strdup(tr("flatPlus short + EPG")) );
 
     Add(new cOsdItem(tr("General settings"), osUnknown, true));
     Add(new cOsdItem(tr("Channelinfo settings"), osUnknown, true));
@@ -160,6 +166,7 @@ void cFlatSetup::Store(void) {
     SetupStore("MainMenuItemScale", dtoa(Config.MainMenuItemScale));
     SetupStore("MenuChannelView", Config.MenuChannelView);
     SetupStore("MenuTimerView", Config.MenuTimerView);
+    SetupStore("MenuEventView", Config.MenuEventView);
     SetupStore("ChannelSimpleAspectFormat", Config.ChannelSimpleAspectFormat);
     SetupStore("RecordingSimpleAspectFormat", Config.RecordingSimpleAspectFormat);
 
@@ -363,6 +370,7 @@ void cFlatSetupMenu::Setup(void) {
 
     Add(new cMenuEditStraItem(tr("Menu channel view"), &SetupConfig->MenuChannelView, MenuChannelViews.Size(), &MenuChannelViews[0]));
     Add(new cMenuEditStraItem(tr("Menu timer view"), &SetupConfig->MenuTimerView, MenuTimerViews.Size(), &MenuTimerViews[0]));
+    Add(new cMenuEditStraItem(tr("Menu event view"), &SetupConfig->MenuEventView, MenuEventViews.Size(), &MenuEventViews[0]));
 
     Add(new cMenuEditBoolItem(tr("Menuitem border by decor-file?"), &SetupConfig->decorBorderMenuItemByTheme));
     if( SetupConfig->decorBorderMenuItemByTheme ) {

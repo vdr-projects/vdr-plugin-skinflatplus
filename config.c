@@ -44,6 +44,7 @@ cFlatConfig::cFlatConfig(void) {
     
     MenuChannelView = 1;
     MenuTimerView = 3;
+    MenuEventView = 1;
     
     decorBorderChannelByTheme = 1;
     decorBorderChannelTypeUser = 0;
@@ -180,6 +181,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuItemScale") == 0)                    MainMenuItemScale = atod(Value);
     else if (strcmp(Name, "MenuChannelView") == 0)                      MenuChannelView = atoi(Value);
     else if (strcmp(Name, "MenuTimerView") == 0)                        MenuTimerView = atoi(Value);
+    else if (strcmp(Name, "MenuEventView") == 0)                        MenuEventView = atoi(Value);
     else if (strcmp(Name, "ChannelSimpleAspectFormat") == 0)            ChannelSimpleAspectFormat = atoi(Value);
     else if (strcmp(Name, "RecordingSimpleAspectFormat") == 0)          RecordingSimpleAspectFormat = atoi(Value);
    

@@ -21,7 +21,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         cPixmap *scrollbarPixmap;
         int scrollBarTop, scrollBarWidth, scrollBarHeight;
 
-        int itemHeight, itemChannelHeight, itemTimerHeight;
+        int itemHeight, itemChannelHeight, itemTimerHeight, itemEventHeight;
 
         std::list<sDecorBorder> ItemsBorder;
         sDecorBorder EventBorder, RecordingBorder, TextBorder;
@@ -61,7 +61,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         virtual void SetMessage(eMessageType Type, const char *Text);
         virtual void SetItem(const char *Text, int Index, bool Current, bool Selectable);
         
-        //virtual bool SetItemEvent(const cEvent *Event, int Index, bool Current, bool Selectable, const cChannel *Channel, bool WithDate, eTimerMatch TimerMatch);
+        virtual bool SetItemEvent(const cEvent *Event, int Index, bool Current, bool Selectable, const cChannel *Channel, bool WithDate, eTimerMatch TimerMatch);
         virtual bool SetItemTimer(const cTimer *Timer, int Index, bool Current, bool Selectable);
         virtual bool SetItemChannel(const cChannel *Channel, int Index, bool Current, bool Selectable, bool WithProvider);
         //virtual bool SetItemRecording(const cRecording *Recording, int Index, bool Current, bool Selectable, int Level, int Total, int New);

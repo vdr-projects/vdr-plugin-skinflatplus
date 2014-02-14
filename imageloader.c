@@ -71,58 +71,6 @@ cImage* cImageLoader::LoadIcon(const char *cIcon, int width, int height, bool pr
     return img;
 }
 
-/*
-bool cImageLoader::LoadIcon(const char *cIcon, int size) {
-	if (size==0)
-        return false;
-    cString File = cString::sprintf("%s%s/%s.%s", *Config.iconPath, Setup.OSDTheme, cIcon, *logoExtension);
-    bool success = LoadImage(File);
-    if( !success ) {
-        File = cString::sprintf("%s%s/%s.%s", *Config.iconPath, "default", cIcon, *logoExtension);
-        success = LoadImage(File);
-        if( !success ) {
-            dsyslog("imageloader LoadIcon: %s could not be loaded", *File);
-            return false;
-        }
-    }
-    if( size >= 0 )
-        buffer.sample(Geometry(size, size));
-    return true;
-}
-*/
-
-/*
-bool cImageLoader::LoadIcon2(const char *cIcon) {
-    try {
-        cString File = cString::sprintf("%s%s/%s.%s", *Config.iconPath, Setup.OSDTheme, cIcon, *logoExtension);
-
-        bool success = LoadImage(File);
-        if( !success ) {
-            File = cString::sprintf("%s%s/%s.%s", *Config.iconPath, "default", cIcon, *logoExtension);
-            success = LoadImage(File);
-            if( !success ) {
-                dsyslog("imageloader LoadIcon: %s could not be loaded", *File);
-                return false;
-            }
-        }
-        return true;
-    }
-    catch (...) {
-        return false;
-    }
-}
-
-cImage cImageLoader::GetImage() {
-    return CreateImageCopy();
-}
-
-cImage cImageLoader::GetImage(int width, int height, bool preserveAspect) {
-    cImage *img;
-    img = CreateImage(width, height, preserveAspect);
-    return *img;
-}
-*/
-
 void cImageLoader::toLowerCase(std::string &str) {
     const int length = str.length();
     for(int i=0; i < length; ++i) {
