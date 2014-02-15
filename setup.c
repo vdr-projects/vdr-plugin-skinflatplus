@@ -5,6 +5,7 @@ cStringList Progresstypes;
 cStringList MenuChannelViews;
 cStringList MenuTimerViews;
 cStringList MenuEventViews;
+cStringList DecorDescriptions;
 
 cFlatSetup::cFlatSetup(void) {
     SetupConfig = Config;

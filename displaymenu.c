@@ -1079,7 +1079,7 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
 }
 
 bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current, bool Selectable, const cChannel *Channel, bool WithDate, eTimerMatch TimerMatch) {
-    if( !Event || Config.MenuEventView == 0 )
+    if( Config.MenuEventView == 0 )
         return false;
     
     cImage *img = NULL;
@@ -1153,12 +1153,14 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     if( Channel ) {
         cString ws = cString::sprintf("%d", Channels.MaxNumber());
         w = font->Width(ws);
-        buffer = cString::sprintf("%d", Channel->Number());
-        int Width = font->Width(buffer);
-        if( Width < w )
-            Width = w;
-        menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, Width, fontHeight, taRight);
-        Left += Width + marginItem;
+        if( !Channel->GroupSep() ) {
+            buffer = cString::sprintf("%d", Channel->Number());
+            int Width = font->Width(buffer);
+            if( Width < w )
+                Width = w;
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, Width, fontHeight, taRight);
+        }
+        Left += w + marginItem;
         
         img = imgLoader.LoadLogo(Channel->Name(), fontHeight, fontHeight);
         if( img ) {
@@ -1196,7 +1198,7 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         Left += w + marginItem * 2;
     }
 
-    if( WithDate ) {
+    if( WithDate && Event ) {
         if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Channel )
             w = fontSml->Width("XXX 99. ") + marginItem;
         else
@@ -1219,17 +1221,17 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     }
     
     int imageHeight = fontHeight;
-    if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Channel ) {
+    if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Channel && Event ) {
         Top += fontHeight;
         Left = LeftSecond;
         imageHeight = fontSmlHeight;
         menuPixmap->DrawText(cPoint(Left, Top), Event->GetTimeString(), ColorFg, ColorBg, fontSml);
         Left += fontSml->Width( Event->GetTimeString() ) + marginItem;
-    } else if( Config.MenuEventView == 2 || Config.MenuEventView == 3  ){
+    } else if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Event ){
         imageHeight = fontHeight;
         menuPixmap->DrawText(cPoint(Left, Top), Event->GetTimeString(), ColorFg, ColorBg, font);
         Left += font->Width( Event->GetTimeString() ) + marginItem;
-    } else {
+    } else if( Event ){
         menuPixmap->DrawText(cPoint(Left, Top), Event->GetTimeString(), ColorFg, ColorBg, font);
         Left += font->Width( Event->GetTimeString() ) + marginItem;
     }
@@ -1248,27 +1250,28 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         }
     }
     Left += imageHeight + marginItem;
-    
-    if( Event->Vps() && (Event->Vps() - Event->StartTime()) ) {
-        img = imgLoader.LoadIcon("vps", imageHeight, imageHeight);
-        if( img ) {
-            imageTop = Top;
-            menuIconsPixmap->DrawImage( cPoint(Left, imageTop), *img );
+    if( Event ) {
+        if( Event->Vps() && (Event->Vps() - Event->StartTime()) ) {
+            img = imgLoader.LoadIcon("vps", imageHeight, imageHeight);
+            if( img ) {
+                imageTop = Top;
+                menuIconsPixmap->DrawImage( cPoint(Left, imageTop), *img );
+            }
+        } 
+        Left += imageHeight + marginItem;
+
+        if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Channel )
+            menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+        else if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) ) {
+            menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+            
+        } else
+            menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+
+        if( (Config.MenuEventView == 2 || Config.MenuEventView == 3)  && !Channel ) {
+            Top += fontHeight;
+            menuPixmap->DrawText(cPoint(Left, Top), Event->ShortText(), ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
         }
-    } 
-    Left += imageHeight + marginItem;
-
-    if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Channel )
-        menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
-    else if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) ) {
-        menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
-        
-    } else
-        menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
-
-    if( (Config.MenuEventView == 2 || Config.MenuEventView == 3)  && !Channel ) {
-        Top += fontHeight;
-        menuPixmap->DrawText(cPoint(Left, Top), Event->ShortText(), ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
     }
 
     sDecorBorder ib;

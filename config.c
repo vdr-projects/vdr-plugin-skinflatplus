@@ -434,6 +434,7 @@ bool stringCompare( const std::string &left, const std::string &right ) {
 void cFlatConfig::DecorDescriptions(cStringList &Decors) {
     cString decorPath = cString::sprintf("%s/decors", PLUGINRESOURCEPATH);
     std::vector<std::string> files;
+    Decors.Clear();
     
     cReadDir d(decorPath);
     struct dirent *e;
