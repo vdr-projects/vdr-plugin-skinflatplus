@@ -180,6 +180,7 @@ class cFlatConfig
         int MenuChannelView;
         int MenuTimerView;
         int MenuEventView;
+        int MenuRecordingView;
         
         int DecorIndex;
 };

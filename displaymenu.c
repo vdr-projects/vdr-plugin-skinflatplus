@@ -1,11 +1,5 @@
 #include "displaymenu.h"
 
-#include <ctype.h>
-#include <iostream>
-#include <sstream>
-#include <iomanip>
-using namespace std;
-
 #ifndef VDRLOGO
     #define VDRLOGO "vdrlogo_default"
 #endif
@@ -113,6 +107,11 @@ void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
             itemEventHeight = fontHeight + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
         else if( Config.MenuEventView == 2 || Config.MenuEventView == 3 )
             itemEventHeight = fontHeight + fontSmlHeight + marginItem*2 + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2 + Config.decorProgressMenuItemSize/2;
+    } else if( menuCategory == mcRecording ) {
+        if( Config.MenuRecordingView == 0 || Config.MenuRecordingView == 1 )
+            itemRecordingHeight = fontHeight + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
+        else if( Config.MenuRecordingView == 2 || Config.MenuRecordingView == 3 )
+            itemRecordingHeight = fontHeight + fontSmlHeight + marginItem + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
     }
     
 }
@@ -163,6 +162,8 @@ int cFlatDisplayMenu::MaxItems(void) {
         return scrollBarHeight / itemTimerHeight;
     else if( menuCategory == mcSchedule || menuCategory == mcScheduleNow || menuCategory == mcScheduleNext )
         return scrollBarHeight / itemEventHeight;
+    else if( menuCategory == mcRecording )
+        return scrollBarHeight / itemRecordingHeight;
 
     return scrollBarHeight / itemHeight;
 }
@@ -174,6 +175,8 @@ int cFlatDisplayMenu::ItemsHeight(void) {
         return MaxItems() * itemTimerHeight - Config.MenuItemPadding;
     else if( menuCategory == mcSchedule || menuCategory == mcScheduleNow || menuCategory == mcScheduleNext )
         return MaxItems() * itemEventHeight - Config.MenuItemPadding;
+    else if( menuCategory == mcRecording )
+        return MaxItems() * itemRecordingHeight - Config.MenuItemPadding;
 
     return MaxItems() * itemHeight - Config.MenuItemPadding;
 }
@@ -1370,6 +1373,189 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     return true;
 }
 
+bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, bool Current, bool Selectable, int Level, int Total, int New) {
+    if( Config.MenuRecordingView == 0 )
+        return false;
+
+    cString buffer;
+    int y = Index * itemRecordingHeight;
+
+    int Height = fontHeight;
+    if( Config.MenuRecordingView == 2 || Config.MenuRecordingView == 3 )
+        Height = fontHeight + fontSmlHeight + marginItem;
+
+    menuItemWidth = menuWidth - Config.decorBorderMenuItemSize*2;
+    if( Config.MenuRecordingView == 2 || Config.MenuRecordingView == 3 )
+        menuItemWidth *= 0.5;
+
+    if( isScrolling )
+        menuItemWidth -= scrollBarWidth;
+
+    tColor ColorFg, ColorBg;
+    if (Current) {
+        ColorFg = Theme.Color(clrItemCurrentFont);
+        ColorBg = Theme.Color(clrItemCurrentBg);
+    }
+    else {
+        if( Selectable ) {
+            ColorFg = Theme.Color(clrItemSelableFont);
+            ColorBg = Theme.Color(clrItemSelableBg);
+        } else {
+            ColorFg = Theme.Color(clrItemFont);
+            ColorBg = Theme.Color(clrItemBg);
+        }
+    }
+
+    menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, menuItemWidth, Height), ColorBg);
+    cImage *img = NULL;
+    cImage *imgRecNew = imgLoader.LoadIcon("recording_new", fontHeight, fontHeight);
+    cImage *imgRecCut = imgLoader.LoadIcon("recording_cutted", fontHeight, fontHeight);
+
+    int Left, Top;
+    Left = Config.decorBorderMenuItemSize + marginItem;
+    Top = y;
+
+    if( Config.MenuRecordingView == 1 ) {
+        int LeftWidth = Left + fontHeight + imgRecNew->Width() + imgRecCut->Width() + 
+            marginItem * 3 + font->Width("99.99.99  99:99  99:99 ");
+
+        if( Total == 0 ) {
+            img = imgLoader.LoadIcon("recording", fontHeight, fontHeight);
+            if( img ) {
+                menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
+                Left += fontHeight + marginItem;
+            }
+            
+            //int Minutes = max(0, (Recording->LengthInSeconds() + 30) / 60);
+            int Minutes = (Recording->LengthInSeconds() + 30) / 60; 
+            cString Length = cString::sprintf("%02d:%02d", Minutes / 60, Minutes % 60);
+            buffer = cString::sprintf("%s  %s  %s ", *ShortDateString(Recording->Start()), *TimeString(Recording->Start()), *Length);
+
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+            
+            Left += font->Width( buffer );
+            if( Recording->IsNew() ) {
+                if( imgRecNew ) {
+                    menuIconsPixmap->DrawImage( cPoint(Left, Top), *imgRecNew );
+                }
+            }
+            Left += imgRecNew->Width() + marginItem;
+            if (Recording->IsEdited()) {
+                if( imgRecCut ) {
+                    menuIconsPixmap->DrawImage( cPoint(Left, Top), *imgRecCut );
+                }
+            }
+            Left += imgRecCut->Width() + marginItem;
+
+            menuPixmap->DrawText(cPoint(Left, Top), Recording->Name(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+        } else {
+            img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
+            if( img ) {
+                menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
+                Left += img->Width() + marginItem;
+            }
+            buffer = cString::sprintf("%s %d %s %d", tr("Recordings"), Total, tr("Unwatched"), New);
+            if( Left + font->Width(*buffer) > LeftWidth )
+                buffer = cString::sprintf("%s %d %s %d", tr("Recs"), Total, tr("Unwatched"), New);
+                
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+            Left += font->Width( buffer );
+            menuPixmap->DrawText(cPoint(LeftWidth, Top), Recording->Name(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+        }
+    } else {
+        if( Total == 0 ) {
+            img = imgLoader.LoadIcon("recording", fontHeight, fontHeight);
+            if( img ) {
+                menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
+                Left += fontHeight + marginItem;
+            }
+            int ImagesWidth = imgRecNew->Width() + imgRecCut->Width() + marginItem*2 + scrollBarWidth;
+            if( isScrolling )
+                ImagesWidth -= scrollBarWidth;
+
+            menuPixmap->DrawText(cPoint(Left, Top), Recording->Name(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem - ImagesWidth);
+            Top += fontHeight;
+            
+            int Minutes = (Recording->LengthInSeconds() + 30) / 60; 
+            cString Length = cString::sprintf("%02d:%02d", Minutes / 60, Minutes % 60);
+            buffer = cString::sprintf("%s  %s  %s ", *ShortDateString(Recording->Start()), *TimeString(Recording->Start()), *Length);
+
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+            
+            Top -= fontHeight;
+            Left = menuItemWidth - ImagesWidth;
+            if( Recording->IsNew() ) {
+                if( imgRecNew ) {
+                    menuIconsPixmap->DrawImage( cPoint(Left, Top), *imgRecNew );
+                }
+            }
+            Left += imgRecNew->Width() + marginItem;
+            if (Recording->IsEdited()) {
+                if( imgRecCut ) {
+                    menuIconsPixmap->DrawImage( cPoint(Left, Top), *imgRecCut );
+                }
+            }
+            Left += imgRecCut->Width() + marginItem;
+
+        } else {
+            img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
+            if( img ) {
+                menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
+                Left += img->Width() + marginItem;
+            }
+            menuPixmap->DrawText(cPoint(Left, Top), Recording->Name(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+
+            buffer = cString::sprintf("%s %d %s %d", tr("Recordings"), Total, tr("Unwatched"), New);
+            if( Left + fontSml->Width(*buffer) > menuWidth )
+                buffer = cString::sprintf("%s %d %s %d", tr("Recs"), Total, tr("Unwatched"), New);
+            Top += fontHeight;
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+        }
+    }
+
+    sDecorBorder ib;
+    ib.Left = Config.decorBorderMenuItemSize;
+    ib.Top = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize + y;
+    
+    ib.Width = menuItemWidth - Config.decorBorderMenuItemSize*2;
+    
+    if( isScrolling ) {
+        ib.Width -= scrollBarWidth;
+    }
+    
+    ib.Width = menuItemWidth;
+    
+    ib.Height = Height;
+    ib.Size = Config.decorBorderMenuItemSize;
+    ib.Type = Config.decorBorderMenuItemType;
+
+    if( Current ) {
+        ib.ColorFg = Config.decorBorderMenuItemCurFg;
+        ib.ColorBg = Config.decorBorderMenuItemCurBg;
+    } else {
+        if( Selectable ) {
+            ib.ColorFg = Config.decorBorderMenuItemSelFg;
+            ib.ColorBg = Config.decorBorderMenuItemSelBg;
+        } else {
+            ib.ColorFg = Config.decorBorderMenuItemFg;
+            ib.ColorBg = Config.decorBorderMenuItemBg;
+        }
+    }
+
+    DecorBorderDraw(ib.Left, ib.Top, ib.Width, ib.Height,
+        ib.Size, ib.Type, ib.ColorFg, ib.ColorBg, BorderMenuItem);
+    
+    if( !isScrolling ) {
+        ItemBorderInsertUnique(ib);
+    }
+    
+    if( Config.MenuRecordingView == 3 && Current ) {
+        DrawItemExtraRecording(Recording, tr("no recording info"));
+    }
+    
+    return true;
+}
+
 void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
     if( !Event )
         return;
@@ -1506,16 +1692,219 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
 }
 
-// returns the string between start and end or an empty string if not found
-string xml_substring(string source, const char* str_start, const char* str_end) {
-    size_t start = source.find(str_start);
-    size_t end   = source.find(str_end);
+void cFlatDisplayMenu::DrawItemExtraRecording(const cRecording *Recording, cString EmptyText) {
+    cLeft = menuItemWidth + Config.decorBorderMenuItemSize*2 + Config.decorBorderMenuContentSize + marginItem;
+    if( isScrolling )
+        cLeft += scrollBarWidth;
+    cTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentSize;
+    cWidth = menuWidth - cLeft - Config.decorBorderMenuContentSize;
+    cHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
+        buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + Config.decorBorderMenuContentSize*2);
 
-    if (string::npos != start && string::npos != end) {
-        return (source.substr(start + strlen(str_start), end - start - strlen(str_start)));
-    }
+    ostringstream text;
+    if( Recording ) {
+        const cRecordingInfo *recInfo = Recording->Info();
+        text.imbue(std::locale(""));
 
-    return string();
+        if (!isempty(recInfo->Description()))
+            text << recInfo->Description() << endl << endl;
+        
+        // lent from skinelchi
+        if( Config.RecordingAdditionalInfoShow ) {
+            cChannel *channel = Channels.GetByChannelID(((cRecordingInfo *)recInfo)->ChannelID());
+            if (channel)
+                text << trVDR("Channel") << ": " << channel->Number() << " - " << channel->Name() << endl;
+
+            cMarks marks;
+            bool hasMarks = marks.Load(Recording->FileName(), Recording->FramesPerSecond(), Recording->IsPesRecording()) && marks.Count();
+            cIndexFile *index = new cIndexFile(Recording->FileName(), false, Recording->IsPesRecording());
+
+            int lastIndex = 0;
+
+            int cuttedLength = 0;
+            long cutinframe = 0;
+            unsigned long long recsize = 0;
+            unsigned long long recsizecutted = 0;
+            unsigned long long cutinoffset = 0;
+            unsigned long long filesize[100000];
+            filesize[0] = 0;
+
+            int i = 0;
+            int imax = 999;
+            struct stat filebuf;
+            cString filename;
+            int rc = 0;
+
+            do {
+                if (Recording->IsPesRecording())
+                    filename = cString::sprintf("%s/%03d.vdr", Recording->FileName(), ++i);
+                else {
+                    filename = cString::sprintf("%s/%05d.ts", Recording->FileName(), ++i);
+                    imax = 99999;
+                }
+                rc=stat(filename, &filebuf);
+                if (rc == 0)
+                    filesize[i] = filesize[i-1] + filebuf.st_size;
+                else {
+                    if (ENOENT != errno) {
+                        esyslog ("skinflatplus: error determining file size of \"%s\" %d (%s)", (const char *)filename, errno, strerror(errno));
+                        recsize = 0;
+                    }
+                }
+            } while( i <= imax && !rc );
+            recsize = filesize[i-1];
+
+            if (hasMarks && index) {
+                uint16_t FileNumber;
+                off_t FileOffset;
+
+                bool cutin = true;
+                cMark *mark = marks.First();
+                while (mark) {
+                    long position = mark->Position();
+                    index->Get(position, &FileNumber, &FileOffset);
+                    if (cutin) {
+                        cutinframe = position;
+                        cutin = false;
+                        cutinoffset = filesize[FileNumber-1] + FileOffset;
+                    } else {
+                        cuttedLength += position - cutinframe;
+                        cutin = true;
+                        recsizecutted += filesize[FileNumber-1] + FileOffset - cutinoffset;
+                    }
+                    cMark *nextmark = marks.Next(mark);
+                    mark = nextmark;
+                }
+                if( !cutin ) {
+                    cuttedLength += index->Last() - cutinframe;
+                    index->Get(index->Last() - 1, &FileNumber, &FileOffset);
+                    recsizecutted += filesize[FileNumber-1] + FileOffset - cutinoffset;
+                }
+            }
+            if (index) {
+                lastIndex = index->Last();
+                text << tr("Length") << ": " << *IndexToHMSF(lastIndex, false, Recording->FramesPerSecond());
+                if (hasMarks)
+                    text << " (" << tr("cutted") << ": " << *IndexToHMSF(cuttedLength, false, Recording->FramesPerSecond()) << ")";
+                text << endl;
+            }
+            delete index;
+
+            if (recsize > MEGABYTE(1023))
+                text << tr("Size") << ": " << fixed << setprecision(2) << (float)recsize / MEGABYTE(1024) << " GB";
+            else
+                text << tr("Size") << ": " << recsize / MEGABYTE(1) << " MB";
+            if( hasMarks )
+                if (recsize > MEGABYTE(1023))
+                    text << " (" <<  tr("cutted") << ": " << fixed << setprecision(2) <<  (float)recsizecutted/MEGABYTE(1024) << " GB)";
+                else
+                    text << " (" << tr("cutted") << ": " <<  recsizecutted/MEGABYTE(1) << " MB)";
+
+            text << endl << trVDR("Priority") << ": " << Recording->Priority() << ", " << trVDR("Lifetime") << ": " << Recording->Lifetime() << endl;
+
+            if( lastIndex ) {
+                text << tr("format") << ": " << (Recording->IsPesRecording() ? "PES" : "TS") << ", " << tr("bit rate") << ": ~ " << fixed << setprecision (2) << (float)recsize/lastIndex*Recording->FramesPerSecond()*8/MEGABYTE(1) << " MBit/s (Video + Audio)";
+            }
+            const cComponents *Components = recInfo->Components();
+            if( Components ) {
+                ostringstream audio;
+                bool firstAudio = true;
+                const char *audio_type = NULL;
+                ostringstream subtitle;
+                bool firstSubtitle = true;
+                for (int i = 0; i < Components->NumComponents(); i++) {
+                    const tComponent *p = Components->Component(i);
+
+                    switch (p->stream) {
+                        case sc_video_MPEG2:
+                            text << endl << tr("Video") << ": " <<  p->description << " (MPEG2)";
+                            break;
+                        case sc_video_H264_AVC:
+                            text << endl << tr("Video") << ": " <<  p->description << " (H.264)";
+                            break;
+                        case sc_audio_MP2:
+                        case sc_audio_AC3:
+                        case sc_audio_HEAAC:
+                            if (firstAudio)
+                                firstAudio = false;
+                            else
+                                audio << ", ";
+                            switch (p->stream) {
+                                case sc_audio_MP2:
+                                    // workaround for wrongfully used stream type X 02 05 for AC3
+                                    if (p->type == 5)
+                                        audio_type = "AC3";
+                                    else
+                                        audio_type = "MP2";
+                                    break;
+                                case sc_audio_AC3:
+                                    audio_type = "AC3"; break;
+                                case sc_audio_HEAAC:
+                                    audio_type = "HEAAC"; break;
+                            }
+                            if (p->description)
+                                audio << p->description << " (" << audio_type << ", " << p->language << ")";
+                            else
+                                audio << p->language << " (" << audio_type << ")";
+                            break;
+                        case sc_subtitle:
+                            if (firstSubtitle)
+                                firstSubtitle = false;
+                            else
+                                subtitle << ", ";
+                            if (p->description)
+                                subtitle << p->description << " (" << p->language << ")";
+                            else
+                                subtitle << p->language;
+                            break;
+                    }
+                }
+                if (audio.str().length() > 0)
+                    text << endl << tr("Audio") << ": "<< audio.str();
+                if (subtitle.str().length() > 0)
+                    text << endl << tr("Subtitle") << ": "<< subtitle.str();
+            }
+            if (recInfo->Aux()) {
+                string str_epgsearch = xml_substring(recInfo->Aux(), "<epgsearch>", "</epgsearch>");
+                string channel, searchtimer, pattern;
+
+                if (!str_epgsearch.empty()) {
+                    channel = xml_substring(str_epgsearch, "<channel>", "</channel>");
+                    searchtimer = xml_substring(str_epgsearch, "<searchtimer>", "</searchtimer>");
+                    if (searchtimer.empty())
+                        searchtimer = xml_substring(str_epgsearch, "<Search timer>", "</Search timer>");
+                }
+
+                string str_vdradmin = xml_substring(recInfo->Aux(), "<vdradmin-am>", "</vdradmin-am>");
+                if (!str_vdradmin.empty()) {
+                    pattern = xml_substring(str_vdradmin, "<pattern>", "</pattern>");
+                }
+
+                if ((!channel.empty() && !searchtimer.empty()) || !pattern.empty())  {
+                    text << endl << endl << tr("additional information") << ":" << endl;
+                    if (!channel.empty() && !searchtimer.empty()) {
+                        text << "EPGsearch: " << tr("channel") << ": " << channel << ", " << tr("search pattern") << ": " << searchtimer;
+                    }
+                    if (!pattern.empty()) {
+                        text << "VDRadmin-AM: " << tr("search pattern") << ": " << pattern;
+                    }
+                }
+            }
+        }
+    } else
+        text << *EmptyText;
+
+    ContentCreate(cLeft, cTop, cWidth, cHeight, 2);
+    
+    ContentSet( text.str().c_str(), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg) );
+
+    DecorBorderClearByFrom(BorderContent);
+    if( Config.MenuContentFullSize )
+        DecorBorderDraw(cLeft, cTop, cWidth, ContentGetHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+            Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg, BorderContent);
+    else
+        DecorBorderDraw(cLeft, cTop, cWidth, ContentGetTextHeight(), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
+            Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg, BorderContent);
 }
 
 void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
@@ -1592,7 +1981,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                 filesize[i] = filesize[i-1] + filebuf.st_size;
             else {
                 if (ENOENT != errno) {
-                    esyslog ("skinelchi: error determining file size of \"%s\" %d (%s)", (const char *)filename, errno, strerror(errno));
+                    esyslog ("skinflatplus: error determining file size of \"%s\" %d (%s)", (const char *)filename, errno, strerror(errno));
                     recsize = 0;
                 }
             }
@@ -1885,4 +2274,16 @@ void cFlatDisplayMenu::ItemBorderDrawAllWithoutScrollbar(void) {
 
 void cFlatDisplayMenu::ItemBorderClear(void) {
     ItemsBorder.clear();
+}
+
+// returns the string between start and end or an empty string if not found
+string xml_substring(string source, const char* str_start, const char* str_end) {
+    size_t start = source.find(str_start);
+    size_t end   = source.find(str_end);
+
+    if (string::npos != start && string::npos != end) {
+        return (source.substr(start + strlen(str_start), end - start - strlen(str_start)));
+    }
+
+    return string();
 }

@@ -2,6 +2,13 @@
 
 #include "baserender.h"
 #include <list>
+#include <ctype.h>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
+using namespace std;
+
+string xml_substring(string source, const char* str_start, const char* str_end);
 
 class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
     private:
@@ -21,7 +28,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         cPixmap *scrollbarPixmap;
         int scrollBarTop, scrollBarWidth, scrollBarHeight;
 
-        int itemHeight, itemChannelHeight, itemTimerHeight, itemEventHeight;
+        int itemHeight, itemChannelHeight, itemTimerHeight, itemEventHeight, itemRecordingHeight;
 
         std::list<sDecorBorder> ItemsBorder;
         sDecorBorder EventBorder, RecordingBorder, TextBorder;
@@ -46,6 +53,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         cBitmap *bmNew, *bmRec, *bmArrowTurn, *bmClock, *bmClocksml, *bmVPS;
         static cBitmap bmCNew, bmCRec, bmCArrowTurn, bmCClock, bmCClocksml, bmCHD, bmCVPS;
         void DrawItemExtraEvent(const cEvent *Event, cString EmptyText);
+        void DrawItemExtraRecording(const cRecording *Recording, cString EmptyText);
     public:
         cFlatDisplayMenu(void);
         virtual ~cFlatDisplayMenu();
@@ -64,7 +72,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         virtual bool SetItemEvent(const cEvent *Event, int Index, bool Current, bool Selectable, const cChannel *Channel, bool WithDate, eTimerMatch TimerMatch);
         virtual bool SetItemTimer(const cTimer *Timer, int Index, bool Current, bool Selectable);
         virtual bool SetItemChannel(const cChannel *Channel, int Index, bool Current, bool Selectable, bool WithProvider);
-        //virtual bool SetItemRecording(const cRecording *Recording, int Index, bool Current, bool Selectable, int Level, int Total, int New);
+        virtual bool SetItemRecording(const cRecording *Recording, int Index, bool Current, bool Selectable, int Level, int Total, int New);
 
         virtual void SetScrollbar(int Total, int Offset);
         virtual void SetEvent(const cEvent *Event);

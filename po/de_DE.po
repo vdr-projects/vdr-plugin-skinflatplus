@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-02-13 18:39+0100\n"
+"POT-Creation-Date: 2014-02-16 22:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,6 +35,18 @@ msgstr "Untertitel"
 
 msgid "timer not enabled"
 msgstr "Timer nicht aktiv"
+
+msgid "Recordings"
+msgstr "Aufnahmen"
+
+msgid "Unwatched"
+msgstr "Ungesehen"
+
+msgid "Recs"
+msgstr "Aufn."
+
+msgid "no recording info"
+msgstr "keine Aufnahme Informationen"
 
 msgid "Length"
 msgstr "Länge"
@@ -128,6 +140,9 @@ msgstr "flatPlus kurz"
 
 msgid "flatPlus short + EPG"
 msgstr "flatPlus kurz + EPG"
+
+msgid "flatPlus short + Info"
+msgstr "flatPlus kurz + Info"
 
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
@@ -269,6 +284,9 @@ msgstr "Menü Timer Ansicht"
 
 msgid "Menu event view"
 msgstr "Menü Programm Ansicht"
+
+msgid "Menu recording view"
+msgstr "Menü Aufzeichnungen Ansicht"
 
 msgid "Menuitem border by decor-file?"
 msgstr "Menüitem Rand von Decordatei?"

@@ -5,6 +5,7 @@ cStringList Progresstypes;
 cStringList MenuChannelViews;
 cStringList MenuTimerViews;
 cStringList MenuEventViews;
+cStringList MenuRecordingViews;
 cStringList DecorDescriptions;
 
 cFlatSetup::cFlatSetup(void) {
@@ -56,6 +57,11 @@ void cFlatSetup::Setup(void) {
     MenuEventViews.Append( strdup(tr("flatPlus long")) );
     MenuEventViews.Append( strdup(tr("flatPlus short")) );
     MenuEventViews.Append( strdup(tr("flatPlus short + EPG")) );
+
+    MenuRecordingViews.Append( strdup(tr("VDR default")) );
+    MenuRecordingViews.Append( strdup(tr("flatPlus long")) );
+    MenuRecordingViews.Append( strdup(tr("flatPlus short")) );
+    MenuRecordingViews.Append( strdup(tr("flatPlus short + Info")) );
 
     Add(new cOsdItem(tr("General settings"), osUnknown, true));
     Add(new cOsdItem(tr("Channelinfo settings"), osUnknown, true));
@@ -168,6 +174,7 @@ void cFlatSetup::Store(void) {
     SetupStore("MenuChannelView", Config.MenuChannelView);
     SetupStore("MenuTimerView", Config.MenuTimerView);
     SetupStore("MenuEventView", Config.MenuEventView);
+    SetupStore("MenuRecordingView", Config.MenuRecordingView);
     SetupStore("ChannelSimpleAspectFormat", Config.ChannelSimpleAspectFormat);
     SetupStore("RecordingSimpleAspectFormat", Config.RecordingSimpleAspectFormat);
 
@@ -372,6 +379,7 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditStraItem(tr("Menu channel view"), &SetupConfig->MenuChannelView, MenuChannelViews.Size(), &MenuChannelViews[0]));
     Add(new cMenuEditStraItem(tr("Menu timer view"), &SetupConfig->MenuTimerView, MenuTimerViews.Size(), &MenuTimerViews[0]));
     Add(new cMenuEditStraItem(tr("Menu event view"), &SetupConfig->MenuEventView, MenuEventViews.Size(), &MenuEventViews[0]));
+    Add(new cMenuEditStraItem(tr("Menu recording view"), &SetupConfig->MenuRecordingView, MenuRecordingViews.Size(), &MenuRecordingViews[0]));
 
     Add(new cMenuEditBoolItem(tr("Menuitem border by decor-file?"), &SetupConfig->decorBorderMenuItemByTheme));
     if( SetupConfig->decorBorderMenuItemByTheme ) {
