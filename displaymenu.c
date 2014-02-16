@@ -93,7 +93,9 @@ cFlatDisplayMenu::~cFlatDisplayMenu() {
 
 void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
     ItemBorderClear();
-
+    isScrolling = false;
+    ShowRecording = ShowEvent = ShowText = false;
+    
     menuCategory = MenuCategory;
     
     if( menuCategory == mcChannel ) {
@@ -110,7 +112,7 @@ void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
         if( Config.MenuEventView == 0 || Config.MenuEventView == 1 )
             itemEventHeight = fontHeight + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
         else if( Config.MenuEventView == 2 || Config.MenuEventView == 3 )
-            itemEventHeight = fontHeight + fontSmlHeight + marginItem + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
+            itemEventHeight = fontHeight + fontSmlHeight + marginItem*2 + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2 + Config.decorProgressMenuItemSize/2;
     }
     
 }
@@ -186,6 +188,8 @@ void cFlatDisplayMenu::Clear(void) {
     DecorBorderClearByFrom(BorderMenuItem);
     DecorBorderClearAll();
     isScrolling = false;
+
+    ShowRecording = ShowEvent = ShowText = false;
 }
 
 void cFlatDisplayMenu::SetTitle(const char *Title) {
@@ -1034,7 +1038,6 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
         menuPixmap->DrawText(cPoint(Left, Top + fontHeight), File, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
     }
   
-    
     sDecorBorder ib;
     ib.Left = Config.decorBorderMenuItemSize;
     ib.Top = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize + y;
@@ -1082,22 +1085,25 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     if( Config.MenuEventView == 0 )
         return false;
     
+    dsyslog("menuItemWidth %d, isScrolling: %d", menuItemWidth, isScrolling);
+    
     cImage *img = NULL;
     cString buffer;
     int y = Index * itemEventHeight;
 
     int Height = fontHeight;
     if( Config.MenuEventView == 2 || Config.MenuEventView == 3 )
-        Height = fontHeight + fontSmlHeight + marginItem;
+        Height = fontHeight + fontSmlHeight + marginItem*2 + Config.decorProgressMenuItemSize/2;
 
     menuItemWidth = menuWidth - Config.decorBorderMenuItemSize*2;
     if( Config.MenuEventView == 2 || Config.MenuEventView == 3 )
-        menuItemWidth *= 0.5;
+        menuItemWidth *= 0.6;
 
     if( isScrolling )
         menuItemWidth -= scrollBarWidth;
 
-    tColor ColorFg, ColorBg;
+    tColor ColorFg, ColorBg, ColorShortTextFg;
+    ColorShortTextFg = Theme.Color(clrMenuItemProgramShortTextFont);
     if (Current) {
         ColorFg = Theme.Color(clrItemCurrentFont);
         ColorBg = Theme.Color(clrItemCurrentBg);
@@ -1193,9 +1199,49 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         Left += fontHeight + marginItem * 2;
         LeftSecond = Left;
         
-        w = menuWidth / 10 * 3;
+        w = menuWidth / 10 * 2;
         menuPixmap->DrawText(cPoint(Left, Top), Channel->ShortName(true), ColorFg, ColorBg, font, w);
         Left += w + marginItem * 2;
+        
+        if( Event ) {
+            int PBWidth = menuItemWidth/20;
+            time_t now = time(NULL);
+            if( (now >= Event->StartTime()) && (now <= Event->EndTime()) ) {
+                int total = Event->EndTime() - Event->StartTime();
+                if( total > 0 ) {
+                    // calculate progress bar
+                    double progress = (int)roundf( (float)(time(NULL) - Event->StartTime()) / (float) (Event->Duration()) * 100.0);
+                    if(progress < 0)
+                        progress = 0.;
+                    else if(progress > 100)
+                        progress = 100;
+                    int PBTop =  y + (itemEventHeight - Config.MenuItemPadding)/2 - Config.decorProgressMenuItemSize/2 - Config.decorBorderMenuItemSize;
+                    int PBLeft = Left;
+                    int PBHeight = Config.decorProgressMenuItemSize;
+                    
+                    
+                    if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) ) {
+                        PBTop =  y + fontHeight + fontSmlHeight + marginItem;
+                        PBWidth = menuItemWidth - LeftSecond - scrollBarWidth - marginItem * 2;
+                        if( isScrolling )
+                            PBWidth += scrollBarWidth;
+
+                        PBLeft = LeftSecond;
+                        PBHeight = Config.decorProgressMenuItemSize / 2;
+                    }
+                     
+                    if( Current )
+                        ProgressBarDrawRaw(menuPixmap, menuPixmap, cRect( PBLeft, PBTop, PBWidth, PBHeight),
+                            cRect( PBLeft, PBTop, PBWidth, PBHeight), progress, 100,
+                            Config.decorProgressMenuItemCurFg, Config.decorProgressMenuItemCurBarFg, Config.decorProgressMenuItemCurBg, Config.decorProgressMenuItemType, false);
+                    else
+                        ProgressBarDrawRaw(menuPixmap, menuPixmap, cRect( PBLeft, PBTop, PBWidth, PBHeight),
+                            cRect( PBLeft, PBTop, PBWidth, PBHeight), progress, 100,
+                            Config.decorProgressMenuItemFg, Config.decorProgressMenuItemBarFg, Config.decorProgressMenuItemBg, Config.decorProgressMenuItemType, false);
+                }
+            }
+            Left += PBWidth + marginItem*2;
+        }
     }
 
     if( WithDate && Event ) {
@@ -1260,17 +1306,26 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         } 
         Left += imageHeight + marginItem;
 
-        if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Channel )
+        if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Channel ) {
             menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
-        else if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) ) {
+            if( Event->ShortText() ) {
+                Left += fontSml->Width( Event->Title() );
+                cString ShortText = cString::sprintf("  %s", Event->ShortText());
+                menuPixmap->DrawText(cPoint(Left, Top), ShortText, ColorShortTextFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+            }
+        } else if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) ) {
             menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
-            
-        } else
+            if( Event->ShortText() ) {
+                Top += fontHeight;
+                menuPixmap->DrawText(cPoint(Left, Top), Event->ShortText(), ColorShortTextFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+            }
+        } else {
             menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
-
-        if( (Config.MenuEventView == 2 || Config.MenuEventView == 3)  && !Channel ) {
-            Top += fontHeight;
-            menuPixmap->DrawText(cPoint(Left, Top), Event->ShortText(), ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+            if( Event->ShortText() ) {
+                Left += font->Width(Event->Title());
+                cString ShortText = cString::sprintf("  %s", Event->ShortText());
+                menuPixmap->DrawText(cPoint(Left, Top), ShortText, ColorShortTextFg, ColorBg, font, menuItemWidth - Left - marginItem);
+            }
         }
     }
 

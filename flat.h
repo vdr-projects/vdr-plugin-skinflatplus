@@ -129,6 +129,9 @@ THEME_CLR(Theme, clrMenuItemCurrentBorderBg,      0xC03090B0);
 THEME_CLR(Theme, clrMenuTimerItemDisabledFont,       0xFFA0A0A0);
 THEME_CLR(Theme, clrMenuTimerItemRecordingFont,      0xFFEEEEEE);
 
+// Program Menu
+THEME_CLR(Theme, clrMenuItemProgramShortTextFont,    0xFFA0A0A0);
+
 // Replay
 THEME_CLR(Theme, clrReplayBg,               0xC0101010);
 THEME_CLR(Theme, clrReplayFont,             0xFFEEEEEE);

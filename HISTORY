@@ -11,9 +11,10 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] fixes in TopBar while icon set
 - [update] add Patch from MegaV0lt, support for simple aspect & format, new icons
 - [update] only log not loaded images
-- [add] theme colors clrMenuTextFixedFont, clrMenuTimerItemDisabledFont, clrMenuTimerItemRecordingFont
+- [add] theme colors clrMenuTextFixedFont, clrMenuTimerItemDisabledFont, clrMenuTimerItemRecordingFont, clrMenuItemProgramShortTextFont
 - [add] add support for menu SetItemChannel
 - [add] add support for menu SetItemTimer
+- [add] add support for menu SetItemEvent (program menu)
 - [add] imagescaler from skin nopacity (thank you!)
 - [add] imagecache for faster image loading
 

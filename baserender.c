@@ -84,7 +84,7 @@ void cFlatBaseRender::CreateOsd(int left, int top, int width, int height) {
     if (osd) {
         tArea Area = { 0, 0, width, height,  32 };
         if (osd->SetAreas(&Area, 1) == oeOk) {  
-            dsyslog("skinflatplus: create osd SUCCESS left: %d top: %d width: %d height: %d", left, top, width, height);
+            //dsyslog("skinflatplus: create osd SUCCESS left: %d top: %d width: %d height: %d", left, top, width, height);
             return;
         }
     }
@@ -508,8 +508,12 @@ int cFlatBaseRender::ContentScrollOffset(void) {
     
     if ( ((-1)*contentPixmap->DrawPort().Point().Y() + contentHeight + h) > contentDrawPortHeight) {
         offset = (double)1 - ScrollbarSize();
+        //dsyslog("1 offset %f h %d return %d", offset, h, (int)(ContentScrollTotal() * offset));
     } else {
         offset = (double)((-1)*contentPixmap->DrawPort().Point().Y()) / (double)((-1)*contentPixmap->DrawPort().Point().Y() + contentHeight);
+        //dsyslog("2 offset %f h %d return %d", offset, h, (int)(ContentScrollTotal() * offset));
+        //dsyslog("contentHeight %d Y %d", contentHeight, contentPixmap->DrawPort().Point().Y());
+        //dsyslog("contentDrawPortHeight %d Y %d", contentDrawPortHeight, contentPixmap->DrawPort().Point().Y());
     }
     
     return ContentScrollTotal() * offset;
