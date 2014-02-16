@@ -1085,8 +1085,6 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     if( Config.MenuEventView == 0 )
         return false;
     
-    dsyslog("menuItemWidth %d, isScrolling: %d", menuItemWidth, isScrolling);
-    
     cImage *img = NULL;
     cString buffer;
     int y = Index * itemEventHeight;
