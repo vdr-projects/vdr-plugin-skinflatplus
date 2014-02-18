@@ -9,6 +9,7 @@
 using namespace std;
 
 string xml_substring(string source, const char* str_start, const char* str_end);
+const char * GetFolderName(const cRecording *Recording, int Level);
 
 class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
     private:

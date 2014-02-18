@@ -132,6 +132,9 @@ THEME_CLR(Theme, clrMenuTimerItemRecordingFont,      0xFFEEEEEE);
 // Program Menu
 THEME_CLR(Theme, clrMenuItemProgramShortTextFont,    0xFFA0A0A0);
 
+// Replay Menu
+THEME_CLR(Theme, clrMenuItemReplayExtraTextFont,    0xFFA0A0A0);
+
 // Replay
 THEME_CLR(Theme, clrReplayBg,               0xC0101010);
 THEME_CLR(Theme, clrReplayFont,             0xFFEEEEEE);

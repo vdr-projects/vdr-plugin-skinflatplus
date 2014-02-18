@@ -1373,11 +1373,32 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     return true;
 }
 
+const char * GetFolderName(const cRecording *Recording, int Level) {
+    std::string recNamePart;
+    std::string recName = Recording->Name();
+    try {
+        std::vector<std::string> tokens;
+        std::istringstream f(recName.c_str());
+        std::string s;
+        while (std::getline(f, s, FOLDERDELIMCHAR)) {
+            tokens.push_back(s);
+        }
+        recNamePart = tokens.at(Level);
+        if( Recording->IsEdited() ) {
+            recNamePart = recNamePart.substr(1);
+        }
+    } catch (...) {
+        recNamePart = recName.c_str();
+    }    
+    return recNamePart.c_str();
+}
+
 bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, bool Current, bool Selectable, int Level, int Total, int New) {
     if( Config.MenuRecordingView == 0 )
         return false;
 
     cString buffer;
+    cString Folder = GetFolderName(Recording, Level);
     int y = Index * itemRecordingHeight;
 
     int Height = fontHeight;
@@ -1391,7 +1412,8 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
     if( isScrolling )
         menuItemWidth -= scrollBarWidth;
 
-    tColor ColorFg, ColorBg;
+    tColor ColorFg, ColorBg, ColorExtraTextFg;
+    ColorExtraTextFg = Theme.Color(clrMenuItemReplayExtraTextFont);
     if (Current) {
         ColorFg = Theme.Color(clrItemCurrentFont);
         ColorBg = Theme.Color(clrItemCurrentBg);
@@ -1454,13 +1476,27 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
                 Left += img->Width() + marginItem;
             }
+
+            /*
             buffer = cString::sprintf("%s %d %s %d", tr("Recordings"), Total, tr("Unwatched"), New);
             if( Left + font->Width(*buffer) > LeftWidth )
                 buffer = cString::sprintf("%s %d %s %d", tr("Recs"), Total, tr("Unwatched"), New);
-                
+            */    
+            buffer = cString::sprintf("%d  ", Total);
             menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
             Left += font->Width( buffer );
-            menuPixmap->DrawText(cPoint(LeftWidth, Top), Recording->Name(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+
+            if( imgRecNew )
+                menuIconsPixmap->DrawImage( cPoint(Left, Top), *imgRecNew );
+            Left += imgRecNew->Width() + marginItem;
+            buffer = cString::sprintf("%d", New);
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+            Left += font->Width( buffer );
+            
+            menuPixmap->DrawText(cPoint(LeftWidth, Top), Folder, ColorFg, ColorBg, font, menuItemWidth - LeftWidth - marginItem);
+            LeftWidth += font->Width(Folder) + marginItem*2;
+            buffer = cString::sprintf("(%s)", *ShortDateString(Recording->Start()));
+            menuPixmap->DrawText(cPoint(LeftWidth, Top), buffer, ColorExtraTextFg, ColorBg, font, menuItemWidth - LeftWidth - marginItem);
         }
     } else {
         if( Total == 0 ) {
@@ -1503,13 +1539,23 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
                 Left += img->Width() + marginItem;
             }
-            menuPixmap->DrawText(cPoint(Left, Top), Recording->Name(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+            menuPixmap->DrawText(cPoint(Left, Top), Folder, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+            Left += font->Width(Folder) + marginItem*2;
+            buffer = cString::sprintf("(%s)", *ShortDateString(Recording->Start()));
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorExtraTextFg, ColorBg, font, menuItemWidth - Left - marginItem);
+            Left -= font->Width(Folder) + marginItem*2;
 
-            buffer = cString::sprintf("%s %d %s %d", tr("Recordings"), Total, tr("Unwatched"), New);
-            if( Left + fontSml->Width(*buffer) > menuWidth )
-                buffer = cString::sprintf("%s %d %s %d", tr("Recs"), Total, tr("Unwatched"), New);
             Top += fontHeight;
-            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+            buffer = cString::sprintf("%d  ", Total);
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+            Left += font->Width( buffer );
+
+            if( imgRecNew )
+                menuIconsPixmap->DrawImage( cPoint(Left, Top), *imgRecNew );
+            Left += imgRecNew->Width() + marginItem;
+            buffer = cString::sprintf("%d", New);
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+            Left += font->Width( buffer );
         }
     }
 

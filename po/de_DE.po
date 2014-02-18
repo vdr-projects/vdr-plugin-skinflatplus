@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-02-16 22:22+0100\n"
+"POT-Creation-Date: 2014-02-18 18:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,15 +35,6 @@ msgstr "Untertitel"
 
 msgid "timer not enabled"
 msgstr "Timer nicht aktiv"
-
-msgid "Recordings"
-msgstr "Aufnahmen"
-
-msgid "Unwatched"
-msgstr "Ungesehen"
-
-msgid "Recs"
-msgstr "Aufn."
 
 msgid "no recording info"
 msgstr "keine Aufnahme Informationen"
@@ -365,3 +356,12 @@ msgstr "Audiospur Rand Typ"
 
 msgid "Tracks border size"
 msgstr "Audiospur Rand Größe"
+
+#~ msgid "Recordings"
+#~ msgstr "Aufnahmen"
+
+#~ msgid "Unwatched"
+#~ msgstr "Ungesehen"
+
+#~ msgid "Recs"
+#~ msgstr "Aufn."
