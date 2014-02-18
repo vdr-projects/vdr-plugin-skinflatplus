@@ -1471,18 +1471,13 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             Left += imgRecCut->Width() + marginItem;
 
             menuPixmap->DrawText(cPoint(Left, Top), RecName, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
-        } else {
+        } else if( Total > 0 ) {
             img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
             if( img ) {
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
                 Left += img->Width() + marginItem;
             }
 
-            /*
-            buffer = cString::sprintf("%s %d %s %d", tr("Recordings"), Total, tr("Unwatched"), New);
-            if( Left + font->Width(*buffer) > LeftWidth )
-                buffer = cString::sprintf("%s %d %s %d", tr("Recs"), Total, tr("Unwatched"), New);
-            */    
             buffer = cString::sprintf("%d  ", Total);
             menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
             Left += font->Width( buffer );
@@ -1498,6 +1493,14 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             LeftWidth += font->Width(RecName) + marginItem*2;
             buffer = cString::sprintf("(%s)", *ShortDateString(Recording->Start()));
             menuPixmap->DrawText(cPoint(LeftWidth, Top), buffer, ColorExtraTextFg, ColorBg, font, menuItemWidth - LeftWidth - marginItem);
+        } else if( Total == -1 ) {
+            img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
+            if( img ) {
+                menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
+                Left += img->Width() + marginItem;
+            }
+
+            menuPixmap->DrawText(cPoint(Left, Top), Recording->FileName(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
         }
     } else {
         if( Total == 0 ) {
@@ -1534,7 +1537,7 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             }
             Left += imgRecCut->Width() + marginItem;
 
-        } else {
+        } else if( Total > 0 ) {
             img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
             if( img ) {
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
@@ -1556,6 +1559,13 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             Left += imgRecNewSml->Width() + marginItem;
             buffer = cString::sprintf("%d", New);
             menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+        } else if( Total == -1 ) {
+            img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
+            if( img ) {
+                menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
+                Left += img->Width() + marginItem;
+            }
+            menuPixmap->DrawText(cPoint(Left, Top), Recording->FileName(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
         }
     }
 
