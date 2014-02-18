@@ -8,8 +8,6 @@
 #include <iomanip>
 using namespace std;
 
-string xml_substring(string source, const char* str_start, const char* str_end);
-const char * GetFolderName(const cRecording *Recording, int Level);
 
 class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
     private:
@@ -45,6 +43,9 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         static std::string items[16];
         std::string MainMenuText(std::string Text);
         cString GetIconName(std::string element);
+
+        const char * GetRecordingName(const cRecording *Recording, int Level, bool isFolder);
+        string xml_substring(string source, const char* str_start, const char* str_end);
 
         void DrawScrollbar(int Total, int Offset, int Shown, int Top, int Height, bool CanScrollUp, bool CanScrollDown, bool isContent = false);
         int ItemsHeight(void);

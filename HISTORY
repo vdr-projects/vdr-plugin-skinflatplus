@@ -12,7 +12,8 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] more small fixes
 - [update] add Patch from MegaV0lt, support for simple aspect & format, new icons
 - [update] only log not loaded images
-- [add] theme colors clrMenuTextFixedFont, clrMenuTimerItemDisabledFont, clrMenuTimerItemRecordingFont, clrMenuItemProgramShortTextFont
+- [add] theme colors clrMenuTextFixedFont, clrMenuTimerItemDisabledFont, clrMenuTimerItemRecordingFont,
+    clrMenuItemProgramShortTextFont, clrMenuItemReplayExtraTextFont
 - [add] add support for menu SetItemChannel
 - [add] add support for menu SetItemTimer
 - [add] add support for menu SetItemEvent (program menu)
