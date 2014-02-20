@@ -1245,7 +1245,7 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         }
     }
 
-    if( WithDate && Event ) {
+    if( WithDate && Event && Selectable ) {
         if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Channel )
             w = fontSml->Width("XXX 99. ") + marginItem;
         else
@@ -1268,17 +1268,17 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     }
     
     int imageHeight = fontHeight;
-    if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Channel && Event ) {
+    if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Channel && Event && Selectable ) {
         Top += fontHeight;
         Left = LeftSecond;
         imageHeight = fontSmlHeight;
         menuPixmap->DrawText(cPoint(Left, Top), Event->GetTimeString(), ColorFg, ColorBg, fontSml);
         Left += fontSml->Width( Event->GetTimeString() ) + marginItem;
-    } else if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Event ){
+    } else if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) && Event && Selectable ){
         imageHeight = fontHeight;
         menuPixmap->DrawText(cPoint(Left, Top), Event->GetTimeString(), ColorFg, ColorBg, font);
         Left += font->Width( Event->GetTimeString() ) + marginItem;
-    } else if( Event ){
+    } else if( Event && Selectable ){
         menuPixmap->DrawText(cPoint(Left, Top), Event->GetTimeString(), ColorFg, ColorBg, font);
         Left += font->Width( Event->GetTimeString() ) + marginItem;
     }
@@ -1297,7 +1297,7 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         }
     }
     Left += imageHeight + marginItem;
-    if( Event ) {
+    if( Event && Selectable ) {
         if( Event->Vps() && (Event->Vps() - Event->StartTime()) ) {
             img = imgLoader.LoadIcon("vps", imageHeight, imageHeight);
             if( img ) {
@@ -1328,6 +1328,13 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
                 menuPixmap->DrawText(cPoint(Left, Top), ShortText, ColorShortTextFg, ColorBg, font, menuItemWidth - Left - marginItem);
             }
         }
+    } else {
+        // extract date from Separator
+        std::string sep = Event->Title();
+        std::size_t found = sep.find(" -");
+        std::string date = sep.substr(found - 10, 10);
+        
+        menuPixmap->DrawText(cPoint(Left, Top), date.c_str(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
     }
 
     sDecorBorder ib;
@@ -2349,6 +2356,8 @@ string cFlatDisplayMenu::xml_substring(string source, const char* str_start, con
 }
 
 const char * cFlatDisplayMenu::GetRecordingName(const cRecording *Recording, int Level, bool isFolder) {
+    if( !Recording )
+        return "";
     std::string recNamePart;
     std::string recName = Recording->Name();
     try {
