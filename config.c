@@ -47,6 +47,9 @@ cFlatConfig::cFlatConfig(void) {
     MenuEventView = 1;
     MenuRecordingView = 1;
     
+    MenuItemRecordingClearPercent = 1;
+    MenuItemRecordingShowFolderDate = 1;
+    
     decorBorderChannelByTheme = 1;
     decorBorderChannelTypeUser = 0;
     decorBorderChannelSizeUser = 0;
@@ -186,7 +189,9 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MenuRecordingView") == 0)                    MenuRecordingView = atoi(Value);
     else if (strcmp(Name, "ChannelSimpleAspectFormat") == 0)            ChannelSimpleAspectFormat = atoi(Value);
     else if (strcmp(Name, "RecordingSimpleAspectFormat") == 0)          RecordingSimpleAspectFormat = atoi(Value);
-   
+    else if (strcmp(Name, "MenuItemRecordingClearPercent") == 0)        MenuItemRecordingClearPercent = atoi(Value);
+    else if (strcmp(Name, "MenuItemRecordingShowFolderDate") == 0)      MenuItemRecordingShowFolderDate = atoi(Value);
+
     else return false;
     
     return true;

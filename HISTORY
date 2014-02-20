@@ -20,6 +20,8 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] add support for menu SetItemRecording (program menu)
 - [add] imagescaler from skin nopacity (thank you!)
 - [add] imagecache for faster image loading
+- [add] option MenuItemRecordingClearPercent set to 1 to clear the '%' in recording names (you have an cut icon to detect cutted recordings)
+- [add] option MenuItemRecordingShowFolderDate to show the date in the folder item from the newest/oldest recording in that folder (0 = disable, 1 = newest recording date, 2 = oldest recording date)
 
 2013-11-24: Version 0.1.0 - MegaV0lt Version
 Special thanks to MegaV0lt@VDR-Portal for

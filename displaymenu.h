@@ -47,6 +47,8 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         const char * GetRecordingName(const cRecording *Recording, int Level, bool isFolder);
         string xml_substring(string source, const char* str_start, const char* str_end);
 
+        time_t GetLastRecTimeFromFolder(const cRecording *Recording, int Level);
+
         void DrawScrollbar(int Total, int Offset, int Shown, int Top, int Height, bool CanScrollUp, bool CanScrollDown, bool isContent = false);
         int ItemsHeight(void);
         bool CheckProgressBar(const char *text);

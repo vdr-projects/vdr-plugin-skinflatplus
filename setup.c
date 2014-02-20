@@ -177,6 +177,8 @@ void cFlatSetup::Store(void) {
     SetupStore("MenuRecordingView", Config.MenuRecordingView);
     SetupStore("ChannelSimpleAspectFormat", Config.ChannelSimpleAspectFormat);
     SetupStore("RecordingSimpleAspectFormat", Config.RecordingSimpleAspectFormat);
+    SetupStore("MenuItemRecordingClearPercent", Config.MenuItemRecordingClearPercent);
+    SetupStore("MenuItemRecordingShowFolderDate", Config.MenuItemRecordingShowFolderDate);
 
     Config.Init();
 }

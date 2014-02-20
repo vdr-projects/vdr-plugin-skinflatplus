@@ -1,5 +1,11 @@
 #pragma once
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+#include <stdint.h>
+
 #include <vdr/skins.h>
 #include <vdr/videodir.h>
 
@@ -183,3 +189,19 @@ class cFlat : public cSkin {
         virtual cSkinDisplayTracks *DisplayTracks(const char *Title, int NumTracks, const char * const *Tracks);
         virtual cSkinDisplayMessage *DisplayMessage(void);
 };
+
+static inline uint32_t GetMsTicks(void)
+{
+#ifdef CLOCK_MONOTONIC
+    struct timespec tspec;
+
+    clock_gettime(CLOCK_MONOTONIC, &tspec);
+    return (tspec.tv_sec * 1000) + (tspec.tv_nsec / (1000 * 1000));
+#else
+    struct timeval tval;
+
+    if (gettimeofday(&tval, NULL) < 0)
+        eturn 0;
+    return (tval.tv_sec * 1000) + (tval.tv_usec / 1000);
+#endif
+}

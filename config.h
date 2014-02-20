@@ -182,5 +182,8 @@ class cFlatConfig
         int MenuEventView;
         int MenuRecordingView;
         
+        int MenuItemRecordingClearPercent;
+        int MenuItemRecordingShowFolderDate;    // 0 = disable, 1 = newest recording date, 2 = oldest recording date
+        
         int DecorIndex;
 };

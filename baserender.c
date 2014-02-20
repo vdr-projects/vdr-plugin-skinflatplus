@@ -859,7 +859,7 @@ void cFlatBaseRender::ProgressBarDrawMarks(int Current, int Total, const cMarks 
 }
 
 int cFlatBaseRender::ProgressBarMarkPos(int P, int Total) {
-    return P * progressBarWidth / Total;
+    return (int64_t)P * progressBarWidth / Total;
 }
 
 void cFlatBaseRender::ProgressBarDrawMark(int posMark, int posMarkLast, int posCurrent, bool Start, bool isCurrent)

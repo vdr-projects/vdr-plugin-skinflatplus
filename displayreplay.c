@@ -205,6 +205,9 @@ void cFlatDisplayReplay::ResolutionAspectDraw(void) {
             case 960:                         // 960x720 (HD720 DV)
                 res = "960x720";
                 break;
+            case 704:                         // 704x576 (PAL)
+                res = "704x576";
+                break;
             case 720:                         // 720x576 (PAL)
                 res = "720x576";
                 break;
