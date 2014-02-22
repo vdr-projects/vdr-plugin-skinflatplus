@@ -23,6 +23,7 @@ void cFlatSetup::Setup(void) {
     Bordertypes.Clear();
     Progresstypes.Clear();
     
+    Bordertypes.Clear();
     Bordertypes.Append( strdup(tr("none")) );
     Bordertypes.Append( strdup(tr("rect")) );
     Bordertypes.Append( strdup(tr("round")) );
@@ -31,6 +32,7 @@ void cFlatSetup::Setup(void) {
     Bordertypes.Append( strdup(tr("round + alpha blend")) );
     Bordertypes.Append( strdup(tr("invert round + alpha blend")) );
 
+    Progresstypes.Clear();
     Progresstypes.Append( strdup(tr("small line + big line")) );
     Progresstypes.Append( strdup(tr("big line")) );
     Progresstypes.Append( strdup(tr("big line + outline")) );
@@ -42,22 +44,26 @@ void cFlatSetup::Setup(void) {
     Progresstypes.Append( strdup(tr("small line + big line + alpha blend")) );
     Progresstypes.Append( strdup(tr("big line + alpha blend")) );
 
+    MenuChannelViews.Clear();
     MenuChannelViews.Append( strdup(tr("VDR default")) );
     MenuChannelViews.Append( strdup(tr("flatPlus long")) );
     MenuChannelViews.Append( strdup(tr("flatPlus long + EPG")) );
     MenuChannelViews.Append( strdup(tr("flatPlus short")) );
     MenuChannelViews.Append( strdup(tr("flatPlus short + EPG")) );
 
+    MenuTimerViews.Clear();
     MenuTimerViews.Append( strdup(tr("VDR default")) );
     MenuTimerViews.Append( strdup(tr("flatPlus long")) );
     MenuTimerViews.Append( strdup(tr("flatPlus short")) );
     MenuTimerViews.Append( strdup(tr("flatPlus short + EPG")) );
 
+    MenuEventViews.Clear();
     MenuEventViews.Append( strdup(tr("VDR default")) );
     MenuEventViews.Append( strdup(tr("flatPlus long")) );
     MenuEventViews.Append( strdup(tr("flatPlus short")) );
     MenuEventViews.Append( strdup(tr("flatPlus short + EPG")) );
 
+    MenuRecordingViews.Clear();
     MenuRecordingViews.Append( strdup(tr("VDR default")) );
     MenuRecordingViews.Append( strdup(tr("flatPlus long")) );
     MenuRecordingViews.Append( strdup(tr("flatPlus short")) );
@@ -206,6 +212,7 @@ cFlatSetupGeneral::cFlatSetupGeneral(cFlatConfig* data)  : cMenuSetupSubMenu(tr(
 void cFlatSetupGeneral::Setup(void) {
     Clear();
 
+    DecorDescriptions.Clear();
     SetupConfig->DecorDescriptions( DecorDescriptions );
     if( SetupConfig->DecorIndex < 0 || SetupConfig->DecorIndex > DecorDescriptions.Size() )
         SetupConfig->DecorIndex = 0;

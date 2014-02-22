@@ -43,7 +43,7 @@ cFlatConfig::cFlatConfig(void) {
     MainMenuItemScale = 1.0;
     
     MenuChannelView = 1;
-    MenuTimerView = 3;
+    MenuTimerView = 1;
     MenuEventView = 1;
     MenuRecordingView = 1;
     
