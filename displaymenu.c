@@ -436,13 +436,22 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                 } else {
                     if( Config.MenuItemParseTilde ) {
                         std::string tilde = s;
-                        size_t found = tilde.find("~");
+                        size_t found = tilde.find(" ~ ");
+                        size_t found2 = tilde.find("~");
                         if( found != string::npos ) {
                             std::string first = tilde.substr(0, found);
                             std::string second = tilde.substr(found +2, tilde.length() );
 
                             menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font);
                             int l = font->Width( first.c_str() );
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font);
+                        } else if ( found2 != string::npos ) {
+                            std::string first = tilde.substr(0, found2);
+                            std::string second = tilde.substr(found2 +1, tilde.length() );
+
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font);
+                            int l = font->Width( first.c_str() );
+                            l += font->Width("X");
                             menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font);
                         } else
                             menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font);
@@ -1341,7 +1350,7 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
                 menuPixmap->DrawText(cPoint(Left, Top), ShortText, ColorShortTextFg, ColorBg, font, menuItemWidth - Left - marginItem);
             }
         }
-    } else {
+    } else if( Event ) {
         try {
             // extract date from Separator
             std::string sep = Event->Title();
