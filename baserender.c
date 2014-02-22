@@ -373,7 +373,31 @@ void cFlatBaseRender::MessageSet(eMessageType Type, const char *Text) {
     messagePixmap->DrawRectangle(cRect( osdWidth - messageHeight - Config.decorBorderMessageSize*2, 0, messageHeight, messageHeight), col);
 
     int textWidth = font->Width(Text);
-    messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2, marginItem), Text, Theme.Color(clrMessageFont), Theme.Color(clrMessageBg), font);
+
+    if( Config.MenuItemParseTilde ) {
+        std::string tilde = Text;
+        size_t found = tilde.find(" ~ ");
+        size_t found2 = tilde.find("~");
+        if( found != std::string::npos ) {
+            std::string first = tilde.substr(0, found);
+            std::string second = tilde.substr(found +2, tilde.length() );
+
+            messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2, marginItem), first.c_str(), Theme.Color(clrMessageFont), Theme.Color(clrMessageBg), font);
+            int l = font->Width( first.c_str() );
+            messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2 + l, marginItem), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), Theme.Color(clrMessageBg), font);
+        } else if ( found2 != std::string::npos ) {
+            std::string first = tilde.substr(0, found2);
+            std::string second = tilde.substr(found2 +1, tilde.length() );
+
+            messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2, marginItem), first.c_str(), Theme.Color(clrMessageFont), Theme.Color(clrMessageBg), font);
+            int l = font->Width( first.c_str() );
+            l += font->Width("X");
+            messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2 + l, marginItem), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), Theme.Color(clrMessageBg), font);
+        } else
+            messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2, marginItem), Text, Theme.Color(clrMessageFont), Theme.Color(clrMessageBg), font);
+    } else
+        messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2, marginItem), Text, Theme.Color(clrMessageFont), Theme.Color(clrMessageBg), font);
+    
 
     int top = osdHeight - Config.MessageOffset - messageHeight - Config.decorBorderMessageSize;
     DecorBorderDraw(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight, Config.decorBorderMessageSize, Config.decorBorderMessageType, Config.decorBorderMessageFg, Config.decorBorderMessageBg, BorderMessage);
