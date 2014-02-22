@@ -179,6 +179,7 @@ void cFlatSetup::Store(void) {
     SetupStore("RecordingSimpleAspectFormat", Config.RecordingSimpleAspectFormat);
     SetupStore("MenuItemRecordingClearPercent", Config.MenuItemRecordingClearPercent);
     SetupStore("MenuItemRecordingShowFolderDate", Config.MenuItemRecordingShowFolderDate);
+    SetupStore("MenuItemParseTilde", Config.MenuItemParseTilde);
 
     Config.Init();
 }

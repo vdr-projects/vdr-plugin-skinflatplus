@@ -434,7 +434,20 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                     menuPixmap->DrawText(cPoint(fontHeight + marginItem*2 + xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font,
                         AvailableTextWidth - xt - marginItem*2 - fontHeight);
                 } else {
-                    menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font);
+                    if( Config.MenuItemParseTilde ) {
+                        std::string tilde = s;
+                        size_t found = tilde.find("~");
+                        if( found != string::npos ) {
+                            std::string first = tilde.substr(0, found);
+                            std::string second = tilde.substr(found +2, tilde.length() );
+
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font);
+                            int l = font->Width( first.c_str() );
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font);
+                        } else
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font);
+                    } else
+                        menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font);
                 }
             }
         }
@@ -1104,7 +1117,7 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         menuItemWidth -= scrollBarWidth;
 
     tColor ColorFg, ColorBg, ColorShortTextFg;
-    ColorShortTextFg = Theme.Color(clrMenuItemProgramShortTextFont);
+    ColorShortTextFg = Theme.Color(clrMenuItemExtraTextFont);
     if (Current) {
         ColorFg = Theme.Color(clrItemCurrentFont);
         ColorBg = Theme.Color(clrItemCurrentBg);
@@ -1329,12 +1342,22 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
             }
         }
     } else {
-        // extract date from Separator
-        std::string sep = Event->Title();
-        std::size_t found = sep.find(" -");
-        std::string date = sep.substr(found - 10, 10);
-        
-        menuPixmap->DrawText(cPoint(Left, Top), date.c_str(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+        try {
+            // extract date from Separator
+            std::string sep = Event->Title();
+            if( sep.size() > 12 ) {
+                std::size_t found = sep.find(" -");
+                if( found >= 10 ) {
+                    std::string date = sep.substr(found - 10, 10);
+                    menuPixmap->DrawText(cPoint(Left, Top), date.c_str(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+                } else
+                    menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+            } else
+                menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+        }
+        catch( ... ) {
+            menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+        }
     }
 
     sDecorBorder ib;
@@ -1400,7 +1423,7 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
         menuItemWidth -= scrollBarWidth;
 
     tColor ColorFg, ColorBg, ColorExtraTextFg;
-    ColorExtraTextFg = Theme.Color(clrMenuItemReplayExtraTextFont);
+    ColorExtraTextFg = Theme.Color(clrMenuItemExtraTextFont);
     if (Current) {
         ColorFg = Theme.Color(clrItemCurrentFont);
         ColorBg = Theme.Color(clrItemCurrentBg);
@@ -1465,16 +1488,16 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
                 Left += img->Width() + marginItem;
             }
 
-            buffer = cString::sprintf("   %d", Total);
-            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, font->Width("   9999"), fontHeight, taRight);
-            Left += font->Width("   9999  ");
+            buffer = cString::sprintf("  %d", Total);
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, font->Width("  999"), fontHeight, taRight);
+            Left += font->Width("  999 ");
 
             if( imgRecNew )
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *imgRecNew );
             Left += imgRecNew->Width() + marginItem;
             buffer = cString::sprintf("%d", New);
             menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
-            Left += font->Width( buffer );
+            Left += font->Width(" 999 ");
             if( Config.MenuItemRecordingShowFolderDate != 0 ) {
                 buffer = cString::sprintf("  (%s)", *ShortDateString(GetLastRecTimeFromFolder(Recording, Level)));
                 menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorExtraTextFg, ColorBg, font, menuItemWidth - Left - marginItem);
@@ -1535,16 +1558,16 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             menuPixmap->DrawText(cPoint(Left, Top), RecName, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
 
             Top += fontHeight;
-            buffer = cString::sprintf("   %d", Total);
-            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, fontSml, fontSml->Width("   9999"), fontSmlHeight, taRight);
-            Left += fontSml->Width("   9999  ");
+            buffer = cString::sprintf("  %d", Total);
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, fontSml, fontSml->Width("  999"), fontSmlHeight, taRight);
+            Left += fontSml->Width("  999 ");
 
             if( imgRecNewSml )
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *imgRecNewSml );
             Left += imgRecNewSml->Width() + marginItem;
             buffer = cString::sprintf("%d", New);
             menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
-            Left += fontSml->Width( buffer );
+            Left += fontSml->Width(" 999 ");
 
             if( Config.MenuItemRecordingShowFolderDate != 0 ) {
                 buffer = cString::sprintf("  (%s)", *ShortDateString(GetLastRecTimeFromFolder(Recording, Level)));

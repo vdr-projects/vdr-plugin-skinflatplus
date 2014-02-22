@@ -1,7 +1,7 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
-2013-12-XX: Version 0.1.1
+2013-12-XX: Version 0.2.0
 
 - [fix] load user decor settings
 - [fix] menu scrollbar size and margin
@@ -13,7 +13,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [update] add Patch from MegaV0lt, support for simple aspect & format, new icons
 - [update] only log not loaded images
 - [add] theme colors clrMenuTextFixedFont, clrMenuTimerItemDisabledFont, clrMenuTimerItemRecordingFont,
-    clrMenuItemProgramShortTextFont, clrMenuItemReplayExtraTextFont
+    clrMenuItemExtraTextFont
 - [add] add support for menu SetItemChannel
 - [add] add support for menu SetItemTimer
 - [add] add support for menu SetItemEvent (program menu)
@@ -22,6 +22,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] imagecache for faster image loading
 - [add] option MenuItemRecordingClearPercent set to 1 to clear the '%' in recording names (you have an cut icon to detect cutted recordings)
 - [add] option MenuItemRecordingShowFolderDate to show the date in the folder item from the newest/oldest recording in that folder (0 = disable, 1 = newest recording date, 2 = oldest recording date)
+- [add] option MenuItemParseTilde for parse the tilde (of epgsearch) and draw the text after the tilde in clrMenuItemExtraTextFont color
 - [add] define DEBUGIMAGELOADTIME for debug output of imageloader time (search in cache, load from disk, scale)
 
 2013-11-24: Version 0.1.0 - MegaV0lt Version

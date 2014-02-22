@@ -64,7 +64,9 @@ INCLUDES += $(shell pkg-config --cflags Magick++)
 #   vdrlogo_yavdr
 VDRLOGO = vdrlogo_default
 
-DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' -DVDRLOGO=\"$(VDRLOGO)\" -DDEBUGIMAGELOADTIME
+#  -DDEBUGIMAGELOADTIME
+
+DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' -DVDRLOGO=\"$(VDRLOGO)\"
 
 LIBS += $(shell pkg-config --libs Magick++)
 
