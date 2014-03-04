@@ -291,10 +291,12 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
     if( isScrolling )
         menuItemWidth -= scrollBarWidth;
 
-    tColor ColorFg, ColorBg;
+    tColor ColorFg, ColorBg, ColorExtraTextFg;
+    ColorExtraTextFg = Theme.Color(clrMenuItemExtraTextFont);
     if (Current) {
         ColorFg = Theme.Color(clrItemCurrentFont);
         ColorBg = Theme.Color(clrItemCurrentBg);
+        ColorExtraTextFg = Theme.Color(clrMenuItemExtraTextCurrentFont);
     }
     else {
         if( Selectable ) {
@@ -444,7 +446,7 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
 
                             menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font);
                             int l = font->Width( first.c_str() );
-                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font);
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), ColorExtraTextFg, ColorBg, font);
                         } else if ( found2 != string::npos ) {
                             std::string first = tilde.substr(0, found2);
                             std::string second = tilde.substr(found2 +1, tilde.length() );
@@ -452,7 +454,7 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                             menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font);
                             int l = font->Width( first.c_str() );
                             l += font->Width("X");
-                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font);
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), ColorExtraTextFg, ColorBg, font);
                         } else
                             menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font);
                     } else
@@ -1125,11 +1127,12 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     if( isScrolling )
         menuItemWidth -= scrollBarWidth;
 
-    tColor ColorFg, ColorBg, ColorShortTextFg;
-    ColorShortTextFg = Theme.Color(clrMenuItemExtraTextFont);
+    tColor ColorFg, ColorBg, ColorExtraTextFg;
+    ColorExtraTextFg = Theme.Color(clrMenuItemExtraTextFont);
     if (Current) {
         ColorFg = Theme.Color(clrItemCurrentFont);
         ColorBg = Theme.Color(clrItemCurrentBg);
+        ColorExtraTextFg = Theme.Color(clrMenuItemExtraTextCurrentFont);
     }
     else {
         if( Selectable ) {
@@ -1334,20 +1337,20 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
             if( Event->ShortText() ) {
                 Left += fontSml->Width( Event->Title() );
                 cString ShortText = cString::sprintf("  %s", Event->ShortText());
-                menuPixmap->DrawText(cPoint(Left, Top), ShortText, ColorShortTextFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+                menuPixmap->DrawText(cPoint(Left, Top), ShortText, ColorExtraTextFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
             }
         } else if( (Config.MenuEventView == 2 || Config.MenuEventView == 3) ) {
             menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
             if( Event->ShortText() ) {
                 Top += fontHeight;
-                menuPixmap->DrawText(cPoint(Left, Top), Event->ShortText(), ColorShortTextFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+                menuPixmap->DrawText(cPoint(Left, Top), Event->ShortText(), ColorExtraTextFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
             }
         } else {
             menuPixmap->DrawText(cPoint(Left, Top), Event->Title(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
             if( Event->ShortText() ) {
                 Left += font->Width(Event->Title());
                 cString ShortText = cString::sprintf("  %s", Event->ShortText());
-                menuPixmap->DrawText(cPoint(Left, Top), ShortText, ColorShortTextFg, ColorBg, font, menuItemWidth - Left - marginItem);
+                menuPixmap->DrawText(cPoint(Left, Top), ShortText, ColorExtraTextFg, ColorBg, font, menuItemWidth - Left - marginItem);
             }
         }
     } else if( Event ) {
@@ -1436,6 +1439,7 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
     if (Current) {
         ColorFg = Theme.Color(clrItemCurrentFont);
         ColorBg = Theme.Color(clrItemCurrentBg);
+        ColorExtraTextFg = Theme.Color(clrMenuItemExtraTextCurrentFont);
     }
     else {
         if( Selectable ) {

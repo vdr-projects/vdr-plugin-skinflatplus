@@ -137,6 +137,7 @@ THEME_CLR(Theme, clrMenuTimerItemRecordingFont,      0xFFEEEEEE);
 
 // For Tilde, Timer Extra, Program Short Text
 THEME_CLR(Theme, clrMenuItemExtraTextFont,    0xFFA0A0A0);
+THEME_CLR(Theme, clrMenuItemExtraTextCurrentFont,    0xFFA0A0A0);
 
 // Replay
 THEME_CLR(Theme, clrReplayBg,               0xC0101010);
