@@ -2,6 +2,8 @@ VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
 2014-XX-XX: Version 0.2.1
+- [fix] epgsearch progessbar in SetItemEvent, if start time is after now (2 minutes tolerance)
+- [add] theme color clrMenuItemExtraTextCurrentFont
 
 2014-02-22: Version 0.2.0
 - [fix] load user decor settings

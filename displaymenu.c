@@ -1232,9 +1232,10 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         if( Event ) {
             int PBWidth = menuItemWidth/20;
             time_t now = time(NULL);
-            if( (now >= Event->StartTime()) && (now <= Event->EndTime()) ) {
+            
+            if( (now >= (Event->StartTime() - 2*60) ) ) {
                 int total = Event->EndTime() - Event->StartTime();
-                if( total > 0 ) {
+                if( total >= 0 ) {
                     // calculate progress bar
                     double progress = (int)roundf( (float)(time(NULL) - Event->StartTime()) / (float) (Event->Duration()) * 100.0);
                     if(progress < 0)
