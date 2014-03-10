@@ -65,6 +65,8 @@ cFlatBaseRender::~cFlatBaseRender(void) {
             osd->DestroyPixmap(decorPixmap);
         if( topBarIconPixmap )
             osd->DestroyPixmap(topBarIconPixmap);
+        if( topBarIconBGPixmap )
+            osd->DestroyPixmap(topBarIconBGPixmap);
         
         delete osd;
     }
@@ -105,8 +107,11 @@ void cFlatBaseRender::TopBarCreate(void) {
         topBarHeight = topBarFontSmlHeight * 2;
 
     topBarPixmap = osd->CreatePixmap(1, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
-    topBarIconPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
+    topBarIconBGPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
+    topBarIconPixmap = osd->CreatePixmap(3, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
     topBarPixmap->Fill(clrTransparent);
+    topBarIconBGPixmap->Fill(clrTransparent);
+    topBarIconPixmap->Fill(clrTransparent);
 }
 
 void cFlatBaseRender::TopBarSetTitle(cString title) {
@@ -182,6 +187,7 @@ void cFlatBaseRender::TopBarUpdate(void) {
         RecLeft = extraLeft + extraMaxWidth + marginItem;
         
         topBarIconPixmap->Fill(clrTransparent);
+        topBarIconBGPixmap->Fill(clrTransparent);
         if( topBarExtraIconSet ) {
             int extraIconLeft = extraLeft + extraMaxWidth + marginItem;
             cImage *img = imgLoader.LoadIcon(*topBarExtraIcon, 999, topBarHeight);
@@ -206,6 +212,13 @@ void cFlatBaseRender::TopBarUpdate(void) {
         
         if( topBarMenuLogoSet && Config.TopBarMenuIconShow ) {
             int IconLeft = marginItem;
+
+            cImage *imgBG = imgLoader.LoadIcon("logo_background", 999, topBarHeight - marginItem*2);
+            if( imgBG ) {
+                int iconTop = (topBarHeight / 2 - imgBG->Height()/2);
+                topBarIconBGPixmap->DrawImage( cPoint(IconLeft, iconTop), *imgBG );
+            }
+            
             cImage *img = imgLoader.LoadLogo(*topBarMenuLogo, 999, topBarHeight - marginItem*2);
             if( img ) {
                 int iconTop = (topBarHeight / 2 - img->Height()/2);

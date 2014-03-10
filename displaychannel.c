@@ -13,6 +13,7 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     chanInfoTopPixmap = NULL;
     chanInfoBottomPixmap = NULL;
     chanLogoPixmap = NULL;
+    chanLogoBGPixmap = NULL;
     chanIconsPixmap = NULL;
 
     isGroup = false;
@@ -49,10 +50,14 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
         Config.decorBorderChannelSize+channelHeight - height, channelWidth, heightBottom));
     chanIconsPixmap->Fill( clrTransparent );
 
-    chanLogoPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderChannelSize,
+    chanLogoBGPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderChannelSize,
+        Config.decorBorderChannelSize+channelHeight - height, heightBottom, heightBottom));
+    chanLogoBGPixmap->Fill( clrTransparent );
+
+    chanLogoPixmap = osd->CreatePixmap(3, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, heightBottom, heightBottom));
     chanLogoPixmap->Fill( clrTransparent );
-    
+
     height += Config.decorProgressChannelSize + marginItem*2;
     ProgressBarCreate(Config.decorBorderChannelSize, Config.decorBorderChannelSize+channelHeight - height + marginItem,
         channelWidth, Config.decorProgressChannelSize, marginItem, 0,
@@ -80,6 +85,8 @@ cFlatDisplayChannel::~cFlatDisplayChannel() {
             osd->DestroyPixmap(chanInfoBottomPixmap);
         if( chanLogoPixmap )
             osd->DestroyPixmap(chanLogoPixmap);
+        if( chanLogoBGPixmap )
+            osd->DestroyPixmap(chanLogoBGPixmap);
         if( chanIconsPixmap )
             osd->DestroyPixmap(chanIconsPixmap);
     }
@@ -113,9 +120,15 @@ void cFlatDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
     chanInfoTopPixmap->DrawText(cPoint(50, 0), channelString, Theme.Color(clrChannelFontTitle), Theme.Color(clrChannelBg), font);
 
     chanLogoPixmap->Fill(clrTransparent);
+    chanLogoBGPixmap->Fill(clrTransparent);
     int imageHeight = heightImageLogo - marginItem*2;
     int imageLeft = marginItem*2;
     int imageTop = marginItem;
+    cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight, imageHeight);
+    if( imgBG ) {
+        chanLogoBGPixmap->DrawImage( cPoint(imageLeft, imageTop), *imgBG );
+    }
+    
     cImage *img = imgLoader.LoadLogo(*channelName, imageHeight, imageHeight);
     if( img ) {
         chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );

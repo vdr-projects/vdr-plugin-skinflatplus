@@ -54,7 +54,9 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     menuWidth = osdWidth;
     menuTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize;
     menuPixmap = osd->CreatePixmap(1, cRect(0, menuTop, menuWidth, scrollBarHeight ));
-    menuIconsPixmap = osd->CreatePixmap(2, cRect(0, menuTop, menuWidth, scrollBarHeight ));
+
+    menuIconsBGPixmap = osd->CreatePixmap(2, cRect(0, menuTop, menuWidth, scrollBarHeight ));
+    menuIconsPixmap = osd->CreatePixmap(3, cRect(0, menuTop, menuWidth, scrollBarHeight ));
     
     chLeft = Config.decorBorderMenuContentHeadSize;
     chTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentHeadSize;
@@ -66,6 +68,7 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
 
     menuPixmap->Fill(clrTransparent);
     menuIconsPixmap->Fill(clrTransparent);
+    menuIconsBGPixmap->Fill(clrTransparent);
     scrollbarPixmap->Fill(clrTransparent);
     
     menuCategory = mcUndefined;
@@ -81,6 +84,7 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
 cFlatDisplayMenu::~cFlatDisplayMenu() {
     osd->DestroyPixmap(menuPixmap);
     osd->DestroyPixmap(menuIconsPixmap);
+    osd->DestroyPixmap(menuIconsBGPixmap);
     osd->DestroyPixmap(scrollbarPixmap);
     osd->DestroyPixmap(contentHeadPixmap);
 }
@@ -185,6 +189,7 @@ void cFlatDisplayMenu::Clear(void) {
     textScroller.Reset();
     menuPixmap->Fill(clrTransparent);
     menuIconsPixmap->Fill(clrTransparent);
+    menuIconsBGPixmap->Fill(clrTransparent);
     scrollbarPixmap->Fill(clrTransparent);
     contentHeadPixmap->Fill(clrTransparent);
     ContentClear();
@@ -679,6 +684,12 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
     int imageHeight = fontHeight;
     int imageLeft = Left;
     int imageTop = Top;
+    
+    cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight, imageHeight);
+    if( imgBG ) {
+        imageTop = Top + (fontHeight - imgBG->Height()) / 2;
+        menuIconsBGPixmap->DrawImage( cPoint(imageLeft, imageTop), *imgBG );
+    }
     cImage *img = imgLoader.LoadLogo(Channel->Name(), imageHeight, imageHeight);
     if( img ) {
         imageTop = Top + (fontHeight - img->Height()) / 2;
@@ -999,6 +1010,12 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
     Left += Width + marginItem;
 
     imageLeft = Left;
+
+    cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight, imageHeight);
+    if( imgBG ) {
+        imageTop = Top + (fontHeight - imgBG->Height()) / 2;
+        menuIconsBGPixmap->DrawImage( cPoint(imageLeft, imageTop), *imgBG );
+    }
     
     img = imgLoader.LoadLogo(Channel->Name(), imageHeight, imageHeight);
     if( img ) {
@@ -1193,6 +1210,12 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
             menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, Width, fontHeight, taRight);
         }
         Left += w + marginItem;
+
+        cImage *imgBG = imgLoader.LoadIcon("logo_background", fontHeight, fontHeight);
+        if( imgBG ) {
+            imageTop = Top + (fontHeight - imgBG->Height()) / 2;
+            menuIconsBGPixmap->DrawImage( cPoint(Left, imageTop), *imgBG );
+        }
         
         img = imgLoader.LoadLogo(Channel->Name(), fontHeight, fontHeight);
         if( img ) {

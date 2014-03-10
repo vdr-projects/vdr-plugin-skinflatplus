@@ -13,6 +13,8 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
     private:
         cPixmap *menuPixmap;
         cPixmap *menuIconsPixmap;
+        cPixmap *menuIconsBGPixmap;
+        
         int menuTop, menuWidth;
         int menuItemWidth;
     

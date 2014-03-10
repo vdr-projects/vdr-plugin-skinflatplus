@@ -16,6 +16,7 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         cPixmap *chanInfoTopPixmap;
         cPixmap *chanInfoBottomPixmap;
         cPixmap *chanLogoPixmap;
+        cPixmap *chanLogoBGPixmap;
         cPixmap *chanIconsPixmap;
     
         int screenWidth, lastScreenWidth;
