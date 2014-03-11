@@ -1211,12 +1211,13 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         }
         Left += w + marginItem;
 
-        cImage *imgBG = imgLoader.LoadIcon("logo_background", fontHeight, fontHeight);
-        if( imgBG ) {
-            imageTop = Top + (fontHeight - imgBG->Height()) / 2;
-            menuIconsBGPixmap->DrawImage( cPoint(Left, imageTop), *imgBG );
+        if( !Channel->GroupSep() ) {
+            cImage *imgBG = imgLoader.LoadIcon("logo_background", fontHeight, fontHeight);
+            if( imgBG ) {
+                imageTop = Top + (fontHeight - imgBG->Height()) / 2;
+                menuIconsBGPixmap->DrawImage( cPoint(Left, imageTop), *imgBG );
+            }
         }
-        
         img = imgLoader.LoadLogo(Channel->Name(), fontHeight, fontHeight);
         if( img ) {
             imageTop = Top + (fontHeight - img->Height()) / 2;

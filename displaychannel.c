@@ -122,25 +122,30 @@ void cFlatDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
     chanLogoPixmap->Fill(clrTransparent);
     chanLogoBGPixmap->Fill(clrTransparent);
     int imageHeight = heightImageLogo - marginItem*2;
+    int imageBGHeight = imageHeight;
     int imageLeft = marginItem*2;
     int imageTop = marginItem;
     cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight, imageHeight);
     if( imgBG ) {
+        imageBGHeight = imgBG->Height();
         chanLogoBGPixmap->DrawImage( cPoint(imageLeft, imageTop), *imgBG );
     }
     
     cImage *img = imgLoader.LoadLogo(*channelName, imageHeight, imageHeight);
     if( img ) {
+        imageTop = marginItem + (imageBGHeight - img->Height()) / 2;
         chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
     } else if( !isGroup ) { // draw default logo
         if( isRadioChannel ) {
             img = imgLoader.LoadIcon("radio", imageHeight, imageHeight);
             if( img ) {
+                imageTop = marginItem + (imageHeight - img->Height()) / 2;
                 chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
             }
         } else {
             img = imgLoader.LoadIcon("tv", imageHeight, imageHeight);
             if( img ) {
+                imageTop = marginItem + (imageHeight - img->Height()) / 2;
                 chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
             }
         }

@@ -211,17 +211,22 @@ void cFlatBaseRender::TopBarUpdate(void) {
         }
         
         if( topBarMenuLogoSet && Config.TopBarMenuIconShow ) {
+            topBarIconPixmap->Fill(clrTransparent);
             int IconLeft = marginItem;
+            int imageBGWidth = 999;
+            int imageBGHeight = topBarHeight - marginItem*2;
 
             cImage *imgBG = imgLoader.LoadIcon("logo_background", 999, topBarHeight - marginItem*2);
             if( imgBG ) {
                 int iconTop = (topBarHeight / 2 - imgBG->Height()/2);
+                imageBGHeight = imgBG->Height();
+                imageBGWidth = imgBG->Width();
                 topBarIconBGPixmap->DrawImage( cPoint(IconLeft, iconTop), *imgBG );
             }
             
-            cImage *img = imgLoader.LoadLogo(*topBarMenuLogo, 999, topBarHeight - marginItem*2);
+            cImage *img = imgLoader.LoadLogo(*topBarMenuLogo, imageBGWidth, imageBGHeight);
             if( img ) {
-                int iconTop = (topBarHeight / 2 - img->Height()/2);
+                int iconTop = (imageBGHeight - img->Height())/2;
                 topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), *img);
                 MenuIconWidth = img->Width()+marginItem*2;
                 TitleWidthLeft -= MenuIconWidth + marginItem*3;
