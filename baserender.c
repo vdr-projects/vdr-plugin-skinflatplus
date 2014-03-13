@@ -215,10 +215,11 @@ void cFlatBaseRender::TopBarUpdate(void) {
             int IconLeft = marginItem;
             int imageBGWidth = 999;
             int imageBGHeight = topBarHeight - marginItem*2;
+            int iconTop = 0;
 
-            cImage *imgBG = imgLoader.LoadIcon("logo_background", 999, topBarHeight - marginItem*2);
+            cImage *imgBG = imgLoader.LoadIcon("logo_background", imageBGWidth, imageBGHeight);
             if( imgBG ) {
-                int iconTop = (topBarHeight / 2 - imgBG->Height()/2);
+                iconTop = (topBarHeight / 2 - imgBG->Height()/2);
                 imageBGHeight = imgBG->Height();
                 imageBGWidth = imgBG->Width();
                 topBarIconBGPixmap->DrawImage( cPoint(IconLeft, iconTop), *imgBG );
@@ -226,7 +227,8 @@ void cFlatBaseRender::TopBarUpdate(void) {
             
             cImage *img = imgLoader.LoadLogo(*topBarMenuLogo, imageBGWidth, imageBGHeight);
             if( img ) {
-                int iconTop = (imageBGHeight - img->Height())/2;
+                iconTop += (imageBGHeight - img->Height())/2;
+                dsyslog("imgBGWidth: %d imgBGHeight: %d imgWidth: %d imgHeight: %d iconTop: %d", imageBGWidth, imageBGHeight, img->Width(), img->Height(), iconTop);
                 topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), *img);
                 MenuIconWidth = img->Width()+marginItem*2;
                 TitleWidthLeft -= MenuIconWidth + marginItem*3;
