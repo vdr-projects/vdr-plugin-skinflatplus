@@ -38,6 +38,8 @@ cFlatDisplayReplay::~cFlatDisplayReplay() {
 
 void cFlatDisplayReplay::SetRecording(const cRecording *Recording) {
     const cRecordingInfo *recInfo = Recording->Info();
+    recording = Recording;
+
     SetTitle( recInfo->Title() );
     cString info = "";
     if (recInfo->ShortText())
@@ -51,7 +53,6 @@ void cFlatDisplayReplay::SetRecording(const cRecording *Recording) {
 void cFlatDisplayReplay::SetTitle(const char *Title) {
     TopBarSetTitle(Title);
     TopBarSetMenuIcon("extraIcons/Playing");
-    
 }
 
 void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
@@ -139,9 +140,111 @@ void cFlatDisplayReplay::SetTotal(const char *Total) {
 }
 
 void cFlatDisplayReplay::UpdateInfo(void) {
-    int right = osdWidth - Config.decorBorderReplaySize*2 - font->Width(total);
+    cString cutted;
+    bool iscutted = false;
+
     labelPixmap->DrawText(cPoint(marginItem, 0), current, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(current), fontHeight);
-    labelPixmap->DrawText(cPoint(right - marginItem, 0), total, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(total), fontHeight);
+
+    if( recording ) {
+        cMarks marks;
+        bool hasMarks = marks.Load(recording->FileName(), recording->FramesPerSecond(), recording->IsPesRecording()) && marks.Count();
+        cIndexFile *index = new cIndexFile(recording->FileName(), false, recording->IsPesRecording());
+        int lastIndex = 0;
+
+        int cuttedLength = 0;
+        long cutinframe = 0;
+        unsigned long long recsize = 0;
+        unsigned long long recsizecutted = 0;
+        unsigned long long cutinoffset = 0;
+        unsigned long long filesize[100000];
+        filesize[0] = 0;
+
+        int i = 0;
+        int imax = 999;
+        struct stat filebuf;
+        cString filename;
+        int rc = 0;
+
+        do {
+            if (recording->IsPesRecording())
+                filename = cString::sprintf("%s/%03d.vdr", recording->FileName(), ++i);
+            else {
+                filename = cString::sprintf("%s/%05d.ts", recording->FileName(), ++i);
+                imax = 99999;
+            }
+            rc=stat(filename, &filebuf);
+            if (rc == 0)
+                filesize[i] = filesize[i-1] + filebuf.st_size;
+            else {
+                if (ENOENT != errno) {
+                    esyslog ("skinflatplus: error determining file size of \"%s\" %d (%s)", (const char *)filename, errno, strerror(errno));
+                    recsize = 0;
+                }
+            }
+        } while( i <= imax && !rc );
+        recsize = filesize[i-1];
+
+        if (hasMarks && index) {
+            uint16_t FileNumber;
+            off_t FileOffset;
+
+            bool cutin = true;
+            cMark *mark = marks.First();
+            while (mark) {
+                long position = mark->Position();
+                index->Get(position, &FileNumber, &FileOffset);
+                if (cutin) {
+                    cutinframe = position;
+                    cutin = false;
+                    cutinoffset = filesize[FileNumber-1] + FileOffset;
+                } else {
+                    cuttedLength += position - cutinframe;
+                    cutin = true;
+                    recsizecutted += filesize[FileNumber-1] + FileOffset - cutinoffset;
+                }
+                cMark *nextmark = marks.Next(mark);
+                mark = nextmark;
+            }
+            if( !cutin ) {
+                cuttedLength += index->Last() - cutinframe;
+                index->Get(index->Last() - 1, &FileNumber, &FileOffset);
+                recsizecutted += filesize[FileNumber-1] + FileOffset - cutinoffset;
+            }
+        }
+        if (index) {
+            lastIndex = index->Last();
+            if (hasMarks) {
+                cutted = IndexToHMSF(cuttedLength, false, recording->FramesPerSecond());
+                iscutted = true;
+            }
+        }
+        delete index;
+    }
+    if( iscutted ) {
+        cImage *imgRecCut = imgLoader.LoadIcon("recording_cutted", fontHeight, fontHeight);
+        int imgWidth = 0;
+        if( imgRecCut )
+            imgWidth = imgRecCut->Width();
+        int right = osdWidth - Config.decorBorderReplaySize*2 - font->Width(total) - marginItem*2 - imgWidth - font->Width(" ()") - font->Width(cutted);
+        labelPixmap->DrawText(cPoint(right - marginItem, 0), total, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(total), fontHeight);
+        right += font->Width(total);
+        right += font->Width(" ");
+        labelPixmap->DrawText(cPoint(right - marginItem, 0), "(", Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width("("), fontHeight);
+        right += font->Width("(");
+        if( imgRecCut ) {
+            iconsPixmap->DrawImage( cPoint(right, 0), *imgRecCut );
+            right += imgRecCut->Width() + marginItem*2;
+        }
+        labelPixmap->DrawText(cPoint(right - marginItem, 0), cutted, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(cutted), fontHeight);
+        right += font->Width(cutted);
+        labelPixmap->DrawText(cPoint(right - marginItem, 0), ")", Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(")"), fontHeight);
+        
+        
+        
+    } else {
+        int right = osdWidth - Config.decorBorderReplaySize*2 - font->Width(total);
+        labelPixmap->DrawText(cPoint(right - marginItem, 0), total, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(total), fontHeight);
+    }
 }
 
 void cFlatDisplayReplay::SetJump(const char *Jump) {

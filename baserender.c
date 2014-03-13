@@ -228,7 +228,6 @@ void cFlatBaseRender::TopBarUpdate(void) {
             cImage *img = imgLoader.LoadLogo(*topBarMenuLogo, imageBGWidth, imageBGHeight);
             if( img ) {
                 iconTop += (imageBGHeight - img->Height())/2;
-                dsyslog("imgBGWidth: %d imgBGHeight: %d imgWidth: %d imgHeight: %d iconTop: %d", imageBGWidth, imageBGHeight, img->Width(), img->Height(), iconTop);
                 topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), *img);
                 MenuIconWidth = img->Width()+marginItem*2;
                 TitleWidthLeft -= MenuIconWidth + marginItem*3;

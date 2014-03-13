@@ -11,6 +11,8 @@ class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay {
         cPixmap *labelJump;
         cPixmap *iconsPixmap;
 
+        const cRecording *recording;
+
         int screenWidth, lastScreenWidth;
         int screenHeight;
         double screenAspect;
