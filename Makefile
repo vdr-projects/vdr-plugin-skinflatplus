@@ -11,6 +11,23 @@
 #
 PLUGIN = skinflatplus
 
+# define vdrlogo for menu topbar
+# if not defined vdrlogo_default will be used
+# define here or use make VDRLOGO=\"vdrlogo_default\"
+# available logos are
+#   vdrlogo_debian
+#   vdrlogo_default
+#   vdrlogo_easyvdr
+#   vdrlogo_gen2vdr
+#   vdrlogo_shine
+#   vdrlogo_xubuntu
+#   vdrlogo_xubuntu2
+#   vdrlogo_yavdr
+VDRLOGO = vdrlogo_default
+
+#  -DDEBUGIMAGELOADTIME
+
+
 ### The version number of this plugin (taken from the main source file):
 
 VERSION = $(shell grep 'static const char \*VERSION *=' $(PLUGIN).c | awk '{ print $$6 }' | sed -e 's/[";]//g')
@@ -49,22 +66,6 @@ SOFILE = libvdr-$(PLUGIN).so
 ### Includes and Defines and Dependencies (add further entries here):
 
 INCLUDES += $(shell pkg-config --cflags Magick++)
-
-# define vdrlogo for menu topbar
-# if not defined vdrlogo_default will be used
-# define here or use make VDRLOGO=\"vdrlogo_default\"
-# available logos are
-#   vdrlogo_debian
-#   vdrlogo_default
-#   vdrlogo_easyvdr
-#   vdrlogo_gen2vdr
-#   vdrlogo_shine
-#   vdrlogo_xubuntu
-#   vdrlogo_xubuntu2
-#   vdrlogo_yavdr
-VDRLOGO = vdrlogo_default
-
-#  -DDEBUGIMAGELOADTIME
 
 DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' -DVDRLOGO=\"$(VDRLOGO)\"
 
