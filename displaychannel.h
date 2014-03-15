@@ -38,4 +38,6 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         virtual void SetEvents(const cEvent *Present, const cEvent *Following);
         virtual void SetMessage(eMessageType Type, const char *Text);
         virtual void Flush(void);
+
+        void PreLoadImages(void);
 };

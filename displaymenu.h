@@ -8,7 +8,6 @@
 #include <iomanip>
 using namespace std;
 
-
 class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
     private:
         cPixmap *menuPixmap;
@@ -37,6 +36,8 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         bool isScrolling;
         bool ShowEvent, ShowRecording, ShowText;
     
+        cString ItemEventLastChannelName;
+        
         void ItemBorderInsertUnique(sDecorBorder ib);
         void ItemBorderDrawAllWithScrollbar(void);
         void ItemBorderDrawAllWithoutScrollbar(void);
@@ -87,4 +88,6 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         virtual int GetTextAreaWidth(void) const;
         virtual const cFont *GetTextAreaFont(bool FixedFont) const;
         virtual void Flush(void);
+
+        void PreLoadImages(void);
 };

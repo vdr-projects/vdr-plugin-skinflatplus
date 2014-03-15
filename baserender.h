@@ -1,8 +1,8 @@
 #pragma once
 
-#include "flat.h"
 #include "imageloader.h"
 #include <list>
+#include "flat.h"
 
 enum eBorder {
     BorderMenuItem,

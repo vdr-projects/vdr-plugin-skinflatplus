@@ -16,4 +16,6 @@ class cFlatDisplayVolume : public cFlatBaseRender, public cSkinDisplayVolume {
         virtual void SetVolume(int Current, int Total, bool Mute);
         //virtual void SetAudioChannel(int AudioChannel);
         virtual void Flush(void);
+
+        void PreLoadImages(void);
 };

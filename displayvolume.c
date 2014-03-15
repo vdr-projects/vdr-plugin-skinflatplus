@@ -1,4 +1,5 @@
 #include "displayvolume.h"
+#include "flat.h"
 
 cFlatDisplayVolume::cFlatDisplayVolume(void) {
     muted = false;
@@ -68,4 +69,8 @@ void cFlatDisplayVolume::SetVolume(int Current, int Total, bool Mute) {
 void cFlatDisplayVolume::Flush(void) {
     TopBarUpdate();
     osd->Flush();
+}
+
+void cFlatDisplayVolume::PreLoadImages(void) {
+    imgLoader.LoadIcon("mute", fontHeight, fontHeight);
 }

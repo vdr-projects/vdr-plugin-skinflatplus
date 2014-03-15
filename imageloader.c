@@ -3,9 +3,9 @@
 #include <string>
 #include <dirent.h>
 #include <iostream>
+#include "flat.h"
 
 using namespace Magick;
-
 
 cImageLoader::cImageLoader() {
     InitializeMagick(NULL);

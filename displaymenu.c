@@ -10,6 +10,7 @@
 #include "symbols/1080/Cclock.xpm"
 #include "symbols/1080/Cclocksml.xpm"
 #include "symbols/1080/Cvpssml.xpm"
+#include "flat.h"
 
 cBitmap cFlatDisplayMenu::bmCNew(Cnew_xpm);
 cBitmap cFlatDisplayMenu::bmCArrowTurn(Carrowturn_xpm);
@@ -1170,36 +1171,11 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     int w = 0;
 
     if( !Channel ) {
-        int CurrentChannelNr = cDevice::CurrentChannel();
-        cChannel *ChannelLogo = Channels.GetByNumber(CurrentChannelNr);
-        
-        cImage *img;
-        img = imgLoader.LoadLogo(ChannelLogo->Name(), 999, topBarHeight - marginItem*2);
-        if( img ) {
-            TopBarSetMenuLogo( ChannelLogo->Name() );
-        } else {
-            bool isRadioChannel = ( (!ChannelLogo->Vpid()) && (ChannelLogo->Apid(0)) ) ? true : false;
-
-            if( isRadioChannel ) {
-                img = imgLoader.LoadIcon("radio", 999, topBarHeight - marginItem*2);
-                if( img ) {
-                    TopBarSetMenuLogo( ChannelLogo->Name() );
-                }
-            } else if( ChannelLogo->GroupSep() ) {
-                img = imgLoader.LoadIcon("changroup", 999, topBarHeight - marginItem*2);
-                if( img ) {
-                    TopBarSetMenuIcon( ChannelLogo->Name() );
-                }
-            } else {
-                img = imgLoader.LoadIcon("tv", 999, topBarHeight - marginItem*2);
-                if( img ) {
-                    TopBarSetMenuLogo( ChannelLogo->Name() );
-                }
-            }
-        }
+        TopBarSetMenuLogo( ItemEventLastChannelName );
     }
 
     if( Channel ) {
+        ItemEventLastChannelName = Channel->Name();
         cString ws = cString::sprintf("%d", Channels.MaxNumber());
         w = font->Width(ws);
         if( !Channel->GroupSep() ) {
@@ -2443,4 +2419,49 @@ const char * cFlatDisplayMenu::GetRecordingName(const cRecording *Recording, int
     }
     
     return recNamePart.c_str();
+}
+
+void cFlatDisplayMenu::PreLoadImages(void) {
+    // menu icons
+    cString Path = cString::sprintf("%s%s/menuIcons", *Config.iconPath, Setup.OSDTheme);
+    cReadDir d(Path);
+    struct dirent *e;
+    while ((e = d.Next()) != NULL) {
+        cString FileName = cString::sprintf("menuIcons/%s", GetFilenameWithoutext(e->d_name));
+        imgLoader.LoadIcon(*FileName, fontHeight - marginItem*2, fontHeight - marginItem*2);
+    }
+    
+    imgLoader.LoadIcon("menuIcons/blank", fontHeight - marginItem*2, fontHeight - marginItem*2);
+    
+    int imageHeight = fontHeight;
+    imgLoader.LoadIcon("logo_background", imageHeight, imageHeight);
+    imgLoader.LoadIcon("radio", imageHeight, imageHeight);
+    imgLoader.LoadIcon("changroup", imageHeight, imageHeight);
+    imgLoader.LoadIcon("tv", imageHeight, imageHeight);
+    imgLoader.LoadIcon("timerInactive", imageHeight, imageHeight);
+    imgLoader.LoadIcon("timerRecording", imageHeight, imageHeight);
+    imgLoader.LoadIcon("timerActive", imageHeight, imageHeight);
+    
+    int index = 0;
+    cImage *img = NULL;
+    for(cChannel *Channel = Channels.First(); Channel && index < LOGO_PRE_CACHE; Channel = Channels.Next(Channel))
+    {
+        img = imgLoader.LoadLogo(Channel->Name(), fontHeight - marginItem*2, fontHeight - marginItem*2);
+        if( img )
+            index++;
+    }
+
+    imgLoader.LoadIcon("radio", 999, topBarHeight - marginItem*2);
+    imgLoader.LoadIcon("changroup", 999, topBarHeight - marginItem*2);
+    imgLoader.LoadIcon("tv", 999, topBarHeight - marginItem*2);
+    
+    imgLoader.LoadIcon("timer_full", imageHeight, imageHeight);
+    imgLoader.LoadIcon("timer_partial", imageHeight, imageHeight);
+    imgLoader.LoadIcon("vps", imageHeight, imageHeight);
+    
+    imgLoader.LoadIcon("recording_new", fontHeight, fontHeight);
+    imgLoader.LoadIcon("recording_new", fontSmlHeight, fontSmlHeight);
+    imgLoader.LoadIcon("recording_cutted", fontHeight, fontHeight);
+    imgLoader.LoadIcon("recording", fontHeight, fontHeight);
+    imgLoader.LoadIcon("folder", fontHeight, fontHeight);
 }

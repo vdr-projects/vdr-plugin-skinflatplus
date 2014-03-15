@@ -32,4 +32,6 @@ class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay {
         virtual void SetJump(const char *Jump);
         virtual void SetMessage(eMessageType Type, const char *Text);
         virtual void Flush(void);
+
+        void PreLoadImages(void);
 };

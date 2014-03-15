@@ -1,4 +1,5 @@
 #include "displayreplay.h"
+#include "flat.h"
 
 cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
     labelHeight = fontHeight + fontSmlHeight;
@@ -149,11 +150,8 @@ void cFlatDisplayReplay::UpdateInfo(void) {
         cMarks marks;
         bool hasMarks = marks.Load(recording->FileName(), recording->FramesPerSecond(), recording->IsPesRecording()) && marks.Count();
         cIndexFile *index = new cIndexFile(recording->FileName(), false, recording->IsPesRecording());
-        int lastIndex = 0;
-
         int cuttedLength = 0;
         long cutinframe = 0;
-        unsigned long long recsize = 0;
         unsigned long long recsizecutted = 0;
         unsigned long long cutinoffset = 0;
         unsigned long long filesize[100000];
@@ -178,11 +176,9 @@ void cFlatDisplayReplay::UpdateInfo(void) {
             else {
                 if (ENOENT != errno) {
                     esyslog ("skinflatplus: error determining file size of \"%s\" %d (%s)", (const char *)filename, errno, strerror(errno));
-                    recsize = 0;
                 }
             }
         } while( i <= imax && !rc );
-        recsize = filesize[i-1];
 
         if (hasMarks && index) {
             uint16_t FileNumber;
@@ -212,7 +208,6 @@ void cFlatDisplayReplay::UpdateInfo(void) {
             }
         }
         if (index) {
-            lastIndex = index->Last();
             if (hasMarks) {
                 cutted = IndexToHMSF(cuttedLength, false, recording->FramesPerSecond());
                 iscutted = true;
@@ -221,26 +216,19 @@ void cFlatDisplayReplay::UpdateInfo(void) {
         delete index;
     }
     if( iscutted ) {
-        cImage *imgRecCut = imgLoader.LoadIcon("recording_cutted", fontHeight, fontHeight);
+        cImage *imgRecCut = imgLoader.LoadIcon("recording_cutted_extra", fontHeight, fontHeight);
         int imgWidth = 0;
         if( imgRecCut )
             imgWidth = imgRecCut->Width();
-        int right = osdWidth - Config.decorBorderReplaySize*2 - font->Width(total) - marginItem*2 - imgWidth - font->Width(" ()") - font->Width(cutted);
+        int right = osdWidth - Config.decorBorderReplaySize*2 - font->Width(total) - marginItem - imgWidth - font->Width(" ") - font->Width(cutted);
         labelPixmap->DrawText(cPoint(right - marginItem, 0), total, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(total), fontHeight);
         right += font->Width(total);
         right += font->Width(" ");
-        labelPixmap->DrawText(cPoint(right - marginItem, 0), "(", Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width("("), fontHeight);
-        right += font->Width("(");
         if( imgRecCut ) {
             iconsPixmap->DrawImage( cPoint(right, 0), *imgRecCut );
             right += imgRecCut->Width() + marginItem*2;
         }
-        labelPixmap->DrawText(cPoint(right - marginItem, 0), cutted, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(cutted), fontHeight);
-        right += font->Width(cutted);
-        labelPixmap->DrawText(cPoint(right - marginItem, 0), ")", Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(")"), fontHeight);
-        
-        
-        
+        labelPixmap->DrawText(cPoint(right - marginItem, 0), cutted, Theme.Color(clrMenuItemExtraTextFont), Theme.Color(clrReplayBg), font, font->Width(cutted), fontHeight);
     } else {
         int right = osdWidth - Config.decorBorderReplaySize*2 - font->Width(total);
         labelPixmap->DrawText(cPoint(right - marginItem, 0), total, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(total), fontHeight);
@@ -388,4 +376,33 @@ void cFlatDisplayReplay::Flush(void) {
     }
 
     osd->Flush();
+}
+
+void cFlatDisplayReplay::PreLoadImages(void) {
+    imgLoader.LoadIcon("rewind", fontHeight, fontHeight);
+    imgLoader.LoadIcon("pause", fontHeight, fontHeight);
+    imgLoader.LoadIcon("play_sel", fontHeight, fontHeight);
+    imgLoader.LoadIcon("forward", fontHeight, fontHeight);
+    imgLoader.LoadIcon("pause_sel", fontHeight, fontHeight);
+    imgLoader.LoadIcon("forward_sel", fontHeight, fontHeight);
+    imgLoader.LoadIcon("rewind_sel", fontHeight, fontHeight);
+    imgLoader.LoadIcon("pause_sel", fontHeight, fontHeight);
+    imgLoader.LoadIcon("recording_cutted", fontHeight, fontHeight);
+    
+    imgLoader.LoadIcon("43", 999, fontSmlHeight);
+    imgLoader.LoadIcon("169", 999, fontSmlHeight);
+    imgLoader.LoadIcon("221", 999, fontSmlHeight);
+    imgLoader.LoadIcon("1920x1080", 999, fontSmlHeight);
+    imgLoader.LoadIcon("1440x1080", 999, fontSmlHeight);
+    imgLoader.LoadIcon("1280x720", 999, fontSmlHeight);
+    imgLoader.LoadIcon("960x720", 999, fontSmlHeight);
+    imgLoader.LoadIcon("704x576", 999, fontSmlHeight);
+    imgLoader.LoadIcon("720x576", 999, fontSmlHeight);
+    imgLoader.LoadIcon("544x576", 999, fontSmlHeight);
+    imgLoader.LoadIcon("528x576", 999, fontSmlHeight);
+    imgLoader.LoadIcon("480x576", 999, fontSmlHeight);
+    imgLoader.LoadIcon("352x576", 999, fontSmlHeight);
+    imgLoader.LoadIcon("unknown_res", 999, fontSmlHeight);
+    imgLoader.LoadIcon("hd", 999, fontSmlHeight);
+    imgLoader.LoadIcon("sd", 999, fontSmlHeight);
 }

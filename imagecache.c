@@ -1,7 +1,17 @@
 #include "imagecache.h"
+#include "config.h"
+
+
+#include "displaychannel.h"
+#include "displaymenu.h"
+#include "displaymessage.h"
+#include "displayreplay.h"
+#include "displaytracks.h"
+#include "displayvolume.h"
+
 
 cImageCache::cImageCache() {
-
+    Overflow = false;
 }
 
 cImageCache::~cImageCache() {
@@ -46,6 +56,28 @@ void cImageCache::InsertImage(cImage *Image, std::string Name, int Width, int He
 
     InsertIndex++;
     if( InsertIndex >= MAX_IMAGE_CACHE ) {
+        isyslog("skinflatplus: imagecache overflow, increase MAX_IMAGE_CACHE");
         InsertIndex = 0;
+        Overflow = true;
     }
+}
+
+void cImageCache::PreLoadImage(void) {
+    uint32_t tick1 = GetMsTicks();
+
+    cFlatDisplayChannel DisplayChannel(false);
+    DisplayChannel.PreLoadImages();
+
+    cFlatDisplayMenu DisplayMenu;
+    DisplayMenu.PreLoadImages();
+
+    cFlatDisplayReplay DisplayReplay(false);
+    DisplayReplay.PreLoadImages();
+
+    cFlatDisplayVolume DisplayVolume;
+    DisplayVolume.PreLoadImages();
+
+    uint32_t tick2 = GetMsTicks();
+    dsyslog("skinflatplus imagecache pre load images time: %d ms", tick2 - tick1);
+    dsyslog("skinflatplus imagecache pre loaded images %d / %d", getCacheCount(), MAX_IMAGE_CACHE);
 }

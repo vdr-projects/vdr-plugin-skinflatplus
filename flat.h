@@ -5,6 +5,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdint.h>
+#include <string.h>
 
 #include <vdr/skins.h>
 #include <vdr/videodir.h>
@@ -187,6 +188,9 @@ class cFlat : public cSkin {
         virtual cSkinDisplayTracks *DisplayTracks(const char *Title, int NumTracks, const char * const *Tracks);
         virtual cSkinDisplayMessage *DisplayMessage(void);
 };
+
+char * substr(char * string, int start, int end);
+char *GetFilenameWithoutext(char * fullfilename);
 
 static inline uint32_t GetMsTicks(void)
 {

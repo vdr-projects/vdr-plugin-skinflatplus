@@ -25,7 +25,7 @@ PLUGIN = skinflatplus
 #   vdrlogo_yavdr
 VDRLOGO = vdrlogo_default
 
-#  -DDEBUGIMAGELOADTIME
+# -DDEBUGIMAGELOADTIME
 
 
 ### The version number of this plugin (taken from the main source file):

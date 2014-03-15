@@ -3,8 +3,12 @@ VDR Plugin 'skinflatplus' Revision History
 
 2014-XX-XX: Version 0.2.1
 - [fix] epgsearch progessbar in SetItemEvent, if start time is after now (2 minutes tolerance)
+- [fix] channel logo in topbar in program menu
+- [update] imagecache, pre load images after skin is loaded
+           menu item under general to show the amount of cached images
 - [add] theme color clrMenuItemExtraTextCurrentFont
 - [add] logo background for channel logos (filename: logo_background.png)
+- [add] show cutted length of recording in replay info
 
 2014-02-22: Version 0.2.0
 - [fix] load user decor settings

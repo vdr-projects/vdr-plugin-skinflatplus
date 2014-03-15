@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.2.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-02-18 18:04+0100\n"
+"POT-Creation-Date: 2014-03-13 20:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,6 +206,9 @@ msgstr "Tasten Rand Typ"
 
 msgid "Button border size"
 msgstr "Tasten Rand Größe"
+
+msgid "Imagecache entries"
+msgstr "Imagecache Einträge"
 
 msgid "Show Channelinfo icons"
 msgstr "Zeige Kanalinfo Icons"

@@ -4,6 +4,10 @@
 #include <string>
 
 #define MAX_IMAGE_CACHE     999
+#define LOGO_PRE_CACHE      200
+// note MAX_LOGO_PRE_CACHE is used twice
+// one for displaychannel and one for menu
+// you must double the value for the real amount of pre cached logos
 
 class cImageCache {
 private:
@@ -13,13 +17,18 @@ private:
     int CacheHeight[MAX_IMAGE_CACHE];
     
     int InsertIndex;
+    bool Overflow;
 public:
     cImageCache();
     ~cImageCache();
     
     void Create(void);
     void Clear(void);
-    
+
+    int getCacheCount(void) { if(Overflow) return MAX_IMAGE_CACHE; return InsertIndex+1; }
+
     cImage *GetImage(std::string Name, int Width, int Height);
     void InsertImage(cImage *Image, std::string Name, int Width, int Height);
+    
+    void PreLoadImage(void);
 };

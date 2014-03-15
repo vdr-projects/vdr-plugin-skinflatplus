@@ -89,7 +89,8 @@ bool cPluginFlat::Start(void) {
         dsyslog("skinflatplus: TrueColor OSD found");
     
     imgCache.Create();
-    
+    imgCache.PreLoadImage();
+
     flat = new cFlat;
     return flat;
 }

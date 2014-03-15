@@ -1,4 +1,5 @@
 #include "displaychannel.h"
+#include "flat.h"
 
 cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     if (firstDisplay) {
@@ -487,4 +488,42 @@ void cFlatDisplayChannel::Flush(void) {
     }
     TopBarUpdate();
     osd->Flush();
+}
+
+void cFlatDisplayChannel::PreLoadImages(void) {
+    int height = (fontHeight*2) + (fontSmlHeight*2) + marginItem - marginItem*2;
+    imgLoader.LoadIcon("logo_background", height, height);
+    imgLoader.LoadIcon("radio", height, height);
+    imgLoader.LoadIcon("tv", height, height);
+
+    int index = 0;
+    height = ((fontHeight*2) + (fontSmlHeight*2) + marginItem) - marginItem*2;
+    cImage *img = NULL;
+    for(cChannel *Channel = Channels.First(); Channel && index < LOGO_PRE_CACHE; Channel = Channels.Next(Channel) )
+    {
+        img = imgLoader.LoadLogo(Channel->Name(), height, height);
+        if( img )
+            index++;
+    }
+    
+    height = max(fontSmlHeight, Config.decorProgressSignalSize);
+    imgLoader.LoadIcon("crypted", 999, height);
+    imgLoader.LoadIcon("uncrypted", 999, height);
+    imgLoader.LoadIcon("unknown_asp", 999, height);
+    imgLoader.LoadIcon("43", 999, height);
+    imgLoader.LoadIcon("169", 999, height);
+    imgLoader.LoadIcon("221", 999, height);
+    imgLoader.LoadIcon("1920x1080", 999, height);
+    imgLoader.LoadIcon("1440x1080", 999, height);
+    imgLoader.LoadIcon("1280x720", 999, height);
+    imgLoader.LoadIcon("960x720", 999, height);
+    imgLoader.LoadIcon("704x576", 999, height);
+    imgLoader.LoadIcon("720x576", 999, height);
+    imgLoader.LoadIcon("544x576", 999, height);
+    imgLoader.LoadIcon("528x576", 999, height);
+    imgLoader.LoadIcon("480x576", 999, height);
+    imgLoader.LoadIcon("352x576", 999, height);
+    imgLoader.LoadIcon("unknown_res", 999, height);
+    imgLoader.LoadIcon("hd", 999, height);
+    imgLoader.LoadIcon("sd", 999, height);
 }
