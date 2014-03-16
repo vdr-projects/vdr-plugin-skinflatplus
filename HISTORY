@@ -4,6 +4,7 @@ VDR Plugin 'skinflatplus' Revision History
 2014-XX-XX: Version 0.2.1
 - [fix] epgsearch progessbar in SetItemEvent, if start time is after now (2 minutes tolerance)
 - [fix] channel logo in topbar in program menu
+- [fix] reply info background color
 - [update] imagecache, pre load images after skin is loaded
            menu item under general to show the amount of cached images
            debug syslog message if cache is overflow

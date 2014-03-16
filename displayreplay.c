@@ -28,6 +28,7 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
     
     labelPixmap->Fill(Theme.Color(clrReplayBg));
     labelJump->Fill(clrTransparent);
+    iconsPixmap->Fill(clrTransparent);
 
 }
 

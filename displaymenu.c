@@ -52,6 +52,8 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     ShowRecording = false;
     ShowText = false;
     
+    ItemEventLastChannelName = "";
+    
     menuWidth = osdWidth;
     menuTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize;
     menuPixmap = osd->CreatePixmap(1, cRect(0, menuTop, menuWidth, scrollBarHeight ));
@@ -686,10 +688,12 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
     int imageLeft = Left;
     int imageTop = Top;
     
-    cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight, imageHeight);
-    if( imgBG ) {
-        imageTop = Top + (fontHeight - imgBG->Height()) / 2;
-        menuIconsBGPixmap->DrawImage( cPoint(imageLeft, imageTop), *imgBG );
+    if( !Channel->GroupSep() ) {
+        cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight, imageHeight);
+        if( imgBG ) {
+            imageTop = Top + (fontHeight - imgBG->Height()) / 2;
+            menuIconsBGPixmap->DrawImage( cPoint(imageLeft, imageTop), *imgBG );
+        }
     }
     cImage *img = imgLoader.LoadLogo(Channel->Name(), imageHeight, imageHeight);
     if( img ) {
