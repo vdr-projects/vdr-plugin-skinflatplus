@@ -6,6 +6,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] channel logo in topbar in program menu
 - [update] imagecache, pre load images after skin is loaded
            menu item under general to show the amount of cached images
+           debug syslog message if cache is overflow
 - [add] theme color clrMenuItemExtraTextCurrentFont
 - [add] logo background for channel logos (filename: logo_background.png)
 - [add] show cutted length of recording in replay info

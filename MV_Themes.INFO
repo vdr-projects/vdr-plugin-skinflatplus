@@ -1,4 +1,4 @@
-flatPlus-MV_Themen erstellt am 12.03.2014 16:58
+flatPlus-MV_Themen erstellt am 16.03.2014 09:35
 Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
 
 => Installationshimnweise am Ende der Datei! <=
@@ -45,6 +45,7 @@ skinflatplus.ButtonsShowEmpty = 0
 skinflatplus.ChannelFormatShow = 1
 skinflatplus.ChannelIconsShow = 1
 skinflatplus.ChannelResolutionAspectShow = 1
+skinflatplus.ChannelSimpleAspectFormat = 1
 skinflatplus.decorBorderButtonByTheme = 1
 skinflatplus.decorBorderButtonSizeUser = 5
 skinflatplus.decorBorderButtonTypeUser = 0
@@ -93,15 +94,25 @@ skinflatplus.decorProgressVolumeSizeUser = 20
 skinflatplus.decorProgressVolumeTypeUser = 0
 skinflatplus.DiskUsageShow = 1
 skinflatplus.EpgAdditionalInfoShow = 1
+skinflatplus.MainMenuItemScale = 1.000000
 skinflatplus.marginOsdHor = 0
 skinflatplus.marginOsdVer = 0
+skinflatplus.MenuChannelType = 1
+skinflatplus.MenuChannelView = 1
 skinflatplus.MenuContentFullSize = 0
+skinflatplus.MenuEventView = 1
 skinflatplus.MenuItemIconsShow = 1
 skinflatplus.MenuItemPadding = 0
+skinflatplus.MenuItemParseTilde = 1
+skinflatplus.MenuItemRecordingClearPercent = 1
+skinflatplus.MenuItemRecordingShowFolderDate = 1
+skinflatplus.MenuRecordingView = 1
+skinflatplus.MenuTimerView = 3
 skinflatplus.MessageOffset = 0
 skinflatplus.RecordingAdditionalInfoShow = 1
 skinflatplus.RecordingFormatShow = 1
 skinflatplus.RecordingResolutionAspectShow = 1
+skinflatplus.RecordingSimpleAspectFormat = 1
 skinflatplus.SignalQualityShow = 1
 skinflatplus.TopBarFontSize = 0.048000
 skinflatplus.TopBarMenuIconShow = 1
