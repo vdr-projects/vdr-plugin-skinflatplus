@@ -1,6 +1,7 @@
 #include "baserender.h"
 #include "flat.h"
 #include <vdr/menu.h>
+#include "services/epgsearch.h"
 
 cFlatBaseRender::cFlatBaseRender(void) {
     font = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize );
@@ -256,24 +257,50 @@ void cFlatBaseRender::TopBarUpdate(void) {
 
         topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop), weekday, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, fullWidth, 0, taRight);
         topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop + topBarFontSmlHeight), date, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, fullWidth, 0, taRight);
-
+        int DateRight = TopBarWidth - timeWidth - fullWidth - marginItem*2;
+        
         DecorBorderDraw(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight, Config.decorBorderTopBarSize, Config.decorBorderTopBarType, Config.decorBorderTopBarFg, Config.decorBorderTopBarBg);
 
-        // look for timers
-        int numRec = 0;
-        for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
-            if( ti->Matches(t) ) {
-                numRec++;
-            }        
-        }        
-
         int RecW = 0;
-        if( numRec > 0 && Config.TopBarRecordingShow ) {
-            cString Rec = cString::sprintf("REC %d", numRec);
-            RecW = topBarFont->Width(*Rec);
-            TitleWidthLeft -= RecW + marginItem*2;
+        int numRec = 0;
+        if( Config.TopBarRecordingShow ) {
+            // look for timers
+            for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
+                if( ti->Matches(t) ) {
+                    numRec++;
+                }        
+            }        
+            if( numRec ) {
+                cString Rec = cString::sprintf("REC %d", numRec);
+                RecW = topBarFont->Width(*Rec);
+                TitleWidthLeft -= RecW + marginItem*2;
+            }
         }
-        
+
+        int numConflicts = 0, ConW = 0;
+        if( Config.TopBarRecConflictsShow ) {
+            cPlugin *p = cPluginManager::GetPlugin("epgsearch");
+            if (p) {
+                Epgsearch_lastconflictinfo_v1_0 *serviceData = new Epgsearch_lastconflictinfo_v1_0;
+                if (serviceData) {
+                    serviceData->nextConflict = 0;
+                    serviceData->relevantConflicts = 0;
+                    serviceData->totalConflicts = 0;
+                    p->Service("Epgsearch-lastconflictinfo-v1.0", serviceData);
+                    if (serviceData->relevantConflicts > 0) {
+                        numConflicts = serviceData->relevantConflicts;
+                    }
+                    delete serviceData;
+                }
+            }
+        }
+
+        if( numConflicts ) {
+            cString Con = cString::sprintf("%s %d", tr("C"), numRec);
+            ConW = topBarFont->Width(*Con);
+            TitleWidthLeft -= ConW + marginItem*2;
+        }
+
         int TitleWidth = topBarFont->Width(topBarTitle);
         if( TitleWidth > TitleWidthLeft ) {
             int dotsWidth = topBarFont->Width("... ");
@@ -284,16 +311,25 @@ void cFlatBaseRender::TopBarUpdate(void) {
         }
         
         topBarPixmap->DrawText(cPoint(MenuIconWidth + marginItem*2, fontTop), topBarTitle, Theme.Color(clrTopBarFont), Theme.Color(clrTopBarBg), topBarFont);
-        
-        if( numRec > 0 && Config.TopBarRecordingShow ) {
-            if( TitleWidth > RecLeft )
-                RecLeft = TitleWidth + marginItem*2;
-            
+
+        if( TitleWidth > RecLeft )
+            RecLeft = TitleWidth + marginItem*2;
+        if( numRec > 0 && Config.TopBarRecordingShow && (RecLeft + RecW) < DateRight ) {
             cString Rec = cString::sprintf("REC");
             RecW = topBarFont->Width(*Rec);
             cString RecNum = cString::sprintf("%d", numRec);
             topBarPixmap->DrawText(cPoint(RecLeft, fontTop), Rec, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFont);
             topBarPixmap->DrawText(cPoint(RecLeft + RecW + marginItem, fontSmlTop), RecNum, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFontSml);
+            RecLeft += RecW + marginItem*2 + topBarFontSml->Width(RecNum);
+        }
+
+        int ConLeft = RecLeft + marginItem;
+        if( numConflicts > 0 && Config.TopBarRecConflictsShow && (ConLeft + ConW) < DateRight ) {
+            cString Con = cString::sprintf(tr("C"));
+            ConW = topBarFont->Width(*Con);
+            cString ConNum = cString::sprintf("%d", numConflicts);
+            topBarPixmap->DrawText(cPoint(ConLeft, fontTop), Con, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFont);
+            topBarPixmap->DrawText(cPoint(ConLeft + ConW + marginItem, fontSmlTop), ConNum, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFontSml);
         }
         
     }

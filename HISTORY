@@ -11,6 +11,8 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] theme color clrMenuItemExtraTextCurrentFont
 - [add] logo background for channel logos (filename: logo_background.png)
 - [add] show cutted length of recording in replay info
+- [add] update script to update MV-Themes (contrib/flatPlus_MV_Update.sh)
+- [add] timer conflicts in TopBar, active epgsearch is needed, configurable via menu settings
 
 2014-02-22: Version 0.2.0
 - [fix] load user decor settings

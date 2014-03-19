@@ -172,6 +172,7 @@ class cFlatConfig
         int RecordingAdditionalInfoShow;
         int EpgAdditionalInfoShow;
         int TopBarRecordingShow;
+        int TopBarRecConflictsShow;
         int MenuItemIconsShow;
         int TopBarMenuIconShow;
         

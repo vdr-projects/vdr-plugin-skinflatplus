@@ -30,6 +30,7 @@ cFlatConfig::cFlatConfig(void) {
     EpgAdditionalInfoShow = true;
     
     TopBarRecordingShow = true;
+    TopBarRecConflictsShow = true;
     
     MenuItemIconsShow = true;
     TopBarMenuIconShow = true;
@@ -193,6 +194,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MenuItemRecordingClearPercent") == 0)        MenuItemRecordingClearPercent = atoi(Value);
     else if (strcmp(Name, "MenuItemRecordingShowFolderDate") == 0)      MenuItemRecordingShowFolderDate = atoi(Value);
     else if (strcmp(Name, "MenuItemParseTilde") == 0)                   MenuItemParseTilde = atoi(Value);
+    else if (strcmp(Name, "TopBarRecConflictsShow") == 0)               TopBarRecConflictsShow = atoi(Value);
 
     else return false;
     

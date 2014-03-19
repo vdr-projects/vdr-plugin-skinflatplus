@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.2.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-03-13 20:26+0100\n"
+"POT-Creation-Date: 2014-03-19 20:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,9 @@ msgstr ""
 
 msgid "clock"
 msgstr "Uhr"
+
+msgid "C"
+msgstr "K"
 
 msgid "disk usage"
 msgstr "Plattennutzung"
@@ -176,6 +179,9 @@ msgstr "TopBar Font Größe"
 
 msgid "TopBar show recording"
 msgstr "TopBar zeige Aufnahme"
+
+msgid "TopBar show conflicts"
+msgstr "TopBar zeige Konflikte"
 
 msgid "Message bottom offset"
 msgstr "Meldung unterer Abstand"
