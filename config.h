@@ -74,6 +74,7 @@ class cFlatConfig
         int decorBorderTrackTypeUser, decorBorderTrackSizeUser;
         int decorBorderTrackType, decorBorderTrackSize;
         tColor decorBorderTrackFg, decorBorderTrackBg;
+        tColor decorBorderTrackSelFg, decorBorderTrackSelBg;
         tColor decorBorderTrackCurFg, decorBorderTrackCurBg;
 
         int decorBorderReplayByTheme;
@@ -173,6 +174,7 @@ class cFlatConfig
         int EpgAdditionalInfoShow;
         int TopBarRecordingShow;
         int TopBarRecConflictsShow;
+        int TopBarRecConflictsHigh;
         int MenuItemIconsShow;
         int TopBarMenuIconShow;
         

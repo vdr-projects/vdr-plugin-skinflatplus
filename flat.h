@@ -43,6 +43,11 @@ THEME_CLR(Theme, clrTopBarBorderBg,         0xC0101010);
 THEME_CLR(Theme, clrTopBarRecordingActiveFg,  0xFF880000);
 THEME_CLR(Theme, clrTopBarRecordingActiveBg,  0xC0101010);
 
+THEME_CLR(Theme, clrTopBarConflictLowFg,      0xFFBBBB00);
+THEME_CLR(Theme, clrTopBarConflictLowBg,      0xC0101010);
+THEME_CLR(Theme, clrTopBarConflictHighFg,     0xFF880000);
+THEME_CLR(Theme, clrTopBarConflictHighBg,    0xC0101010);
+
 // Buttons
 THEME_CLR(Theme, clrButtonBg,               0xC0101010);
 THEME_CLR(Theme, clrButtonFont,             0xFFEEEEEE);
@@ -155,13 +160,17 @@ THEME_CLR(Theme, clrReplayBorderFg,         0xC0101010);
 THEME_CLR(Theme, clrReplayBorderBg,         0xC0101010);
 
 // Tracks
-THEME_CLR(Theme, clrTrackItemBg,            0xC0101010);
+THEME_CLR(Theme, clrTrackItemBg,            0xC0909090);
 THEME_CLR(Theme, clrTrackItemFont,          0xFFEEEEEE);
+THEME_CLR(Theme, clrTrackItemSelableBg,     0xC0101010);
+THEME_CLR(Theme, clrTrackItemSelableFont,   0xFFEEEEEE);
 THEME_CLR(Theme, clrTrackItemCurrentBg,     0xC03090B0);
 THEME_CLR(Theme, clrTrackItemCurrentFont,   0xFFEEEEEE);
 
-THEME_CLR(Theme, clrTrackItemBorderFg,      0xC0101010);
-THEME_CLR(Theme, clrTrackItemBorderBg,      0xC0101010);
+THEME_CLR(Theme, clrTrackItemBorderFg,      0xC0909090);
+THEME_CLR(Theme, clrTrackItemBorderBg,      0xC0909090);
+THEME_CLR(Theme, clrTrackItemSelableBorderFg,      0xC0101010);
+THEME_CLR(Theme, clrTrackItemSelableBorderBg,      0xC0101010);
 THEME_CLR(Theme, clrTrackItemCurrentBorderFg,      0xC03090B0);
 THEME_CLR(Theme, clrTrackItemCurrentBorderBg,      0xC03090B0);
 

@@ -187,6 +187,7 @@ void cFlatSetup::Store(void) {
     SetupStore("MenuItemRecordingShowFolderDate", Config.MenuItemRecordingShowFolderDate);
     SetupStore("MenuItemParseTilde", Config.MenuItemParseTilde);
     SetupStore("TopBarRecConflictsShow", Config.TopBarRecConflictsShow);
+    SetupStore("TopBarRecConflictsHigh", Config.TopBarRecConflictsHigh);
 
     Config.Init();
 }
@@ -228,6 +229,7 @@ void cFlatSetupGeneral::Setup(void) {
     Add(new cMenuEditPrcItem(tr("TopBar font size"), &SetupConfig->TopBarFontSize, 0.01, 0.2, 1));
     Add(new cMenuEditBoolItem(tr("TopBar show recording"), &SetupConfig->TopBarRecordingShow));
     Add(new cMenuEditBoolItem(tr("TopBar show conflicts"), &SetupConfig->TopBarRecConflictsShow));
+    Add(new cMenuEditIntItem(tr("Conflicts min value for red"), &SetupConfig->TopBarRecConflictsHigh));
     Add(new cMenuEditIntItem(tr("Message bottom offset"), &SetupConfig->MessageOffset));
 
 

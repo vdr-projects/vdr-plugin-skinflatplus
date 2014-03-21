@@ -263,16 +263,19 @@ void cFlatBaseRender::TopBarUpdate(void) {
 
         int RecW = 0;
         int numRec = 0;
+        cImage *imgRec = imgLoader.LoadIcon("topbar_timer", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
+        if( imgRec )
+            RecW = imgRec->Width();
         if( Config.TopBarRecordingShow ) {
             // look for timers
             for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
                 if( ti->Matches(t) ) {
                     numRec++;
-                }        
-            }        
+                }
+            }
             if( numRec ) {
-                cString Rec = cString::sprintf("REC %d", numRec);
-                RecW = topBarFont->Width(*Rec);
+                cString Rec = cString::sprintf("%d", numRec);
+                RecW += topBarFont->Width(*Rec);
                 TitleWidthLeft -= RecW + marginItem*2;
             }
         }
@@ -294,10 +297,17 @@ void cFlatBaseRender::TopBarUpdate(void) {
                 }
             }
         }
-
+        cImage *imgCon = NULL;
+        if( numConflicts < Config.TopBarRecConflictsHigh )
+            imgCon = imgLoader.LoadIcon("topbar_timerconflict_low", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
+        else
+            imgCon = imgLoader.LoadIcon("topbar_timerconflict_high", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
+        
+        if( imgCon )
+            ConW = imgCon->Width();
         if( numConflicts ) {
-            cString Con = cString::sprintf("%s %d", tr("C"), numRec);
-            ConW = topBarFont->Width(*Con);
+            cString Con = cString::sprintf("%d", numRec);
+            ConW += topBarFont->Width(*Con);
             TitleWidthLeft -= ConW + marginItem*2;
         }
 
@@ -315,21 +325,29 @@ void cFlatBaseRender::TopBarUpdate(void) {
         if( TitleWidth > RecLeft )
             RecLeft = TitleWidth + marginItem*2;
         if( numRec > 0 && Config.TopBarRecordingShow && (RecLeft + RecW) < DateRight ) {
-            cString Rec = cString::sprintf("REC");
-            RecW = topBarFont->Width(*Rec);
+            if( imgRec ) {
+                int iconTop = (topBarFontHeight - imgRec->Height()) / 2;
+                topBarIconPixmap->DrawImage( cPoint(RecLeft, iconTop), *imgRec );
+                RecW = imgRec->Width() + marginItem;
+            }
             cString RecNum = cString::sprintf("%d", numRec);
-            topBarPixmap->DrawText(cPoint(RecLeft, fontTop), Rec, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFont);
-            topBarPixmap->DrawText(cPoint(RecLeft + RecW + marginItem, fontSmlTop), RecNum, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFontSml);
+            topBarPixmap->DrawText(cPoint(RecLeft + RecW, fontSmlTop), RecNum, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFontSml);
             RecLeft += RecW + marginItem*2 + topBarFontSml->Width(RecNum);
         }
 
         int ConLeft = RecLeft + marginItem;
         if( numConflicts > 0 && Config.TopBarRecConflictsShow && (ConLeft + ConW) < DateRight ) {
-            cString Con = cString::sprintf(tr("C"));
-            ConW = topBarFont->Width(*Con);
+            if( imgCon ) {
+                int iconTop = (topBarFontHeight - imgCon->Height()) / 2;
+                topBarIconPixmap->DrawImage( cPoint(RecLeft, iconTop), *imgCon );
+                ConW = imgCon->Width();
+            }
+            
             cString ConNum = cString::sprintf("%d", numConflicts);
-            topBarPixmap->DrawText(cPoint(ConLeft, fontTop), Con, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFont);
-            topBarPixmap->DrawText(cPoint(ConLeft + ConW + marginItem, fontSmlTop), ConNum, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFontSml);
+            if( numConflicts < Config.TopBarRecConflictsHigh )
+                topBarPixmap->DrawText(cPoint(ConLeft + ConW + marginItem, fontSmlTop), ConNum, Theme.Color(clrTopBarConflictLowFg), Theme.Color(clrTopBarConflictLowBg), topBarFontSml);
+            else
+                topBarPixmap->DrawText(cPoint(ConLeft + ConW + marginItem, fontSmlTop), ConNum, Theme.Color(clrTopBarConflictHighFg), Theme.Color(clrTopBarConflictHighBg), topBarFontSml);
         }
         
     }

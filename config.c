@@ -31,6 +31,7 @@ cFlatConfig::cFlatConfig(void) {
     
     TopBarRecordingShow = true;
     TopBarRecConflictsShow = true;
+    TopBarRecConflictsHigh = 2;
     
     MenuItemIconsShow = true;
     TopBarMenuIconShow = true;
@@ -195,6 +196,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MenuItemRecordingShowFolderDate") == 0)      MenuItemRecordingShowFolderDate = atoi(Value);
     else if (strcmp(Name, "MenuItemParseTilde") == 0)                   MenuItemParseTilde = atoi(Value);
     else if (strcmp(Name, "TopBarRecConflictsShow") == 0)               TopBarRecConflictsShow = atoi(Value);
+    else if (strcmp(Name, "TopBarRecConflictsHigh") == 0)               TopBarRecConflictsHigh = atoi(Value);
 
     else return false;
     
@@ -373,7 +375,9 @@ void cFlatConfig::ThemeInit(void) {
     decorBorderTrackBg = Theme.Color(clrTrackItemBorderBg);
     decorBorderTrackCurFg = Theme.Color(clrTrackItemCurrentBorderFg);
     decorBorderTrackCurBg = Theme.Color(clrTrackItemCurrentBorderBg);
-
+    decorBorderTrackSelFg = Theme.Color(clrTrackItemSelableBorderFg);
+    decorBorderTrackSelBg = Theme.Color(clrTrackItemSelableBorderBg);
+    
     decorBorderReplayFg = Theme.Color(clrReplayBorderFg);
     decorBorderReplayBg = Theme.Color(clrReplayBorderBg);
 

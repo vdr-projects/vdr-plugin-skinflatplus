@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.2.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-03-19 20:01+0100\n"
+"POT-Creation-Date: 2014-03-21 23:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,9 +17,6 @@ msgstr ""
 
 msgid "clock"
 msgstr "Uhr"
-
-msgid "C"
-msgstr "K"
 
 msgid "disk usage"
 msgstr "Plattennutzung"
@@ -65,6 +62,9 @@ msgstr "Kanal"
 
 msgid "search pattern"
 msgstr "Suchmuster"
+
+msgid "Audio Tracks"
+msgstr "Audio Tracks"
 
 msgid "Volume"
 msgstr "Lautstärke"
@@ -182,6 +182,9 @@ msgstr "TopBar zeige Aufnahme"
 
 msgid "TopBar show conflicts"
 msgstr "TopBar zeige Konflikte"
+
+msgid "Conflicts min value for red"
+msgstr "Konflikte min Wert für Rot"
 
 msgid "Message bottom offset"
 msgstr "Meldung unterer Abstand"
@@ -365,6 +368,9 @@ msgstr "Audiospur Rand Typ"
 
 msgid "Tracks border size"
 msgstr "Audiospur Rand Größe"
+
+#~ msgid "C"
+#~ msgstr "K"
 
 #~ msgid "Recordings"
 #~ msgstr "Aufnahmen"
