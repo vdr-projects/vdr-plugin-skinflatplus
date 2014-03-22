@@ -24,6 +24,8 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         double screenAspect;
         int heightBottom, heightImageLogo;
     
+        int LastSignalStrength, LastSignalQuality;
+        
         bool isRecording;
         bool isRadioChannel;
         bool isGroup;

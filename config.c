@@ -13,6 +13,7 @@ cFlatConfig::cFlatConfig(void) {
 
     ChannelIconsShow = true;
     SignalQualityShow = true;
+    SignalQualityUseColors = false;
     
     DiskUsageShow = true;
     
@@ -197,6 +198,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MenuItemParseTilde") == 0)                   MenuItemParseTilde = atoi(Value);
     else if (strcmp(Name, "TopBarRecConflictsShow") == 0)               TopBarRecConflictsShow = atoi(Value);
     else if (strcmp(Name, "TopBarRecConflictsHigh") == 0)               TopBarRecConflictsHigh = atoi(Value);
+    else if (strcmp(Name, "SignalQualityUseColors") == 0)               SignalQualityUseColors = atoi(Value);
 
     else return false;
     

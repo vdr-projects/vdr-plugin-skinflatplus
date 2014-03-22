@@ -16,7 +16,8 @@ timedout_read() {
   stty "$old_tty_settings"           # See man page for "stty."
 }
 
-# In Skriptordner wechseln
+### Start
+# In Skriptordner wechseln (contrib)
 cd $(dirname $0)  # Skript im contrib-Ordner
 
 if [ ! -d "../$ICONS" -o ! -d "../$THEMES" -o ! -d "../$DECORS" ] ; then
@@ -24,13 +25,26 @@ if [ ! -d "../$ICONS" -o ! -d "../$THEMES" -o ! -d "../$DECORS" ] ; then
   exit 1
 fi
 
-# Löschen!
-echo "-------------------------------"
-echo "MV_Themes löschen? (J/n)"
-timedout_read 5 TASTE
-if [ "$TASTE" = "n" -o "$TASTE" = "N" ] ; then
-  echo "Skript abgebrochen. Es wurde nichts gelöscht!"
-  exit
+if [ -n "$1" ] ; then         # Parameter wurde übergeben
+  if [ "$1" = "-u" -o "$1" = "-U" ] ; then
+    SILENTUPDATE=1 ; echo "Silent Update! ($1)"
+  else
+    echo "Falscher Parameter: $1"
+    echo "Aufruf mit $(basename $0)"
+    echo "Parameter -u    Keine Abfragen (Silent Update)."
+    exit
+  fi
+fi
+
+# MV_Themes Löschen!
+if [ -z "$SILENTUPDATE" ] ; then
+  echo "-------------------------------"
+  echo "MV_Themes löschen? (J/n)"
+  timedout_read 5 TASTE
+  if [ "$TASTE" = "n" -o "$TASTE" = "N" ] ; then
+    echo "Skript abgebrochen. Es wurde nichts gelöscht!"
+    exit
+  fi
 fi
 
 rm -rf ../$ICONS/MV*
@@ -40,22 +54,22 @@ rm -f ../$INFO
 rm -f ../$HIST
 echo "MV-Themen wurden entfernt."
 
-# Themen neu laden
-echo "-------------------------------"
-echo "MV_Themes neu herunterladen und entpacken? (J/n)"
-timedout_read 5 TASTE
-[ "$TASTE" = "n" -o "$TASTE" = "N" ] && exit
+# MV_Themes neu laden
+if [ -z "$SILENTUPDATE" ] ; then
+  echo "-------------------------------"
+  echo "MV_Themes neu herunterladen und entpacken? (J/n)"
+  timedout_read 5 TASTE
+  [ "$TASTE" = "n" -o "$TASTE" = "N" ] && exit
+fi
 
-# Download
 cd ..
+# Download
 wget https://dl.dropboxusercontent.com/u/1490505/VDR/skinflatplus/MV_Themes.tar.xz
+tar -xJf MV_Themes.tar.xz    # Entpacken
+rm -rf MV_Themes.tar.xz      # Archiv entfernen
 
-# Entpacken
-tar -xJf MV_Themes.tar.xz
-
-# Archiv entfernen
-rm -rf MV_Themes.tar.xz
-
+echo "-------------------------------"
 echo "MV-Themen wurden aktualisiert."
+echo "Zum aktivieren 'make install' eingeben."
 
 exit

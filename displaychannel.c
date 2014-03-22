@@ -22,6 +22,8 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     isRadioChannel = false;
 
     screenWidth = lastScreenWidth = -1;
+    LastSignalStrength = -1;
+    LastSignalQuality = -1;
     
     CreateFullOsd();
     if ( !osd )
@@ -432,6 +434,11 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
     int SignalQuality = cDevice::ActualDevice()->SignalQuality();
     int signalWidth = channelWidth / 2;
 
+    if( LastSignalStrength == SignalStrength && LastSignalQuality == SignalQuality )
+        return;
+    LastSignalStrength = SignalStrength;
+    LastSignalQuality = SignalQuality;
+    
     cFont *SignalFont = cFont::CreateFont(Setup.FontOsd, Config.decorProgressSignalSize);
     
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
@@ -448,7 +455,7 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
     int progressWidth = signalWidth / 2 - progressLeft - marginItem;
     ProgressBarDrawRaw(chanInfoBottomPixmap, chanInfoBottomPixmap, cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize),
         cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize), SignalStrength, 100,
-        Config.decorProgressSignalFg, Config.decorProgressSignalBarFg, Config.decorProgressSignalBg, Config.decorProgressSignalType, false);
+        Config.decorProgressSignalFg, Config.decorProgressSignalBarFg, Config.decorProgressSignalBg, Config.decorProgressSignalType, false, Config.SignalQualityUseColors);
 
     //left = signalWidth / 2 + marginItem;
     top += Config.decorProgressSignalSize + marginItem;
@@ -461,7 +468,8 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
     
     ProgressBarDrawRaw(chanInfoBottomPixmap, chanInfoBottomPixmap, cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize),
         cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize), SignalQuality, 100,
-        Config.decorProgressSignalFg, Config.decorProgressSignalBarFg, Config.decorProgressSignalBg, Config.decorProgressSignalType, false);
+        Config.decorProgressSignalFg, Config.decorProgressSignalBarFg, Config.decorProgressSignalBg, Config.decorProgressSignalType, false, Config.SignalQualityUseColors);
+
 }
 
 void cFlatDisplayChannel::Flush(void) {

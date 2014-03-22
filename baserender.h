@@ -61,6 +61,7 @@ class cFlatBaseRender
         int progressBarHeight, progressBarTop, progressBarWidth, progressBarMarginHor, progressBarMarginVer;
         int ProgressType;
         bool progressBarSetBackground;
+        bool progressBarIsSignal;
         tColor progressBarColorFg, progressBarColorBarFg, progressBarColorBarCurFg, progressBarColorBg;
         tColor progressBarColorMark, progressBarColorMarkCurrent;
         
@@ -138,8 +139,8 @@ class cFlatBaseRender
         void MessageSet(eMessageType Type, const char *Text);
         void MessageClear(void);
 
-        void ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRect rec, cRect recBg, int Current, int Total, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground);
-        void ProgressBarCreate(int Left, int Top, int Width, int Height, int MarginHor, int MarginVer, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground = false);
+        void ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRect rec, cRect recBg, int Current, int Total, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground, bool isSignal = false);
+        void ProgressBarCreate(int Left, int Top, int Width, int Height, int MarginHor, int MarginVer, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground = false, bool isSignal = false);
         void ProgressBarDrawBgColor(void);
         void ProgressBarDraw(int Current, int Total);
         void ProgressBarDrawMarks(int Current, int Total, const cMarks *Marks, tColor Color, tColor ColorCurrent);

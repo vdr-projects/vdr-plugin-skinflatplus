@@ -188,6 +188,7 @@ void cFlatSetup::Store(void) {
     SetupStore("MenuItemParseTilde", Config.MenuItemParseTilde);
     SetupStore("TopBarRecConflictsShow", Config.TopBarRecConflictsShow);
     SetupStore("TopBarRecConflictsHigh", Config.TopBarRecConflictsHigh);
+    SetupStore("SignalQualityUseColors", Config.SignalQualityUseColors);
 
     Config.Init();
 }
@@ -310,6 +311,7 @@ void cFlatSetupChannelInfo::Setup(void) {
 
     Add(new cMenuEditBoolItem(tr("Show Channelinfo icons"), &SetupConfig->ChannelIconsShow));
     Add(new cMenuEditBoolItem(tr("Show signal quality"), &SetupConfig->SignalQualityShow));
+    Add(new cMenuEditBoolItem(tr("Colors for signal quality"), &SetupConfig->SignalQualityUseColors));
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->ChannelResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->ChannelFormatShow));
     Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->ChannelSimpleAspectFormat));

@@ -155,6 +155,7 @@ class cFlatConfig
         int ButtonsShowEmpty;
         int ChannelIconsShow;
         int SignalQualityShow;
+        int SignalQualityUseColors;
         int DiskUsageShow;
         
         int MenuItemPadding;

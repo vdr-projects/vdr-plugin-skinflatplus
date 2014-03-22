@@ -50,3 +50,14 @@ HISTORY
  [15.03.2014] - 'recording_cutted_extra.png' kleiner und in Themenfarbe
               - Fehler in 'vps.png' korrigiert
  [16.03.2014] - Schriftfarbe bei Nachrichten #AAAAAA
+ [21.03.2014] - Schriftfarbe bei Nachrichten #BBBBBB
+              - Farbe Statusmeldung und Knopf 'Blau' in #2222CC
+ [22.03.2014] - Timerkonflikt: Neu 'clrTopBarConflictLowFg', 'clrTopBarConflictLowBg',
+                'clrTopBarConflictHighFg' und 'clrTopBarConflictHighBg'
+              - Audio: Neu 'clrTrackItemSelableBg', 'clrTrackItemSelableFont',
+                'clrTrackItemBorderFg', 'clrTrackItemBorderBg',
+                'clrTrackItemSelableBorderFg' und 'clrTrackItemSelableBorderBg'
+              - Farbe der Symbole 'topbar_timer.png', 'topbar_timerconflict_low.png'
+                und 'topbar_timerconflict_high.png' angepasst
+              - Hinweis auf 'make install' im Skript 'flatPlus_MV_Update.sh'
+              - Option für 'Silent Update' (-u) im Skript 'flatPlus_MV_Update.sh'

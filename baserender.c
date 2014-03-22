@@ -697,7 +697,7 @@ void cFlatBaseRender::contentDraw(void) {
     }
 }
 
-void cFlatBaseRender::ProgressBarCreate(int Left, int Top, int Width, int Height, int MarginHor, int MarginVer, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground) {
+void cFlatBaseRender::ProgressBarCreate(int Left, int Top, int Width, int Height, int MarginHor, int MarginVer, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground, bool isSignal) {
     progressBarTop = Top;
     progressBarWidth = Width;
     progressBarHeight = Height;
@@ -710,6 +710,7 @@ void cFlatBaseRender::ProgressBarCreate(int Left, int Top, int Width, int Height
     progressBarColorBg = ColorBg;
     
     progressBarSetBackground = SetBackground;
+    progressBarIsSignal = isSignal;
     
     progressBarColorBarCurFg = Theme.Color(clrReplayProgressBarCurFg);
     
@@ -722,14 +723,14 @@ void cFlatBaseRender::ProgressBarCreate(int Left, int Top, int Width, int Height
 void cFlatBaseRender::ProgressBarDraw(int Current, int Total) {
     ProgressBarDrawRaw(progressBarPixmap, progressBarPixmapBg, cRect(0, 0, progressBarWidth, progressBarHeight),
         cRect(0, 0, progressBarWidth+progressBarMarginVer*2, progressBarHeight+progressBarMarginHor*2),
-        Current, Total, progressBarColorFg, progressBarColorBarFg, progressBarColorBg, ProgressType, progressBarSetBackground);
+        Current, Total, progressBarColorFg, progressBarColorBarFg, progressBarColorBg, ProgressType, progressBarSetBackground, progressBarIsSignal);
 }
 
 void cFlatBaseRender::ProgressBarDrawBgColor(void) {
     progressBarPixmapBg->Fill(progressBarColorBg);
 }
 
-void cFlatBaseRender::ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRect rect, cRect rectBg, int Current, int Total, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground) {
+void cFlatBaseRender::ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRect rect, cRect rectBg, int Current, int Total, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground, bool isSignal) {
     int Middle = rect.Height()/2;
     
     double percentLeft = ((double)Current) / (double)Total;
@@ -779,8 +780,22 @@ void cFlatBaseRender::ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRe
             Pixmap->DrawRectangle(cRect( rect.Left(), rect.Top(), out, rect.Height()), ColorFg);
             Pixmap->DrawRectangle(cRect( rect.Left() + rect.Width() - out, rect.Top(), out, rect.Height()), ColorFg);
             
-            if (Current > 0)
-                Pixmap->DrawRectangle(cRect( rect.Left(), rect.Top() + Middle - (big/2), (rect.Width() * percentLeft), big), ColorBarFg);
+            if (Current > 0) {
+                if( isSignal ) {
+                    double perc = 100.0 / (double) Total * (double) Current / 100.0;
+                    if( perc > 0.666 ) {
+                        Pixmap->DrawRectangle(cRect( rect.Left() + out, rect.Top() + Middle - (big/2) + out, (rect.Width() * percentLeft) - out*2, big - out*2), Theme.Color(clrButtonGreen));
+                        Pixmap->DrawRectangle(cRect( rect.Left() + out, rect.Top() + Middle - (big/2) + out, (rect.Width() * 0.666) - out*2, big - out*2), Theme.Color(clrButtonYellow));
+                        Pixmap->DrawRectangle(cRect( rect.Left() + out, rect.Top() + Middle - (big/2) + out, (rect.Width() * 0.333) - out*2, big - out*2), Theme.Color(clrButtonRed));
+                    } else if( perc > 0.333 ) {
+                        Pixmap->DrawRectangle(cRect( rect.Left() + out, rect.Top() + Middle - (big/2) + out, (rect.Width() * percentLeft) - out*2, big - out*2), Theme.Color(clrButtonYellow));
+                        Pixmap->DrawRectangle(cRect( rect.Left() + out, rect.Top() + Middle - (big/2) + out, (rect.Width() * 0.333) - out*2, big - out*2), Theme.Color(clrButtonRed));
+                    } else
+                        Pixmap->DrawRectangle(cRect( rect.Left() + out, rect.Top() + Middle - (big/2) + out, (rect.Width() * percentLeft) - out*2, big - out*2), Theme.Color(clrButtonRed));
+                    
+                } else
+                    Pixmap->DrawRectangle(cRect( rect.Left() + out, rect.Top() + Middle - (big/2) + out, (rect.Width() * percentLeft) - out*2, big - out*2), ColorBarFg);
+            }
             break;
         }
         case 3: // small line + big line + dot

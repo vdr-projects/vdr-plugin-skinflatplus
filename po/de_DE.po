@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.2.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-03-21 23:40+0100\n"
+"POT-Creation-Date: 2014-03-22 16:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -224,6 +224,9 @@ msgstr "Zeige Kanalinfo Icons"
 
 msgid "Show signal quality"
 msgstr "Zeige Signalqualität"
+
+msgid "Colors for signal quality"
+msgstr "Farben für Signalqualität"
 
 msgid "Show resolution & aspect"
 msgstr "Zeige Auflösung & Aspect"

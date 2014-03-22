@@ -1,4 +1,4 @@
-flatPlus-MV_Themen erstellt am 16.03.2014 09:35
+flatPlus-MV_Themen erstellt am 22.03.2014 15:41
 Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
 
 => Installationshimnweise am Ende der Datei! <=
@@ -97,7 +97,6 @@ skinflatplus.EpgAdditionalInfoShow = 1
 skinflatplus.MainMenuItemScale = 1.000000
 skinflatplus.marginOsdHor = 0
 skinflatplus.marginOsdVer = 0
-skinflatplus.MenuChannelType = 1
 skinflatplus.MenuChannelView = 1
 skinflatplus.MenuContentFullSize = 0
 skinflatplus.MenuEventView = 1
@@ -116,6 +115,8 @@ skinflatplus.RecordingSimpleAspectFormat = 1
 skinflatplus.SignalQualityShow = 1
 skinflatplus.TopBarFontSize = 0.048000
 skinflatplus.TopBarMenuIconShow = 1
+skinflatplus.TopBarRecConflictsHigh = 3
+skinflatplus.TopBarRecConflictsShow = 1
 skinflatplus.TopBarRecordingShow = 1
 
 Empfohlene Einstellungen im VDR (Menue - Einstellungen - OSD):
