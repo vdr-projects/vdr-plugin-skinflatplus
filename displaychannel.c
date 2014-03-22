@@ -36,7 +36,7 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     heightBottom = (fontHeight*2) + (fontSmlHeight*2) + marginItem; // Top, Buttom, Between
     heightImageLogo = heightBottom;
     if( Config.SignalQualityShow )
-        heightBottom += max(fontSmlHeight, Config.decorProgressSignalSize) + marginItem;
+        heightBottom += max(fontSmlHeight, (Config.decorProgressSignalSize*2) + marginItem) + marginItem;
     else if( Config.ChannelIconsShow )
         heightBottom += fontSmlHeight + marginItem;
         
@@ -62,7 +62,7 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     height += Config.decorProgressChannelSize + marginItem*2;
     ProgressBarCreate(Config.decorBorderChannelSize, Config.decorBorderChannelSize+channelHeight - height + marginItem,
         channelWidth, Config.decorProgressChannelSize, marginItem, 0,
-        Config.decorProgressChannelFg, Config.decorProgressChannelBarFg, Config.decorProgressChannelBg, Config.decorProgressChannelType);
+        Config.decorProgressChannelFg, Config.decorProgressChannelBarFg, Config.decorProgressChannelBg, Config.decorProgressChannelType, true);
 
     ProgressBarDrawBgColor();
     
@@ -159,17 +159,11 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
     }
 
     int width = fontSmlHeight;
-    int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
     int height = fontSmlHeight;
+    int top = heightBottom - height - marginItem;
     int imageTop = 0;
     cImage *img = NULL;
     
-    if( Config.SignalQualityShow ) {
-        top += max(fontSmlHeight, Config.decorProgressSignalSize) / 2 - fontSmlHeight / 2;
-        height = max(fontSmlHeight, Config.decorProgressSignalSize);
-    } else
-        top += fontSmlHeight / 2 - fontSmlHeight / 2;
-
     int left = channelWidth - width - marginItem*2;
 
     if( Channel ) {
@@ -437,26 +431,33 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
     int SignalStrength = cDevice::ActualDevice()->SignalStrength();
     int SignalQuality = cDevice::ActualDevice()->SignalQuality();
     int signalWidth = channelWidth / 2;
+
+    cFont *SignalFont = cFont::CreateFont(Setup.FontOsd, Config.decorProgressSignalSize);
     
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
     top += max(fontSmlHeight, Config.decorProgressSignalSize) / 2 - fontSmlHeight / 2;
-    int left = marginItem;
+    int left = marginItem * 2;
     int progressTop = fontHeight*2 + fontSmlHeight*2 + marginItem;
     progressTop += max(fontSmlHeight, Config.decorProgressSignalSize) / 2 - Config.decorProgressSignalSize / 2;
     
+    progressTop = top;
+    
     chanInfoBottomPixmap->DrawText(cPoint(left, top), "STR",
-        Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), fontSml);
-    int progressLeft = left + fontSml->Width("STR") + marginItem;
+        Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), SignalFont);
+    int progressLeft = left + SignalFont->Width("STR") + SignalFont->Width(" ") + marginItem;
     int progressWidth = signalWidth / 2 - progressLeft - marginItem;
     ProgressBarDrawRaw(chanInfoBottomPixmap, chanInfoBottomPixmap, cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize),
         cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize), SignalStrength, 100,
         Config.decorProgressSignalFg, Config.decorProgressSignalBarFg, Config.decorProgressSignalBg, Config.decorProgressSignalType, false);
 
-    left = signalWidth / 2 + marginItem;
+    //left = signalWidth / 2 + marginItem;
+    top += Config.decorProgressSignalSize + marginItem;
+    progressTop = top;
+    
     chanInfoBottomPixmap->DrawText(cPoint(left, top), "SNR",
-        Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), fontSml);
-    progressLeft = signalWidth / 2 + marginItem + fontSml->Width("STR") + marginItem*2;
-    progressWidth = signalWidth - progressLeft - marginItem;
+        Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), SignalFont);
+    progressLeft = left + SignalFont->Width("STR") + SignalFont->Width(" ") + marginItem;
+    //progressWidth = signalWidth - progressLeft - marginItem;
     
     ProgressBarDrawRaw(chanInfoBottomPixmap, chanInfoBottomPixmap, cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize),
         cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize), SignalQuality, 100,
