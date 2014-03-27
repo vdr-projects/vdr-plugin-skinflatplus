@@ -191,5 +191,8 @@ class cFlatConfig
         
         int MenuItemParseTilde;
         
+        // TVScraper
+        int TVScraperChanInfoShowPoster;
+        double TVScraperChanInfoPosterSize;
         int DecorIndex;
 };

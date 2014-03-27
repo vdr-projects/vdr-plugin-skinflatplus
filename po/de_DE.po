@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.2.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-03-22 16:32+0100\n"
+"POT-Creation-Date: 2014-03-27 21:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -155,6 +155,12 @@ msgstr "Lautstärke Einstellungen"
 
 msgid "Tracks settings"
 msgstr "Audiospur Einstellungen"
+
+msgid "TVScraper settings"
+msgstr "TVScraper Einstellungen"
+
+msgid "TVScraper not installed"
+msgstr "TVScraper nicht installiert"
 
 msgid "Decorfile"
 msgstr "Decordatei"
@@ -372,14 +378,8 @@ msgstr "Audiospur Rand Typ"
 msgid "Tracks border size"
 msgstr "Audiospur Rand Größe"
 
-#~ msgid "C"
-#~ msgstr "K"
+msgid "Channelinfo show poster?"
+msgstr "Kanalinfo zeige Poster?"
 
-#~ msgid "Recordings"
-#~ msgstr "Aufnahmen"
-
-#~ msgid "Unwatched"
-#~ msgstr "Ungesehen"
-
-#~ msgid "Recs"
-#~ msgstr "Aufn."
+msgid "Channelinfo poster size"
+msgstr "Kanalinfo Poster Größe"

@@ -76,6 +76,12 @@ void cFlatSetup::Setup(void) {
     Add(new cOsdItem(tr("Volume settings"), osUnknown, true));
     Add(new cOsdItem(tr("Tracks settings"), osUnknown, true));
 
+    static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
+    if (pTVScraper)
+        Add(new cOsdItem(tr("TVScraper settings"), osUnknown, true));
+    else
+        Add(new cOsdItem(tr("TVScraper not installed"), osUnknown, false));
+    
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
         ItemLastSel = -1;
@@ -104,6 +110,8 @@ eOSState cFlatSetup::ProcessKey(eKeys Key) {
                 state = AddSubMenu(new cFlatSetupVolume(&SetupConfig));
             if (strcmp(ItemText, tr("Tracks settings")) == 0)
                 state = AddSubMenu(new cFlatSetupTracks(&SetupConfig));
+            if (strcmp(ItemText, tr("TVScraper settings")) == 0)
+                state = AddSubMenu(new cFlatSetupTvsraper(&SetupConfig));
         }
     }   
     return state;
@@ -189,6 +197,8 @@ void cFlatSetup::Store(void) {
     SetupStore("TopBarRecConflictsShow", Config.TopBarRecConflictsShow);
     SetupStore("TopBarRecConflictsHigh", Config.TopBarRecConflictsHigh);
     SetupStore("SignalQualityUseColors", Config.SignalQualityUseColors);
+    SetupStore("TVScraperChanInfoShowPoster", Config.TVScraperChanInfoShowPoster);
+    SetupStore("TVScraperChanInfoPosterSize", dtoa(Config.TVScraperChanInfoPosterSize));
 
     Config.Init();
 }
@@ -642,5 +652,47 @@ eOSState cFlatSetupTracks::ProcessKey(eKeys Key) {
             Setup();
         }
     }   
+    return state;
+}
+
+// TVScraper Settings 
+cFlatSetupTvsraper::cFlatSetupTvsraper(cFlatConfig* data)  : cMenuSetupSubMenu(tr("Tracks settings"), data) {
+    Setup();
+}
+
+void cFlatSetupTvsraper::Setup(void) {
+    Clear();
+
+    Add(new cMenuEditBoolItem(tr("Channelinfo show poster?"), &SetupConfig->TVScraperChanInfoShowPoster));
+    Add(new cMenuEditPrcItem(tr("Channelinfo poster size"), &SetupConfig->TVScraperChanInfoPosterSize, 0.004, 0.015, 2));
+    
+    if( ItemLastSel >= 0 ) {
+        SetCurrent(Get(ItemLastSel));
+        ItemLastSel = -1;
+    }
+
+    Display();
+}
+
+eOSState cFlatSetupTvsraper::ProcessKey(eKeys Key) {
+    eOSState state = cOsdMenu::ProcessKey(Key);
+    if (state == osUnknown) {
+        switch (Key) {
+            case kOk:
+                return osBack;
+            default:
+                break;
+        }
+    }
+    /*
+    if( Key == kLeft || Key == kRight ) {
+        const char* ItemText = Get(Current())->Text();
+        if( strstr(ItemText, tr("Tracks border by decor-file?")) != NULL
+        ) {
+            ItemLastSel = Current();
+            Setup();
+        }
+    }
+    */  
     return state;
 }

@@ -18,6 +18,7 @@ public:
     
     cImage* LoadLogo(const char *logo, int width, int height);
     cImage* LoadIcon(const char *cIcon, int width, int height, bool preserveAspect = true);
+    cImage* LoadFile(const char *cFile, int width, int height, bool preserveAspect = true);
     
 private:
     int epgImageWidthLarge, epgImageHeightLarge;

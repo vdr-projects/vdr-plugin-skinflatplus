@@ -2,6 +2,7 @@
 
 #include "baserender.h"
 #include "flat.h"
+#include "services/tvscraper.h"
 
 class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
     private:
@@ -18,6 +19,7 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         cPixmap *chanLogoPixmap;
         cPixmap *chanLogoBGPixmap;
         cPixmap *chanIconsPixmap;
+        cPixmap *chanEpgImagesPixmap;
     
         int screenWidth, lastScreenWidth;
         int screenHeight;
@@ -25,6 +27,9 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         int heightBottom, heightImageLogo;
     
         int LastSignalStrength, LastSignalQuality;
+        
+        // TVScraper
+        int TVSLeft, TVSTop, TVSWidth, TVSHeight;
         
         bool isRecording;
         bool isRadioChannel;

@@ -3,6 +3,7 @@
 #include <vdr/menu.h>
 #include <vdr/tools.h>
 #include "config.h"
+#include "services/tvscraper.h"
 
 class cFlatSetup : public cMenuSetupPage {
     public:
@@ -74,5 +75,13 @@ class cFlatSetupTracks : public cMenuSetupSubMenu {
         void Setup(void);
     public:
         cFlatSetupTracks(cFlatConfig *data);
+        virtual eOSState ProcessKey(eKeys Key);
+};
+
+class cFlatSetupTvsraper : public cMenuSetupSubMenu {
+    protected:
+        void Setup(void);
+    public:
+        cFlatSetupTvsraper(cFlatConfig *data);
         virtual eOSState ProcessKey(eKeys Key);
 };

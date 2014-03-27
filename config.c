@@ -54,6 +54,9 @@ cFlatConfig::cFlatConfig(void) {
     MenuItemRecordingShowFolderDate = 1;
     MenuItemParseTilde = 1;
     
+    TVScraperChanInfoShowPoster = 1;
+    TVScraperChanInfoPosterSize = 0.01;
+    
     decorBorderChannelByTheme = 1;
     decorBorderChannelTypeUser = 0;
     decorBorderChannelSizeUser = 0;
@@ -199,6 +202,8 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "TopBarRecConflictsShow") == 0)               TopBarRecConflictsShow = atoi(Value);
     else if (strcmp(Name, "TopBarRecConflictsHigh") == 0)               TopBarRecConflictsHigh = atoi(Value);
     else if (strcmp(Name, "SignalQualityUseColors") == 0)               SignalQualityUseColors = atoi(Value);
+    else if (strcmp(Name, "TVScraperChanInfoShowPoster") == 0)          TVScraperChanInfoShowPoster = atoi(Value);
+    else if (strcmp(Name, "TVScraperChanInfoPosterSize") == 0)          TVScraperChanInfoPosterSize = atod(Value);
 
     else return false;
     

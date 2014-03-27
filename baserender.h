@@ -10,7 +10,8 @@ enum eBorder {
     BorderMenuRecord,
     BorderMessage,
     BorderButton,
-    BorderContent
+    BorderContent,
+    BorderTVSPoster
 };
 
 struct sDecorBorder {

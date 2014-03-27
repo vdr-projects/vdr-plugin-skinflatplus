@@ -16,7 +16,8 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     chanLogoPixmap = NULL;
     chanLogoBGPixmap = NULL;
     chanIconsPixmap = NULL;
-
+    chanEpgImagesPixmap = NULL;
+    
     isGroup = false;
     isRecording = false,
     isRadioChannel = false;
@@ -52,6 +53,14 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     chanIconsPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, channelWidth, heightBottom));
     chanIconsPixmap->Fill( clrTransparent );
+
+    TVSLeft = 20 + Config.decorBorderChannelSize;
+    TVSTop = topBarHeight + 20 + Config.decorBorderChannelSize;
+    TVSWidth = osdWidth - 40 - Config.decorBorderChannelSize*2;
+    TVSHeight = osdHeight - topBarHeight - heightBottom - 40 - Config.decorBorderChannelSize*2;
+    
+    chanEpgImagesPixmap = osd->CreatePixmap(2, cRect(TVSLeft, TVSTop, TVSWidth, TVSHeight));
+    chanEpgImagesPixmap->Fill( clrTransparent );
 
     chanLogoBGPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, heightBottom, heightBottom));
@@ -92,6 +101,8 @@ cFlatDisplayChannel::~cFlatDisplayChannel() {
             osd->DestroyPixmap(chanLogoBGPixmap);
         if( chanIconsPixmap )
             osd->DestroyPixmap(chanIconsPixmap);
+        if( chanEpgImagesPixmap )
+            osd->DestroyPixmap(chanEpgImagesPixmap);
     }
 }
 
@@ -413,8 +424,38 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
                 Theme.Color(clrChannelRecordingFollowFg), Theme.Color(clrChannelRecordingFollowBg), fontSml);
         }
     }
+
     if( Config.ChannelIconsShow && CurChannel ) {
         ChannelIconsDraw(CurChannel, false);
+    }
+    
+    // TVScraper
+    chanEpgImagesPixmap->Fill(clrTransparent);
+    DecorBorderClearByFrom(BorderTVSPoster);
+    static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
+    dsyslog("TVScraperChanInfoPosterSize: %f", Config.TVScraperChanInfoPosterSize );
+    if( Config.TVScraperChanInfoShowPoster && pTVScraper ) {
+        TVScraperGetPosterOrBanner call;
+        call.event = Present;
+        if (pTVScraper->Service("TVScraperGetPosterOrBanner", &call)) {
+            int mediaWidth = 0;
+            int mediaHeight = 0;
+            if (call.type == typeSeries) {
+                mediaWidth = call.media.width * Config.TVScraperChanInfoPosterSize*100;
+                mediaHeight = call.media.height * Config.TVScraperChanInfoPosterSize*100;
+            } else if (call.type == typeMovie) {
+                mediaWidth = call.media.width * 0.5 * Config.TVScraperChanInfoPosterSize*100;
+                mediaHeight = call.media.height * 0.5 * Config.TVScraperChanInfoPosterSize*100;
+            }
+            cImage *img = imgLoader.LoadFile(call.media.path.c_str(), mediaWidth, mediaHeight);
+
+            if( img ) {
+                chanEpgImagesPixmap->DrawImage(cPoint(0, 0), *img);
+
+                DecorBorderDraw(20 + Config.decorBorderChannelSize, topBarHeight + 20 + Config.decorBorderChannelSize, img->Width(), img->Height(),
+                    Config.decorBorderChannelSize, Config.decorBorderChannelType, Config.decorBorderChannelFg, Config.decorBorderChannelBg, BorderTVSPoster);
+            }
+        }
     }
 }
 

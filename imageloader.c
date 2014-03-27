@@ -156,6 +156,61 @@ cImage* cImageLoader::LoadIcon(const char *cIcon, int width, int height, bool pr
     return img;
 }
 
+cImage* cImageLoader::LoadFile(const char *cFile, int width, int height, bool preserveAspect) {
+    if( (width == 0) || (height==0) )
+        return NULL;
+    cString File = cFile;
+    #ifdef DEBUGIMAGELOADTIME
+        dsyslog("imageloader load file %s", *File);
+    #endif
+
+    cImage *img;
+    #ifdef DEBUGIMAGELOADTIME
+        uint32_t tick1 = GetMsTicks();
+    #endif
+
+    img = imgCache.GetImage( *File, width, height );
+
+    #ifdef DEBUGIMAGELOADTIME
+        uint32_t tick2 = GetMsTicks();
+        dsyslog("   search in cache: %d ms", tick2 - tick1);
+    #endif
+    if( img != NULL )
+        return img;
+
+    #ifdef DEBUGIMAGELOADTIME
+        uint32_t tick3 = GetMsTicks();
+    #endif
+    
+    bool success = LoadImage(File);
+    
+    if( !success ) {
+        dsyslog("imageloader LoadFile: %s could not be loaded", *File);
+        return NULL;
+    }
+    #ifdef DEBUGIMAGELOADTIME
+        uint32_t tick4 = GetMsTicks();
+        dsyslog("   load file from disk: %d ms", tick4 - tick3);
+    #endif
+
+    #ifdef DEBUGIMAGELOADTIME
+        uint32_t tick5 = GetMsTicks();
+    #endif
+    
+    img = CreateImage(width, height);
+    
+    if( img == NULL )
+        return NULL;
+
+    #ifdef DEBUGIMAGELOADTIME
+        uint32_t tick6 = GetMsTicks();
+        dsyslog("   scale logo: %d ms", tick6 - tick5);
+    #endif
+
+    imgCache.InsertImage(img, *File, width, height);
+    return img;
+}
+
 void cImageLoader::toLowerCase(std::string &str) {
     const int length = str.length();
     for(int i=0; i < length; ++i) {
