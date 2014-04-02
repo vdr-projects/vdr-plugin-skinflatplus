@@ -63,11 +63,11 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     chanEpgImagesPixmap->Fill( clrTransparent );
 
     chanLogoBGPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderChannelSize,
-        Config.decorBorderChannelSize+channelHeight - height, heightBottom, heightBottom));
+        Config.decorBorderChannelSize+channelHeight - height, heightBottom*2, heightBottom*2));
     chanLogoBGPixmap->Fill( clrTransparent );
 
     chanLogoPixmap = osd->CreatePixmap(3, cRect(Config.decorBorderChannelSize,
-        Config.decorBorderChannelSize+channelHeight - height, heightBottom, heightBottom));
+        Config.decorBorderChannelSize+channelHeight - height, heightBottom*2, heightBottom*2));
     chanLogoPixmap->Fill( clrTransparent );
 
     height += Config.decorProgressChannelSize + marginItem*2;
@@ -137,29 +137,34 @@ void cFlatDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
     chanLogoBGPixmap->Fill(clrTransparent);
     int imageHeight = heightImageLogo - marginItem*2;
     int imageBGHeight = imageHeight;
+    int imageBGWidth = imageHeight;
     int imageLeft = marginItem*2;
     int imageTop = marginItem;
-    cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight, imageHeight);
+    cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight*1.3, imageHeight);
     if( imgBG ) {
         imageBGHeight = imgBG->Height();
+        imageBGWidth = imgBG->Width();
         chanLogoBGPixmap->DrawImage( cPoint(imageLeft, imageTop), *imgBG );
     }
     
-    cImage *img = imgLoader.LoadLogo(*channelName, imageHeight, imageHeight);
+    cImage *img = imgLoader.LoadLogo(*channelName, imageHeight*1.34, imageHeight);
     if( img ) {
         imageTop = marginItem + (imageBGHeight - img->Height()) / 2;
+        imageLeft = marginItem*2 + (imageBGWidth - img->Width()) / 2;
         chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
     } else if( !isGroup ) { // draw default logo
         if( isRadioChannel ) {
             img = imgLoader.LoadIcon("radio", imageHeight, imageHeight);
             if( img ) {
                 imageTop = marginItem + (imageHeight - img->Height()) / 2;
+                imageLeft = marginItem*2 + (imageBGWidth - img->Width()) / 2;
                 chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
             }
         } else {
             img = imgLoader.LoadIcon("tv", imageHeight, imageHeight);
             if( img ) {
                 imageTop = marginItem + (imageHeight - img->Height()) / 2;
+                imageLeft = marginItem*2 + (imageBGWidth - img->Width()) / 2;
                 chanLogoPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
             }
         }
@@ -308,7 +313,7 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
     bool isRec = false;
     int RecWidth = fontSml->Width("REC");
     
-    int left = heightBottom + marginItem;
+    int left = heightBottom * 1.34 + marginItem;
 
     if( Present ) {
         cString startTime = Present->GetTimeString();
@@ -317,8 +322,8 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         cString timeString = cString::sprintf("%s - %s", *startTime, *endTime);
         int timeStringWidth = fontSml->Width(*timeString);
 
-        int epgWidth = font->Width(Present->Title());
-        int epgShortWidth = fontSml->Width(Present->ShortText());
+        int epgWidth = font->Width(Present->Title()) + marginItem+2;
+        int epgShortWidth = fontSml->Width(Present->ShortText()) + marginItem+2;
 
         if( Present->HasTimer() ) {
             isRec = true;
@@ -331,7 +336,7 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         cString seen = cString::sprintf("%d-/%d+ %d min", s, sleft, Present->Duration() / 60);
         int seenWidth = fontSml->Width(*seen);
 
-        if( epgWidth > channelWidth - left - timeStringWidth ) {
+        if( epgWidth > channelWidth - left - timeStringWidth) {
             int dotsWidth = font->Width("... ");
             cTextWrapper epgInfoWrapper(Present->Title(), font, channelWidth - left - timeStringWidth - dotsWidth);
             epg = epgInfoWrapper.GetLine(0);
@@ -345,7 +350,7 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
             epg = Present->Title();
         }
 
-        if( epgShortWidth > channelWidth - left - timeStringWidth ) {
+        if( epgShortWidth > channelWidth - left - timeStringWidth) {
             int dotsWidth = fontSml->Width("... ");
             cTextWrapper epgInfoWrapper(Present->ShortText(), fontSml, channelWidth - left - timeStringWidth - dotsWidth);
             epgShort = epgInfoWrapper.GetLine(0);
@@ -376,8 +381,8 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         cString timeString = cString::sprintf("%s - %s", *startTime, *endTime);
         int timeStringWidth = fontSml->Width(*timeString);
 
-        int epgWidth = font->Width(Following->Title());
-        int epgShortWidth = fontSml->Width(Following->ShortText());
+        int epgWidth = font->Width(Following->Title()) + marginItem+2;
+        int epgShortWidth = fontSml->Width(Following->ShortText()) + marginItem+2;
 
         if( Following->HasTimer() ) {
             epgWidth += marginItem + RecWidth;
@@ -433,7 +438,6 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
     chanEpgImagesPixmap->Fill(clrTransparent);
     DecorBorderClearByFrom(BorderTVSPoster);
     static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
-    dsyslog("TVScraperChanInfoPosterSize: %f", Config.TVScraperChanInfoPosterSize );
     if( Config.TVScraperChanInfoShowPoster && pTVScraper ) {
         TVScraperGetPosterOrBanner call;
         call.event = Present;

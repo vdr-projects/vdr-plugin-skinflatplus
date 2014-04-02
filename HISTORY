@@ -1,6 +1,10 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
+2014-XX-XX: Versioin 0.3.0
+- [update] channel logo in wide format (like 3PO or creimer logos)
+- [add] TVScraper support
+
 2014-25-03: Version 0.2.1
 - [fix] epgsearch progessbar in SetItemEvent, if epg start time is after now (2 minutes tolerance)
 - [fix] channel logo in topbar in program menu
