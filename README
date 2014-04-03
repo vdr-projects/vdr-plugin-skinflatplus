@@ -30,9 +30,8 @@ Installation wie bei allen VDR Plugins.
     make
     make install
 
-Für die Kanallogos empfehle ich die Logos von 3PO Repo (https://github.com/3PO/Senderlogos).
-Diese können mit folgendem Befehl heruntergeladen werden:
-    git clone https://github.com/3PO/Senderlogos.git logos
+Für die Kanallogos empfehle ich die Logos von CReimer: http://creimer.net/channellogos/
+Ich nutze "nopacity-logos-white"
 Die Logos müssen im folgenden Ordner zur Verfügung gestellt werden:
     <vdrconfigdir>/plugins/skinflat/logos/
 

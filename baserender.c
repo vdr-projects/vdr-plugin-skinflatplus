@@ -214,25 +214,26 @@ void cFlatBaseRender::TopBarUpdate(void) {
         if( topBarMenuLogoSet && Config.TopBarMenuIconShow ) {
             topBarIconPixmap->Fill(clrTransparent);
             int IconLeft = marginItem;
-            int imageBGWidth = 999;
             int imageBGHeight = topBarHeight - marginItem*2;
+            int imageBGWidth = imageBGHeight*1.34;
             int iconTop = 0;
 
             cImage *imgBG = imgLoader.LoadIcon("logo_background", imageBGWidth, imageBGHeight);
             if( imgBG ) {
-                iconTop = (topBarHeight / 2 - imgBG->Height()/2);
                 imageBGHeight = imgBG->Height();
                 imageBGWidth = imgBG->Width();
+                iconTop = (topBarHeight / 2 - imgBG->Height()/2);
                 topBarIconBGPixmap->DrawImage( cPoint(IconLeft, iconTop), *imgBG );
             }
             
-            cImage *img = imgLoader.LoadLogo(*topBarMenuLogo, imageBGWidth, imageBGHeight);
+            cImage *img = imgLoader.LoadLogo(*topBarMenuLogo, imageBGWidth - 4, imageBGHeight - 4);
             if( img ) {
                 iconTop += (imageBGHeight - img->Height())/2;
+                IconLeft += (imageBGWidth - img->Width())/2;
                 topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), *img);
-                MenuIconWidth = img->Width()+marginItem*2;
-                TitleWidthLeft -= MenuIconWidth + marginItem*3;
             }
+            MenuIconWidth = imageBGWidth+marginItem*2;
+            TitleWidthLeft -= MenuIconWidth + marginItem*3;
         }
         
         time_t t;

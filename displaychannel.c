@@ -140,7 +140,7 @@ void cFlatDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
     int imageBGWidth = imageHeight;
     int imageLeft = marginItem*2;
     int imageTop = marginItem;
-    cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight*1.3, imageHeight);
+    cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight*1.34, imageHeight);
     if( imgBG ) {
         imageBGHeight = imgBG->Height();
         imageBGWidth = imgBG->Width();
@@ -547,15 +547,23 @@ void cFlatDisplayChannel::Flush(void) {
 void cFlatDisplayChannel::PreLoadImages(void) {
     int height = (fontHeight*2) + (fontSmlHeight*2) + marginItem - marginItem*2;
     imgLoader.LoadIcon("logo_background", height, height);
-    imgLoader.LoadIcon("radio", height, height);
-    imgLoader.LoadIcon("tv", height, height);
-
+    int imageBGHeight, imageBGWidth;
+    imageBGHeight = imageBGWidth = height;
+    
+    cImage *imgBG = imgLoader.LoadIcon("logo_background", height*1.34, height);
+    if( imgBG ) {
+        imageBGHeight = imgBG->Height();
+        imageBGWidth = imgBG->Width();
+    }
+    imgLoader.LoadIcon("radio", imageBGWidth - 10, imageBGHeight - 10);
+    imgLoader.LoadIcon("tv", imageBGWidth - 10, imageBGHeight - 10);
+    
     int index = 0;
     height = ((fontHeight*2) + (fontSmlHeight*2) + marginItem) - marginItem*2;
     cImage *img = NULL;
     for(cChannel *Channel = Channels.First(); Channel && index < LOGO_PRE_CACHE; Channel = Channels.Next(Channel) )
     {
-        img = imgLoader.LoadLogo(Channel->Name(), height, height);
+        img = imgLoader.LoadLogo(Channel->Name(), imageBGWidth - 4, imageBGHeight - 4);
         if( img )
             index++;
     }

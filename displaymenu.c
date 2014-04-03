@@ -687,42 +687,51 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
     int imageHeight = fontHeight;
     int imageLeft = Left;
     int imageTop = Top;
+    int imageBGHeight = imageHeight;
+    int imageBGWidth = imageHeight*1.34;
     
     if( !Channel->GroupSep() ) {
-        cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight, imageHeight);
+        cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight*1.34, imageHeight);
         if( imgBG ) {
+            imageBGHeight = imgBG->Height();
+            imageBGWidth = imgBG->Width();
             imageTop = Top + (fontHeight - imgBG->Height()) / 2;
             menuIconsBGPixmap->DrawImage( cPoint(imageLeft, imageTop), *imgBG );
         }
     }
-    cImage *img = imgLoader.LoadLogo(Channel->Name(), imageHeight, imageHeight);
+    cImage *img = imgLoader.LoadLogo(Channel->Name(), imageBGWidth - 4, imageBGHeight - 4);
     if( img ) {
-        imageTop = Top + (fontHeight - img->Height()) / 2;
+        imageTop = Top + (imageBGHeight - img->Height()) / 2;
+        imageLeft = Left + (imageBGWidth - img->Width()) / 2;
+
         menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
-        Left += imageHeight + marginItem * 2;
+        Left += imageBGWidth + marginItem * 2;
     } else {
         bool isRadioChannel = ((!Channel->Vpid())&&(Channel->Apid(0))) ? true : false;
 
         if( isRadioChannel ) {
-            img = imgLoader.LoadIcon("radio", imageHeight, imageHeight);
+            img = imgLoader.LoadIcon("radio", imageBGWidth - 10, imageBGHeight - 10);
             if( img ) {
-                imageTop = Top + (fontHeight - img->Height()) / 2;
+                imageTop = Top + (imageBGHeight - img->Height()) / 2;
+                imageLeft = Left + (imageBGWidth - img->Width()) / 2;
                 menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
-                Left += imageHeight + marginItem * 2;
+                Left += imageBGWidth + marginItem * 2;
             }
         } else if( Channel->GroupSep() ) {
-            img = imgLoader.LoadIcon("changroup", imageHeight, imageHeight);
+            img = imgLoader.LoadIcon("changroup", imageBGWidth - 10, imageBGHeight - 10);
             if( img ) {
-                imageTop = Top + (fontHeight - img->Height()) / 2;
+                imageTop = Top + (imageBGHeight - img->Height()) / 2;
+                imageLeft = Left + (imageBGWidth - img->Width()) / 2;
                 menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
-                Left += imageHeight + marginItem * 2;
+                Left += imageBGWidth + marginItem * 2;
             }
         } else {
-            img = imgLoader.LoadIcon("tv", imageHeight, imageHeight);
+            img = imgLoader.LoadIcon("tv", imageBGWidth - 10, imageBGHeight - 10);
             if( img ) {
-                imageTop = Top + (fontHeight - img->Height()) / 2;
+                imageTop = Top + (imageBGHeight - img->Height()) / 2;
+                imageLeft = Left + (imageBGWidth - img->Width()) / 2;
                 menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
-                Left += imageHeight + marginItem * 2;
+                Left += imageBGWidth + marginItem * 2;
             }
         }
     }
@@ -1016,40 +1025,49 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
 
     imageLeft = Left;
 
-    cImage *imgBG = imgLoader.LoadIcon("logo_background", imageHeight, imageHeight);
+    int imageBGHeight = imageHeight;
+    int imageBGWidth = imageHeight*1.34;
+
+    cImage *imgBG = imgLoader.LoadIcon("logo_background", imageBGWidth, imageBGHeight);
     if( imgBG ) {
+        imageBGHeight = imgBG->Height();
+        imageBGWidth = imgBG->Width();
         imageTop = Top + (fontHeight - imgBG->Height()) / 2;
         menuIconsBGPixmap->DrawImage( cPoint(imageLeft, imageTop), *imgBG );
     }
     
-    img = imgLoader.LoadLogo(Channel->Name(), imageHeight, imageHeight);
+    img = imgLoader.LoadLogo(Channel->Name(), imageBGWidth - 4, imageBGHeight - 4);
     if( img ) {
-        imageTop = Top + (fontHeight - img->Height()) / 2;
+        imageTop = Top + (imageBGHeight - img->Height()) / 2;
+        imageLeft = Left + (imageBGWidth - img->Width()) / 2;
         menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
     } else {
         bool isRadioChannel = ((!Channel->Vpid())&&(Channel->Apid(0))) ? true : false;
 
         if( isRadioChannel ) {
-            img = imgLoader.LoadIcon("radio", imageHeight, imageHeight);
+            img = imgLoader.LoadIcon("radio", imageBGWidth - 10, imageBGHeight - 10);
             if( img ) {
-                imageTop = Top + (fontHeight - img->Height()) / 2;
+                imageTop = Top + (imageBGHeight - img->Height()) / 2;
+                imageLeft = Left + (imageBGWidth - img->Width()) / 2;
                 menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
             }
         } else if( Channel->GroupSep() ) {
-            img = imgLoader.LoadIcon("changroup", imageHeight, imageHeight);
+            img = imgLoader.LoadIcon("changroup", imageBGWidth - 10, imageBGHeight - 10);
             if( img ) {
-                imageTop = Top + (fontHeight - img->Height()) / 2;
+                imageTop = Top + (imageBGHeight - img->Height()) / 2;
+                imageLeft = Left + (imageBGWidth - img->Width()) / 2;
                 menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
             }
         } else {
-            img = imgLoader.LoadIcon("tv", imageHeight, imageHeight);
+            img = imgLoader.LoadIcon("tv", imageBGWidth - 10, imageBGHeight - 10);
             if( img ) {
-                imageTop = Top + (fontHeight - img->Height()) / 2;
+                imageTop = Top + (imageBGHeight - img->Height()) / 2;
+                imageLeft = Left + (imageBGWidth - img->Width()) / 2;
                 menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
             }
         }
     }
-    Left += imageHeight + marginItem * 2;
+    Left += imageBGWidth + marginItem * 2;
     
     cString day, name("");
     if (Timer->WeekDays())
@@ -1191,42 +1209,50 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         }
         Left += w + marginItem;
 
+        int imageLeft = Left;
+        int imageBGHeight = fontHeight;
+        int imageBGWidth = fontHeight*1.34;
         if( !Channel->GroupSep() ) {
-            cImage *imgBG = imgLoader.LoadIcon("logo_background", fontHeight, fontHeight);
+            cImage *imgBG = imgLoader.LoadIcon("logo_background", imageBGWidth, imageBGHeight);
             if( imgBG ) {
+                imageBGHeight = imgBG->Height();
+                imageBGWidth = imgBG->Width();
                 imageTop = Top + (fontHeight - imgBG->Height()) / 2;
-                menuIconsBGPixmap->DrawImage( cPoint(Left, imageTop), *imgBG );
+                menuIconsBGPixmap->DrawImage( cPoint(imageLeft, imageTop), *imgBG );
             }
-        }
-        img = imgLoader.LoadLogo(Channel->Name(), fontHeight, fontHeight);
-        if( img ) {
-            imageTop = Top + (fontHeight - img->Height()) / 2;
-            menuIconsPixmap->DrawImage( cPoint(Left, imageTop), *img );
-        } else {
-            bool isRadioChannel = ((!Channel->Vpid())&&(Channel->Apid(0))) ? true : false;
-
-            if( isRadioChannel ) {
-                img = imgLoader.LoadIcon("radio", fontHeight, fontHeight);
-                if( img ) {
-                    imageTop = Top + (fontHeight - img->Height()) / 2;
-                    menuIconsPixmap->DrawImage( cPoint(Left, imageTop), *img );
-                }
-            } else if( Channel->GroupSep() ) {
-                img = imgLoader.LoadIcon("changroup", fontHeight, fontHeight);
-                if( img ) {
-                    imageTop = Top + (fontHeight - img->Height()) / 2;
-                    menuIconsPixmap->DrawImage( cPoint(Left, imageTop), *img );
-                }
+            img = imgLoader.LoadLogo(Channel->Name(), imageBGWidth - 4, imageBGHeight - 4);
+            if( img ) {
+                imageTop = Top + (imageBGHeight - img->Height()) / 2;
+                imageLeft = Left + (imageBGWidth - img->Width()) / 2;
+                menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
             } else {
-                img = imgLoader.LoadIcon("tv", fontHeight, fontHeight);
-                if( img ) {
-                    imageTop = Top + (fontHeight - img->Height()) / 2;
-                    menuIconsPixmap->DrawImage( cPoint(Left, imageTop), *img );
+                bool isRadioChannel = ((!Channel->Vpid())&&(Channel->Apid(0))) ? true : false;
+
+                if( isRadioChannel ) {
+                    img = imgLoader.LoadIcon("radio", imageBGWidth - 10, imageBGHeight - 10);
+                    if( img ) {
+                        imageTop = Top + (imageBGHeight - img->Height()) / 2;
+                        imageLeft = Left + (imageBGWidth - img->Width()) / 2;
+                        menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
+                    }
+                } else if( Channel->GroupSep() ) {
+                    img = imgLoader.LoadIcon("changroup", imageBGWidth - 10, imageBGHeight - 10);
+                    if( img ) {
+                        imageTop = Top + (imageBGHeight - img->Height()) / 2;
+                        imageLeft = Left + (imageBGWidth - img->Width()) / 2;
+                        menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
+                    }
+                } else {
+                    img = imgLoader.LoadIcon("tv", imageBGWidth - 10, imageBGHeight - 10);
+                    if( img ) {
+                        imageTop = Top + (imageBGHeight - img->Height()) / 2;
+                        imageLeft = Left + (imageBGWidth - img->Width()) / 2;
+                        menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
+                    }
                 }
             }
-        }
-        
-        Left += fontHeight + marginItem * 2;
+            }
+        Left += imageBGWidth + marginItem * 2;
         LeftSecond = Left;
         
         w = menuWidth / 10 * 2;
@@ -2438,10 +2464,17 @@ void cFlatDisplayMenu::PreLoadImages(void) {
     imgLoader.LoadIcon("menuIcons/blank", fontHeight - marginItem*2, fontHeight - marginItem*2);
     
     int imageHeight = fontHeight;
-    imgLoader.LoadIcon("logo_background", imageHeight, imageHeight);
-    imgLoader.LoadIcon("radio", imageHeight, imageHeight);
-    imgLoader.LoadIcon("changroup", imageHeight, imageHeight);
-    imgLoader.LoadIcon("tv", imageHeight, imageHeight);
+    int imageBGHeight = imageHeight;
+    int imageBGWidth = imageHeight*1.34;
+    cImage *imgBG = imgLoader.LoadIcon("logo_background", imageBGWidth, imageBGHeight);
+    if( imgBG ) {
+        imageBGHeight = imgBG->Height();
+        imageBGWidth = imgBG->Width();
+    }
+    
+    imgLoader.LoadIcon("radio", imageBGWidth - 10, imageBGHeight - 10);
+    imgLoader.LoadIcon("changroup", imageBGWidth - 10, imageBGHeight - 10);
+    imgLoader.LoadIcon("tv", imageBGWidth - 10, imageBGHeight - 10);
     imgLoader.LoadIcon("timerInactive", imageHeight, imageHeight);
     imgLoader.LoadIcon("timerRecording", imageHeight, imageHeight);
     imgLoader.LoadIcon("timerActive", imageHeight, imageHeight);
@@ -2450,7 +2483,7 @@ void cFlatDisplayMenu::PreLoadImages(void) {
     cImage *img = NULL;
     for(cChannel *Channel = Channels.First(); Channel && index < LOGO_PRE_CACHE; Channel = Channels.Next(Channel))
     {
-        img = imgLoader.LoadLogo(Channel->Name(), fontHeight - marginItem*2, fontHeight - marginItem*2);
+        img = imgLoader.LoadLogo(Channel->Name(), imageBGWidth - 4, imageBGHeight - 4);
         if( img )
             index++;
     }
