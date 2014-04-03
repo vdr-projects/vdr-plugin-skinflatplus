@@ -61,3 +61,4 @@ HISTORY
                 und 'topbar_timerconflict_high.png' angepasst
               - Hinweis auf 'make install' im Skript 'flatPlus_MV_Update.sh'
               - Option für 'Silent Update' (-u) im Skript 'flatPlus_MV_Update.sh'
+ [03.04.2014] - 'logo_background.png' entfernt. Nutzt nun das default Logo
