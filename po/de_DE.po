@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.2.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-03-27 21:33+0100\n"
+"POT-Creation-Date: 2014-04-03 19:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,14 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "clock"
-msgstr "Uhr"
-
 msgid "disk usage"
 msgstr "Plattennutzung"
 
 msgid "free"
 msgstr "frei"
+
+msgid "clock"
+msgstr "Uhr"
 
 msgid "Video"
 msgstr "Video"
@@ -119,6 +119,18 @@ msgstr ""
 
 msgid "big line + alpha blend"
 msgstr ""
+
+msgid "do not show"
+msgstr "nicht anzeigen"
+
+msgid "timer & recording menu"
+msgstr "Timer & Aufnahme Menü"
+
+msgid "always on the menu"
+msgstr "immer im Menü"
+
+msgid "always show"
+msgstr "immer anzeigen"
 
 msgid "VDR default"
 msgstr "VDR standard"

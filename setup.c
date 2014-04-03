@@ -1,6 +1,7 @@
 #include "setup.h"
 
 cStringList Bordertypes;
+cStringList DiskUsages;
 cStringList Progresstypes;
 cStringList MenuChannelViews;
 cStringList MenuTimerViews;
@@ -15,14 +16,14 @@ cFlatSetup::cFlatSetup(void) {
 }
 
 cFlatSetup::~cFlatSetup() {
-    
+
 }
 
 void cFlatSetup::Setup(void) {
     Clear();
     Bordertypes.Clear();
     Progresstypes.Clear();
-    
+
     Bordertypes.Clear();
     Bordertypes.Append( strdup(tr("none")) );
     Bordertypes.Append( strdup(tr("rect")) );
@@ -43,6 +44,12 @@ void cFlatSetup::Setup(void) {
     Progresstypes.Append( strdup(tr("outline + dot")) );
     Progresstypes.Append( strdup(tr("small line + big line + alpha blend")) );
     Progresstypes.Append( strdup(tr("big line + alpha blend")) );
+
+    DiskUsages.Clear();
+    DiskUsages.Append( strdup(tr("do not show")) );
+    DiskUsages.Append( strdup(tr("timer & recording menu")) );
+    DiskUsages.Append( strdup(tr("always on the menu")) );
+    DiskUsages.Append( strdup(tr("always show")) );
 
     MenuChannelViews.Clear();
     MenuChannelViews.Append( strdup(tr("VDR default")) );
@@ -81,7 +88,7 @@ void cFlatSetup::Setup(void) {
         Add(new cOsdItem(tr("TVScraper settings"), osUnknown, true));
     else
         Add(new cOsdItem(tr("TVScraper not installed"), osUnknown, false));
-    
+
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
         ItemLastSel = -1;
@@ -91,7 +98,7 @@ void cFlatSetup::Setup(void) {
 }
 
 eOSState cFlatSetup::ProcessKey(eKeys Key) {
-    bool hadSubMenu = HasSubMenu();   
+    bool hadSubMenu = HasSubMenu();
     eOSState state = cMenuSetupPage::ProcessKey(Key);
     if (hadSubMenu && Key == kOk)
         Store();
@@ -113,7 +120,7 @@ eOSState cFlatSetup::ProcessKey(eKeys Key) {
             if (strcmp(ItemText, tr("TVScraper settings")) == 0)
                 state = AddSubMenu(new cFlatSetupTvsraper(&SetupConfig));
         }
-    }   
+    }
     return state;
 }
 
@@ -217,7 +224,7 @@ cOsdItem *cMenuSetupSubMenu::InfoItem(const char *label, const char *value) {
     return item;
 }
 
-// General Settings 
+// General Settings
 cFlatSetupGeneral::cFlatSetupGeneral(cFlatConfig* data)  : cMenuSetupSubMenu(tr("General settings"), data) {
     Setup();
 }
@@ -229,12 +236,12 @@ void cFlatSetupGeneral::Setup(void) {
     SetupConfig->DecorDescriptions( DecorDescriptions );
     if( SetupConfig->DecorIndex < 0 || SetupConfig->DecorIndex > DecorDescriptions.Size() )
         SetupConfig->DecorIndex = 0;
-    
+
     Add(new cMenuEditStraItem(tr("Decorfile"), &SetupConfig->DecorIndex, DecorDescriptions.Size(), &DecorDescriptions[0]));
 
     Add(new cMenuEditBoolItem(tr("Show empty color-buttons"), &SetupConfig->ButtonsShowEmpty));
     Add(new cMenuEditBoolItem(tr("Show TopBar menu icons"), &SetupConfig->TopBarMenuIconShow));
-    Add(new cMenuEditBoolItem(tr("Show Diskusage stats"), &SetupConfig->DiskUsageShow));
+    Add(new cMenuEditStraItem(tr("Show Diskusage stats"), &SetupConfig->DiskUsageShow, DiskUsages.Size(), &DiskUsages[0]));
     Add(new cMenuEditIntItem(tr("OSD vertical margin"), &SetupConfig->marginOsdVer));
     Add(new cMenuEditIntItem(tr("OSD horizontal margin"), &SetupConfig->marginOsdHor));
     Add(new cMenuEditPrcItem(tr("TopBar font size"), &SetupConfig->TopBarFontSize, 0.01, 0.2, 1));
@@ -279,7 +286,7 @@ void cFlatSetupGeneral::Setup(void) {
 
     cString ImageCache = cString::sprintf("%s:\t%d / %d", tr("Imagecache entries"), imgCache.getCacheCount(), MAX_IMAGE_CACHE);
     Add(new cOsdItem(ImageCache, osUnknown, true));
-    
+
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
         ItemLastSel = -1;
@@ -307,11 +314,11 @@ eOSState cFlatSetupGeneral::ProcessKey(eKeys Key) {
             ItemLastSel = Current();
             Setup();
         }
-    }   
+    }
     return state;
 }
 
-// Channel Info Settings 
+// Channel Info Settings
 cFlatSetupChannelInfo::cFlatSetupChannelInfo(cFlatConfig* data)  : cMenuSetupSubMenu(tr("Channelinfo settings"), data) {
     Setup();
 }
@@ -325,7 +332,7 @@ void cFlatSetupChannelInfo::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->ChannelResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->ChannelFormatShow));
     Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->ChannelSimpleAspectFormat));
-    
+
     Add(new cMenuEditBoolItem(tr("Channelinfo border by decor-file?"), &SetupConfig->decorBorderChannelByTheme));
     if( SetupConfig->decorBorderChannelByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Channelinfo border type"), Bordertypes[SetupConfig->decorBorderChannelTypeTheme]);
@@ -358,7 +365,7 @@ void cFlatSetupChannelInfo::Setup(void) {
         Add(new cMenuEditStraItem(tr("Signalquality progress type"), &SetupConfig->decorProgressSignalTypeUser, Progresstypes.Size(), &Progresstypes[0]));
         Add(new cMenuEditIntItem(tr("Signalquality progress size"), &SetupConfig->decorProgressSignalSizeUser));
     }
-    
+
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
         ItemLastSel = -1;
@@ -386,11 +393,11 @@ eOSState cFlatSetupChannelInfo::ProcessKey(eKeys Key) {
             ItemLastSel = Current();
             Setup();
         }
-    }   
+    }
     return state;
 }
 
-// Menu Settings 
+// Menu Settings
 cFlatSetupMenu::cFlatSetupMenu(cFlatConfig* data)  : cMenuSetupSubMenu(tr("Menu settings"), data) {
     Setup();
 }
@@ -420,7 +427,7 @@ void cFlatSetupMenu::Setup(void) {
         Add(new cMenuEditStraItem(tr("Menuitem border type"), &SetupConfig->decorBorderMenuItemTypeUser, Bordertypes.Size(), &Bordertypes[0]));
         Add(new cMenuEditIntItem(tr("Menuitem border size"), &SetupConfig->decorBorderMenuItemSizeUser));
     }
-    
+
     Add(new cMenuEditBoolItem(tr("Menucont. border by decor-file?"), &SetupConfig->decorBorderMenuContentByTheme));
     if( SetupConfig->decorBorderMenuContentByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Menucont. border type"), Bordertypes[SetupConfig->decorBorderMenuContentTypeTheme]);
@@ -453,7 +460,7 @@ void cFlatSetupMenu::Setup(void) {
         Add(new cMenuEditStraItem(tr("Menuitem progress type"), &SetupConfig->decorProgressMenuItemTypeUser, Progresstypes.Size(), &Progresstypes[0]));
         Add(new cMenuEditIntItem(tr("Menuitem progress size"), &SetupConfig->decorProgressMenuItemSizeUser));
     }
-    
+
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
         ItemLastSel = -1;
@@ -482,11 +489,11 @@ eOSState cFlatSetupMenu::ProcessKey(eKeys Key) {
             ItemLastSel = Current();
             Setup();
         }
-    }   
+    }
     return state;
 }
 
-// Replay Settings 
+// Replay Settings
 cFlatSetupReplay::cFlatSetupReplay(cFlatConfig* data)  : cMenuSetupSubMenu(tr("Replay settings"), data) {
     Setup();
 }
@@ -498,7 +505,7 @@ void cFlatSetupReplay::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->RecordingResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->RecordingFormatShow));
     Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->RecordingSimpleAspectFormat));
-    
+
     if( SetupConfig->decorBorderReplayByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Replay border type"), Bordertypes[SetupConfig->decorBorderReplayTypeTheme]);
         Add(new cOsdItem(type, osUnknown, false));
@@ -516,7 +523,7 @@ void cFlatSetupReplay::Setup(void) {
     } else {
         Add(new cMenuEditIntItem(tr("Replay progress size"), &SetupConfig->decorProgressReplaySizeUser));
     }
-    
+
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
         ItemLastSel = -1;
@@ -543,11 +550,11 @@ eOSState cFlatSetupReplay::ProcessKey(eKeys Key) {
             ItemLastSel = Current();
             Setup();
         }
-    }   
+    }
     return state;
 }
 
-// Volume Settings 
+// Volume Settings
 cFlatSetupVolume::cFlatSetupVolume(cFlatConfig* data)  : cMenuSetupSubMenu(tr("Volume settings"), data) {
     Setup();
 }
@@ -576,7 +583,7 @@ void cFlatSetupVolume::Setup(void) {
         Add(new cMenuEditStraItem(tr("Volume progress type"), &SetupConfig->decorProgressVolumeTypeUser, Progresstypes.Size(), &Progresstypes[0]));
         Add(new cMenuEditIntItem(tr("Volume progress size"), &SetupConfig->decorProgressVolumeSizeUser));
     }
-    
+
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
         ItemLastSel = -1;
@@ -603,11 +610,11 @@ eOSState cFlatSetupVolume::ProcessKey(eKeys Key) {
             ItemLastSel = Current();
             Setup();
         }
-    }   
+    }
     return state;
 }
 
-// Tracks Settings 
+// Tracks Settings
 cFlatSetupTracks::cFlatSetupTracks(cFlatConfig* data)  : cMenuSetupSubMenu(tr("Tracks settings"), data) {
     Setup();
 }
@@ -625,7 +632,7 @@ void cFlatSetupTracks::Setup(void) {
         Add(new cMenuEditStraItem(tr("Tracks border type"), &SetupConfig->decorBorderTrackTypeUser, Bordertypes.Size(), &Bordertypes[0]));
         Add(new cMenuEditIntItem(tr("Tracks border size"), &SetupConfig->decorBorderTrackSizeUser));
     }
-    
+
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
         ItemLastSel = -1;
@@ -651,11 +658,11 @@ eOSState cFlatSetupTracks::ProcessKey(eKeys Key) {
             ItemLastSel = Current();
             Setup();
         }
-    }   
+    }
     return state;
 }
 
-// TVScraper Settings 
+// TVScraper Settings
 cFlatSetupTvsraper::cFlatSetupTvsraper(cFlatConfig* data)  : cMenuSetupSubMenu(tr("Tracks settings"), data) {
     Setup();
 }
@@ -665,7 +672,7 @@ void cFlatSetupTvsraper::Setup(void) {
 
     Add(new cMenuEditBoolItem(tr("Channelinfo show poster?"), &SetupConfig->TVScraperChanInfoShowPoster));
     Add(new cMenuEditPrcItem(tr("Channelinfo poster size"), &SetupConfig->TVScraperChanInfoPosterSize, 0.004, 0.015, 2));
-    
+
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
         ItemLastSel = -1;
@@ -693,6 +700,6 @@ eOSState cFlatSetupTvsraper::ProcessKey(eKeys Key) {
             Setup();
         }
     }
-    */  
+    */
     return state;
 }

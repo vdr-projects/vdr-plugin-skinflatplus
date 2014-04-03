@@ -55,6 +55,7 @@ class cFlatBaseRender
         bool topBarUpdateTitle;
         cString topBarLastDate;
         int topBarHeight;
+        int VideoDiskUsageState;
 
         // Progressbar
         cPixmap *progressBarPixmap;
@@ -112,7 +113,8 @@ class cFlatBaseRender
         void DecorDrawGlowEllipseTR(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg, int type);
         void DecorDrawGlowEllipseBL(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg, int type);
         void DecorDrawGlowEllipseBR(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg, int type);
-
+        
+        void TopBarEnableDiskUsage(void);
         //tColor Multiply(tColor Color, uint8_t Alpha);
         tColor SetAlpha(tColor Color, double am);
     public:
