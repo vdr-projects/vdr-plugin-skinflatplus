@@ -2240,7 +2240,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     contentHeadPixmap->DrawText(cPoint(marginItem, marginItem + fontSmlHeight + fontHeight), shortText, Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml, menuWidth - marginItem*2);
 
     DecorBorderDraw(chLeft, chTop, chWidth, chHeight, Config.decorBorderMenuContentHeadSize, Config.decorBorderMenuContentHeadType,
-        Config.decorBorderMenuContentHeadFg, Config.decorBorderMenuContentHeadBg);
+        Config.decorBorderMenuContentHeadFg, Config.decorBorderMenuContentHeadBg, BorderSetRecording, false);
 
     ContentSet( text.str().c_str(), Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg) );
     if( ContentScrollable() ) {
@@ -2260,11 +2260,11 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     if( Config.MenuContentFullSize || ContentScrollable() )
         DecorBorderDraw(RecordingBorder.Left, RecordingBorder.Top, RecordingBorder.Width, RecordingBorder.Height,
             RecordingBorder.Size, RecordingBorder.Type,
-            RecordingBorder.ColorFg, RecordingBorder.ColorBg, RecordingBorder.From);
+            RecordingBorder.ColorFg, RecordingBorder.ColorBg, RecordingBorder.From, false);
     else
         DecorBorderDraw(RecordingBorder.Left, RecordingBorder.Top, RecordingBorder.Width, ContentGetTextHeight(),
             RecordingBorder.Size, RecordingBorder.Type,
-            RecordingBorder.ColorFg, RecordingBorder.ColorBg, RecordingBorder.From);
+            RecordingBorder.ColorFg, RecordingBorder.ColorBg, RecordingBorder.From, false);
 }
 
 void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {

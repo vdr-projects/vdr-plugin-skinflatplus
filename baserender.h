@@ -11,7 +11,8 @@ enum eBorder {
     BorderMessage,
     BorderButton,
     BorderContent,
-    BorderTVSPoster
+    BorderTVSPoster,
+    BorderSetRecording
 };
 
 struct sDecorBorder {
@@ -27,7 +28,7 @@ class cFlatBaseRender
 
         int osdLeft, osdTop, osdWidth, osdHeight;
         int marginItem;
-    
+
         // Standard fonts
         cFont *font;
         cFont *fontSml;
@@ -42,7 +43,7 @@ class cFlatBaseRender
         cPixmap *topBarIconBGPixmap;
         cFont *topBarFont, *topBarFontSml;
         int topBarFontHeight, topBarFontSmlHeight;
-    
+
         cString topBarTitle;
         cString tobBarTitleExtra1, tobBarTitleExtra2;
         cString topBarExtraIcon;
@@ -51,7 +52,7 @@ class cFlatBaseRender
         bool topBarMenuIconSet;
         cString topBarMenuLogo;
         bool topBarMenuLogoSet;
-        
+
         bool topBarUpdateTitle;
         cString topBarLastDate;
         int topBarHeight;
@@ -66,16 +67,16 @@ class cFlatBaseRender
         bool progressBarIsSignal;
         tColor progressBarColorFg, progressBarColorBarFg, progressBarColorBarCurFg, progressBarColorBg;
         tColor progressBarColorMark, progressBarColorMarkCurrent;
-        
+
         // Scrollbar
         int scrollBarWidth;
-        
+
         // Buttons rot, grün, gelb, blau
         cPixmap *buttonsPixmap;
         int buttonsWidth, buttonsHeight, buttonsTop;
         int marginButtonColor, buttonColorHeight;
         bool buttonsDrawn;
-        
+
         // Nachricht
         cPixmap *messagePixmap;
         int messageWidth, messageHeight;
@@ -88,7 +89,7 @@ class cFlatBaseRender
         bool contentHasScrollbar;
         bool contentShown;
         int contentFontType;
-        
+
         tColor contentColorFg, contentColorBg;
         cTextWrapper contentWrapper;
 
@@ -103,17 +104,17 @@ class cFlatBaseRender
 
         void DecorDrawGlowRectHor(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg);
         void DecorDrawGlowRectVer(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg);
-        
+
         void DecorDrawGlowRectTL(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg);
         void DecorDrawGlowRectTR(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg);
         void DecorDrawGlowRectBL(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg);
         void DecorDrawGlowRectBR(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg);
-        
+
         void DecorDrawGlowEllipseTL(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg, int type);
         void DecorDrawGlowEllipseTR(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg, int type);
         void DecorDrawGlowEllipseBL(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg, int type);
         void DecorDrawGlowEllipseBR(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg, int type);
-        
+
         void TopBarEnableDiskUsage(void);
         //tColor Multiply(tColor Color, uint8_t Alpha);
         tColor SetAlpha(tColor Color, double am);
@@ -137,7 +138,7 @@ class cFlatBaseRender
         void ButtonsCreate(void);
         void ButtonsSet(const char *Red, const char *Green = NULL, const char *Yellow = NULL, const char *Blue = NULL);
         bool ButtonsDrawn(void);
-        
+
         void MessageCreate(void);
         void MessageSet(eMessageType Type, const char *Text);
         void MessageClear(void);
@@ -150,13 +151,13 @@ class cFlatBaseRender
 
         void ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Height, int Total, int Offset, int Shown, bool CanScrollUp, bool CanScrollDown);
         int ScrollBarWidth(void);
-        
+
         /* int FontType
          * 0 = NormalFont
          * 1 = FixedFont
          * 2 = SmallFont
          */
-        
+
         void ContentCreate(int Left, int Top, int Width, int Height, int FontType);
         void ContentSet(const char *Text, tColor ColorFg, tColor ColorBg);
         bool ContentIsShown(void);
@@ -169,7 +170,7 @@ class cFlatBaseRender
         int ContentGetTextHeight(void);
         bool ContentScroll(bool Up, bool Page);
         void ContentClear(void);
-        
+
         void DecorBorderDraw(int Left, int Top, int Width, int Height, int Size, int Type, tColor ColorFg, tColor ColorBg, int From = 0, bool Store = true);
         void DecorBorderClear(int Left, int Top, int Width, int Height, int Size);
         void DecorBorderClearAll(void);

@@ -2,6 +2,8 @@ VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
 2014-XX-XX: Version 0.3.0
+- [fix] SetRecording border with deleteresume.patch
+- [fix] recording menu with cutted recordings an %
 - [update] channel logo in wide format (like 3PO or creimer logos)
 - [add] TVScraper support
 - [add] more options to show disk usage (not show; timer & recording menu; always on the menu; always show)
