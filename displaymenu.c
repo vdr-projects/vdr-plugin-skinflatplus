@@ -1429,6 +1429,7 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
 
     cString buffer;
     cString RecName = GetRecordingName(Recording, Level, Total == 0);
+
     int y = Index * itemRecordingHeight;
 
     int Height = fontHeight;
@@ -2412,9 +2413,6 @@ const char * cFlatDisplayMenu::GetRecordingName(const cRecording *Recording, int
             tokens.push_back(s);
         }
         recNamePart = tokens.at(Level);
-        if(!isFolder && Recording->IsEdited() ) {
-            recNamePart = recNamePart.substr(1);
-        }
     } catch (...) {
         recNamePart = recName.c_str();
     }
@@ -2424,7 +2422,6 @@ const char * cFlatDisplayMenu::GetRecordingName(const cRecording *Recording, int
             recNamePart.erase(0, 1);
         }
     }
-
     return recNamePart.c_str();
 }
 

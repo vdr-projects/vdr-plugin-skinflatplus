@@ -24,13 +24,13 @@ Skin flatPlus basiert auf dem Skin flat. Im Gegensatz zu diesem ist der Skin fla
 und an die Bedürfnisse Konfigurierbar. Derzeit ist der Hauptunterschied die Decorations  mit Border und ProgressBar.
 
 
-Installation 
+Installation
 ------------
 Installation wie bei allen VDR Plugins.
     make
     make install
 
-Für die Kanallogos empfehle ich die Logos von CReimer: http://creimer.net/channellogos/
+Für die Kanallogos empfehle ich die Logos von Copperhead: http://creimer.net/channellogos/
 Ich nutze "nopacity-logos-white"
 Die Logos müssen im folgenden Ordner zur Verfügung gestellt werden:
     <vdrconfigdir>/plugins/skinflat/logos/
