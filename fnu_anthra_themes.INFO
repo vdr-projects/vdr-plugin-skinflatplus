@@ -1,0 +1,20 @@
+flatPlus-fnuanthra.themes created on 12.04.2014
+base theme: flatPlus-fnuanthrared.theme, base icons: fnuanthrared
+
+theme: red, highlights: #bf111b, background: #151619, foreground: #525a60
+theme: amber, highlights: #ffbf00, background: #151619, foreground: #525a60
+theme: yablue, highlights: #4e78b1, background: #151619, foreground: #525a60
+
+These are anthra style themes following good old anthra packages from Tomas Saxer
+for vdr-plugin-text2skin. As with the originals base theme is red highlighted, authors
+favorit is amber highlighted and third one for the big yaVDR family is yablue highlighted.
+
+Themes are black, anthrazit and grey style with some minor highlights in given colors and
+like the original themes with a white logo base. All kept flat to fit into strenght of skinflatplus.
+
+Author does recommend to use "round big" decor and nopacity-default logos from Copperhead,
+because the white logo base:
+
+- http://creimer.net/channellogos/
+
+(C) 2014 Frank Neumann <fnu@yavdr.org>
