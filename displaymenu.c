@@ -960,6 +960,9 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText
                 ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
             }
+        } else {
+            ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
+                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
         }
     } else {
         ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
@@ -2255,6 +2258,9 @@ void cFlatDisplayMenu::DrawItemExtraRecording(const cRecording *Recording, cStri
                 ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml);
             }
+        } else {
+            ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
+                Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml);
         }
     } else {
         ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
