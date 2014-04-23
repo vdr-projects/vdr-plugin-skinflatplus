@@ -5,58 +5,65 @@
 cFlatConfig::cFlatConfig(void) {
     logoPath = "";
     iconPath = "";
-    
+
     DecorCurrent = -1;
     DecorIndex = 0;
-    
+
     ButtonsShowEmpty = true;
 
     ChannelIconsShow = true;
     SignalQualityShow = true;
     SignalQualityUseColors = false;
-    
+
     DiskUsageShow = true;
-    
+
     MenuContentFullSize = true;
-    
+
     ChannelFormatShow = true;
     ChannelResolutionAspectShow = true;
     ChannelSimpleAspectFormat = true;
-    
+
     RecordingResolutionAspectShow = true;
     RecordingFormatShow = true;
     RecordingSimpleAspectFormat = true;
-    
+
     RecordingAdditionalInfoShow = true;
     EpgAdditionalInfoShow = true;
-    
+    EpgRerunsShow = true;
+
     TopBarRecordingShow = true;
     TopBarRecConflictsShow = true;
     TopBarRecConflictsHigh = 2;
-    
+
     MenuItemIconsShow = true;
     TopBarMenuIconShow = true;
-    
+
     MenuItemPadding = 3;
     marginOsdVer = 5;
     marginOsdHor = 5;
     TopBarFontSize = 0.05;
     MessageOffset = 50;
-    
+
     MainMenuItemScale = 1.0;
-    
+
     MenuChannelView = 1;
     MenuTimerView = 1;
     MenuEventView = 1;
     MenuRecordingView = 1;
-    
+
     MenuItemRecordingClearPercent = 1;
     MenuItemRecordingShowFolderDate = 1;
     MenuItemParseTilde = 1;
-    
+
     TVScraperChanInfoShowPoster = 1;
     TVScraperChanInfoPosterSize = 0.01;
-    
+
+    TVScraperEPGInfoShowPoster = 1;
+    TVScraperRecInfoShowPoster = 1;
+
+    TVScraperEPGInfoShowActors = 1;
+    TVScraperRecInfoShowActors = 1;
+
     decorBorderChannelByTheme = 1;
     decorBorderChannelTypeUser = 0;
     decorBorderChannelSizeUser = 0;
@@ -96,7 +103,7 @@ cFlatConfig::cFlatConfig(void) {
     decorBorderButtonByTheme = 1;
     decorBorderButtonTypeUser = 0;
     decorBorderButtonSizeUser = 0;
-    
+
     decorProgressChannelByTheme = 1;
     decorProgressChannelTypeUser = 0;
     decorProgressChannelSizeUser = 20;
@@ -204,9 +211,14 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "SignalQualityUseColors") == 0)               SignalQualityUseColors = atoi(Value);
     else if (strcmp(Name, "TVScraperChanInfoShowPoster") == 0)          TVScraperChanInfoShowPoster = atoi(Value);
     else if (strcmp(Name, "TVScraperChanInfoPosterSize") == 0)          TVScraperChanInfoPosterSize = atod(Value);
+    else if (strcmp(Name, "TVScraperEPGInfoShowPoster") == 0)           TVScraperEPGInfoShowPoster = atoi(Value);
+    else if (strcmp(Name, "TVScraperRecInfoShowPoster") == 0)           TVScraperRecInfoShowPoster = atoi(Value);
+    else if (strcmp(Name, "EpgRerunsShow") == 0)                        EpgRerunsShow = atoi(Value);
+    else if (strcmp(Name, "TVScraperEPGInfoShowActors") == 0)           TVScraperEPGInfoShowActors = atoi(Value);
+    else if (strcmp(Name, "TVScraperRecInfoShowActors") == 0)           TVScraperRecInfoShowActors = atoi(Value);
 
     else return false;
-    
+
     return true;
 }
 
@@ -230,7 +242,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorBorderChannelType = decorBorderChannelTypeUser;
             decorBorderChannelSize = decorBorderChannelSizeUser;
         }
-        
+
         if( decorBorderTopBarByTheme ) {
             decorBorderTopBarType = decorBorderTopBarTypeTheme;
             decorBorderTopBarSize = decorBorderTopBarSizeTheme;
@@ -246,7 +258,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorBorderMessageType = decorBorderMessageTypeUser;
             decorBorderMessageSize = decorBorderMessageSizeUser;
         }
-        
+
         if( decorBorderVolumeByTheme ) {
             decorBorderVolumeType = decorBorderVolumeTypeTheme;
             decorBorderVolumeSize = decorBorderVolumeSizeTheme;
@@ -254,7 +266,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorBorderVolumeType = decorBorderVolumeTypeUser;
             decorBorderVolumeSize = decorBorderVolumeSizeUser;
         }
-        
+
         if( decorBorderTrackByTheme ) {
             decorBorderTrackType = decorBorderTrackTypeTheme;
             decorBorderTrackSize = decorBorderTrackSizeTheme;
@@ -262,7 +274,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorBorderTrackType = decorBorderTrackTypeUser;
             decorBorderTrackSize = decorBorderTrackSizeUser;
         }
-        
+
         if( decorBorderReplayByTheme ) {
             decorBorderReplayType = decorBorderReplayTypeTheme;
             decorBorderReplaySize = decorBorderReplaySizeTheme;
@@ -278,7 +290,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorBorderMenuItemType = decorBorderMenuItemTypeUser;
             decorBorderMenuItemSize = decorBorderMenuItemSizeUser;
         }
-        
+
         if( decorBorderMenuContentHeadByTheme ) {
             decorBorderMenuContentHeadType = decorBorderMenuContentHeadTypeTheme;
             decorBorderMenuContentHeadSize = decorBorderMenuContentHeadSizeTheme;
@@ -286,7 +298,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorBorderMenuContentHeadType = decorBorderMenuContentHeadTypeUser;
             decorBorderMenuContentHeadSize = decorBorderMenuContentHeadSizeUser;
         }
-        
+
         if( decorBorderMenuContentByTheme ) {
             decorBorderMenuContentType = decorBorderMenuContentTypeTheme;
             decorBorderMenuContentSize = decorBorderMenuContentSizeTheme;
@@ -294,7 +306,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorBorderMenuContentType = decorBorderMenuContentTypeUser;
             decorBorderMenuContentSize = decorBorderMenuContentSizeUser;
         }
-        
+
         if( decorBorderButtonByTheme ) {
             decorBorderButtonType = decorBorderButtonTypeTheme;
             decorBorderButtonSize = decorBorderButtonSizeTheme;
@@ -302,7 +314,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorBorderButtonType = decorBorderButtonTypeUser;
             decorBorderButtonSize = decorBorderButtonSizeUser;
         }
-        
+
         if( decorProgressChannelByTheme ) {
             decorProgressChannelType = decorProgressChannelTypeTheme;
             decorProgressChannelSize = decorProgressChannelSizeTheme;
@@ -310,7 +322,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorProgressChannelType = decorProgressChannelTypeUser;
             decorProgressChannelSize = decorProgressChannelSizeUser;
         }
-        
+
         if( decorProgressVolumeByTheme ) {
             decorProgressVolumeType = decorProgressVolumeTypeTheme;
             decorProgressVolumeSize = decorProgressVolumeSizeTheme;
@@ -318,7 +330,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorProgressVolumeType = decorProgressVolumeTypeUser;
             decorProgressVolumeSize = decorProgressVolumeSizeUser;
         }
-        
+
         if( decorProgressMenuItemByTheme ) {
             decorProgressMenuItemType = decorProgressMenuItemTypeTheme;
             decorProgressMenuItemSize = decorProgressMenuItemSizeTheme;
@@ -326,7 +338,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorProgressMenuItemType = decorProgressMenuItemTypeUser;
             decorProgressMenuItemSize = decorProgressMenuItemSizeUser;
         }
-        
+
         if( decorProgressReplayByTheme ) {
             decorProgressReplayType = decorProgressReplayTypeTheme;
             decorProgressReplaySize = decorProgressReplaySizeTheme;
@@ -334,7 +346,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorProgressReplayType = decorProgressReplayTypeUser;
             decorProgressReplaySize = decorProgressReplaySizeUser;
         }
-        
+
         if( decorProgressSignalByTheme ) {
             decorProgressSignalType = decorProgressSignalTypeTheme;
             decorProgressSignalSize = decorProgressSignalSizeTheme;
@@ -342,7 +354,7 @@ void cFlatConfig::DecorCheckAndInit(void) {
             decorProgressSignalType = decorProgressSignalTypeUser;
             decorProgressSignalSize = decorProgressSignalSizeUser;
         }
-        
+
         if( decorBorderChannelType == 0 )
             decorBorderChannelSize = 0;
         if( decorBorderTopBarType == 0 )
@@ -384,7 +396,7 @@ void cFlatConfig::ThemeInit(void) {
     decorBorderTrackCurBg = Theme.Color(clrTrackItemCurrentBorderBg);
     decorBorderTrackSelFg = Theme.Color(clrTrackItemSelableBorderFg);
     decorBorderTrackSelBg = Theme.Color(clrTrackItemSelableBorderBg);
-    
+
     decorBorderReplayFg = Theme.Color(clrReplayBorderFg);
     decorBorderReplayBg = Theme.Color(clrReplayBorderBg);
 
@@ -403,7 +415,7 @@ void cFlatConfig::ThemeInit(void) {
 
     decorBorderButtonFg = Theme.Color(clrButtonBorderFg);
     decorBorderButtonBg = Theme.Color(clrButtonBorderBg);
-    
+
     decorProgressChannelFg = Theme.Color(clrChannelProgressFg);
     decorProgressChannelBarFg = Theme.Color(clrChannelProgressBarFg);
     decorProgressChannelBg = Theme.Color(clrChannelProgressBg);
@@ -457,14 +469,14 @@ void cFlatConfig::DecorDescriptions(cStringList &Decors) {
     cString decorPath = cString::sprintf("%s/decors", PLUGINRESOURCEPATH);
     std::vector<std::string> files;
     Decors.Clear();
-    
+
     cReadDir d(decorPath);
     struct dirent *e;
     while ((e = d.Next()) != NULL) {
         cString FileName = AddDirectory(decorPath, e->d_name);
         files.push_back(*FileName);
     }
-    
+
     std::sort(files.begin(), files.end(), stringCompare);
     for (unsigned i = 0; i < files.size(); i++) {
         std::string FileName = files.at(i);
@@ -507,14 +519,14 @@ cString cFlatConfig::DecorDescription(cString File) {
 void cFlatConfig::DecorLoadCurrent(void) {
     cString decorPath = cString::sprintf("%s/decors", PLUGINRESOURCEPATH);
     std::vector<std::string> files;
-    
+
     cReadDir d(decorPath);
     struct dirent *e;
     while ((e = d.Next()) != NULL) {
         cString FileName = AddDirectory(decorPath, e->d_name);
         files.push_back(*FileName);
     }
-    
+
     std::sort(files.begin(), files.end(), stringCompare);
     if( DecorIndex >= 0 && DecorIndex < (int)files.size() ) {
         std::string FileName = files.at(DecorIndex);

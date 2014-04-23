@@ -2,6 +2,7 @@
 #include "flat.h"
 #include <vdr/menu.h>
 #include "services/epgsearch.h"
+#include "services/tvscraper.h"
 
 cFlatBaseRender::cFlatBaseRender(void) {
     font = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize );
@@ -35,6 +36,7 @@ cFlatBaseRender::cFlatBaseRender(void) {
     buttonsPixmap = NULL;
     messagePixmap = NULL;
     contentPixmap = NULL;
+    contentEpgImagePixmap = NULL;
     progressBarPixmap = NULL;
     progressBarPixmapBg = NULL;
     decorPixmap = NULL;
@@ -48,8 +50,7 @@ cFlatBaseRender::~cFlatBaseRender(void) {
     delete fontSml;
     delete fontFixed;
 
-    if( osd )
-    {
+    if( osd ) {
         if( topBarPixmap )
             osd->DestroyPixmap(topBarPixmap);
         if( buttonsPixmap )
@@ -68,6 +69,8 @@ cFlatBaseRender::~cFlatBaseRender(void) {
             osd->DestroyPixmap(topBarIconPixmap);
         if( topBarIconBGPixmap )
             osd->DestroyPixmap(topBarIconBGPixmap);
+        if( contentEpgImagePixmap )
+            osd->DestroyPixmap(contentEpgImagePixmap);
 
         delete osd;
     }
@@ -515,221 +518,6 @@ void cFlatBaseRender::MessageClear(void) {
     messagePixmap->Fill(clrTransparent);
     DecorBorderClearByFrom(BorderMessage);
     DecorBorderRedrawAll();
-}
-
-void cFlatBaseRender::ContentCreate(int Left, int Top, int Width, int Height, int FontType) {
-    contentHasScrollbar = false;
-    contentShown = false;
-    contentFontType = FontType;
-
-    contentLeft = Left;
-    contentTop = Top;
-    contentWidth = Width;
-    contentHeight = Height;
-    int lines = ContentVisibleLines();
-
-    if( contentFontType == 0 )
-        contentHeight = lines * fontHeight;
-    else if( contentFontType == 1 )
-        contentHeight = lines * fontFixedHeight;
-    else if( contentFontType == 2 )
-        contentHeight = lines * fontSmlHeight;
-
-}
-
-void cFlatBaseRender::ContentSet(const char *Text, tColor ColorFg, tColor ColorBg) {
-    if( contentFontType == 0 )
-        contentWrapper.Set(Text, font, contentWidth - marginItem*2);
-    else if( contentFontType == 1 )
-        contentWrapper.Set(Text, fontFixed, contentWidth - marginItem*2);
-    else if( contentFontType == 2 )
-        contentWrapper.Set(Text, fontSml, contentWidth - marginItem*2);
-
-    contentColorFg = ColorFg;
-    contentColorBg = ColorBg;
-
-    int contentWrapperHeight = 0;
-    if( contentFontType == 0 ) {
-        contentWrapperHeight = (contentWrapper.Lines()+1) * fontHeight;
-        contentTextHeight = (contentWrapper.Lines()) * fontHeight + marginItem;
-    } else if( contentFontType == 1 ) {
-        contentWrapperHeight = (contentWrapper.Lines()+1) * fontFixedHeight;
-        contentTextHeight = (contentWrapper.Lines()) * fontFixedHeight + marginItem;
-    } else if( contentFontType == 2 ) {
-        contentWrapperHeight = (contentWrapper.Lines()+1) * fontSmlHeight;
-        contentTextHeight = (contentWrapper.Lines()) * fontSmlHeight + marginItem;
-    }
-
-    if( contentWrapperHeight > contentHeight ) {
-        contentDrawPortHeight = contentWrapperHeight;
-        contentHasScrollbar = true;
-    } else {
-        contentDrawPortHeight = contentHeight;
-        contentHasScrollbar = false;
-    }
-
-    if( contentPixmap )
-        osd->DestroyPixmap(contentPixmap);
-
-    contentPixmap = osd->CreatePixmap(2, cRect(contentLeft, contentTop, contentWidth, contentHeight),
-            cRect(0, 0, contentWidth, contentDrawPortHeight));
-
-    if( Config.MenuContentFullSize || contentHasScrollbar ) {
-        contentPixmap->Fill(contentColorBg);
-    } else {
-        contentPixmap->Fill(clrTransparent);
-        contentPixmap->DrawRectangle(cRect(0, 0, contentWidth, contentTextHeight), contentColorBg);
-    }
-
-    contentDraw();
-    contentShown = true;
-}
-
-bool cFlatBaseRender::ContentWillItBeScrollable(int Width, int Height, const char *Text, int FontType) {
-    cTextWrapper wrapper;
-    if( FontType == 0 )
-        wrapper.Set(Text, font, Width - marginItem*2);
-    else if( FontType == 1 )
-        wrapper.Set(Text, fontFixed, Width - marginItem*2);
-    else if( FontType == 2 )
-        wrapper.Set(Text, fontSml, Width - marginItem*2);
-
-    int VisibleLines = 0;
-    if( FontType == 0 )
-        VisibleLines = Height / fontHeight;
-    else if( FontType == 1 )
-        VisibleLines = Height / fontFixedHeight;
-    else if( FontType == 2 )
-        VisibleLines = Height / fontSmlHeight;
-
-    if( wrapper.Lines() > 0 && wrapper.Lines() > VisibleLines )
-        return true;
-
-    return false;
-}
-
-bool cFlatBaseRender::ContentScrollable(void) {
-    return contentHasScrollbar;
-}
-
-int cFlatBaseRender::ContentGetHeight(void) {
-    return contentHeight;
-}
-
-int cFlatBaseRender::ContentGetTextHeight(void) {
-    return contentTextHeight;
-}
-
-double cFlatBaseRender::ScrollbarSize(void) {
-    return (double)contentHeight / (double)contentDrawPortHeight;
-}
-
-int cFlatBaseRender::ContentScrollTotal(void) {
-    return contentWrapper.Lines();
-}
-
-int cFlatBaseRender::ContentScrollOffset(void) {
-    double offset;
-    int h = 0;
-    if( contentFontType == 0 )
-        h = fontHeight;
-    else if( contentFontType == 1 )
-        h = fontFixedHeight;
-    else if( contentFontType == 2 )
-        h = fontSmlHeight;
-
-    if ( ((-1)*contentPixmap->DrawPort().Point().Y() + contentHeight + h) > contentDrawPortHeight) {
-        offset = (double)1 - ScrollbarSize();
-        //dsyslog("1 offset %f h %d return %d", offset, h, (int)(ContentScrollTotal() * offset));
-    } else {
-        offset = (double)((-1)*contentPixmap->DrawPort().Point().Y()) / (double)((-1)*contentPixmap->DrawPort().Point().Y() + contentHeight);
-        //dsyslog("2 offset %f h %d return %d", offset, h, (int)(ContentScrollTotal() * offset));
-        //dsyslog("contentHeight %d Y %d", contentHeight, contentPixmap->DrawPort().Point().Y());
-        //dsyslog("contentDrawPortHeight %d Y %d", contentDrawPortHeight, contentPixmap->DrawPort().Point().Y());
-    }
-
-    return ContentScrollTotal() * offset;
-}
-
-int cFlatBaseRender::ContentVisibleLines(void) {
-    if( contentFontType == 0 )
-        return contentHeight / fontHeight;
-    else if( contentFontType == 1 )
-        return contentHeight / fontFixedHeight;
-    else if( contentFontType == 2 )
-        return contentHeight / fontSmlHeight;
-    return 0;
-}
-
-bool cFlatBaseRender::ContentScroll(bool Up, bool Page) {
-    int aktHeight = contentPixmap->DrawPort().Point().Y();
-    int totalHeight = contentPixmap->DrawPort().Height();
-    int screenHeight = contentPixmap->ViewPort().Height();
-    int lineHeight = 0;
-
-    if( contentFontType == 0 )
-        lineHeight = fontHeight;
-    else if( contentFontType == 1 )
-        lineHeight = fontFixedHeight;
-    else if( contentFontType == 2 )
-        lineHeight = fontSmlHeight;
-
-    bool scrolled = false;
-    if( Up ) {
-        if( Page ) {
-            int newY = aktHeight + screenHeight;
-            if( newY > 0 )
-                newY = 0;
-            contentPixmap->SetDrawPortPoint(cPoint(0, newY));
-            scrolled = true;
-        } else {
-            if( aktHeight < 0 ) {
-                contentPixmap->SetDrawPortPoint(cPoint(0, aktHeight + lineHeight));
-                scrolled = true;
-            }
-        }
-    } else {
-        if( Page ) {
-            int newY = aktHeight - screenHeight;
-            if( (-1)*newY > totalHeight - screenHeight )
-                newY = (-1)*(totalHeight - screenHeight);
-            contentPixmap->SetDrawPortPoint(cPoint(0, newY));
-            scrolled = true;
-        } else {
-            if( totalHeight - ((-1)*aktHeight + lineHeight) > screenHeight ) {
-                contentPixmap->SetDrawPortPoint(cPoint(0, aktHeight - lineHeight));
-                scrolled = true;
-            }
-        }
-    }
-    return scrolled;
-}
-
-bool cFlatBaseRender::ContentIsShown(void) {
-    return contentShown;
-}
-
-void cFlatBaseRender::ContentClear(void) {
-    if( contentPixmap )
-        contentPixmap->Fill(clrTransparent);
-    contentShown = false;
-}
-
-void cFlatBaseRender::contentDraw(void) {
-    int linesText = contentWrapper.Lines();
-    int currentHeight = 0;
-    for (int i=0; i < linesText; i++) {
-        if( contentFontType == 0 ) {
-            currentHeight = (i)*fontHeight;
-            contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, font, contentWidth - marginItem*2);
-        } else if( contentFontType == 1 ) {
-            currentHeight = (i)*fontFixedHeight;
-            contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, fontFixed, contentWidth - marginItem*2);
-        } else if( contentFontType == 2 ) {
-            currentHeight = (i)*fontSmlHeight;
-            contentPixmap->DrawText(cPoint(marginItem, currentHeight), contentWrapper.GetLine(i), contentColorFg, contentColorBg, fontSml, contentWidth - marginItem*2);
-        }
-    }
 }
 
 void cFlatBaseRender::ProgressBarCreate(int Left, int Top, int Width, int Height, int MarginHor, int MarginVer, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground, bool isSignal) {

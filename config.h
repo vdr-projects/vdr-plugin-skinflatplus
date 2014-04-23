@@ -22,7 +22,7 @@ class cFlatConfig
         void Init(void);
         void SetLogoPath(cString path);
         bool SetupParse(const char *Name, const char *Value);
-    
+
         void ThemeCheckAndInit(void);
         void ThemeInit(void);
         void DecorDescriptions(cStringList &Decors);
@@ -35,7 +35,7 @@ class cFlatConfig
         cString ThemeCurrent;
         cString logoPath;
         cString iconPath;
-        
+
         // BORDER TYPES
         // 0 = none
         // 1 = rect
@@ -157,14 +157,14 @@ class cFlatConfig
         int SignalQualityShow;
         int SignalQualityUseColors;
         int DiskUsageShow;
-        
+
         int MenuItemPadding;
         int marginOsdVer, marginOsdHor;
         int MessageOffset;
-        
+
         int MenuContentFullSize;
         double TopBarFontSize;
-        
+
         int ChannelResolutionAspectShow;
         int ChannelFormatShow;
         int ChannelSimpleAspectFormat;
@@ -172,27 +172,35 @@ class cFlatConfig
         int RecordingFormatShow;
         int RecordingSimpleAspectFormat;
         int RecordingAdditionalInfoShow;
+        int EpgRerunsShow;
         int EpgAdditionalInfoShow;
         int TopBarRecordingShow;
         int TopBarRecConflictsShow;
         int TopBarRecConflictsHigh;
         int MenuItemIconsShow;
         int TopBarMenuIconShow;
-        
+
         double MainMenuItemScale;
-        
+
         int MenuChannelView;
         int MenuTimerView;
         int MenuEventView;
         int MenuRecordingView;
-        
+
         int MenuItemRecordingClearPercent;
         int MenuItemRecordingShowFolderDate;    // 0 = disable, 1 = newest recording date, 2 = oldest recording date
-        
+
         int MenuItemParseTilde;
-        
+
         // TVScraper
         int TVScraperChanInfoShowPoster;
         double TVScraperChanInfoPosterSize;
+
+        int TVScraperEPGInfoShowPoster;
+        int TVScraperRecInfoShowPoster;
+
+        int TVScraperEPGInfoShowActors;
+        int TVScraperRecInfoShowActors;
+
         int DecorIndex;
 };

@@ -73,7 +73,7 @@ LIBS += $(shell pkg-config --libs Magick++)
 
 ### The object files (add further files here):
 
-OBJS = config.o setup.o imagecache.o imagescaler.o imagemagickwrapper.o imageloader.o baserender.o displaychannel.o displaymenu.o displaymessage.o \
+OBJS = config.o setup.o imagecache.o imagescaler.o imagemagickwrapper.o imageloader.o baserender.o complexcontent.o displaychannel.o displaymenu.o displaymessage.o \
 	   displayreplay.o displaytracks.o displayvolume.o flat.o $(PLUGIN).o
 
 ### The main target:
@@ -139,7 +139,7 @@ install-decors:
 install-icons:
 	mkdir -p $(DESTDIR)$(PLGRESDIR)/icons
 	cp -r icons/* $(DESTDIR)$(PLGRESDIR)/icons
-	
+
 install: install-lib install-i18n install-themes install-icons install-decors
 
 dist: $(I18Npo) clean

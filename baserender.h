@@ -83,20 +83,27 @@ class cFlatBaseRender
 
         // Mehrzeiliger Content mit Scrollbalken
         cPixmap *contentPixmap;
+        cPixmap *contentEpgImagePixmap;
         int contentLeft, contentTop, contentHeight, contentWidth;
         int contentDrawPortHeight; // gesamthöhe des Textes
         int contentTextHeight;
         bool contentHasScrollbar;
         bool contentShown;
         int contentFontType;
+        int contentEventType;
+        int contentEventHeight;
+        int contentEventPosterWidth, contentEventPosterHeight;
 
         tColor contentColorFg, contentColorBg;
         cTextWrapper contentWrapper;
+        cTextWrapper contentWrapperPoster;
+        const cEvent *contentEvent;
 
         cPixmap *decorPixmap;
         std::list<sDecorBorder> Borders; // for clear specific Borders (clear only MenuItems and not TopBar)
 
         void contentDraw(void);
+        void contentEventDraw(void);
         double ScrollbarSize(void);
 
         void ProgressBarDrawMark(int posMark, int posMarkLast, int posCurrent, bool Start, bool isCurrent);
@@ -151,25 +158,6 @@ class cFlatBaseRender
 
         void ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Height, int Total, int Offset, int Shown, bool CanScrollUp, bool CanScrollDown);
         int ScrollBarWidth(void);
-
-        /* int FontType
-         * 0 = NormalFont
-         * 1 = FixedFont
-         * 2 = SmallFont
-         */
-
-        void ContentCreate(int Left, int Top, int Width, int Height, int FontType);
-        void ContentSet(const char *Text, tColor ColorFg, tColor ColorBg);
-        bool ContentIsShown(void);
-        bool ContentScrollable(void);
-        bool ContentWillItBeScrollable(int Width, int Height, const char *Text, int FontType);
-        int ContentScrollTotal(void);
-        int ContentScrollOffset(void);
-        int ContentVisibleLines(void);
-        int ContentGetHeight(void);
-        int ContentGetTextHeight(void);
-        bool ContentScroll(bool Up, bool Page);
-        void ContentClear(void);
 
         void DecorBorderDraw(int Left, int Top, int Width, int Height, int Size, int Type, tColor ColorFg, tColor ColorBg, int From = 0, bool Store = true);
         void DecorBorderClear(int Left, int Top, int Width, int Height, int Size);

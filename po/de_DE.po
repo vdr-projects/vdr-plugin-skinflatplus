@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.2.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-04-03 19:32+0200\n"
+"POT-Creation-Date: 2014-04-23 10:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,6 +39,18 @@ msgstr "Timer nicht aktiv"
 msgid "no recording info"
 msgstr "keine Aufnahme Informationen"
 
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid "Actors"
+msgstr "Schauspieler"
+
+msgid "Reruns"
+msgstr "Wiederholungen"
+
+msgid "Video information"
+msgstr "Video Informationen"
+
 msgid "Length"
 msgstr "Länge"
 
@@ -62,6 +74,9 @@ msgstr "Kanal"
 
 msgid "search pattern"
 msgstr "Suchmuster"
+
+msgid "Recording information"
+msgstr ""
 
 msgid "Audio Tracks"
 msgstr "Audio Tracks"
@@ -297,6 +312,9 @@ msgstr "Zeige Zusatzinfo bei Aufnahmen"
 msgid "Show additional EPG info"
 msgstr "Zeige Zusatzinfo bei EPG"
 
+msgid "Show reruns in EPG info"
+msgstr "Zeige Wiederholungen bei EPG"
+
 msgid "Main menuitem scale"
 msgstr "Hauptmenüeintrag Scale"
 
@@ -395,3 +413,15 @@ msgstr "Kanalinfo zeige Poster?"
 
 msgid "Channelinfo poster size"
 msgstr "Kanalinfo Poster Größe"
+
+msgid "EPG info show poster?"
+msgstr "EPG-Info zeige Poster?"
+
+msgid "recording info show poster?"
+msgstr "Aufnahmeinfo zeige Poster?"
+
+msgid "EPG info show actors?"
+msgstr "EPG-Info zeige Schauspieler?"
+
+msgid "recording info show actors?"
+msgstr "Aufnahmeinfo zeige Schauspieler?"

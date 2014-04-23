@@ -206,6 +206,11 @@ void cFlatSetup::Store(void) {
     SetupStore("SignalQualityUseColors", Config.SignalQualityUseColors);
     SetupStore("TVScraperChanInfoShowPoster", Config.TVScraperChanInfoShowPoster);
     SetupStore("TVScraperChanInfoPosterSize", dtoa(Config.TVScraperChanInfoPosterSize));
+    SetupStore("TVScraperEPGInfoShowPoster", Config.TVScraperEPGInfoShowPoster);
+    SetupStore("TVScraperRecInfoShowPoster", Config.TVScraperEPGInfoShowPoster);
+    SetupStore("EpgRerunsShow", Config.EpgRerunsShow);
+    SetupStore("TVScraperEPGInfoShowActors", Config.TVScraperEPGInfoShowActors);
+    SetupStore("TVScraperRecInfoShowActors", Config.TVScraperRecInfoShowActors);
 
     Config.Init();
 }
@@ -410,6 +415,7 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Menu content fullsize background"), &SetupConfig->MenuContentFullSize));
     Add(new cMenuEditBoolItem(tr("Show additional recording info"), &SetupConfig->RecordingAdditionalInfoShow));
     Add(new cMenuEditBoolItem(tr("Show additional EPG info"), &SetupConfig->EpgAdditionalInfoShow));
+    Add(new cMenuEditBoolItem(tr("Show reruns in EPG info"), &SetupConfig->EpgRerunsShow));
     Add(new cMenuEditPrcItem(tr("Main menuitem scale"), &SetupConfig->MainMenuItemScale, 0.2, 1, 0));
 
     Add(new cMenuEditStraItem(tr("Menu channel view"), &SetupConfig->MenuChannelView, MenuChannelViews.Size(), &MenuChannelViews[0]));
@@ -672,6 +678,10 @@ void cFlatSetupTvsraper::Setup(void) {
 
     Add(new cMenuEditBoolItem(tr("Channelinfo show poster?"), &SetupConfig->TVScraperChanInfoShowPoster));
     Add(new cMenuEditPrcItem(tr("Channelinfo poster size"), &SetupConfig->TVScraperChanInfoPosterSize, 0.004, 0.015, 2));
+    Add(new cMenuEditBoolItem(tr("EPG info show poster?"), &SetupConfig->TVScraperEPGInfoShowPoster));
+    Add(new cMenuEditBoolItem(tr("recording info show poster?"), &SetupConfig->TVScraperRecInfoShowPoster));
+    Add(new cMenuEditBoolItem(tr("EPG info show actors?"), &SetupConfig->TVScraperEPGInfoShowActors));
+    Add(new cMenuEditBoolItem(tr("recording info show actors?"), &SetupConfig->TVScraperRecInfoShowActors));
 
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
