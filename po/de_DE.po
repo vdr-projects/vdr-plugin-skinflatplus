@@ -76,7 +76,7 @@ msgid "search pattern"
 msgstr "Suchmuster"
 
 msgid "Recording information"
-msgstr ""
+msgstr "Aufnahme Informationen"
 
 msgid "Audio Tracks"
 msgstr "Audio Tracks"

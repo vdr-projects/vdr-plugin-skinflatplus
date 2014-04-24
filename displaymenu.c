@@ -1861,10 +1861,10 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                         if ((Event->ChannelID() == r->event->ChannelID()) && (Event->StartTime() == r->event->StartTime()))
                             continue;
                         i++;
-                        sstrReruns  << "- " << *DayDateTime(r->event->StartTime());
+                        sstrReruns << *DayDateTime(r->event->StartTime());
                         cChannel *channel = Channels.GetByChannelID(r->event->ChannelID(), true, true);
                         if (channel) {
-                            sstrReruns << ", " << channel->Number() << ".";
+                            sstrReruns << ", " << channel->Number() << " -";
                             sstrReruns << " " << channel->ShortName(true);
                         }
                         sstrReruns << ":  " << r->event->Title();
@@ -2506,12 +2506,12 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             }
 
             if ((!channel.empty() && !searchtimer.empty()) || !pattern.empty())  {
-                text << endl << endl << tr("additional information") << ":" << endl;
+                recAdditional << endl;
                 if (!channel.empty() && !searchtimer.empty()) {
-                    text << "EPGsearch: " << tr("channel") << ": " << channel << ", " << tr("search pattern") << ": " << searchtimer;
+                    recAdditional << "EPGsearch: " << tr("channel") << ": " << channel << ", " << tr("search pattern") << ": " << searchtimer;
                 }
                 if (!pattern.empty()) {
-                    text << "VDRadmin-AM: " << tr("search pattern") << ": " << pattern;
+                    recAdditional << "VDRadmin-AM: " << tr("search pattern") << ": " << pattern;
                 }
             }
         }
