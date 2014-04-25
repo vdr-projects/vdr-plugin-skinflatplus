@@ -13,6 +13,7 @@
 #include "symbols/1080/Cclocksml.xpm"
 #include "symbols/1080/Cvpssml.xpm"
 #include "flat.h"
+#include "locale"
 
 cBitmap cFlatDisplayMenu::bmCNew(Cnew_xpm);
 cBitmap cFlatDisplayMenu::bmCArrowTurn(Carrowturn_xpm);
@@ -1831,10 +1832,15 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                         break;
                 }
             }
-            if (audio.str().length() > 0)
-                textAdditional << endl << tr("Audio") << ": "<< audio.str();
-            if (subtitle.str().length() > 0)
+            if (audio.str().length() > 0) {
+                if( textAdditional.str().length() > 0 )
+                    textAdditional << endl;
+                textAdditional << tr("Audio") << ": "<< audio.str();
+            } if (subtitle.str().length() > 0) {
+                if( textAdditional.str().length() > 0 )
+                    textAdditional << endl;
                 textAdditional << endl << tr("Subtitle") << ": "<< subtitle.str();
+            }
         }
     }
 
@@ -2330,6 +2336,8 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
 
     ostringstream text, textAdditional, recAdditional;
     text.imbue(std::locale(""));
+    textAdditional.imbue(std::locale(""));
+    recAdditional.imbue(std::locale(""));
 
     if (!isempty(recInfo->Description()))
         text << recInfo->Description() << endl << endl;
@@ -2484,10 +2492,15 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                         break;
                 }
             }
-            if (audio.str().length() > 0)
-                textAdditional << endl << tr("Audio") << ": "<< audio.str();
-            if (subtitle.str().length() > 0)
+            if (audio.str().length() > 0) {
+                if( textAdditional.str().length() > 0 )
+                    textAdditional << endl;
+                textAdditional << tr("Audio") << ": "<< audio.str();
+            } if (subtitle.str().length() > 0) {
+                if( textAdditional.str().length() > 0 )
+                    textAdditional << endl;
                 textAdditional << endl << tr("Subtitle") << ": "<< subtitle.str();
+            }
         }
         if (recInfo->Aux()) {
             string str_epgsearch = xml_substring(recInfo->Aux(), "<epgsearch>", "</epgsearch>");
