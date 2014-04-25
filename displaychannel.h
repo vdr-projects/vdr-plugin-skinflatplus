@@ -3,6 +3,7 @@
 #include "baserender.h"
 #include "flat.h"
 #include "services/tvscraper.h"
+#include "services/scraper2vdr.h"
 
 class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
     private:
@@ -13,28 +14,28 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
 
         cString channelName;
         const cChannel *CurChannel;
-    
+
         cPixmap *chanInfoTopPixmap;
         cPixmap *chanInfoBottomPixmap;
         cPixmap *chanLogoPixmap;
         cPixmap *chanLogoBGPixmap;
         cPixmap *chanIconsPixmap;
         cPixmap *chanEpgImagesPixmap;
-    
+
         int screenWidth, lastScreenWidth;
         int screenHeight;
         double screenAspect;
         int heightBottom, heightImageLogo;
-    
+
         int LastSignalStrength, LastSignalQuality;
-        
+
         // TVScraper
         int TVSLeft, TVSTop, TVSWidth, TVSHeight;
-        
+
         bool isRecording;
         bool isRadioChannel;
         bool isGroup;
-    
+
         void SignalQualityDraw(void);
         void ChannelIconsDraw(const cChannel *Channel, bool Resolution);
 

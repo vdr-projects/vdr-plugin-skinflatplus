@@ -1,5 +1,6 @@
 #include "displaymenu.h"
 #include "services/tvscraper.h"
+#include "services/scraper2vdr.h"
 #include "services/epgsearch.h"
 
 #ifndef VDRLOGO
@@ -745,9 +746,9 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
         Width = menuItemWidth - LeftName;
         if( Channel->GroupSep() ) {
             int lineTop = Top + (fontHeight - 3) / 2;
-            menuPixmap->DrawRectangle(cRect( Left, lineTop, menuWidth, 3), ColorFg);
+            menuPixmap->DrawRectangle(cRect( Left, lineTop, menuItemWidth - Left, 3), ColorFg);
             cString groupname = cString::sprintf(" %s ", *buffer);
-            menuPixmap->DrawText(cPoint(Left + (menuWidth / 10 * 2), Top), groupname, ColorFg, ColorBg, font, 0, 0, taCenter);
+            menuPixmap->DrawText(cPoint(Left + (menuItemWidth / 10 * 2), Top), groupname, ColorFg, ColorBg, font, 0, 0, taCenter);
         } else
             menuPixmap->DrawText(cPoint(LeftName, Top), buffer, ColorFg, ColorBg, font, Width);
     } else {
@@ -760,9 +761,9 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
 
         if( Channel->GroupSep() ) {
             int lineTop = Top + (fontHeight - 3) / 2;
-            menuPixmap->DrawRectangle(cRect( Left, lineTop, menuWidth, 3), ColorFg);
+            menuPixmap->DrawRectangle(cRect( Left, lineTop, menuItemWidth - Left, 3), ColorFg);
             cString groupname = cString::sprintf(" %s ", *buffer);
-            menuPixmap->DrawText(cPoint(Left + (menuWidth / 10 * 2), Top), groupname, ColorFg, ColorBg, font, 0, 0, taCenter);
+            menuPixmap->DrawText(cPoint(Left + (menuItemWidth / 10 * 2), Top), groupname, ColorFg, ColorBg, font, 0, 0, taCenter);
         } else {
             menuPixmap->DrawText(cPoint(LeftName, Top), buffer, ColorFg, ColorBg, font, Width);
 
@@ -941,39 +942,56 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText
     ComplexContent.SetPosition(cRect(cLeft, cTop, cWidth, cHeight));
     ComplexContent.SetBGColor(Theme.Color(clrMenuEventBg));
 
-    if( Config.TVScraperEPGInfoShowPoster ) {
-        // TVScraper
-        DecorBorderClearByFrom(BorderTVSPoster);
-        static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
-        if( Config.TVScraperChanInfoShowPoster && pTVScraper ) {
-            TVScraperGetPosterOrBanner call;
-            call.event = Event;
-            if (pTVScraper->Service("TVScraperGetPosterOrBanner", &call)) {
-                int mediaWidth = 0;
-                int mediaHeight = 0;
-                if (call.type == typeSeries) {
-                    mediaWidth = cWidth - marginItem*2;
-                    mediaHeight = 999;
-                } else if (call.type == typeMovie) {
-                    mediaWidth = cWidth/2 - marginItem*3;
-                    mediaHeight = 999;
-                }
-                cImage *img = imgLoader.LoadFile(call.media.path.c_str(), mediaWidth, mediaHeight);
-                if( img && call.type == typeMovie ) {
-                    ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
-                        Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
-                } else if( img && call.type == typeSeries ) {
-                    ComplexContent.AddImage(img, cRect(marginItem, marginItem, img->Width(), img->Height()) );
-                    ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem + img->Height(), cWidth - marginItem*2, cHeight - marginItem*2),
-                        Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
-                } else {
-                    ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
-                        Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
-                }
-            } else {
-                ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
-                    Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
+    std::string mediaPath;
+    int mediaWidth = 0;
+    int mediaHeight = 0;
+    int mediaType = 0;
+    // TVScraper
+    static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
+    static cPlugin *pScraper2Vdr = cPluginManager::GetPlugin("scraper2vdr");
+    if( Config.TVScraperEPGInfoShowPoster && pScraper2Vdr ) {
+        ScraperGetPosterBanner call;
+        call.event = Event;
+        if (pScraper2Vdr->Service("GetPosterBanner", &call)) {
+            std::string mediaPath = "";
+            if ((call.type == tSeries) && call.banner.path.size() > 0) {
+                mediaWidth = cWidth - marginItem*2;
+                mediaHeight = 999;
+                mediaPath = call.banner.path;
+                mediaType = 1;
+            } else if (call.type == tMovie && call.poster.path.size() > 0) {
+                mediaWidth = cWidth/2 - marginItem*3;
+                mediaHeight = 999;
+                mediaPath = call.poster.path;
+                mediaType = 2;
             }
+        }
+    } else if( Config.TVScraperEPGInfoShowPoster && pTVScraper ) {
+        TVScraperGetPosterOrBanner call;
+        call.event = Event;
+        if (pTVScraper->Service("TVScraperGetPosterOrBanner", &call)) {
+            if (call.type == typeSeries) {
+                mediaWidth = cWidth - marginItem*2;
+                mediaHeight = 999;
+                mediaType = 1;
+            } else if (call.type == typeMovie) {
+                mediaWidth = cWidth/2 - marginItem*3;
+                mediaHeight = 999;
+                mediaType = 2;
+            }
+            mediaPath = call.media.path;
+        }
+    }
+
+    if( mediaPath.length() > 0 ) {
+        cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
+        if( img && mediaType == 2 ) {
+            ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
+                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
+        } else if( img && mediaType == 1 ) {
+            ComplexContent.AddImage(img, cRect(marginItem, marginItem, img->Width(), img->Height()) );
+            ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem + img->Height(), cWidth - marginItem*2, cHeight - marginItem*2),
+                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
         } else {
             ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
@@ -1297,10 +1315,10 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         Left += imageBGWidth + marginItem * 2;
         LeftSecond = Left;
 
-        w = menuWidth / 10 * 2;
+        w = menuItemWidth / 10 * 2;
         if( Channel->GroupSep() ) {
             int lineTop = Top + (fontHeight - 3) / 2;
-            menuPixmap->DrawRectangle(cRect( Left, lineTop, menuWidth, 3), ColorFg);
+            menuPixmap->DrawRectangle(cRect( Left, lineTop, menuItemWidth - Left, 3), ColorFg);
             Left += w / 2;
             cString groupname = cString::sprintf(" %s ", Channel->ShortName(true));
             menuPixmap->DrawText(cPoint(Left, Top), groupname, ColorFg, ColorBg, font, 0, 0, taCenter);
@@ -1443,7 +1461,7 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
                 if( found >= 10 ) {
                     std::string date = sep.substr(found - 10, 10);
                     int lineTop = Top + (fontHeight - 3) / 2;
-                    menuPixmap->DrawRectangle(cRect( 0, lineTop, menuWidth, 3), ColorFg);
+                    menuPixmap->DrawRectangle(cRect( 0, lineTop, menuItemWidth, 3), ColorFg);
                     cString datespace = cString::sprintf(" %s ", date.c_str());
                     menuPixmap->DrawText(cPoint(LeftSecond + menuWidth / 10 * 2, Top), datespace, ColorFg, ColorBg, font, 0, 0, taCenter);
                 } else

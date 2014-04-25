@@ -4,14 +4,15 @@
 #include <vdr/tools.h>
 #include "config.h"
 #include "services/tvscraper.h"
+#include "services/scraper2vdr.h"
 
 class cFlatSetup : public cMenuSetupPage {
     public:
         cFlatSetup(void);
-        virtual ~cFlatSetup();      
+        virtual ~cFlatSetup();
     private:
         cFlatConfig SetupConfig;
-    
+
         int ItemLastSel;
         void Setup(void);
     protected:
