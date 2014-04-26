@@ -37,6 +37,11 @@ Die Logos müssen im folgenden Ordner zur Verfügung gestellt werden:
 
 Der Skin muss im Menü unter Einstellungen -> OSD ausgewählt werden.
 
+TVScraper & scraper2vdr
+------------
+Since version 0.3.0 the skin support TVScraper & scraper2vdr.
+With both plugins you'll get poster, banner and actor images for recordings and epg info.
+If You use scraper2vdr, which I recommend, you'll also get movie and series information.
 
 Themes and theme specific Icons
 -------------------------------

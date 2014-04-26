@@ -1314,15 +1314,22 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         Left += imageBGWidth + marginItem * 2;
         LeftSecond = Left;
 
+        cString channame;
         w = menuItemWidth / 10 * 2;
+        if( Config.MenuEventView == 2 || Config.MenuEventView == 3 ) {
+            channame = Channel->Name();
+            w = font->Width(channame);
+        } else
+            channame = Channel->ShortName(true);
+
         if( Channel->GroupSep() ) {
             int lineTop = Top + (fontHeight - 3) / 2;
             menuPixmap->DrawRectangle(cRect( Left, lineTop, menuItemWidth - Left, 3), ColorFg);
             Left += w / 2;
-            cString groupname = cString::sprintf(" %s ", Channel->ShortName(true));
+            cString groupname = cString::sprintf(" %s ", *channame);
             menuPixmap->DrawText(cPoint(Left, Top), groupname, ColorFg, ColorBg, font, 0, 0, taCenter);
         } else
-            menuPixmap->DrawText(cPoint(Left, Top), Channel->ShortName(true), ColorFg, ColorBg, font, w);
+            menuPixmap->DrawText(cPoint(Left, Top), channame, ColorFg, ColorBg, font, w);
 
         Left += w + marginItem * 2;
 
