@@ -953,7 +953,6 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText
         ScraperGetPosterBanner call;
         call.event = Event;
         if (pScraper2Vdr->Service("GetPosterBanner", &call)) {
-            std::string mediaPath = "";
             if ((call.type == tSeries) && call.banner.path.size() > 0) {
                 mediaWidth = cWidth - marginItem*2;
                 mediaHeight = 999;
@@ -1924,40 +1923,118 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
         ContentTop += 6;
 
-        TVScraperGetFullInformation call;
-        if( Config.TVScraperEPGInfoShowPoster || Config.TVScraperEPGInfoShowActors ) {
-            // TVScraper
-            static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
-            if( pTVScraper ) {
-                call.event = Event;
-                call.isRecording = false;
-                pTVScraper->Service("TVScraperGetFullInformation", &call);
+        ostringstream series_info, movie_info;
+
+        std::vector<std::string> actors_path;
+        std::vector<std::string> actors_name;
+        std::vector<std::string> actors_role;
+
+        std::string mediaPath;
+        int mediaWidth = 0;
+        int mediaHeight = 0;
+
+        // TVScraper
+        static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
+        static cPlugin *pScraper2Vdr = cPluginManager::GetPlugin("scraper2vdr");
+        if( (Config.TVScraperEPGInfoShowPoster || Config.TVScraperEPGInfoShowActors) && pScraper2Vdr ) {
+            ScraperGetEventType call;
+            call.event = Event;
+            int seriesId = 0;
+            int episodeId = 0;
+            int movieId = 0;
+
+            if (pScraper2Vdr->Service("GetEventType", &call)) {
+                seriesId = call.seriesId;
+                episodeId = call.episodeId;
+                movieId = call.movieId;
+            }
+            if( seriesId > 0 ) {
+                cSeries series;
+                series.seriesId = seriesId;
+                series.episodeId = episodeId;
+                if (pScraper2Vdr->Service("GetSeries", &series)) {
+                    if( series.banners.size() > 0 )
+                        mediaPath = series.banners[0].path;
+                    mediaWidth = cWidth/2 - marginItem*2;
+                    mediaHeight = 999;
+                    for( unsigned int i = 0; i < series.actors.size(); i++ ) {
+                        actors_path.push_back(series.actors[i].actorThumb.path);
+                        actors_name.push_back(series.actors[i].name);
+                        actors_role.push_back(series.actors[i].role);
+                    }
+                    if( series.name.length() > 0 )
+                        series_info << tr("name: ") << series.name << endl;
+                    if( series.firstAired.length() > 0 )
+                        series_info << tr("first aired: ") << series.firstAired << endl;
+                    if( series.network.length() > 0 )
+                        series_info << tr("network: ") << series.network << endl;
+                    if( series.genre.length() > 0 )
+                        series_info << tr("genre: ") << series.genre << endl;
+                    if( series.rating > 0 )
+                        series_info << tr("rating: ") << series.rating << endl;
+                    if( series.status.length() > 0 )
+                        series_info << tr("status: ") << series.status << endl;
+                    if( series.episode.season > 0 )
+                        series_info << tr("season number: ") << series.episode.season << endl;
+                    if( series.episode.number > 0 )
+                        series_info << tr("episode number: ") << series.episode.number << endl;
+                }
+            } else if (movieId > 0) {
+                cMovie movie;
+                movie.movieId = movieId;
+                if (pScraper2Vdr->Service("GetMovie", &movie)) {
+                    mediaPath = movie.poster.path;
+                    mediaWidth = cWidth/2 - marginItem*3;
+                    mediaHeight = 999;
+                    for( unsigned int i = 0; i < movie.actors.size(); i++ ) {
+                        actors_path.push_back(movie.actors[i].actorThumb.path);
+                        actors_name.push_back(movie.actors[i].name);
+                        actors_role.push_back(movie.actors[i].role);
+                    }
+                    if( movie.title.length() > 0 )
+                        movie_info << tr("title: ") << movie.title << endl;
+                    if( movie.originalTitle.length() > 0 )
+                        movie_info << tr("original title: ") << movie.originalTitle << endl;
+                    if( movie.collectionName.length() > 0 )
+                        movie_info << tr("collection name: ") << movie.collectionName << endl;
+                    if( movie.genres.length() > 0 )
+                        movie_info << tr("genre: ") << movie.genres << endl;
+                    if( movie.releaseDate.length() > 0 )
+                        movie_info << tr("release date: ") << movie.releaseDate << endl;
+                    if( movie.popularity > 0 )
+                        movie_info << tr("popularity: ") << movie.popularity << endl;
+                    if( movie.voteAverage > 0 )
+                        movie_info << tr("vote average: ") << movie.voteAverage << endl;
+                }
+            }
+        } else if( (Config.TVScraperEPGInfoShowPoster || Config.TVScraperEPGInfoShowActors) && pTVScraper ) {
+            TVScraperGetFullInformation call;
+            call.event = Event;
+            call.isRecording = false;
+            if (pTVScraper->Service("TVScraperGetFullInformation", &call)) {
+                if (call.type == typeSeries) {
+                    mediaWidth = cWidth/2 - marginItem*2;
+                    mediaHeight = 999;
+                    mediaPath = call.banner.path;
+                } else if (call.type == typeMovie) {
+                    mediaWidth = cWidth/2 - marginItem*3;
+                    mediaHeight = 999;
+                    if( call.posters.size() > 0 )
+                        mediaPath = call.posters[0].path;
+                }
+                for( unsigned int i = 0; i < call.actors.size(); i++ ) {
+                    actors_path.push_back(call.actors[i].thumb.path);
+                    actors_name.push_back(call.actors[i].name);
+                    actors_role.push_back(call.actors[i].role);
+                }
             }
         }
 
-        if( Config.TVScraperEPGInfoShowPoster ) {
-            if( call.posters.size() > 0 ) {
-                int mediaWidth = 0;
-                int mediaHeight = 0;
-                std::string path;
-                if( call.posters.size() > 0 )
-                    path = call.posters[0].path;
-
-                if (call.type == typeSeries) {
-                    mediaWidth = cWidth/2 - marginItem*2;
-                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
-                } else if (call.type == typeMovie) {
-                    mediaWidth = cWidth/2 - marginItem*3;
-                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
-                }
-                cImage *img = imgLoader.LoadFile(path.c_str(), mediaWidth, mediaHeight);
-                if( img ) {
-                    ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
-                        Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
-                } else {
-                    ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
-                        Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
-                }
+        if( mediaPath.length() > 0 ) {
+            cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
+            if( img ) {
+                ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
+                    Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
             } else {
                 ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
@@ -1967,7 +2044,27 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
         }
 
-        if( Config.TVScraperEPGInfoShowActors && call.actors.size() > 0 ) {
+        if( movie_info.str().length() > 0 ) {
+            ContentTop = ComplexContent.BottomContent() + fontHeight;
+            ComplexContent.AddText(tr("Movie information"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
+            ContentTop += fontHeight;
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+            ContentTop += 6;
+            ComplexContent.AddText(movie_info.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
+                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
+        }
+
+        if( series_info.str().length() > 0 ) {
+            ContentTop = ComplexContent.BottomContent() + fontHeight;
+            ComplexContent.AddText(tr("Series information"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
+            ContentTop += fontHeight;
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+            ContentTop += 6;
+            ComplexContent.AddText(series_info.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
+                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
+        }
+
+        if( Config.TVScraperEPGInfoShowActors && actors_path.size() > 0 ) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Actors"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
             ContentTop += fontHeight;
@@ -1975,7 +2072,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             ContentTop += 6;
 
             int actorsPerLine = 6;
-            int numActors = call.actors.size();
+            int numActors = actors_path.size();
             int actorWidth = cWidth / actorsPerLine - marginItem*4;
             int picsPerLine = (cWidth - marginItem*2) / actorWidth;
             int picLines = numActors / picsPerLine;
@@ -1989,19 +2086,17 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                 for (int col = 0; col < picsPerLine; col++) {
                     if (actor == numActors)
                         break;
-                    std::string path = call.actors[actor].thumb.path;
+                    std::string path = actors_path[actor];
                     cImage *img = imgLoader.LoadFile(path.c_str(), actorWidth, 999);
                     if( img ) {
                         ComplexContent.AddImage(img, cRect(x, y, 0, 0));
-
-                        std::string name = call.actors[actor].name;
+                        std::string name = actors_name[actor];
                         std::stringstream sstrRole;
-                        sstrRole << "\"" << call.actors[actor].role << "\"";
+                        sstrRole << "\"" << actors_role[actor] << "\"";
                         std::string role = sstrRole.str();
-
                         ComplexContent.AddText(name.c_str(), false, cRect(x, y + img->Height() + marginItem, actorWidth, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, actorWidth, fontSmlHeight, taCenter);
                         ComplexContent.AddText(role.c_str(), false, cRect(x, y + img->Height() + marginItem + fontSmlHeight, actorWidth, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, actorWidth, fontSmlHeight, taCenter);
-                    }
+                        }
                     x += actorWidth + actorMargin;
                     actor++;
                 }
@@ -2261,44 +2356,75 @@ void cFlatDisplayMenu::DrawItemExtraRecording(const cRecording *Recording, cStri
     ComplexContent.SetPosition(cRect(cLeft, cTop, cWidth, cHeight));
     ComplexContent.SetBGColor(Theme.Color(clrMenuRecBg));
 
-    if( Config.TVScraperEPGInfoShowPoster ) {
-        // TVScraper
-        DecorBorderClearByFrom(BorderTVSPoster);
-        static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
-        if( Config.TVScraperChanInfoShowPoster && pTVScraper ) {
-            TVScraperGetFullInformation call;
-            call.event = Event;
-            call.isRecording = true;
-            if (pTVScraper->Service("TVScraperGetFullInformation", &call)) {
-                int mediaWidth = 0;
-                int mediaHeight = 0;
-                std::string path = "";
-                if (call.type == typeSeries) {
-                    mediaWidth = cWidth - marginItem*2;
-                    mediaHeight = 999;
-                    path = call.banner.path;
-                } else if (call.type == typeMovie) {
-                    mediaWidth = cWidth/2 - marginItem*3;
-                    mediaHeight = 999;
-                    if( call.posters.size() > 0 )
-                        path = call.posters[0].path;
-                }
-                cImage *img = imgLoader.LoadFile(path.c_str(), mediaWidth, mediaHeight);
-                if( img && call.type == typeMovie ) {
-                    ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
-                        Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml);
-                } else if( img && call.type == typeSeries ) {
-                    ComplexContent.AddImage(img, cRect(marginItem, marginItem, img->Width(), img->Height()) );
-                    ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem + img->Height(), cWidth - marginItem*2, cHeight - marginItem*2),
-                        Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml);
-                } else {
-                    ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
-                        Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml);
-                }
-            } else {
-                ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
-                    Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml);
+    std::string mediaPath;
+    int mediaWidth = 0;
+    int mediaHeight = 0;
+    int mediaType = 0;
+
+    // TVScraper
+    static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
+    static cPlugin *pScraper2Vdr = cPluginManager::GetPlugin("scraper2vdr");
+    if( Config.TVScraperRecInfoShowPoster && pScraper2Vdr ) {
+        ScraperGetEventType call;
+        call.recording = Recording;
+        int seriesId = 0;
+        int episodeId = 0;
+        int movieId = 0;
+
+        if (pScraper2Vdr->Service("GetEventType", &call)) {
+            seriesId = call.seriesId;
+            episodeId = call.episodeId;
+            movieId = call.movieId;
+        }
+        if( seriesId > 0 ) {
+            cSeries series;
+            series.seriesId = seriesId;
+            series.episodeId = episodeId;
+            if (pScraper2Vdr->Service("GetSeries", &series)) {
+                if( series.banners.size() > 0 )
+                    mediaPath = series.banners[0].path;
+                mediaWidth = cWidth - marginItem*2;
+                mediaHeight = 999;
+                mediaType = 1;
             }
+        } else if (movieId > 0) {
+            cMovie movie;
+            movie.movieId = movieId;
+            if (pScraper2Vdr->Service("GetMovie", &movie)) {
+                mediaPath = movie.poster.path;
+                mediaWidth = cWidth/2 - marginItem*3;
+                mediaHeight = 999;
+                mediaType = 2;
+            }
+        }
+    } else if( Config.TVScraperRecInfoShowPoster && pTVScraper ) {
+        TVScraperGetFullInformation call;
+        call.event = Event;
+        call.isRecording = true;
+        if (pTVScraper->Service("TVScraperGetFullInformation", &call)) {
+            if (call.type == typeSeries) {
+                mediaWidth = cWidth - marginItem*2;
+                mediaHeight = 999;
+                mediaType = 1;
+                mediaPath = call.banner.path;
+            } else if (call.type == typeMovie) {
+                mediaWidth = cWidth/2 - marginItem*3;
+                mediaHeight = 999;
+                mediaType = 2;
+                if( call.posters.size() > 0 )
+                    mediaPath = call.posters[0].path;
+            }
+        }
+    }
+    if( mediaPath.length() > 0 ) {
+        cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
+        if( img && mediaType == 2 ) {
+            ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
+                Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml);
+        } else if( img && mediaType == 1 ) {
+            ComplexContent.AddImage(img, cRect(marginItem, marginItem, img->Width(), img->Height()) );
+            ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem + img->Height(), cWidth - marginItem*2, cHeight - marginItem*2),
+                Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml);
         } else {
             ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml);
@@ -2309,7 +2435,6 @@ void cFlatDisplayMenu::DrawItemExtraRecording(const cRecording *Recording, cStri
     }
 
     ComplexContent.CreatePixmaps(Config.MenuContentFullSize);
-
     ComplexContent.Draw();
 
     DecorBorderClearByFrom(BorderContent);
@@ -2517,7 +2642,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             } if (subtitle.str().length() > 0) {
                 if( textAdditional.str().length() > 0 )
                     textAdditional << endl;
-                textAdditional << endl << tr("Subtitle") << ": "<< subtitle.str();
+                textAdditional << tr("Subtitle") << ": "<< subtitle.str();
             }
         }
         if (recInfo->Aux()) {
@@ -2570,40 +2695,118 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
         ContentTop += 6;
 
-        TVScraperGetFullInformation call;
-        if( Config.TVScraperEPGInfoShowPoster || Config.TVScraperEPGInfoShowActors ) {
-            // TVScraper
-            static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
-            if( pTVScraper ) {
-                call.event = Event;
-                call.isRecording = true;
-                pTVScraper->Service("TVScraperGetFullInformation", &call);
+        ostringstream series_info, movie_info;
+
+        std::vector<std::string> actors_path;
+        std::vector<std::string> actors_name;
+        std::vector<std::string> actors_role;
+
+        std::string mediaPath;
+        int mediaWidth = 0;
+        int mediaHeight = 0;
+
+        // TVScraper
+        static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
+        static cPlugin *pScraper2Vdr = cPluginManager::GetPlugin("scraper2vdr");
+        if( (Config.TVScraperRecInfoShowPoster || Config.TVScraperRecInfoShowActors) && pScraper2Vdr ) {
+            ScraperGetEventType call;
+            call.recording = Recording;
+            int seriesId = 0;
+            int episodeId = 0;
+            int movieId = 0;
+
+            if (pScraper2Vdr->Service("GetEventType", &call)) {
+                seriesId = call.seriesId;
+                episodeId = call.episodeId;
+                movieId = call.movieId;
+            }
+            if( seriesId > 0 ) {
+                cSeries series;
+                series.seriesId = seriesId;
+                series.episodeId = episodeId;
+                if (pScraper2Vdr->Service("GetSeries", &series)) {
+                    if( series.banners.size() > 0 )
+                        mediaPath = series.banners[0].path;
+                    mediaWidth = cWidth/2 - marginItem*2;
+                    mediaHeight = 999;
+                    for( unsigned int i = 0; i < series.actors.size(); i++ ) {
+                        actors_path.push_back(series.actors[i].actorThumb.path);
+                        actors_name.push_back(series.actors[i].name);
+                        actors_role.push_back(series.actors[i].role);
+                    }
+                    if( series.name.length() > 0 )
+                        series_info << tr("name: ") << series.name << endl;
+                    if( series.firstAired.length() > 0 )
+                        series_info << tr("first aired: ") << series.firstAired << endl;
+                    if( series.network.length() > 0 )
+                        series_info << tr("network: ") << series.network << endl;
+                    if( series.genre.length() > 0 )
+                        series_info << tr("genre: ") << series.genre << endl;
+                    if( series.rating > 0 )
+                        series_info << tr("rating: ") << series.rating << endl;
+                    if( series.status.length() > 0 )
+                        series_info << tr("status: ") << series.status << endl;
+                    if( series.episode.season > 0 )
+                        series_info << tr("season number: ") << series.episode.season << endl;
+                    if( series.episode.number > 0 )
+                        series_info << tr("episode number: ") << series.episode.number << endl;
+                }
+            } else if (movieId > 0) {
+                cMovie movie;
+                movie.movieId = movieId;
+                if (pScraper2Vdr->Service("GetMovie", &movie)) {
+                    mediaPath = movie.poster.path;
+                    mediaWidth = cWidth/2 - marginItem*3;
+                    mediaHeight = 999;
+                    for( unsigned int i = 0; i < movie.actors.size(); i++ ) {
+                        actors_path.push_back(movie.actors[i].actorThumb.path);
+                        actors_name.push_back(movie.actors[i].name);
+                        actors_role.push_back(movie.actors[i].role);
+                    }
+                    if( movie.title.length() > 0 )
+                        movie_info << tr("title: ") << movie.title << endl;
+                    if( movie.originalTitle.length() > 0 )
+                        movie_info << tr("original title: ") << movie.originalTitle << endl;
+                    if( movie.collectionName.length() > 0 )
+                        movie_info << tr("collection name: ") << movie.collectionName << endl;
+                    if( movie.genres.length() > 0 )
+                        movie_info << tr("genre: ") << movie.genres << endl;
+                    if( movie.releaseDate.length() > 0 )
+                        movie_info << tr("release date: ") << movie.releaseDate << endl;
+                    if( movie.popularity > 0 )
+                        movie_info << tr("popularity: ") << movie.popularity << endl;
+                    if( movie.voteAverage > 0 )
+                        movie_info << tr("vote average: ") << movie.voteAverage << endl;
+                }
+            }
+        } else if( (Config.TVScraperRecInfoShowPoster || Config.TVScraperRecInfoShowActors) && pTVScraper ) {
+            TVScraperGetFullInformation call;
+            call.event = Event;
+            call.isRecording = true;
+            if (pTVScraper->Service("TVScraperGetFullInformation", &call)) {
+                if (call.type == typeSeries) {
+                    mediaWidth = cWidth/2 - marginItem*2;
+                    mediaHeight = 999;
+                    mediaPath = call.banner.path;
+                } else if (call.type == typeMovie) {
+                    mediaWidth = cWidth/2 - marginItem*3;
+                    mediaHeight = 999;
+                    if( call.posters.size() > 0 )
+                        mediaPath = call.posters[0].path;
+                }
+                for( unsigned int i = 0; i < call.actors.size(); i++ ) {
+                    actors_path.push_back(call.actors[i].thumb.path);
+                    actors_name.push_back(call.actors[i].name);
+                    actors_role.push_back(call.actors[i].role);
+                }
             }
         }
 
-        if( Config.TVScraperEPGInfoShowPoster ) {
-            if( call.posters.size() > 0 ) {
-                int mediaWidth = 0;
-                int mediaHeight = 0;
-                std::string path;
-                if( call.posters.size() > 0 )
-                    path = call.posters[0].path;
-
-                if (call.type == typeSeries) {
-                    mediaWidth = cWidth/2 - marginItem*2;
-                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
-                } else if (call.type == typeMovie) {
-                    mediaWidth = cWidth/2 - marginItem*3;
-                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
-                }
-                cImage *img = imgLoader.LoadFile(path.c_str(), mediaWidth, mediaHeight);
-                if( img ) {
-                    ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
-                        Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
-                } else {
-                    ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
-                        Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
-                }
+        if( mediaPath.length() > 0 ) {
+            cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
+            if( img ) {
+                ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
+                    Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
             } else {
                 ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
@@ -2613,7 +2816,27 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                 Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
         }
 
-        if( Config.TVScraperEPGInfoShowActors && call.actors.size() > 0 ) {
+        if( movie_info.str().length() > 0 ) {
+            ContentTop = ComplexContent.BottomContent() + fontHeight;
+            ComplexContent.AddText(tr("Movie information"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
+            ContentTop += fontHeight;
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+            ContentTop += 6;
+            ComplexContent.AddText(movie_info.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
+                Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
+        }
+
+        if( series_info.str().length() > 0 ) {
+            ContentTop = ComplexContent.BottomContent() + fontHeight;
+            ComplexContent.AddText(tr("Series information"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
+            ContentTop += fontHeight;
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+            ContentTop += 6;
+            ComplexContent.AddText(series_info.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
+                Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
+        }
+
+        if( Config.TVScraperRecInfoShowActors && actors_path.size() > 0 ) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Actors"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
             ContentTop += fontHeight;
@@ -2621,7 +2844,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             ContentTop += 6;
 
             int actorsPerLine = 6;
-            int numActors = call.actors.size();
+            int numActors = actors_path.size();
             int actorWidth = cWidth / actorsPerLine - marginItem*4;
             int picsPerLine = (cWidth - marginItem*2) / actorWidth;
             int picLines = numActors / picsPerLine;
@@ -2635,15 +2858,14 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                 for (int col = 0; col < picsPerLine; col++) {
                     if (actor == numActors)
                         break;
-                    std::string path = call.actors[actor].thumb.path;
+                    std::string path = actors_path[actor];
                     cImage *img = imgLoader.LoadFile(path.c_str(), actorWidth, 999);
                     if( img ) {
                         ComplexContent.AddImage(img, cRect(x, y, 0, 0));
-                        std::string name = call.actors[actor].name;
+                        std::string name = actors_name[actor];
                         std::stringstream sstrRole;
-                        sstrRole << "\"" << call.actors[actor].role << "\"";
+                        sstrRole << "\"" << actors_role[actor] << "\"";
                         std::string role = sstrRole.str();
-                        dsyslog("name: %s", name.c_str() );
                         ComplexContent.AddText(name.c_str(), false, cRect(x, y + img->Height() + marginItem, actorWidth, 0), Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml, actorWidth, fontSmlHeight, taCenter);
                         ComplexContent.AddText(role.c_str(), false, cRect(x, y + img->Height() + marginItem + fontSmlHeight, actorWidth, 0), Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), fontSml, actorWidth, fontSmlHeight, taCenter);
                         }
@@ -2684,36 +2906,6 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         ComplexContent.CreatePixmaps(false);
 
     ComplexContent.Draw();
-
-/*
-    ComplexContent.Clear();
-
-    bool Scrollable = false;
-    ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
-        Theme.Color(clrMenuTextFixedFont), Theme.Color(clrMenuRecBg), font);
-    ComplexContent.SetScrollSize(fontHeight);
-
-    Scrollable = ComplexContent.Scrollable(cHeight - marginItem*2);
-    if( Scrollable ) {
-        cWidth -= scrollBarWidth;
-        ComplexContent.Clear();
-        ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
-            Theme.Color(clrMenuTextFixedFont), Theme.Color(clrMenuRecBg), font);
-        ComplexContent.SetScrollSize(fontHeight);
-    }
-
-    ComplexContent.SetOsd(osd);
-    ComplexContent.SetPosition(cRect(cLeft, cTop, cWidth, cHeight));
-    ComplexContent.SetBGColor(Theme.Color(clrMenuRecBg));
-    ComplexContent.SetScrollingActive(true);
-
-    if( Config.MenuContentFullSize || Scrollable ) {
-        ComplexContent.CreatePixmaps(true);
-    } else
-        ComplexContent.CreatePixmaps(false);
-
-    ComplexContent.Draw();
-*/
 
     contentHeadPixmap->Fill(clrTransparent);
     contentHeadPixmap->DrawRectangle(cRect(0, 0, menuWidth, fontHeight + fontSmlHeight*2 + marginItem*2), Theme.Color(clrScrollbarBg));

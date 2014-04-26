@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.2.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-04-23 10:29+0200\n"
+"POT-Creation-Date: 2014-04-26 16:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,6 +41,54 @@ msgstr "keine Aufnahme Informationen"
 
 msgid "Description"
 msgstr "Beschreibung"
+
+msgid "name: "
+msgstr "Name: "
+
+msgid "first aired: "
+msgstr "Erstausstrahlung: "
+
+msgid "network: "
+msgstr "Sender: "
+
+msgid "genre: "
+msgstr "Genre: "
+
+msgid "rating: "
+msgstr "Wertung: "
+
+msgid "status: "
+msgstr "Status: "
+
+msgid "season number: "
+msgstr "Staffel: "
+
+msgid "episode number: "
+msgstr "Folge: "
+
+msgid "title: "
+msgstr "Title: "
+
+msgid "original title: "
+msgstr "Originaltitle: "
+
+msgid "collection name: "
+msgstr ""
+
+msgid "release date: "
+msgstr "Erscheinungsdatum: "
+
+msgid "popularity: "
+msgstr "Beliebtheit: "
+
+msgid "vote average: "
+msgstr "durchsch. Wertung: "
+
+msgid "Movie information"
+msgstr "Film Informationen"
+
+msgid "Series information"
+msgstr "Serien Informationen"
 
 msgid "Actors"
 msgstr "Schauspieler"
@@ -183,11 +231,11 @@ msgstr "Lautstärke Einstellungen"
 msgid "Tracks settings"
 msgstr "Audiospur Einstellungen"
 
-msgid "TVScraper settings"
-msgstr "TVScraper Einstellungen"
+msgid "TVScraper / scraper2vdr settings"
+msgstr "TVScraper / scraper2vdr Einstellungen"
 
-msgid "TVScraper not installed"
-msgstr "TVScraper nicht installiert"
+msgid "TVScraper / scraper2vdr not installed"
+msgstr "TVScraper / scraper2vdr nicht installiert"
 
 msgid "Decorfile"
 msgstr "Decordatei"

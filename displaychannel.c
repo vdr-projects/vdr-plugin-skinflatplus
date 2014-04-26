@@ -445,7 +445,6 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         ScraperGetPosterBanner call;
         call.event = Present;
         if (pScraper2Vdr->Service("GetPosterBanner", &call)) {
-            std::string mediaPath = "";
             if ((call.type == tSeries) && call.banner.path.size() > 0) {
                 mediaWidth = call.banner.width * Config.TVScraperChanInfoPosterSize*100;
                 mediaHeight = call.banner.height * Config.TVScraperChanInfoPosterSize*100;

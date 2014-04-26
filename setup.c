@@ -86,9 +86,9 @@ void cFlatSetup::Setup(void) {
     static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
     static cPlugin *pScraper2Vdr = cPluginManager::GetPlugin("scraper2vdr");
     if( pTVScraper || pScraper2Vdr )
-        Add(new cOsdItem(tr("TVScraper settings"), osUnknown, true));
+        Add(new cOsdItem(tr("TVScraper / scraper2vdr settings"), osUnknown, true));
     else
-        Add(new cOsdItem(tr("TVScraper not installed"), osUnknown, false));
+        Add(new cOsdItem(tr("TVScraper / scraper2vdr not installed"), osUnknown, false));
 
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
@@ -118,7 +118,7 @@ eOSState cFlatSetup::ProcessKey(eKeys Key) {
                 state = AddSubMenu(new cFlatSetupVolume(&SetupConfig));
             if (strcmp(ItemText, tr("Tracks settings")) == 0)
                 state = AddSubMenu(new cFlatSetupTracks(&SetupConfig));
-            if (strcmp(ItemText, tr("TVScraper settings")) == 0)
+            if (strcmp(ItemText, tr("TVScraper / scraper2vdr settings")) == 0)
                 state = AddSubMenu(new cFlatSetupTvsraper(&SetupConfig));
         }
     }
