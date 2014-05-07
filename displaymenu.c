@@ -2030,9 +2030,12 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                         mediaPath = call.posters[0].path;
                 }
                 for( unsigned int i = 0; i < call.actors.size(); i++ ) {
-                    actors_path.push_back(call.actors[i].thumb.path);
-                    actors_name.push_back(call.actors[i].name);
-                    actors_role.push_back(call.actors[i].role);
+                    cImage *img = imgLoader.LoadFile(call.actors[i].thumb.path.c_str(), 100, 100);
+                    if( img ) {
+                        actors_path.push_back(call.actors[i].thumb.path);
+                        actors_name.push_back(call.actors[i].name);
+                        actors_role.push_back(call.actors[i].role);
+                    }
                 }
             }
         }
@@ -2099,11 +2102,12 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                         ComplexContent.AddImage(img, cRect(x, y, 0, 0));
                         std::string name = actors_name[actor];
                         std::stringstream sstrRole;
-                        sstrRole << "\"" << actors_role[actor] << "\"";
+                        if( actors_role[actor].length() > 0 )
+                            sstrRole << "\"" << actors_role[actor] << "\"";
                         std::string role = sstrRole.str();
                         ComplexContent.AddText(name.c_str(), false, cRect(x, y + img->Height() + marginItem, actorWidth, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, actorWidth, fontSmlHeight, taCenter);
                         ComplexContent.AddText(role.c_str(), false, cRect(x, y + img->Height() + marginItem + fontSmlHeight, actorWidth, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, actorWidth, fontSmlHeight, taCenter);
-                        }
+                    }
                     x += actorWidth + actorMargin;
                     actor++;
                 }
@@ -2802,9 +2806,12 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                         mediaPath = call.posters[0].path;
                 }
                 for( unsigned int i = 0; i < call.actors.size(); i++ ) {
-                    actors_path.push_back(call.actors[i].thumb.path);
-                    actors_name.push_back(call.actors[i].name);
-                    actors_role.push_back(call.actors[i].role);
+                    cImage *img = imgLoader.LoadFile(call.actors[i].thumb.path.c_str(), 100, 100);
+                    if( img ) {
+                        actors_path.push_back(call.actors[i].thumb.path);
+                        actors_name.push_back(call.actors[i].name);
+                        actors_role.push_back(call.actors[i].role);
+                    }
                 }
             }
         }
