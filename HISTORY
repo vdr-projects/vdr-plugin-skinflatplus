@@ -7,6 +7,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] recording menu with cutted recordings an %
 - [update] channel logo in wide format (like 3PO or Copperhead logos)
 - [update] complete rewrite multiline content
+- [update] draw timer menu with a straight table
 - [add] show reruns in epg info (lent code from nopacity, thanks!)
 - [add] TVScraper support
         - show poster images of movies and series
@@ -16,6 +17,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] horizontal line and group icon in SetItemEvent for group channels
 - [add] new fnu_anthra_themes (thank You fnu/Frank)
 - [add] eventsview-flatplus.sql for epgd to prevent double information in epg-text, please see wiki for more information
+- [add] parse tilde in timer menu and draw text after tilde with clrMenuItemExtraTextFont
 
 2014-25-03: Version 0.2.1
 - [fix] epgsearch progessbar in SetItemEvent, if epg start time is after now (2 minutes tolerance)

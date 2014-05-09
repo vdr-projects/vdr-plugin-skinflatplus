@@ -1167,7 +1167,7 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
 
                 menuPixmap->DrawText(cPoint(Left, Top), first.c_str(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
                 int l = font->Width( first.c_str() );
-                menuPixmap->DrawText(cPoint(Left + l, Top), first.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font, menuItemWidth - Left - l - marginItem);
+                menuPixmap->DrawText(cPoint(Left + l, Top), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font, menuItemWidth - Left - l - marginItem);
             } else if ( found2 != string::npos ) {
                 std::string first = tilde.substr(0, found2);
                 std::string second = tilde.substr(found2 +1, tilde.length() );
@@ -1175,7 +1175,7 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
                 menuPixmap->DrawText(cPoint(Left, Top), first.c_str(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
                 int l = font->Width( first.c_str() );
                 l += font->Width("X");
-                menuPixmap->DrawText(cPoint(Left + l, Top), first.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font, menuItemWidth - Left - l - marginItem);
+                menuPixmap->DrawText(cPoint(Left + l, Top), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font, menuItemWidth - Left - l - marginItem);
             } else
                 menuPixmap->DrawText(cPoint(Left, Top), File, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
         } else {
@@ -1187,7 +1187,31 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
                     Timer->Start() / 100, Timer->Start() % 100,
                     Timer->Stop() / 100, Timer->Stop() % 100);
         menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
-        menuPixmap->DrawText(cPoint(Left, Top + fontHeight), File, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+
+        if( Config.MenuItemParseTilde ) {
+            std::string tilde = File;
+            size_t found = tilde.find(" ~ ");
+            size_t found2 = tilde.find("~");
+            if( found != string::npos ) {
+                std::string first = tilde.substr(0, found);
+                std::string second = tilde.substr(found +2, tilde.length() );
+
+                menuPixmap->DrawText(cPoint(Left, Top + fontHeight), first.c_str(), ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+                int l = fontSml->Width( first.c_str() );
+                menuPixmap->DrawText(cPoint(Left + l, Top + fontHeight), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, fontSml, menuItemWidth - Left - l - marginItem);
+            } else if ( found2 != string::npos ) {
+                std::string first = tilde.substr(0, found2);
+                std::string second = tilde.substr(found2 +1, tilde.length() );
+
+                menuPixmap->DrawText(cPoint(Left, Top + fontHeight), first.c_str(), ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+                int l = fontSml->Width( first.c_str() );
+                l += fontSml->Width("X");
+                menuPixmap->DrawText(cPoint(Left + l, Top + fontHeight), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, fontSml, menuItemWidth - Left - l - marginItem);
+            } else
+                menuPixmap->DrawText(cPoint(Left, Top + fontHeight), File, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+        } else {
+            menuPixmap->DrawText(cPoint(Left, Top + fontHeight), File, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+        }
     }
 
     sDecorBorder ib;
