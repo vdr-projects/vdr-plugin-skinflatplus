@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.2.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-04-26 16:07+0200\n"
+"POT-Creation-Date: 2014-05-09 18:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,9 +38,6 @@ msgstr "Timer nicht aktiv"
 
 msgid "no recording info"
 msgstr "keine Aufnahme Informationen"
-
-msgid "Description"
-msgstr "Beschreibung"
 
 msgid "name: "
 msgstr "Name: "
@@ -83,6 +80,9 @@ msgstr "Beliebtheit: "
 
 msgid "vote average: "
 msgstr "durchsch. Wertung: "
+
+msgid "Description"
+msgstr "Beschreibung"
 
 msgid "Movie information"
 msgstr "Film Informationen"

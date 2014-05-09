@@ -1925,10 +1925,6 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         ComplexContent.SetScrollingActive(true);
 
         int ContentTop = marginItem;
-        ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
-        ContentTop += fontHeight;
-        ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
-        ContentTop += 6;
 
         ostringstream series_info, movie_info;
 
@@ -2043,13 +2039,25 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         if( mediaPath.length() > 0 ) {
             cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
             if( img ) {
+                ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
+                ContentTop += fontHeight;
+                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+                ContentTop += 6;
                 ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
-            } else {
+            } else if( text.str().length() > 0 ) {
+                ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
+                ContentTop += fontHeight;
+                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+                ContentTop += 6;
                 ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
             }
-        } else {
+        } else if( text.str().length() > 0 ) {
+            ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
+            ContentTop += fontHeight;
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+            ContentTop += 6;
             ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
         }
@@ -2701,10 +2709,6 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         ComplexContent.SetScrollingActive(true);
 
         int ContentTop = marginItem;
-        ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
-        ContentTop += fontHeight;
-        ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
-        ContentTop += 6;
 
         ostringstream series_info, movie_info;
 
@@ -2819,13 +2823,25 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         if( mediaPath.length() > 0 ) {
             cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
             if( img ) {
+                ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
+                ContentTop += fontHeight;
+                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+                ContentTop += 6;
                 ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
-            } else {
+            } else if( text.str().length() > 0 ) {
+                ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
+                ContentTop += fontHeight;
+                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+                ContentTop += 6;
                 ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
             }
-        } else {
+        } else if( text.str().length() > 0 ) {
+            ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
+            ContentTop += fontHeight;
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+            ContentTop += 6;
             ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
         }
