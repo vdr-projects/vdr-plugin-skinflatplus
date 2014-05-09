@@ -1151,12 +1151,36 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
         File = Timer->File();
 
     if( Config.MenuTimerView == 1 ) {
-        buffer = cString::sprintf("%s%s%s.  %02d:%02d - %02d:%02d  %s",
-                    *name, *name && **name ? " " : "", *day,
-                    Timer->Start() / 100, Timer->Start() % 100,
-                    Timer->Stop() / 100, Timer->Stop() % 100,
-                    File);
+        buffer = cString::sprintf("%s%s%s.", *name, *name && **name ? " " : "", *day);
         menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+        Left += font->Width("XXX 99.  ");
+        buffer = cString::sprintf("%02d:%02d - %02d:%02d",Timer->Start() / 100, Timer->Start() % 100, Timer->Stop() / 100, Timer->Stop() % 100);
+        menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+        Left += font->Width("99:99 - 99:99  ");
+        if( Config.MenuItemParseTilde ) {
+            std::string tilde = File;
+            size_t found = tilde.find(" ~ ");
+            size_t found2 = tilde.find("~");
+            if( found != string::npos ) {
+                std::string first = tilde.substr(0, found);
+                std::string second = tilde.substr(found +2, tilde.length() );
+
+                menuPixmap->DrawText(cPoint(Left, Top), first.c_str(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+                int l = font->Width( first.c_str() );
+                menuPixmap->DrawText(cPoint(Left + l, Top), first.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font, menuItemWidth - Left - l - marginItem);
+            } else if ( found2 != string::npos ) {
+                std::string first = tilde.substr(0, found2);
+                std::string second = tilde.substr(found2 +1, tilde.length() );
+
+                menuPixmap->DrawText(cPoint(Left, Top), first.c_str(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+                int l = font->Width( first.c_str() );
+                l += font->Width("X");
+                menuPixmap->DrawText(cPoint(Left + l, Top), first.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font, menuItemWidth - Left - l - marginItem);
+            } else
+                menuPixmap->DrawText(cPoint(Left, Top), File, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+        } else {
+            menuPixmap->DrawText(cPoint(Left, Top), File, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
+        }
     } else if( Config.MenuTimerView == 2 || Config.MenuTimerView == 3 ) {
         buffer = cString::sprintf("%s%s%s.  %02d:%02d - %02d:%02d",
                     *name, *name && **name ? " " : "", *day,
