@@ -37,8 +37,16 @@ Die Logos müssen im folgenden Ordner zur Verfügung gestellt werden:
 
 Der Skin muss im Menü unter Einstellungen -> OSD ausgewählt werden.
 
+Versteckte Einstellungen
+-------------------------------
+Versteckte Einstellungen sind Einstellungen die in der VDR setup.conf konfiguriert werden können, wozu es aber keine Einstellungen im OSD -> Einstellungen -> Plugins -> skinflatplus gibt.
+
+* MenuItemRecordingClearPercent - Wenn die Einstellung auf 1 gesetzt ist, wird vom Aufnahmetext das Prozentzeichen am Anfang des Strings entfernt.
+* MenuItemRecordingShowFolderDate - Wenn die Einstellung auf 1 gesetzt ist, wird bei einem Ordner von der neuesten Aufzeichnung das Datum angezeigt, Wenn die Einstellung auf 2 gesetzt ist, wird bei einem Ordner von der ältesten Aufzeichnung das Datum angezeigt.
+* MenuItemParseTilde - Wenn die Einstellung auf 1 gesetzt ist, wird beim Menü-Item-Text auf den Buchstaben Tilde '~' geprüft und wenn eine Tilde gefunden wurde, wird die Tilde entfernt und alles was nach der Tilde steht in einer anderen Farbe dargestellt. Dies ist z.B. interessant wenn man epgsearch hat.
+
 TVScraper & scraper2vdr
-------------
+-------------------------------
 Since version 0.3.0 the skin support TVScraper & scraper2vdr.
 With both plugins you'll get poster, banner and actor images for recordings and epg info.
 If You use scraper2vdr, which I recommend, you'll also get movie and series information.

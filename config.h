@@ -187,10 +187,11 @@ class cFlatConfig
         int MenuEventView;
         int MenuRecordingView;
 
+        /* hidden configs (only in setup.conf, no osd menu) */
         int MenuItemRecordingClearPercent;
         int MenuItemRecordingShowFolderDate;    // 0 = disable, 1 = newest recording date, 2 = oldest recording date
-
         int MenuItemParseTilde;
+        /* hidden configs (only in setup.conf, no osd menu) */
 
         // TVScraper
         int TVScraperChanInfoShowPoster;
