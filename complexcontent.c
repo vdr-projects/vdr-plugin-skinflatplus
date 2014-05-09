@@ -156,7 +156,7 @@ void cComplexContent::AddImageWithFloatedText(cImage *image, int imageAlignment,
             NumChars += strlen(WrapperFloat.GetLine(i));
         }
         // detect end of last word
-        for(; text[NumChars] != ' ' && text[NumChars] != '\0'; NumChars++)
+        for(; text[NumChars] != ' ' && text[NumChars] != '\0' && text[NumChars] != '\r' && text[NumChars] != '\n'; NumChars++)
             ;
         char *FloatedText;
         FloatedText = new char[NumChars+1];
