@@ -1033,10 +1033,12 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
     if( isScrolling )
         menuItemWidth -= scrollBarWidth;
 
-    tColor ColorFg, ColorBg;
+    tColor ColorFg, ColorBg, ColorExtraTextFg;
+    ColorExtraTextFg = Theme.Color(clrMenuItemExtraTextFont);
     if (Current) {
         ColorFg = Theme.Color(clrItemCurrentFont);
         ColorBg = Theme.Color(clrItemCurrentBg);
+        ColorExtraTextFg = Theme.Color(clrMenuItemExtraTextCurrentFont);
     }
     else {
         if( Selectable ) {
@@ -1167,7 +1169,7 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
 
                 menuPixmap->DrawText(cPoint(Left, Top), first.c_str(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
                 int l = font->Width( first.c_str() );
-                menuPixmap->DrawText(cPoint(Left + l, Top), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font, menuItemWidth - Left - l - marginItem);
+                menuPixmap->DrawText(cPoint(Left + l, Top), second.c_str(), ColorExtraTextFg, ColorBg, font, menuItemWidth - Left - l - marginItem);
             } else if ( found2 != string::npos ) {
                 std::string first = tilde.substr(0, found2);
                 std::string second = tilde.substr(found2 +1, tilde.length() );
@@ -1175,7 +1177,7 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
                 menuPixmap->DrawText(cPoint(Left, Top), first.c_str(), ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
                 int l = font->Width( first.c_str() );
                 l += font->Width("X");
-                menuPixmap->DrawText(cPoint(Left + l, Top), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, font, menuItemWidth - Left - l - marginItem);
+                menuPixmap->DrawText(cPoint(Left + l, Top), second.c_str(), ColorExtraTextFg, ColorBg, font, menuItemWidth - Left - l - marginItem);
             } else
                 menuPixmap->DrawText(cPoint(Left, Top), File, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
         } else {
@@ -1198,7 +1200,7 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
 
                 menuPixmap->DrawText(cPoint(Left, Top + fontHeight), first.c_str(), ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
                 int l = fontSml->Width( first.c_str() );
-                menuPixmap->DrawText(cPoint(Left + l, Top + fontHeight), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, fontSml, menuItemWidth - Left - l - marginItem);
+                menuPixmap->DrawText(cPoint(Left + l, Top + fontHeight), second.c_str(), ColorExtraTextFg, ColorBg, fontSml, menuItemWidth - Left - l - marginItem);
             } else if ( found2 != string::npos ) {
                 std::string first = tilde.substr(0, found2);
                 std::string second = tilde.substr(found2 +1, tilde.length() );
@@ -1206,7 +1208,7 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
                 menuPixmap->DrawText(cPoint(Left, Top + fontHeight), first.c_str(), ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
                 int l = fontSml->Width( first.c_str() );
                 l += fontSml->Width("X");
-                menuPixmap->DrawText(cPoint(Left + l, Top + fontHeight), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), ColorBg, fontSml, menuItemWidth - Left - l - marginItem);
+                menuPixmap->DrawText(cPoint(Left + l, Top + fontHeight), second.c_str(), ColorExtraTextFg, ColorBg, fontSml, menuItemWidth - Left - l - marginItem);
             } else
                 menuPixmap->DrawText(cPoint(Left, Top + fontHeight), File, ColorFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
         } else {
