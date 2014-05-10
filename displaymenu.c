@@ -1802,6 +1802,10 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
     if( !Event )
         return;
 
+    #ifdef DEBUGEPGTIME
+        uint32_t tick0 = GetMsTicks();
+    #endif
+
     ShowEvent = true;
     ShowRecording = false;
     ShowText = false;
@@ -1918,6 +1922,11 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         }
     }
 
+    #ifdef DEBUGEPGTIME
+        uint32_t tick1 = GetMsTicks();
+        dsyslog("SetEvent info-text time: %d ms", tick1 - tick0);
+    #endif
+
     std::ostringstream sstrReruns;
     if( Config.EpgRerunsShow ) {
         // lent from nopacity
@@ -1957,6 +1966,10 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             }
         }
     }
+    #ifdef DEBUGEPGTIME
+        uint32_t tick2 = GetMsTicks();
+        dsyslog("SetEvent reruns time: %d ms", tick2 - tick1);
+    #endif
 
     bool Scrollable = false;
     bool FirstRun = true;
@@ -1985,6 +1998,10 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         std::string mediaPath;
         int mediaWidth = 0;
         int mediaHeight = 0;
+
+        #ifdef DEBUGEPGTIME
+            uint32_t tick3 = GetMsTicks();
+        #endif
 
         // TVScraper
         static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
@@ -2085,6 +2102,10 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                 }
             }
         }
+        #ifdef DEBUGEPGTIME
+            uint32_t tick4 = GetMsTicks();
+            dsyslog("SetEvent tvscraper time: %d ms", tick4 - tick3);
+        #endif
 
         if( mediaPath.length() > 0 ) {
             cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
@@ -2131,6 +2152,10 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             ComplexContent.AddText(series_info.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
         }
+        #ifdef DEBUGEPGTIME
+            uint32_t tick5 = GetMsTicks();
+            dsyslog("SetEvent epg-text time: %d ms", tick5 - tick4);
+        #endif
 
         if( Config.TVScraperEPGInfoShowActors && actors_path.size() > 0 ) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
@@ -2173,6 +2198,10 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                 y = ComplexContent.BottomContent() + fontHeight;
             }
         }
+        #ifdef DEBUGEPGTIME
+            uint32_t tick6 = GetMsTicks();
+            dsyslog("SetEvent actor time: %d ms", tick6 - tick5);
+        #endif
 
         if( sstrReruns.str().length() > 0 ) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
@@ -2519,6 +2548,10 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     if( !Recording )
         return;
 
+    #ifdef DEBUGEPGTIME
+        uint32_t tick0 = GetMsTicks();
+    #endif
+
     ShowEvent = false;
     ShowRecording = true;
     ShowText = false;
@@ -2742,6 +2775,11 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         }
     }
 
+    #ifdef DEBUGEPGTIME
+        uint32_t tick1 = GetMsTicks();
+        dsyslog("SetRecording info-text time: %d ms", tick1 - tick0);
+    #endif
+
     bool Scrollable = false;
     bool FirstRun = true;
 
@@ -2769,6 +2807,10 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         std::string mediaPath;
         int mediaWidth = 0;
         int mediaHeight = 0;
+
+        #ifdef DEBUGEPGTIME
+            uint32_t tick2 = GetMsTicks();
+        #endif
 
         // TVScraper
         static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
@@ -2869,6 +2911,10 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                 }
             }
         }
+        #ifdef DEBUGEPGTIME
+            uint32_t tick3 = GetMsTicks();
+            dsyslog("SetEvent tvscraper time: %d ms", tick3 - tick2);
+        #endif
 
         if( mediaPath.length() > 0 ) {
             cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
@@ -2915,6 +2961,10 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             ComplexContent.AddText(series_info.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
         }
+        #ifdef DEBUGEPGTIME
+            uint32_t tick4 = GetMsTicks();
+            dsyslog("SetEvent epg-text time: %d ms", tick4 - tick3);
+        #endif
 
         if( Config.TVScraperRecInfoShowActors && actors_path.size() > 0 ) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
@@ -2956,6 +3006,10 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                 y = ComplexContent.BottomContent() + fontHeight;
             }
         }
+        #ifdef DEBUGEPGTIME
+            uint32_t tick5 = GetMsTicks();
+            dsyslog("SetEvent actor time: %d ms", tick5 - tick4);
+        #endif
 
         if( recAdditional.str().length() > 0 ) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
