@@ -42,9 +42,9 @@ cImage* cImageLoader::LoadLogo(const char *logo, int width, int height) {
     #ifdef DEBUGIMAGELOADTIME
         uint32_t tick3 = GetMsTicks();
     #endif
-    
+
     bool success = LoadImage(File);
-    
+
     if( !success ) {
         dsyslog("imageloader LoadLogo: %s could not be loaded", *File);
         return NULL;
@@ -57,9 +57,9 @@ cImage* cImageLoader::LoadLogo(const char *logo, int width, int height) {
     #ifdef DEBUGIMAGELOADTIME
         uint32_t tick5 = GetMsTicks();
     #endif
-    
+
     img = CreateImage(width, height);
-    
+
     if( img == NULL )
         return NULL;
 
@@ -87,9 +87,9 @@ cImage* cImageLoader::LoadIcon(const char *cIcon, int width, int height, bool pr
     #ifdef DEBUGIMAGELOADTIME
         uint32_t tick1 = GetMsTicks();
     #endif
-    
+
     img = imgCache.GetImage( *File, width, height );
-    
+
     #ifdef DEBUGIMAGELOADTIME
         uint32_t tick2 = GetMsTicks();
         dsyslog("   search in cache: %d ms", tick2 - tick1);
@@ -100,23 +100,23 @@ cImage* cImageLoader::LoadIcon(const char *cIcon, int width, int height, bool pr
     #ifdef DEBUGIMAGELOADTIME
         uint32_t tick3 = GetMsTicks();
     #endif
-    
+
     bool success = LoadImage(File);
-    
+
     #ifdef DEBUGIMAGELOADTIME
         uint32_t tick4 = GetMsTicks();
         dsyslog("   load file from disk: %d ms", tick4 - tick3);
     #endif
-    
+
     if( !success ) {
         File = cString::sprintf("%s%s/%s.%s", *Config.iconPath, "default", cIcon, *logoExtension);
         #ifdef DEBUGIMAGELOADTIME
             dsyslog("imageloader load icon %s", *File);
             uint32_t tick5 = GetMsTicks();
         #endif
-        
+
         img = imgCache.GetImage( *File, width, height );
-        
+
         #ifdef DEBUGIMAGELOADTIME
             uint32_t tick6 = GetMsTicks();
             dsyslog("   search in cache: %d ms", tick6 - tick5);
@@ -127,14 +127,14 @@ cImage* cImageLoader::LoadIcon(const char *cIcon, int width, int height, bool pr
         #ifdef DEBUGIMAGELOADTIME
             uint32_t tick7 = GetMsTicks();
         #endif
-        
+
         success = LoadImage(File);
-        
+
         #ifdef DEBUGIMAGELOADTIME
             uint32_t tick8 = GetMsTicks();
             dsyslog("   load file from disk: %d ms", tick8 - tick7);
         #endif
-        
+
         if( !success ) {
             dsyslog("imageloader LoadIcon: %s could not be loaded", *File);
             return NULL;
@@ -143,9 +143,9 @@ cImage* cImageLoader::LoadIcon(const char *cIcon, int width, int height, bool pr
     #ifdef DEBUGIMAGELOADTIME
         uint32_t tick9 = GetMsTicks();
     #endif
-    
+
     img = CreateImage(width, height);
-    
+
     #ifdef DEBUGIMAGELOADTIME
         uint32_t tick10 = GetMsTicks();
         dsyslog("   scale logo: %d ms", tick10 - tick9);
@@ -181,9 +181,9 @@ cImage* cImageLoader::LoadFile(const char *cFile, int width, int height, bool pr
     #ifdef DEBUGIMAGELOADTIME
         uint32_t tick3 = GetMsTicks();
     #endif
-    
+
     bool success = LoadImage(File);
-    
+
     if( !success ) {
         dsyslog("imageloader LoadFile: %s could not be loaded", *File);
         return NULL;
@@ -196,9 +196,9 @@ cImage* cImageLoader::LoadFile(const char *cFile, int width, int height, bool pr
     #ifdef DEBUGIMAGELOADTIME
         uint32_t tick5 = GetMsTicks();
     #endif
-    
+
     img = CreateImage(width, height);
-    
+
     if( img == NULL )
         return NULL;
 
@@ -216,4 +216,9 @@ void cImageLoader::toLowerCase(std::string &str) {
     for(int i=0; i < length; ++i) {
         str[i] = std::tolower(str[i]);
     }
+}
+
+bool cImageLoader::FileExits(const std::string& name) {
+  struct stat buffer;
+  return (stat (name.c_str(), &buffer) == 0);
 }

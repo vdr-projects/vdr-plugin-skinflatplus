@@ -2027,10 +2027,14 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                         mediaPath = series.banners[0].path;
                     mediaWidth = cWidth/2 - marginItem*2;
                     mediaHeight = 999;
-                    for( unsigned int i = 0; i < series.actors.size(); i++ ) {
-                        actors_path.push_back(series.actors[i].actorThumb.path);
-                        actors_name.push_back(series.actors[i].name);
-                        actors_role.push_back(series.actors[i].role);
+                    if( Config.TVScraperEPGInfoShowActors ) {
+                        for( unsigned int i = 0; i < series.actors.size(); i++ ) {
+                            if( imgLoader.FileExits(series.actors[i].actorThumb.path) ) {
+                                actors_path.push_back(series.actors[i].actorThumb.path);
+                                actors_name.push_back(series.actors[i].name);
+                                actors_role.push_back(series.actors[i].role);
+                            }
+                        }
                     }
                     if( series.name.length() > 0 )
                         series_info << tr("name: ") << series.name << endl;
@@ -2056,10 +2060,14 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                     mediaPath = movie.poster.path;
                     mediaWidth = cWidth/2 - marginItem*3;
                     mediaHeight = 999;
-                    for( unsigned int i = 0; i < movie.actors.size(); i++ ) {
-                        actors_path.push_back(movie.actors[i].actorThumb.path);
-                        actors_name.push_back(movie.actors[i].name);
-                        actors_role.push_back(movie.actors[i].role);
+                    if( Config.TVScraperEPGInfoShowActors ) {
+                        for( unsigned int i = 0; i < movie.actors.size(); i++ ) {
+                            if( imgLoader.FileExits(movie.actors[i].actorThumb.path) ) {
+                                actors_path.push_back(movie.actors[i].actorThumb.path);
+                                actors_name.push_back(movie.actors[i].name);
+                                actors_role.push_back(movie.actors[i].role);
+                            }
+                        }
                     }
                     if( movie.title.length() > 0 )
                         movie_info << tr("title: ") << movie.title << endl;
@@ -2092,12 +2100,13 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                     if( call.posters.size() > 0 )
                         mediaPath = call.posters[0].path;
                 }
-                for( unsigned int i = 0; i < call.actors.size(); i++ ) {
-                    cImage *img = imgLoader.LoadFile(call.actors[i].thumb.path.c_str(), 100, 100);
-                    if( img ) {
-                        actors_path.push_back(call.actors[i].thumb.path);
-                        actors_name.push_back(call.actors[i].name);
-                        actors_role.push_back(call.actors[i].role);
+                if( Config.TVScraperEPGInfoShowActors ) {
+                    for( unsigned int i = 0; i < call.actors.size(); i++ ) {
+                        if( imgLoader.FileExits(call.actors[i].thumb.path) ) {
+                            actors_path.push_back(call.actors[i].thumb.path);
+                            actors_name.push_back(call.actors[i].name);
+                            actors_role.push_back(call.actors[i].role);
+                        }
                     }
                 }
             }
@@ -2241,6 +2250,11 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
     else
         DecorBorderDraw(cLeft, cTop, cWidth, ComplexContent.ContentHeight(false), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
             Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
+
+    #ifdef DEBUGEPGTIME
+        uint32_t tick7 = GetMsTicks();
+        dsyslog("SetEvent total time: %d ms", tick7 - tick0);
+    #endif
 }
 
 void cFlatDisplayMenu::DrawItemExtraRecording(const cRecording *Recording, cString EmptyText) {
@@ -2836,10 +2850,14 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                         mediaPath = series.banners[0].path;
                     mediaWidth = cWidth/2 - marginItem*2;
                     mediaHeight = 999;
-                    for( unsigned int i = 0; i < series.actors.size(); i++ ) {
-                        actors_path.push_back(series.actors[i].actorThumb.path);
-                        actors_name.push_back(series.actors[i].name);
-                        actors_role.push_back(series.actors[i].role);
+                    if( Config.TVScraperRecInfoShowActors ) {
+                        for( unsigned int i = 0; i < series.actors.size(); i++ ) {
+                            if( imgLoader.FileExits( series.actors[i].actorThumb.path ) ) {
+                                actors_path.push_back(series.actors[i].actorThumb.path);
+                                actors_name.push_back(series.actors[i].name);
+                                actors_role.push_back(series.actors[i].role);
+                            }
+                        }
                     }
                     if( series.name.length() > 0 )
                         series_info << tr("name: ") << series.name << endl;
@@ -2865,10 +2883,14 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                     mediaPath = movie.poster.path;
                     mediaWidth = cWidth/2 - marginItem*3;
                     mediaHeight = 999;
-                    for( unsigned int i = 0; i < movie.actors.size(); i++ ) {
-                        actors_path.push_back(movie.actors[i].actorThumb.path);
-                        actors_name.push_back(movie.actors[i].name);
-                        actors_role.push_back(movie.actors[i].role);
+                    if( Config.TVScraperRecInfoShowActors ) {
+                        for( unsigned int i = 0; i < movie.actors.size(); i++ ) {
+                            if( imgLoader.FileExits( movie.actors[i].actorThumb.path ) ) {
+                                actors_path.push_back(movie.actors[i].actorThumb.path);
+                                actors_name.push_back(movie.actors[i].name);
+                                actors_role.push_back(movie.actors[i].role);
+                            }
+                        }
                     }
                     if( movie.title.length() > 0 )
                         movie_info << tr("title: ") << movie.title << endl;
@@ -2901,19 +2923,20 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                     if( call.posters.size() > 0 )
                         mediaPath = call.posters[0].path;
                 }
-                for( unsigned int i = 0; i < call.actors.size(); i++ ) {
-                    cImage *img = imgLoader.LoadFile(call.actors[i].thumb.path.c_str(), 100, 100);
-                    if( img ) {
-                        actors_path.push_back(call.actors[i].thumb.path);
-                        actors_name.push_back(call.actors[i].name);
-                        actors_role.push_back(call.actors[i].role);
+                if( Config.TVScraperRecInfoShowActors ) {
+                    for( unsigned int i = 0; i < call.actors.size(); i++ ) {
+                        if( imgLoader.FileExits( call.actors[i].thumb.path )) {
+                            actors_path.push_back(call.actors[i].thumb.path);
+                            actors_name.push_back(call.actors[i].name);
+                            actors_role.push_back(call.actors[i].role);
+                        }
                     }
                 }
             }
         }
         #ifdef DEBUGEPGTIME
             uint32_t tick3 = GetMsTicks();
-            dsyslog("SetEvent tvscraper time: %d ms", tick3 - tick2);
+            dsyslog("SetRecording tvscraper time: %d ms", tick3 - tick2);
         #endif
 
         if( mediaPath.length() > 0 ) {
@@ -2963,7 +2986,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         }
         #ifdef DEBUGEPGTIME
             uint32_t tick4 = GetMsTicks();
-            dsyslog("SetEvent epg-text time: %d ms", tick4 - tick3);
+            dsyslog("SetRecording epg-text time: %d ms", tick4 - tick3);
         #endif
 
         if( Config.TVScraperRecInfoShowActors && actors_path.size() > 0 ) {
@@ -3008,7 +3031,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         }
         #ifdef DEBUGEPGTIME
             uint32_t tick5 = GetMsTicks();
-            dsyslog("SetEvent actor time: %d ms", tick5 - tick4);
+            dsyslog("SetRecording actor time: %d ms", tick5 - tick4);
         #endif
 
         if( recAdditional.str().length() > 0 ) {
@@ -3079,6 +3102,11 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         DecorBorderDraw(RecordingBorder.Left, RecordingBorder.Top, RecordingBorder.Width, ComplexContent.ContentHeight(false),
             RecordingBorder.Size, RecordingBorder.Type,
             RecordingBorder.ColorFg, RecordingBorder.ColorBg, RecordingBorder.From, false);
+
+    #ifdef DEBUGEPGTIME
+        uint32_t tick6 = GetMsTicks();
+        dsyslog("SetRecording total time: %d ms", tick6 - tick0);
+    #endif
 }
 
 void cFlatDisplayMenu::SetText(const char *Text, bool FixedFont) {
