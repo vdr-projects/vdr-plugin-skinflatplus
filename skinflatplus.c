@@ -16,7 +16,7 @@
 #include "setup.h"
 #include "imageloader.h"
 
-static const char *VERSION        = "0.2.1";
+static const char *VERSION        = "0.3.0";
 static const char *DESCRIPTION    = "skin flatplus";
 
 class cPluginFlat : public cPlugin {
@@ -53,7 +53,7 @@ cPluginFlat::~cPluginFlat() {
 }
 
 const char *cPluginFlat::CommandLineHelp(void) {
-    return "  -l <LOGOPATH>, --logopath=<LOGOPATH>       Set directory where Channel Logos are stored.\n"; 
+    return "  -l <LOGOPATH>, --logopath=<LOGOPATH>       Set directory where Channel Logos are stored.\n";
 }
 
 bool cPluginFlat::ProcessArgs(int argc, char *argv[]) {
@@ -87,7 +87,7 @@ bool cPluginFlat::Start(void) {
         return false;
     } else
         dsyslog("skinflatplus: TrueColor OSD found");
-    
+
     imgCache.Create();
     imgCache.PreLoadImage();
 

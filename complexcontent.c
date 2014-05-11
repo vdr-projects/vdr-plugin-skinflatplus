@@ -22,7 +22,6 @@ cComplexContent::~cComplexContent() {
 }
 
 void cComplexContent::Clear(void) {
-    //dsyslog("cComplexContent::Clear");
     isShown = false;
     Contents.clear();
     if( Osd ) {
