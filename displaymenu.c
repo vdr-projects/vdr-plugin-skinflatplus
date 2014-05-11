@@ -2026,7 +2026,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                     if( series.banners.size() > 0 )
                         mediaPath = series.banners[0].path;
                     mediaWidth = cWidth/2 - marginItem*2;
-                    mediaHeight = 999;
+                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
                     if( Config.TVScraperEPGInfoShowActors ) {
                         for( unsigned int i = 0; i < series.actors.size(); i++ ) {
                             if( imgLoader.FileExits(series.actors[i].actorThumb.path) ) {
@@ -2059,7 +2059,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                 if (pScraper2Vdr->Service("GetMovie", &movie)) {
                     mediaPath = movie.poster.path;
                     mediaWidth = cWidth/2 - marginItem*3;
-                    mediaHeight = 999;
+                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
                     if( Config.TVScraperEPGInfoShowActors ) {
                         for( unsigned int i = 0; i < movie.actors.size(); i++ ) {
                             if( imgLoader.FileExits(movie.actors[i].actorThumb.path) ) {
@@ -2092,11 +2092,11 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             if (pTVScraper->Service("TVScraperGetFullInformation", &call)) {
                 if (call.type == typeSeries) {
                     mediaWidth = cWidth/2 - marginItem*2;
-                    mediaHeight = 999;
+                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
                     mediaPath = call.banner.path;
                 } else if (call.type == typeMovie) {
                     mediaWidth = cWidth/2 - marginItem*3;
-                    mediaHeight = 999;
+                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
                     if( call.posters.size() > 0 )
                         mediaPath = call.posters[0].path;
                 }
@@ -2254,6 +2254,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
     #ifdef DEBUGEPGTIME
         uint32_t tick7 = GetMsTicks();
         dsyslog("SetEvent total time: %d ms", tick7 - tick0);
+        //dsyslog("SetEvent time: %d", tick7);
     #endif
 }
 
@@ -2849,7 +2850,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                     if( series.banners.size() > 0 )
                         mediaPath = series.banners[0].path;
                     mediaWidth = cWidth/2 - marginItem*2;
-                    mediaHeight = 999;
+                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
                     if( Config.TVScraperRecInfoShowActors ) {
                         for( unsigned int i = 0; i < series.actors.size(); i++ ) {
                             if( imgLoader.FileExits( series.actors[i].actorThumb.path ) ) {
@@ -2882,7 +2883,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                 if (pScraper2Vdr->Service("GetMovie", &movie)) {
                     mediaPath = movie.poster.path;
                     mediaWidth = cWidth/2 - marginItem*3;
-                    mediaHeight = 999;
+                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
                     if( Config.TVScraperRecInfoShowActors ) {
                         for( unsigned int i = 0; i < movie.actors.size(); i++ ) {
                             if( imgLoader.FileExits( movie.actors[i].actorThumb.path ) ) {
@@ -2915,11 +2916,11 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             if (pTVScraper->Service("TVScraperGetFullInformation", &call)) {
                 if (call.type == typeSeries) {
                     mediaWidth = cWidth/2 - marginItem*2;
-                    mediaHeight = 999;
+                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
                     mediaPath = call.banner.path;
                 } else if (call.type == typeMovie) {
                     mediaWidth = cWidth/2 - marginItem*3;
-                    mediaHeight = 999;
+                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
                     if( call.posters.size() > 0 )
                         mediaPath = call.posters[0].path;
                 }
