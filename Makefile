@@ -26,7 +26,7 @@ PLUGIN = skinflatplus
 VDRLOGO = vdrlogo_default
 
 #DEFINES += -DDEBUGIMAGELOADTIME
-DEFINES += -DDEBUGEPGTIME
+#DEFINES += -DDEBUGEPGTIME
 
 
 ### The version number of this plugin (taken from the main source file):

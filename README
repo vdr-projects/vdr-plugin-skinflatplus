@@ -4,6 +4,7 @@ Written by:                  Martin Schirrmacher <vdr.skinflatplus@schirrmacher.
 
 Project's homepage:          http://projects.vdr-developer.org/projects/plg-skinflatplus/
 
+Projekt Wiki                 http://projects.vdr-developer.org/projects/plg-skinflatplus/wiki
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -11,21 +12,31 @@ the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
 See the file COPYING for more information.
 
-Requirements
-------------
 
-- VDR version >= 1.7.34
+Anforderungen
+-------------------------------
+- VDR Version >= 1.7.34
+- ImageMagick zur Anzeige von png/jpg Icons, Kanal Logos and EPG Bilder
 
-- Installed ImageMagick for displaying png/jpg Icons, Channel Logos and EPG Images
 
-Description
------------
-Skin flatPlus basiert auf dem Skin flat. Im Gegensatz zu diesem ist der Skin flatPlus grafisch aufwendiger
-und an die Bedürfnisse Konfigurierbar. Derzeit ist der Hauptunterschied die Decorations  mit Border und ProgressBar.
+Beschreibung
+-------------------------------
+Skin flatPlus ist ein moderner und aktueller Skin für VDR.
+Das Design ist flach und geradlinig (keine glossy oder 3D-Effekte)
+
+
+git-Zugriff
+-------------------------------
+Auf das git kann mittels
+
+git clone http://projects.vdr-developer.org/git/skin-flatplus.git/
+
+zugegriffen werden.
+Da im git natürlich aktiv entwickelt wird können Fehler nicht ausgeschlossen werden (ich empfehle es nicht für produktiv Systeme)
 
 
 Installation
-------------
+-------------------------------
 Installation wie bei allen VDR Plugins.
     make
     make install
@@ -37,6 +48,7 @@ Die Logos müssen im folgenden Ordner zur Verfügung gestellt werden:
 
 Der Skin muss im Menü unter Einstellungen -> OSD ausgewählt werden.
 
+
 Versteckte Einstellungen
 -------------------------------
 Versteckte Einstellungen sind Einstellungen die in der VDR setup.conf konfiguriert werden können, wozu es aber keine Einstellungen im OSD -> Einstellungen -> Plugins -> skinflatplus gibt.
@@ -45,13 +57,24 @@ Versteckte Einstellungen sind Einstellungen die in der VDR setup.conf konfigurie
 * MenuItemRecordingShowFolderDate - Wenn die Einstellung auf 1 gesetzt ist, wird bei einem Ordner von der neuesten Aufzeichnung das Datum angezeigt, Wenn die Einstellung auf 2 gesetzt ist, wird bei einem Ordner von der ältesten Aufzeichnung das Datum angezeigt.
 * MenuItemParseTilde - Wenn die Einstellung auf 1 gesetzt ist, wird beim Menü-Item-Text auf den Buchstaben Tilde '~' geprüft und wenn eine Tilde gefunden wurde, wird die Tilde entfernt und alles was nach der Tilde steht in einer anderen Farbe dargestellt. Dies ist z.B. interessant wenn man epgsearch hat.
 
+
 TVScraper & scraper2vdr
 -------------------------------
 Since version 0.3.0 the skin support TVScraper & scraper2vdr.
 With both plugins you'll get poster, banner and actor images for recordings and epg info.
 If You use scraper2vdr, which I recommend, you'll also get movie and series information.
 
-Themes and theme specific Icons
+
+epgd & doppelte Informationen in EPG-Text
+-------------------------------
+Wenn epgd + epg2vdr verwendet wird, wird der angezeigte EPG-Text über die eventsview.sql festgelegt (in der epgd.conf Option: EpgView).
+Mit der default eventsview.sql ist im EPG-Text die Schauspieler, Serien- und Filminformationen mit enthalten. Da diese dann doppelt angezeigt werden würden (im EPG-Text und in den extra Bereichen über scraper2vdr) existiert im contrib-Ordner von flatPlus eine eigene "eventsview-flatplus.sql". Mit dieser wird im EPG-Text wirklich nur der EPG-Text ausgeben und keine weiteren Informationen.
+Ich empfehle diese zu verwenden. Dafür einfach die Datei aus den contrib Ordner nach /etc/epgd/ kopieren und in der epgd.conf folgenden Eintrag verwenden:
+
+EpgView = eventsview-flatplus.sql
+
+
+Themes und Theme spezifische Icons
 -------------------------------
 Der Skin ist weitestgehend über Themes anpassbar.
 Die Decorations (Border, ProgressBar) sind über das Theme einstellbar. Dabei kann jeweils der Typ und

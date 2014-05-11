@@ -5,14 +5,20 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] use only current Event in extraevent display in displaychannel
 - [fix] SetRecording border with deleteresume.patch
 - [fix] recording menu with cutted recordings an %
+- [fix] all around some small fixes
 - [update] channel logo in wide format (like 3PO or Copperhead logos)
 - [update] complete rewrite multiline content
 - [update] draw timer menu with a straight table
+- [update] README, teile vom Wiki in README-Datei übernommen
 - [add] show reruns in epg info (lent code from nopacity, thanks!)
 - [add] TVScraper support
         - show poster images of movies and series
         - show actor images
-- [add] plugin settings for TVScraper
+- [add] scraper2vdr support
+        - show poster images of movies and series
+        - show actor images
+        - show movies and series information
+- [add] plugin settings for TVScraper/scraper2vdr
 - [add] more options to show disk usage (not show; timer & recording menu; always on the menu; always show)
 - [add] horizontal line and group icon in SetItemEvent for group channels
 - [add] new fnu_anthra_themes (thank You fnu/Frank)
