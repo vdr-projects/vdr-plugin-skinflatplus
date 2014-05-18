@@ -1,5 +1,4 @@
 #include "displaymenu.h"
-#include "services/tvscraper.h"
 #include "services/scraper2vdr.h"
 #include "services/epgsearch.h"
 
@@ -946,13 +945,16 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText
     int mediaWidth = 0;
     int mediaHeight = 0;
     int mediaType = 0;
-    // TVScraper
-    static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
-    static cPlugin *pScraper2Vdr = cPluginManager::GetPlugin("scraper2vdr");
-    if( Config.TVScraperEPGInfoShowPoster && pScraper2Vdr ) {
+
+    // first try scraper2vdr
+    static cPlugin *pScraper = cPluginManager::GetPlugin("scraper2vdr");
+    if( !pScraper ) // if it doesn't exit, try tvscraper
+        pScraper = cPluginManager::GetPlugin("tvscraper");
+
+    if( Config.TVScraperEPGInfoShowPoster && pScraper ) {
         ScraperGetPosterBanner call;
         call.event = Event;
-        if (pScraper2Vdr->Service("GetPosterBanner", &call)) {
+        if (pScraper->Service("GetPosterBanner", &call)) {
             if ((call.type == tSeries) && call.banner.path.size() > 0) {
                 mediaWidth = cWidth - marginItem*2;
                 mediaHeight = 999;
@@ -964,21 +966,6 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText
                 mediaPath = call.poster.path;
                 mediaType = 2;
             }
-        }
-    } else if( Config.TVScraperEPGInfoShowPoster && pTVScraper ) {
-        TVScraperGetPosterOrBanner call;
-        call.event = Event;
-        if (pTVScraper->Service("TVScraperGetPosterOrBanner", &call)) {
-            if (call.type == typeSeries) {
-                mediaWidth = cWidth - marginItem*2;
-                mediaHeight = 999;
-                mediaType = 1;
-            } else if (call.type == typeMovie) {
-                mediaWidth = cWidth/2 - marginItem*3;
-                mediaHeight = 999;
-                mediaType = 2;
-            }
-            mediaPath = call.media.path;
         }
     }
 
@@ -2003,17 +1990,18 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             uint32_t tick3 = GetMsTicks();
         #endif
 
-        // TVScraper
-        static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
-        static cPlugin *pScraper2Vdr = cPluginManager::GetPlugin("scraper2vdr");
-        if( (Config.TVScraperEPGInfoShowPoster || Config.TVScraperEPGInfoShowActors) && pScraper2Vdr ) {
+        // first try scraper2vdr
+        static cPlugin *pScraper = cPluginManager::GetPlugin("scraper2vdr");
+        if( !pScraper ) // if it doesn't exit, try tvscraper
+            pScraper = cPluginManager::GetPlugin("tvscraper");
+        if( (Config.TVScraperEPGInfoShowPoster || Config.TVScraperEPGInfoShowActors) && pScraper ) {
             ScraperGetEventType call;
             call.event = Event;
             int seriesId = 0;
             int episodeId = 0;
             int movieId = 0;
 
-            if (pScraper2Vdr->Service("GetEventType", &call)) {
+            if (pScraper->Service("GetEventType", &call)) {
                 seriesId = call.seriesId;
                 episodeId = call.episodeId;
                 movieId = call.movieId;
@@ -2022,7 +2010,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                 cSeries series;
                 series.seriesId = seriesId;
                 series.episodeId = episodeId;
-                if (pScraper2Vdr->Service("GetSeries", &series)) {
+                if (pScraper->Service("GetSeries", &series)) {
                     if( series.banners.size() > 0 )
                         mediaPath = series.banners[0].path;
                     mediaWidth = cWidth/2 - marginItem*2;
@@ -2056,7 +2044,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             } else if (movieId > 0) {
                 cMovie movie;
                 movie.movieId = movieId;
-                if (pScraper2Vdr->Service("GetMovie", &movie)) {
+                if (pScraper->Service("GetMovie", &movie)) {
                     mediaPath = movie.poster.path;
                     mediaWidth = cWidth/2 - marginItem*3;
                     mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
@@ -2085,32 +2073,8 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                         movie_info << tr("vote average: ") << movie.voteAverage << endl;
                 }
             }
-        } else if( (Config.TVScraperEPGInfoShowPoster || Config.TVScraperEPGInfoShowActors) && pTVScraper ) {
-            TVScraperGetFullInformation call;
-            call.event = Event;
-            call.isRecording = false;
-            if (pTVScraper->Service("TVScraperGetFullInformation", &call)) {
-                if (call.type == typeSeries) {
-                    mediaWidth = cWidth/2 - marginItem*2;
-                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
-                    mediaPath = call.banner.path;
-                } else if (call.type == typeMovie) {
-                    mediaWidth = cWidth/2 - marginItem*3;
-                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
-                    if( call.posters.size() > 0 )
-                        mediaPath = call.posters[0].path;
-                }
-                if( Config.TVScraperEPGInfoShowActors ) {
-                    for( unsigned int i = 0; i < call.actors.size(); i++ ) {
-                        if( imgLoader.FileExits(call.actors[i].thumb.path) ) {
-                            actors_path.push_back(call.actors[i].thumb.path);
-                            actors_name.push_back(call.actors[i].name);
-                            actors_role.push_back(call.actors[i].role);
-                        }
-                    }
-                }
-            }
         }
+
         #ifdef DEBUGEPGTIME
             uint32_t tick4 = GetMsTicks();
             dsyslog("SetEvent tvscraper time: %d ms", tick4 - tick3);
@@ -2268,10 +2232,8 @@ void cFlatDisplayMenu::DrawItemExtraRecording(const cRecording *Recording, cStri
         buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + Config.decorBorderMenuContentSize*2);
 
     ostringstream text;
-    const cEvent *Event = NULL;
     if( Recording ) {
         const cRecordingInfo *recInfo = Recording->Info();
-        Event = recInfo->GetEvent();
         text.imbue(std::locale(""));
 
         if (!isempty(recInfo->Description()))
@@ -2474,17 +2436,18 @@ void cFlatDisplayMenu::DrawItemExtraRecording(const cRecording *Recording, cStri
     int mediaHeight = 0;
     int mediaType = 0;
 
-    // TVScraper
-    static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
-    static cPlugin *pScraper2Vdr = cPluginManager::GetPlugin("scraper2vdr");
-    if( Config.TVScraperRecInfoShowPoster && pScraper2Vdr ) {
+    // first try scraper2vdr
+    static cPlugin *pScraper = cPluginManager::GetPlugin("scraper2vdr");
+    if( !pScraper ) // if it doesn't exit, try tvscraper
+        pScraper = cPluginManager::GetPlugin("tvscraper");
+    if( Config.TVScraperRecInfoShowPoster && pScraper ) {
         ScraperGetEventType call;
         call.recording = Recording;
         int seriesId = 0;
         int episodeId = 0;
         int movieId = 0;
 
-        if (pScraper2Vdr->Service("GetEventType", &call)) {
+        if (pScraper->Service("GetEventType", &call)) {
             seriesId = call.seriesId;
             episodeId = call.episodeId;
             movieId = call.movieId;
@@ -2493,7 +2456,7 @@ void cFlatDisplayMenu::DrawItemExtraRecording(const cRecording *Recording, cStri
             cSeries series;
             series.seriesId = seriesId;
             series.episodeId = episodeId;
-            if (pScraper2Vdr->Service("GetSeries", &series)) {
+            if (pScraper->Service("GetSeries", &series)) {
                 if( series.banners.size() > 0 )
                     mediaPath = series.banners[0].path;
                 mediaWidth = cWidth - marginItem*2;
@@ -2503,32 +2466,15 @@ void cFlatDisplayMenu::DrawItemExtraRecording(const cRecording *Recording, cStri
         } else if (movieId > 0) {
             cMovie movie;
             movie.movieId = movieId;
-            if (pScraper2Vdr->Service("GetMovie", &movie)) {
+            if (pScraper->Service("GetMovie", &movie)) {
                 mediaPath = movie.poster.path;
                 mediaWidth = cWidth/2 - marginItem*3;
                 mediaHeight = 999;
                 mediaType = 2;
             }
         }
-    } else if( Config.TVScraperRecInfoShowPoster && pTVScraper ) {
-        TVScraperGetFullInformation call;
-        call.event = Event;
-        call.isRecording = true;
-        if (pTVScraper->Service("TVScraperGetFullInformation", &call)) {
-            if (call.type == typeSeries) {
-                mediaWidth = cWidth - marginItem*2;
-                mediaHeight = 999;
-                mediaType = 1;
-                mediaPath = call.banner.path;
-            } else if (call.type == typeMovie) {
-                mediaWidth = cWidth/2 - marginItem*3;
-                mediaHeight = 999;
-                mediaType = 2;
-                if( call.posters.size() > 0 )
-                    mediaPath = call.posters[0].path;
-            }
-        }
     }
+
     if( mediaPath.length() > 0 ) {
         cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
         if( img && mediaType == 2 ) {
@@ -2573,7 +2519,6 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     ItemBorderClear();
 
     const cRecordingInfo *recInfo = Recording->Info();
-    const cEvent *Event = recInfo->GetEvent();
 
     chLeft = Config.decorBorderMenuContentHeadSize;
     chTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentHeadSize;
@@ -2827,17 +2772,18 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             uint32_t tick2 = GetMsTicks();
         #endif
 
-        // TVScraper
-        static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
-        static cPlugin *pScraper2Vdr = cPluginManager::GetPlugin("scraper2vdr");
-        if( (Config.TVScraperRecInfoShowPoster || Config.TVScraperRecInfoShowActors) && pScraper2Vdr ) {
+        // first try scraper2vdr
+        static cPlugin *pScraper = cPluginManager::GetPlugin("scraper2vdr");
+        if( !pScraper ) // if it doesn't exit, try tvscraper
+            pScraper = cPluginManager::GetPlugin("tvscraper");
+        if( (Config.TVScraperRecInfoShowPoster || Config.TVScraperRecInfoShowActors) && pScraper ) {
             ScraperGetEventType call;
             call.recording = Recording;
             int seriesId = 0;
             int episodeId = 0;
             int movieId = 0;
 
-            if (pScraper2Vdr->Service("GetEventType", &call)) {
+            if (pScraper->Service("GetEventType", &call)) {
                 seriesId = call.seriesId;
                 episodeId = call.episodeId;
                 movieId = call.movieId;
@@ -2846,7 +2792,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                 cSeries series;
                 series.seriesId = seriesId;
                 series.episodeId = episodeId;
-                if (pScraper2Vdr->Service("GetSeries", &series)) {
+                if (pScraper->Service("GetSeries", &series)) {
                     if( series.banners.size() > 0 )
                         mediaPath = series.banners[0].path;
                     mediaWidth = cWidth/2 - marginItem*2;
@@ -2880,7 +2826,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             } else if (movieId > 0) {
                 cMovie movie;
                 movie.movieId = movieId;
-                if (pScraper2Vdr->Service("GetMovie", &movie)) {
+                if (pScraper->Service("GetMovie", &movie)) {
                     mediaPath = movie.poster.path;
                     mediaWidth = cWidth/2 - marginItem*3;
                     mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
@@ -2909,32 +2855,8 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                         movie_info << tr("vote average: ") << movie.voteAverage << endl;
                 }
             }
-        } else if( (Config.TVScraperRecInfoShowPoster || Config.TVScraperRecInfoShowActors) && pTVScraper ) {
-            TVScraperGetFullInformation call;
-            call.event = Event;
-            call.isRecording = true;
-            if (pTVScraper->Service("TVScraperGetFullInformation", &call)) {
-                if (call.type == typeSeries) {
-                    mediaWidth = cWidth/2 - marginItem*2;
-                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
-                    mediaPath = call.banner.path;
-                } else if (call.type == typeMovie) {
-                    mediaWidth = cWidth/2 - marginItem*3;
-                    mediaHeight = cHeight - marginItem*2 - fontHeight - 6;
-                    if( call.posters.size() > 0 )
-                        mediaPath = call.posters[0].path;
-                }
-                if( Config.TVScraperRecInfoShowActors ) {
-                    for( unsigned int i = 0; i < call.actors.size(); i++ ) {
-                        if( imgLoader.FileExits( call.actors[i].thumb.path )) {
-                            actors_path.push_back(call.actors[i].thumb.path);
-                            actors_name.push_back(call.actors[i].name);
-                            actors_role.push_back(call.actors[i].role);
-                        }
-                    }
-                }
-            }
         }
+
         #ifdef DEBUGEPGTIME
             uint32_t tick3 = GetMsTicks();
             dsyslog("SetRecording tvscraper time: %d ms", tick3 - tick2);

@@ -2,7 +2,6 @@
 #include "flat.h"
 #include <vdr/menu.h>
 #include "services/epgsearch.h"
-#include "services/tvscraper.h"
 
 cFlatBaseRender::cFlatBaseRender(void) {
     font = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize );

@@ -439,12 +439,14 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
     int mediaHeight = 0;
 
     // TVScraper
-    static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
-    static cPlugin *pScraper2Vdr = cPluginManager::GetPlugin("scraper2vdr");
-    if( Config.TVScraperChanInfoShowPoster && pScraper2Vdr ) {
+    // first try scraper2vdr
+    static cPlugin *pScraper = cPluginManager::GetPlugin("scraper2vdr");
+    if( !pScraper ) // if it doesn't exit, try tvscraper
+        pScraper = cPluginManager::GetPlugin("tvscraper");
+    if( Config.TVScraperChanInfoShowPoster && pScraper ) {
         ScraperGetPosterBanner call;
         call.event = Present;
-        if (pScraper2Vdr->Service("GetPosterBanner", &call)) {
+        if (pScraper->Service("GetPosterBanner", &call)) {
             if ((call.type == tSeries) && call.banner.path.size() > 0) {
                 mediaWidth = call.banner.width * Config.TVScraperChanInfoPosterSize*100;
                 mediaHeight = call.banner.height * Config.TVScraperChanInfoPosterSize*100;
@@ -454,19 +456,6 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
                 mediaHeight = call.poster.height * 0.5 * Config.TVScraperChanInfoPosterSize*100;
                 mediaPath = call.poster.path;
             }
-        }
-    } else if( Config.TVScraperChanInfoShowPoster && pTVScraper ) {
-        TVScraperGetPosterOrBanner call;
-        call.event = Present;
-        if (pTVScraper->Service("TVScraperGetPosterOrBanner", &call)) {
-            if (call.type == typeSeries) {
-                mediaWidth = call.media.width * Config.TVScraperChanInfoPosterSize*100;
-                mediaHeight = call.media.height * Config.TVScraperChanInfoPosterSize*100;
-            } else if (call.type == typeMovie) {
-                mediaWidth = call.media.width * 0.5 * Config.TVScraperChanInfoPosterSize*100;
-                mediaHeight = call.media.height * 0.5 * Config.TVScraperChanInfoPosterSize*100;
-            }
-            mediaPath = call.media.path;
         }
     }
 

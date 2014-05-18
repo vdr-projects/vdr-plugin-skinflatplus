@@ -83,9 +83,11 @@ void cFlatSetup::Setup(void) {
     Add(new cOsdItem(tr("Volume settings"), osUnknown, true));
     Add(new cOsdItem(tr("Tracks settings"), osUnknown, true));
 
-    static cPlugin *pTVScraper = cPluginManager::GetPlugin("tvscraper");
-    static cPlugin *pScraper2Vdr = cPluginManager::GetPlugin("scraper2vdr");
-    if( pTVScraper || pScraper2Vdr )
+    // first try scraper2vdr
+    static cPlugin *pScraper = cPluginManager::GetPlugin("scraper2vdr");
+    if( !pScraper ) // if it doesn't exit, try tvscraper
+        pScraper = cPluginManager::GetPlugin("tvscraper");
+    if( pScraper )
         Add(new cOsdItem(tr("TVScraper / scraper2vdr settings"), osUnknown, true));
     else
         Add(new cOsdItem(tr("TVScraper / scraper2vdr not installed"), osUnknown, false));

@@ -2,7 +2,6 @@
 
 #include "baserender.h"
 #include "flat.h"
-#include "services/tvscraper.h"
 #include "services/scraper2vdr.h"
 
 class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
