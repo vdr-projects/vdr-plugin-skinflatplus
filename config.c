@@ -68,6 +68,10 @@ cFlatConfig::cFlatConfig(void) {
     decorBorderChannelTypeUser = 0;
     decorBorderChannelSizeUser = 0;
 
+    decorBorderChannelEPGByTheme = 1;
+    decorBorderChannelEPGTypeUser = 0;
+    decorBorderChannelEPGSizeUser = 0;
+
     decorBorderTopBarByTheme = 1;
     decorBorderTopBarTypeUser = 0;
     decorBorderTopBarSizeUser = 0;
@@ -134,6 +138,9 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     if      (strcmp(Name, "decorBorderChannelByTheme") == 0)            decorBorderChannelByTheme = atoi(Value);
     else if (strcmp(Name, "decorBorderChannelTypeUser") == 0)           decorBorderChannelTypeUser = atoi(Value);
     else if (strcmp(Name, "decorBorderChannelSizeUser") == 0)           decorBorderChannelSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderChannelEPGByTheme") == 0)         decorBorderChannelEPGByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderChannelEPGTypeUser") == 0)        decorBorderChannelEPGTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderChannelEPGSizeUser") == 0)        decorBorderChannelEPGSizeUser = atoi(Value);
     else if (strcmp(Name, "decorBorderTopBarByTheme") == 0)             decorBorderTopBarByTheme = atoi(Value);
     else if (strcmp(Name, "decorBorderTopBarTypeUser") == 0)            decorBorderTopBarTypeUser = atoi(Value);
     else if (strcmp(Name, "decorBorderTopBarSizeUser") == 0)            decorBorderTopBarSizeUser = atoi(Value);
@@ -235,151 +242,162 @@ void cFlatConfig::DecorCheckAndInit(void) {
         DecorCurrent = DecorIndex;
         DecorLoadCurrent();
     }
-        if( decorBorderChannelByTheme ) {
-            decorBorderChannelType = decorBorderChannelTypeTheme;
-            decorBorderChannelSize = decorBorderChannelSizeTheme;
-        } else {
-            decorBorderChannelType = decorBorderChannelTypeUser;
-            decorBorderChannelSize = decorBorderChannelSizeUser;
-        }
+    if( decorBorderChannelByTheme ) {
+        decorBorderChannelType = decorBorderChannelTypeTheme;
+        decorBorderChannelSize = decorBorderChannelSizeTheme;
+    } else {
+        decorBorderChannelType = decorBorderChannelTypeUser;
+        decorBorderChannelSize = decorBorderChannelSizeUser;
+    }
 
-        if( decorBorderTopBarByTheme ) {
-            decorBorderTopBarType = decorBorderTopBarTypeTheme;
-            decorBorderTopBarSize = decorBorderTopBarSizeTheme;
-        } else {
-            decorBorderTopBarType = decorBorderTopBarTypeUser;
-            decorBorderTopBarSize = decorBorderTopBarSizeUser;
-        }
+    if( decorBorderChannelEPGByTheme ) {
+        decorBorderChannelEPGType = decorBorderChannelEPGTypeTheme;
+        decorBorderChannelEPGSize = decorBorderChannelEPGSizeTheme;
+    } else {
+        decorBorderChannelEPGType = decorBorderChannelEPGTypeUser;
+        decorBorderChannelEPGSize = decorBorderChannelEPGSizeUser;
+    }
 
-        if( decorBorderMessageByTheme ) {
-            decorBorderMessageType = decorBorderMessageTypeTheme;
-            decorBorderMessageSize = decorBorderMessageSizeTheme;
-        } else {
-            decorBorderMessageType = decorBorderMessageTypeUser;
-            decorBorderMessageSize = decorBorderMessageSizeUser;
-        }
+    if( decorBorderTopBarByTheme ) {
+        decorBorderTopBarType = decorBorderTopBarTypeTheme;
+        decorBorderTopBarSize = decorBorderTopBarSizeTheme;
+    } else {
+        decorBorderTopBarType = decorBorderTopBarTypeUser;
+        decorBorderTopBarSize = decorBorderTopBarSizeUser;
+    }
 
-        if( decorBorderVolumeByTheme ) {
-            decorBorderVolumeType = decorBorderVolumeTypeTheme;
-            decorBorderVolumeSize = decorBorderVolumeSizeTheme;
-        } else {
-            decorBorderVolumeType = decorBorderVolumeTypeUser;
-            decorBorderVolumeSize = decorBorderVolumeSizeUser;
-        }
+    if( decorBorderMessageByTheme ) {
+        decorBorderMessageType = decorBorderMessageTypeTheme;
+        decorBorderMessageSize = decorBorderMessageSizeTheme;
+    } else {
+        decorBorderMessageType = decorBorderMessageTypeUser;
+        decorBorderMessageSize = decorBorderMessageSizeUser;
+    }
 
-        if( decorBorderTrackByTheme ) {
-            decorBorderTrackType = decorBorderTrackTypeTheme;
-            decorBorderTrackSize = decorBorderTrackSizeTheme;
-        } else {
-            decorBorderTrackType = decorBorderTrackTypeUser;
-            decorBorderTrackSize = decorBorderTrackSizeUser;
-        }
+    if( decorBorderVolumeByTheme ) {
+        decorBorderVolumeType = decorBorderVolumeTypeTheme;
+        decorBorderVolumeSize = decorBorderVolumeSizeTheme;
+    } else {
+        decorBorderVolumeType = decorBorderVolumeTypeUser;
+        decorBorderVolumeSize = decorBorderVolumeSizeUser;
+    }
 
-        if( decorBorderReplayByTheme ) {
-            decorBorderReplayType = decorBorderReplayTypeTheme;
-            decorBorderReplaySize = decorBorderReplaySizeTheme;
-        } else {
-            decorBorderReplayType = decorBorderReplayTypeUser;
-            decorBorderReplaySize = decorBorderReplaySizeUser;
-        }
+    if( decorBorderTrackByTheme ) {
+        decorBorderTrackType = decorBorderTrackTypeTheme;
+        decorBorderTrackSize = decorBorderTrackSizeTheme;
+    } else {
+        decorBorderTrackType = decorBorderTrackTypeUser;
+        decorBorderTrackSize = decorBorderTrackSizeUser;
+    }
 
-        if( decorBorderMenuItemByTheme ) {
-            decorBorderMenuItemType = decorBorderMenuItemTypeTheme;
-            decorBorderMenuItemSize = decorBorderMenuItemSizeTheme;
-        } else {
-            decorBorderMenuItemType = decorBorderMenuItemTypeUser;
-            decorBorderMenuItemSize = decorBorderMenuItemSizeUser;
-        }
+    if( decorBorderReplayByTheme ) {
+        decorBorderReplayType = decorBorderReplayTypeTheme;
+        decorBorderReplaySize = decorBorderReplaySizeTheme;
+    } else {
+        decorBorderReplayType = decorBorderReplayTypeUser;
+        decorBorderReplaySize = decorBorderReplaySizeUser;
+    }
 
-        if( decorBorderMenuContentHeadByTheme ) {
-            decorBorderMenuContentHeadType = decorBorderMenuContentHeadTypeTheme;
-            decorBorderMenuContentHeadSize = decorBorderMenuContentHeadSizeTheme;
-        } else {
-            decorBorderMenuContentHeadType = decorBorderMenuContentHeadTypeUser;
-            decorBorderMenuContentHeadSize = decorBorderMenuContentHeadSizeUser;
-        }
+    if( decorBorderMenuItemByTheme ) {
+        decorBorderMenuItemType = decorBorderMenuItemTypeTheme;
+        decorBorderMenuItemSize = decorBorderMenuItemSizeTheme;
+    } else {
+        decorBorderMenuItemType = decorBorderMenuItemTypeUser;
+        decorBorderMenuItemSize = decorBorderMenuItemSizeUser;
+    }
 
-        if( decorBorderMenuContentByTheme ) {
-            decorBorderMenuContentType = decorBorderMenuContentTypeTheme;
-            decorBorderMenuContentSize = decorBorderMenuContentSizeTheme;
-        } else {
-            decorBorderMenuContentType = decorBorderMenuContentTypeUser;
-            decorBorderMenuContentSize = decorBorderMenuContentSizeUser;
-        }
+    if( decorBorderMenuContentHeadByTheme ) {
+        decorBorderMenuContentHeadType = decorBorderMenuContentHeadTypeTheme;
+        decorBorderMenuContentHeadSize = decorBorderMenuContentHeadSizeTheme;
+    } else {
+        decorBorderMenuContentHeadType = decorBorderMenuContentHeadTypeUser;
+        decorBorderMenuContentHeadSize = decorBorderMenuContentHeadSizeUser;
+    }
 
-        if( decorBorderButtonByTheme ) {
-            decorBorderButtonType = decorBorderButtonTypeTheme;
-            decorBorderButtonSize = decorBorderButtonSizeTheme;
-        } else {
-            decorBorderButtonType = decorBorderButtonTypeUser;
-            decorBorderButtonSize = decorBorderButtonSizeUser;
-        }
+    if( decorBorderMenuContentByTheme ) {
+        decorBorderMenuContentType = decorBorderMenuContentTypeTheme;
+        decorBorderMenuContentSize = decorBorderMenuContentSizeTheme;
+    } else {
+        decorBorderMenuContentType = decorBorderMenuContentTypeUser;
+        decorBorderMenuContentSize = decorBorderMenuContentSizeUser;
+    }
 
-        if( decorProgressChannelByTheme ) {
-            decorProgressChannelType = decorProgressChannelTypeTheme;
-            decorProgressChannelSize = decorProgressChannelSizeTheme;
-        } else {
-            decorProgressChannelType = decorProgressChannelTypeUser;
-            decorProgressChannelSize = decorProgressChannelSizeUser;
-        }
+    if( decorBorderButtonByTheme ) {
+        decorBorderButtonType = decorBorderButtonTypeTheme;
+        decorBorderButtonSize = decorBorderButtonSizeTheme;
+    } else {
+        decorBorderButtonType = decorBorderButtonTypeUser;
+        decorBorderButtonSize = decorBorderButtonSizeUser;
+    }
 
-        if( decorProgressVolumeByTheme ) {
-            decorProgressVolumeType = decorProgressVolumeTypeTheme;
-            decorProgressVolumeSize = decorProgressVolumeSizeTheme;
-        } else {
-            decorProgressVolumeType = decorProgressVolumeTypeUser;
-            decorProgressVolumeSize = decorProgressVolumeSizeUser;
-        }
+    if( decorProgressChannelByTheme ) {
+        decorProgressChannelType = decorProgressChannelTypeTheme;
+        decorProgressChannelSize = decorProgressChannelSizeTheme;
+    } else {
+        decorProgressChannelType = decorProgressChannelTypeUser;
+        decorProgressChannelSize = decorProgressChannelSizeUser;
+    }
 
-        if( decorProgressMenuItemByTheme ) {
-            decorProgressMenuItemType = decorProgressMenuItemTypeTheme;
-            decorProgressMenuItemSize = decorProgressMenuItemSizeTheme;
-        } else {
-            decorProgressMenuItemType = decorProgressMenuItemTypeUser;
-            decorProgressMenuItemSize = decorProgressMenuItemSizeUser;
-        }
+    if( decorProgressVolumeByTheme ) {
+        decorProgressVolumeType = decorProgressVolumeTypeTheme;
+        decorProgressVolumeSize = decorProgressVolumeSizeTheme;
+    } else {
+        decorProgressVolumeType = decorProgressVolumeTypeUser;
+        decorProgressVolumeSize = decorProgressVolumeSizeUser;
+    }
 
-        if( decorProgressReplayByTheme ) {
-            decorProgressReplayType = decorProgressReplayTypeTheme;
-            decorProgressReplaySize = decorProgressReplaySizeTheme;
-        } else {
-            decorProgressReplayType = decorProgressReplayTypeUser;
-            decorProgressReplaySize = decorProgressReplaySizeUser;
-        }
+    if( decorProgressMenuItemByTheme ) {
+        decorProgressMenuItemType = decorProgressMenuItemTypeTheme;
+        decorProgressMenuItemSize = decorProgressMenuItemSizeTheme;
+    } else {
+        decorProgressMenuItemType = decorProgressMenuItemTypeUser;
+        decorProgressMenuItemSize = decorProgressMenuItemSizeUser;
+    }
 
-        if( decorProgressSignalByTheme ) {
-            decorProgressSignalType = decorProgressSignalTypeTheme;
-            decorProgressSignalSize = decorProgressSignalSizeTheme;
-        } else {
-            decorProgressSignalType = decorProgressSignalTypeUser;
-            decorProgressSignalSize = decorProgressSignalSizeUser;
-        }
+    if( decorProgressReplayByTheme ) {
+        decorProgressReplayType = decorProgressReplayTypeTheme;
+        decorProgressReplaySize = decorProgressReplaySizeTheme;
+    } else {
+        decorProgressReplayType = decorProgressReplayTypeUser;
+        decorProgressReplaySize = decorProgressReplaySizeUser;
+    }
 
-        if( decorBorderChannelType == 0 )
-            decorBorderChannelSize = 0;
-        if( decorBorderTopBarType == 0 )
-            decorBorderTopBarSize = 0;
-        if( decorBorderMessageType == 0 )
-            decorBorderMessageSize = 0;
-        if( decorBorderVolumeType == 0 )
-            decorBorderVolumeSize = 0;
-        if( decorBorderTrackType == 0 )
-            decorBorderTrackSize = 0;
-        if( decorBorderReplayType == 0 )
-            decorBorderReplaySize = 0;
-        if( decorBorderMenuItemType == 0 )
-            decorBorderMenuItemSize = 0;
-        if( decorBorderMenuContentHeadType == 0 )
-            decorBorderMenuContentHeadSize = 0;
-        if( decorBorderMenuContentType == 0 )
-            decorBorderMenuContentSize = 0;
-        if( decorBorderButtonType == 0 )
-            decorBorderButtonSize = 0;
+    if( decorProgressSignalByTheme ) {
+        decorProgressSignalType = decorProgressSignalTypeTheme;
+        decorProgressSignalSize = decorProgressSignalSizeTheme;
+    } else {
+        decorProgressSignalType = decorProgressSignalTypeUser;
+        decorProgressSignalSize = decorProgressSignalSizeUser;
+    }
+
+    if( decorBorderChannelType == 0 )
+        decorBorderChannelSize = 0;
+    if( decorBorderTopBarType == 0 )
+        decorBorderTopBarSize = 0;
+    if( decorBorderMessageType == 0 )
+        decorBorderMessageSize = 0;
+    if( decorBorderVolumeType == 0 )
+        decorBorderVolumeSize = 0;
+    if( decorBorderTrackType == 0 )
+        decorBorderTrackSize = 0;
+    if( decorBorderReplayType == 0 )
+        decorBorderReplaySize = 0;
+    if( decorBorderMenuItemType == 0 )
+        decorBorderMenuItemSize = 0;
+    if( decorBorderMenuContentHeadType == 0 )
+        decorBorderMenuContentHeadSize = 0;
+    if( decorBorderMenuContentType == 0 )
+        decorBorderMenuContentSize = 0;
+    if( decorBorderButtonType == 0 )
+        decorBorderButtonSize = 0;
 }
 
 void cFlatConfig::ThemeInit(void) {
     decorBorderChannelFg = Theme.Color(clrChannelBorderFg);
     decorBorderChannelBg = Theme.Color(clrChannelBorderBg);
+
+    decorBorderChannelEPGFg = Theme.Color(clrChannelEPGBorderFg);
+    decorBorderChannelEPGBg = Theme.Color(clrChannelEPGBorderBg);
 
     decorBorderTopBarFg = Theme.Color(clrTopBarBorderFg);
     decorBorderTopBarBg = Theme.Color(clrTopBarBorderBg);
@@ -560,6 +578,10 @@ void cFlatConfig::DecorLoadFile(cString File) {
                         decorBorderChannelTypeTheme = value; continue; }
                     if( strstr(n, "ChannelBorderSize") == n ) {
                         decorBorderChannelSizeTheme = value; continue; }
+                    if( strstr(n, "ChannelEPGBorderType") == n ) {
+                        decorBorderChannelEPGTypeTheme = value; continue; }
+                    if( strstr(n, "ChannelEPGBorderSize") == n ) {
+                        decorBorderChannelEPGSizeTheme = value; continue; }
                     if( strstr(n, "TopBarBorderType") == n ) {
                         decorBorderTopBarTypeTheme = value; continue; }
                     if( strstr(n, "TopBarBorderSize") == n ) {

@@ -51,6 +51,12 @@ class cFlatConfig
         int decorBorderChannelType, decorBorderChannelSize;
         tColor decorBorderChannelFg, decorBorderChannelBg;
 
+        int decorBorderChannelEPGByTheme;
+        int decorBorderChannelEPGTypeTheme, decorBorderChannelEPGSizeTheme;
+        int decorBorderChannelEPGTypeUser, decorBorderChannelEPGSizeUser;
+        int decorBorderChannelEPGType, decorBorderChannelEPGSize;
+        tColor decorBorderChannelEPGFg, decorBorderChannelEPGBg;
+
         int decorBorderTopBarByTheme;
         int decorBorderTopBarTypeTheme, decorBorderTopBarSizeTheme;
         int decorBorderTopBarTypeUser, decorBorderTopBarSizeUser;

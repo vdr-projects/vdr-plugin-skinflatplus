@@ -83,6 +83,9 @@ THEME_CLR(Theme, clrChannelProgressBg,      0xC0101010);
 THEME_CLR(Theme, clrChannelBorderFg,        0xC03090B0);
 THEME_CLR(Theme, clrChannelBorderBg,        0xC03090B0);
 
+THEME_CLR(Theme, clrChannelEPGBorderFg,        0xC03090B0);
+THEME_CLR(Theme, clrChannelEPGBorderBg,        0xC03090B0);
+
 THEME_CLR(Theme, clrChannelSignalFont,            0xFFA0A0A0);
 THEME_CLR(Theme, clrChannelSignalProgressFg,      0xFFA0A0A0);
 THEME_CLR(Theme, clrChannelSignalProgressBarFg,   0xFFA0A0A0);

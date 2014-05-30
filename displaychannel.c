@@ -54,10 +54,10 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
         Config.decorBorderChannelSize+channelHeight - height, channelWidth, heightBottom));
     chanIconsPixmap->Fill( clrTransparent );
 
-    TVSLeft = 20 + Config.decorBorderChannelSize;
-    TVSTop = topBarHeight + Config.decorBorderTopBarSize*2 + 20 + Config.decorBorderChannelSize;
-    TVSWidth = osdWidth - 40 - Config.decorBorderChannelSize*2;
-    TVSHeight = osdHeight - topBarHeight - heightBottom - 40 - Config.decorBorderChannelSize*2;
+    TVSLeft = 20 + Config.decorBorderChannelEPGSize;
+    TVSTop = topBarHeight + Config.decorBorderTopBarSize*2 + 20 + Config.decorBorderChannelEPGSize;
+    TVSWidth = osdWidth - 40 - Config.decorBorderChannelEPGSize*2;
+    TVSHeight = osdHeight - topBarHeight - heightBottom - 40 - Config.decorBorderChannelEPGSize*2;
 
     chanEpgImagesPixmap = osd->CreatePixmap(2, cRect(TVSLeft, TVSTop, TVSWidth, TVSHeight));
     chanEpgImagesPixmap->Fill( clrTransparent );
@@ -466,8 +466,8 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         if( img ) {
             chanEpgImagesPixmap->DrawImage(cPoint(0, 0), *img);
 
-            DecorBorderDraw(20 + Config.decorBorderChannelSize, topBarHeight + Config.decorBorderTopBarSize*2 + 20 + Config.decorBorderChannelSize, img->Width(), img->Height(),
-                Config.decorBorderChannelSize, Config.decorBorderChannelType, Config.decorBorderChannelFg, Config.decorBorderChannelBg, BorderTVSPoster);
+            DecorBorderDraw(20 + Config.decorBorderChannelEPGSize, topBarHeight + Config.decorBorderTopBarSize*2 + 20 + Config.decorBorderChannelEPGSize, img->Width(), img->Height(),
+                Config.decorBorderChannelEPGSize, Config.decorBorderChannelEPGType, Config.decorBorderChannelEPGFg, Config.decorBorderChannelEPGBg, BorderTVSPoster);
         }
     }
 }

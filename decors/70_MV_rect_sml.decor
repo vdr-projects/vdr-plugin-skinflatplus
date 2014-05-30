@@ -35,6 +35,8 @@ MessageBorderSize = 2
 # Display Channel
 ChannelBorderType = 1
 ChannelBorderSize = 5
+ChannelEPGBorderType = 1
+ChannelEPGBorderSize = 5
 ChannelProgressType = 0
 ChannelProgressSize = 10
 ChannelSignalProgressType = 2

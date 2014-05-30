@@ -132,6 +132,9 @@ void cFlatSetup::Store(void) {
     SetupStore("decorBorderChannelByTheme", Config.decorBorderChannelByTheme);
     SetupStore("decorBorderChannelTypeUser", Config.decorBorderChannelTypeUser);
     SetupStore("decorBorderChannelSizeUser", Config.decorBorderChannelSizeUser);
+    SetupStore("decorBorderChannelEPGByTheme", Config.decorBorderChannelEPGByTheme);
+    SetupStore("decorBorderChannelEPGTypeUser", Config.decorBorderChannelEPGTypeUser);
+    SetupStore("decorBorderChannelEPGSizeUser", Config.decorBorderChannelEPGSizeUser);
     SetupStore("decorBorderTopBarByTheme", Config.decorBorderTopBarByTheme);
     SetupStore("decorBorderTopBarTypeUser", Config.decorBorderTopBarTypeUser);
     SetupStore("decorBorderTopBarSizeUser", Config.decorBorderTopBarSizeUser);
@@ -356,6 +359,17 @@ void cFlatSetupChannelInfo::Setup(void) {
         Add(new cMenuEditIntItem(tr("Channelinfo border size"), &SetupConfig->decorBorderChannelSizeUser));
     }
 
+    Add(new cMenuEditBoolItem(tr("Channelinfo EPG border by decor-file?"), &SetupConfig->decorBorderChannelEPGByTheme));
+    if( SetupConfig->decorBorderChannelEPGByTheme ) {
+        cString type = cString::sprintf("%s:\t%s", tr("Channelinfo EPG border type"), Bordertypes[SetupConfig->decorBorderChannelEPGTypeTheme]);
+        Add(new cOsdItem(type, osUnknown, false));
+        cString size = cString::sprintf("%s:\t%d", tr("Channelinfo EPG border size"), SetupConfig->decorBorderChannelEPGSizeTheme);
+        Add(new cOsdItem(size, osUnknown, false));
+    } else {
+        Add(new cMenuEditStraItem(tr("Channelinfo EPG border type"), &SetupConfig->decorBorderChannelEPGTypeUser, Bordertypes.Size(), &Bordertypes[0]));
+        Add(new cMenuEditIntItem(tr("Channelinfo EPG border size"), &SetupConfig->decorBorderChannelEPGSizeUser));
+    }
+
     Add(new cMenuEditBoolItem(tr("Channelinfo progress by decor-file?"), &SetupConfig->decorProgressChannelByTheme));
     if( SetupConfig->decorProgressChannelByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Channelinfo progress type"), Progresstypes[SetupConfig->decorProgressChannelTypeTheme]);
@@ -399,6 +413,7 @@ eOSState cFlatSetupChannelInfo::ProcessKey(eKeys Key) {
     if( Key == kLeft || Key == kRight ) {
         const char* ItemText = Get(Current())->Text();
         if( strstr(ItemText, tr("Channelinfo border by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Channelinfo EPG border by decor-file?")) != NULL ||
             strstr(ItemText, tr("Channelinfo progress by decor-file?")) != NULL ||
             strstr(ItemText, tr("Signalquality progress by decor-file?")) != NULL
         ) {

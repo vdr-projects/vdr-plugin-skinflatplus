@@ -8,7 +8,9 @@ VDR Plugin 'skinflatplus' Revision History
 - [update] tvsraper service api. ! Use only with new TVScraper Version 0.2.0 or greater !
 - [update] crypted.png
 - [update] use 10_rect_sml.decor as default
-- [add] theme colors clrMenuEventTitleLine and clrMenuRecTitleLine for the Line under Title in Event and Recording
+- [add] theme colors clrMenuEventTitleLine and clrMenuRecTitleLine for the line under title in event and recording
+- [add] theme color clrChannelEPGBorderFg and clrChannelEPGBorderBg for border color of epg image in chanel info
+- [add] decor option ChannelEPGBorderType and ChannelEPGBorderSize for border of epg image in chanel info
 
 2014-11-05: Version 0.3.0
 - [fix] use only current Event in extraevent display in displaychannel

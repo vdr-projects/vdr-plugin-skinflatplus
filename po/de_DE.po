@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.3.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-05-30 14:32+0200\n"
+"POT-Creation-Date: 2014-05-30 15:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -329,6 +329,15 @@ msgstr "Kanalinfo Rand Typ"
 
 msgid "Channelinfo border size"
 msgstr "Kanalinfo Rand Größe"
+
+msgid "Channelinfo EPG border by decor-file?"
+msgstr ""
+
+msgid "Channelinfo EPG border type"
+msgstr ""
+
+msgid "Channelinfo EPG border size"
+msgstr ""
 
 msgid "Channelinfo progress by decor-file?"
 msgstr "Kanalinfo Progress von Decordatei?"
