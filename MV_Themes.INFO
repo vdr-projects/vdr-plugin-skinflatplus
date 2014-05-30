@@ -1,4 +1,4 @@
-flatPlus-MV_Themen erstellt am 10.04.2014 10:16
+flatPlus-MV_Themen erstellt am 30.05.2014 16:04
 Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
 
 => Installationshimnweise am Ende der Datei! <=
@@ -92,8 +92,9 @@ skinflatplus.decorProgressSignalTypeUser = 0
 skinflatplus.decorProgressVolumeByTheme = 1
 skinflatplus.decorProgressVolumeSizeUser = 20
 skinflatplus.decorProgressVolumeTypeUser = 0
-skinflatplus.DiskUsageShow = 1
+skinflatplus.DiskUsageShow = 2
 skinflatplus.EpgAdditionalInfoShow = 1
+skinflatplus.EpgRerunsShow = 1
 skinflatplus.MainMenuItemScale = 1.000000
 skinflatplus.marginOsdHor = 0
 skinflatplus.marginOsdVer = 0
@@ -113,20 +114,27 @@ skinflatplus.RecordingFormatShow = 1
 skinflatplus.RecordingResolutionAspectShow = 1
 skinflatplus.RecordingSimpleAspectFormat = 1
 skinflatplus.SignalQualityShow = 1
-skinflatplus.TopBarFontSize = 0.048000
+skinflatplus.SignalQualityUseColors = 1
+skinflatplus.TopBarFontSize = 0.050000
 skinflatplus.TopBarMenuIconShow = 1
 skinflatplus.TopBarRecConflictsHigh = 3
 skinflatplus.TopBarRecConflictsShow = 1
 skinflatplus.TopBarRecordingShow = 1
+skinflatplus.TVScraperChanInfoPosterSize = 0.010000
+skinflatplus.TVScraperChanInfoShowPoster = 1
+skinflatplus.TVScraperEPGInfoShowActors = 0
+skinflatplus.TVScraperEPGInfoShowPoster = 1
+skinflatplus.TVScraperRecInfoShowActors = 0
+skinflatplus.TVScraperRecInfoShowPoster = 1
 
 Empfohlene Einstellungen im VDR (Menue - Einstellungen - OSD):
 FontFix = Nimbus Mono L:Bold
-FontFixSize = 33
-FontFixSizeP = 0.031000
+FontFixSize = 30
+FontFixSizeP = 0.028000
 FontOsd = VDRPT Sans:Regular
 FontOsdSize = 42
 FontOsdSizeP = 0.039000
-FontSml = VDRPT Sans:Regular
+FontSml = PT Sans:Regular
 FontSmlSize = 33
 FontSmlSizeP = 0.031000
 OSDAspect = 1.000000
@@ -137,7 +145,7 @@ OSDLeft = 0
 OSDLeftP = 0.000000
 OSDMessageTime = 5
 OSDSkin = flatPlus
-OSDTheme = MVPumpkin
+OSDTheme = MVGreen
 OSDTop = 0
 OSDTopP = 0.000000
 OSDWidth = 1920

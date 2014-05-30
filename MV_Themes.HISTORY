@@ -63,3 +63,7 @@ HISTORY
               - Option für 'Silent Update' (-u) im Skript 'flatPlus_MV_Update.sh'
  [03.04.2014] - 'logo_background.png' entfernt. Nutzt nun das default Logo
  [10.04.2014] - Logos 'radio.png' und 'tv.png' angepasst
+ [30.05.2014] - 'MV_rect_sml.decor' angepast
+              - Neue Farben 'clrMenuEventTitleLine', 'clrMenuRecTitleLine'
+                'clrChannelEPGBorderFg' und 'clrChannelEPGBorderBg' eingefügt
+

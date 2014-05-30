@@ -331,13 +331,13 @@ msgid "Channelinfo border size"
 msgstr "Kanalinfo Rand Größe"
 
 msgid "Channelinfo EPG border by decor-file?"
-msgstr ""
+msgstr "Kanalinfo EPG Rand von Decordatei?"
 
 msgid "Channelinfo EPG border type"
-msgstr ""
+msgstr "Kanalinfo EPG Rand Typ"
 
 msgid "Channelinfo EPG border size"
-msgstr ""
+msgstr "Kanalinfo EPG Rand Größe"
 
 msgid "Channelinfo progress by decor-file?"
 msgstr "Kanalinfo Progress von Decordatei?"
