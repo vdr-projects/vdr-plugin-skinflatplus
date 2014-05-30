@@ -12,6 +12,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] theme colors clrMenuEventTitleLine and clrMenuRecTitleLine for the line under title in event and recording
 - [add] theme color clrChannelEPGBorderFg and clrChannelEPGBorderBg for border color of epg image in chanel info
 - [add] decor option ChannelEPGBorderType and ChannelEPGBorderSize for border of epg image in chanel info
+- [add] patch - load epg image cover_vdr.jpg in recordings folder (thanks to Saman@vdr-portal.de)
 
 2014-11-05: Version 0.3.0
 - [fix] use only current Event in extraevent display in displaychannel

@@ -20,6 +20,7 @@ public:
     cImage* LoadIcon(const char *cIcon, int width, int height, bool preserveAspect = true);
     cImage* LoadFile(const char *cFile, int width, int height, bool preserveAspect = true);
     bool FileExits(const std::string& name);
+    bool SearchRecordingPoster(cString recPath, cString &found);
 private:
     int epgImageWidthLarge, epgImageHeightLarge;
     int epgImageWidth, epgImageHeight;

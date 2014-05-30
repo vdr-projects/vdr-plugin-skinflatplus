@@ -219,6 +219,28 @@ void cImageLoader::toLowerCase(std::string &str) {
 }
 
 bool cImageLoader::FileExits(const std::string& name) {
-  struct stat buffer;
-  return (stat (name.c_str(), &buffer) == 0);
+    struct stat buffer;
+    return (stat (name.c_str(), &buffer) == 0);
+}
+
+bool cImageLoader::SearchRecordingPoster(cString recPath, cString &found) {
+    cString manualPoster = cString::sprintf("%s/cover_vdr.jpg", *recPath);
+    if (FileSize(*manualPoster) != -1) {
+        dsyslog("Poster found in %s/cover_vdr.jpg", *recPath);
+        found = manualPoster;
+        return true;
+    }
+    manualPoster = cString::sprintf("%s/../../../cover_vdr.jpg", *recPath);
+    if (FileSize(*manualPoster) != -1) {
+        dsyslog("Poster found in %s/../../../cover_vdr.jpg", *recPath);
+        found = manualPoster;
+        return true;
+    }
+    manualPoster = cString::sprintf("%s/../../cover_vdr.jpg", *recPath);
+    if (FileSize(*manualPoster) != -1) {
+        dsyslog("Poster found in %s/../../cover_vdr.jpg", *recPath);
+        found = manualPoster;
+        return true;
+    }
+    return false;
 }
