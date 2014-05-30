@@ -201,6 +201,7 @@ void cFlatDisplayMenu::Clear(void) {
     scrollbarPixmap->Fill(clrTransparent);
     contentHeadPixmap->Fill(clrTransparent);
     DecorBorderClearByFrom(BorderMenuItem);
+    DecorBorderClearByFrom(BorderContent);
     DecorBorderClearAll();
     isScrolling = false;
 

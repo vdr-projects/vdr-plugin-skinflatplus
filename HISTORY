@@ -3,6 +3,7 @@ VDR Plugin 'skinflatplus' Revision History
 
 2014-XX-XX: Version 0.3.1
 - [fix] epg image position on channel info
+- [fix] Bug #1847 - SetRecording border with deleteresume.patch
 - [update] tvsraper service api. ! Use only with new TVScraper Version 0.2.0 or greater !
 
 2014-11-05: Version 0.3.0
