@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.3.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-05-09 18:05+0200\n"
+"POT-Creation-Date: 2014-05-30 14:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -236,6 +236,9 @@ msgstr "TVScraper / scraper2vdr Einstellungen"
 
 msgid "TVScraper / scraper2vdr not installed"
 msgstr "TVScraper / scraper2vdr nicht installiert"
+
+msgid "no decorfiles found, check install"
+msgstr "keine Decordateien gefunden, prüfe Installation"
 
 msgid "Decorfile"
 msgstr "Decordatei"

@@ -245,7 +245,11 @@ void cFlatSetupGeneral::Setup(void) {
     if( SetupConfig->DecorIndex < 0 || SetupConfig->DecorIndex > DecorDescriptions.Size() )
         SetupConfig->DecorIndex = 0;
 
-    Add(new cMenuEditStraItem(tr("Decorfile"), &SetupConfig->DecorIndex, DecorDescriptions.Size(), &DecorDescriptions[0]));
+    if( DecorDescriptions.Size() == 0 ) {
+        esyslog("skinflatplus: no decor files found, please check your installation!");
+        Add(new cOsdItem(tr("no decorfiles found, check install"), osUnknown, false));
+    } else
+        Add(new cMenuEditStraItem(tr("Decorfile"), &SetupConfig->DecorIndex, DecorDescriptions.Size(), &DecorDescriptions[0]));
 
     Add(new cMenuEditBoolItem(tr("Show empty color-buttons"), &SetupConfig->ButtonsShowEmpty));
     Add(new cMenuEditBoolItem(tr("Show TopBar menu icons"), &SetupConfig->TopBarMenuIconShow));
