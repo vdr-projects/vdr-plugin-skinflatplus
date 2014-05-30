@@ -316,6 +316,9 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
             bool isRunning = false;
 
             int xt = Tab(i);
+            int xt2 = Tab(i+1);
+            if( xt2 == 0 || i == MaxTabs )
+                xt2 = menuItemWidth;
 
             if( xt >= menuItemWidth )
                 continue;
@@ -437,19 +440,19 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
 
                             menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font);
                             int l = font->Width( first.c_str() );
-                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), ColorExtraTextFg, ColorBg, font);
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), ColorExtraTextFg, ColorBg, font, xt2 - xt);
                         } else if ( found2 != string::npos ) {
                             std::string first = tilde.substr(0, found2);
                             std::string second = tilde.substr(found2 +1, tilde.length() );
 
-                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font);
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font, xt2 - xt);
                             int l = font->Width( first.c_str() );
                             l += font->Width("X");
-                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), ColorExtraTextFg, ColorBg, font);
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), ColorExtraTextFg, ColorBg, font, xt2 - xt);
                         } else
-                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font);
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font, xt2 - xt);
                     } else
-                        menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font);
+                        menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font, xt2 - xt);
                 }
             }
         }
