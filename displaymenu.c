@@ -2086,14 +2086,14 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             if( img ) {
                 ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
                 ContentTop += fontHeight;
-                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventTitleLine));
                 ContentTop += 6;
                 ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
             } else if( text.str().length() > 0 ) {
                 ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
                 ContentTop += fontHeight;
-                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventTitleLine));
                 ContentTop += 6;
                 ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
@@ -2101,7 +2101,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         } else if( text.str().length() > 0 ) {
             ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventTitleLine));
             ContentTop += 6;
             ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
@@ -2111,7 +2111,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Movie information"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventTitleLine));
             ContentTop += 6;
             ComplexContent.AddText(movie_info.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
@@ -2121,7 +2121,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Series information"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventTitleLine));
             ContentTop += 6;
             ComplexContent.AddText(series_info.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
@@ -2135,7 +2135,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Actors"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventTitleLine));
             ContentTop += 6;
 
             int actorsPerLine = 6;
@@ -2181,7 +2181,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Reruns"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventTitleLine));
             ContentTop += 6;
             ComplexContent.AddText(sstrReruns.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
@@ -2191,7 +2191,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Video information"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuEventTitleLine));
             ContentTop += 6;
             ComplexContent.AddText(textAdditional.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
@@ -2868,14 +2868,14 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             if( img ) {
                 ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
                 ContentTop += fontHeight;
-                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecTitleLine));
                 ContentTop += 6;
                 ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
             } else if( text.str().length() > 0 ) {
                 ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
                 ContentTop += fontHeight;
-                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+                ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecTitleLine));
                 ContentTop += 6;
                 ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                     Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
@@ -2883,7 +2883,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
         } else if( text.str().length() > 0 ) {
             ComplexContent.AddText(tr("Description"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecTitleLine));
             ContentTop += 6;
             ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
@@ -2893,7 +2893,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Movie information"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecTitleLine));
             ContentTop += 6;
             ComplexContent.AddText(movie_info.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
@@ -2903,7 +2903,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Series information"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecTitleLine));
             ContentTop += 6;
             ComplexContent.AddText(series_info.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
@@ -2917,7 +2917,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Actors"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecTitleLine));
             ContentTop += 6;
 
             int actorsPerLine = 6;
@@ -2962,7 +2962,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Recording information"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecTitleLine));
             ContentTop += 6;
             ComplexContent.AddText(recAdditional.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);
@@ -2972,7 +2972,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
             ContentTop = ComplexContent.BottomContent() + fontHeight;
             ComplexContent.AddText(tr("Video information"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuRecFontTitle), Theme.Color(clrMenuRecBg), font);
             ContentTop += fontHeight;
-            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecFontTitle));
+            ComplexContent.AddRect(cRect(0, ContentTop, cWidth, 3), Theme.Color(clrMenuRecTitleLine));
             ContentTop += 6;
             ComplexContent.AddText(textAdditional.str().c_str(), true, cRect(marginItem, ContentTop, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuRecFontInfo), Theme.Color(clrMenuRecBg), font);

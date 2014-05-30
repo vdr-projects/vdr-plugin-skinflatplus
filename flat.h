@@ -106,10 +106,12 @@ THEME_CLR(Theme, clrScrollbarBg,            0xC0101010);
 // Menu Event
 THEME_CLR(Theme, clrMenuEventBg,            0xC0101010);
 THEME_CLR(Theme, clrMenuEventFontTitle,     0xFF3090B0);
+THEME_CLR(Theme, clrMenuEventTitleLine,     0xFF3090B0);
 THEME_CLR(Theme, clrMenuEventFontInfo,      0xFFEEEEEE);
 // Menu Recording
 THEME_CLR(Theme, clrMenuRecBg,              0xC0101010);
 THEME_CLR(Theme, clrMenuRecFontTitle,       0xFF3090B0);
+THEME_CLR(Theme, clrMenuRecTitleLine,       0xFF3090B0);
 THEME_CLR(Theme, clrMenuRecFontInfo,        0xFFEEEEEE);
 // Menu Text (Multiline)
 THEME_CLR(Theme, clrMenuTextBg,             0xC0101010);
