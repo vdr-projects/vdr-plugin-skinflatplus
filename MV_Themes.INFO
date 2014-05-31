@@ -1,4 +1,4 @@
-flatPlus-MV_Themen erstellt am 30.05.2014 16:04
+flatPlus-MV_Themen erstellt am 31.05.2014 10:08
 Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
 
 => Installationshimnweise am Ende der Datei! <=
@@ -50,6 +50,9 @@ skinflatplus.decorBorderButtonByTheme = 1
 skinflatplus.decorBorderButtonSizeUser = 5
 skinflatplus.decorBorderButtonTypeUser = 0
 skinflatplus.decorBorderChannelByTheme = 1
+skinflatplus.decorBorderChannelEPGByTheme = 1
+skinflatplus.decorBorderChannelEPGSizeUser = 0
+skinflatplus.decorBorderChannelEPGTypeUser = 0
 skinflatplus.decorBorderChannelSizeUser = 5
 skinflatplus.decorBorderChannelTypeUser = 1
 skinflatplus.decorBorderMenuContentByTheme = 1
@@ -76,7 +79,7 @@ skinflatplus.decorBorderTrackTypeUser = 0
 skinflatplus.decorBorderVolumeByTheme = 1
 skinflatplus.decorBorderVolumeSizeUser = 0
 skinflatplus.decorBorderVolumeTypeUser = 0
-skinflatplus.DecorIndex = 18
+skinflatplus.DecorIndex = 21
 skinflatplus.decorProgressChannelByTheme = 1
 skinflatplus.decorProgressChannelSizeUser = 20
 skinflatplus.decorProgressChannelTypeUser = 0
@@ -94,7 +97,7 @@ skinflatplus.decorProgressVolumeSizeUser = 20
 skinflatplus.decorProgressVolumeTypeUser = 0
 skinflatplus.DiskUsageShow = 2
 skinflatplus.EpgAdditionalInfoShow = 1
-skinflatplus.EpgRerunsShow = 1
+skinflatplus.EpgRerunsShow = 0
 skinflatplus.MainMenuItemScale = 1.000000
 skinflatplus.marginOsdHor = 0
 skinflatplus.marginOsdVer = 0
@@ -145,7 +148,7 @@ OSDLeft = 0
 OSDLeftP = 0.000000
 OSDMessageTime = 5
 OSDSkin = flatPlus
-OSDTheme = MVGreen
+OSDTheme = MVDeepBlue
 OSDTop = 0
 OSDTopP = 0.000000
 OSDWidth = 1920
