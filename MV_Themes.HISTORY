@@ -68,4 +68,5 @@ HISTORY
                 'clrChannelEPGBorderFg' und 'clrChannelEPGBorderBg' eingefuegt
  [31.05.2014] - Hellere Farbe (+10) bei den Bereichstrennern
               - Update der empfohlenen Einstellungen in der MV_Themes.INFO
+              - Alle Themen, Decor und *.png ohne Execute-Flag (chmod -x)
 
