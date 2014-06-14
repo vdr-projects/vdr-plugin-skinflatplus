@@ -460,7 +460,7 @@ bool cFlatBaseRender::ButtonsDrawn(void) {
 void cFlatBaseRender::MessageCreate(void) {
     messageHeight = fontHeight + marginItem*2;
     if( Config.MessageColorPosition == 1 )
-        messageHeight += 20;
+        messageHeight += 8;
     int top = osdHeight - Config.MessageOffset - messageHeight - Config.decorBorderMessageSize;
     messagePixmap = osd->CreatePixmap(5, cRect(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight));
     messagePixmap->Fill(clrTransparent);
