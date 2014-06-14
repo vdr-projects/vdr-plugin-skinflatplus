@@ -317,7 +317,7 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
 
             int xt = Tab(i);
             int xt2 = Tab(i+1);
-            if( xt2 == 0 || i == MaxTabs )
+            if( xt2 == 0 || i == MaxTabs || (GetTabbedText(Text, i+1) == NULL) )
                 xt2 = menuItemWidth;
 
             if( xt >= menuItemWidth )
