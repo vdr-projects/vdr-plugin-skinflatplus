@@ -139,7 +139,7 @@ install-decors:
 
 install-icons:
 	mkdir -p $(DESTDIR)$(PLGRESDIR)/icons
-	cp -r icons/* $(DESTDIR)$(PLGRESDIR)/icons
+	cp -r --remove-destination icons/* $(DESTDIR)$(PLGRESDIR)/icons
 
 install: install-lib install-i18n install-themes install-icons install-decors
 

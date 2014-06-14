@@ -29,6 +29,7 @@ if [ -n "$1" ] ; then         # Parameter wurde übergeben
   if [ "$1" = "-u" -o "$1" = "-U" ] ; then
     SILENTUPDATE=1 ; echo "Silent Update! ($1)"
   else
+    echo "-------------------------------"
     echo "Falscher Parameter: $1"
     echo "Aufruf mit $(basename $0)"
     echo "Parameter -u    Keine Abfragen (Silent Update)."
@@ -39,7 +40,7 @@ fi
 # MV_Themes Löschen!
 if [ -z "$SILENTUPDATE" ] ; then
   echo "-------------------------------"
-  echo "MV_Themes löschen? (J/n)"
+  echo "MV_Themen löschen? (J/n)"
   timedout_read 5 TASTE
   if [ "$TASTE" = "n" -o "$TASTE" = "N" ] ; then
     echo "Skript abgebrochen. Es wurde nichts gelöscht!"
@@ -70,6 +71,21 @@ rm -rf MV_Themes.tar.xz      # Archiv entfernen
 
 echo "-------------------------------"
 echo "MV-Themen wurden aktualisiert."
-echo "Zum aktivieren 'make install' eingeben."
+
+if [ -z "$SILENTUPDATE" ] ; then
+  echo "-------------------------------"
+  echo "MV_Themen installieren (make install)? (j/N)"
+  timedout_read 5 TASTE
+  if [ "$TASTE" = "j" -o "$TASTE" = "J" ] ; then
+    cd ..
+    make install
+    echo "-------------------------------"
+    echo "MV-Themen wurden installiert."
+  fi
+else     # Silentupdate - Themen instalieren
+  make install
+fi
+
+echo "-------------------------------"
 
 exit

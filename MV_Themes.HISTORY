@@ -69,4 +69,8 @@ HISTORY
  [31.05.2014] - Hellere Farbe (+10) bei den Bereichstrennern
               - Update der empfohlenen Einstellungen in der MV_Themes.INFO
               - Alle Themen, Decor und *.png ohne Execute-Flag (chmod -x)
-
+ [01.06.2014] - Textfarbe bei Bereichstrennern heller
+              - Skript 'flatPlus_MV_Update.sh' mit Installation der Themen
+              - Timer- und VPS-Symbol (EPG) in Themenfarbe und mit Schlagschatten
+              - Stern-Symbol (Aufnahmeliste) in Themenfarbe und mit Schlagschatten
+ [02.06.2014] - Farbe fuer Laufende Timer auf #FF5050 (Helles Rot) geaendert
