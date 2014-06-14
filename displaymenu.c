@@ -1651,8 +1651,8 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
                 Left += img->Width() + marginItem;
             }
 
-            buffer = cString::sprintf("  %d", Total);
-            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, font->Width("  999"), fontHeight, taRight);
+            buffer = cString::sprintf("%d  ", Total);
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, font->Width("  999"), fontHeight, taLeft);
             Left += font->Width("  999 ");
 
             if( imgRecNew )
