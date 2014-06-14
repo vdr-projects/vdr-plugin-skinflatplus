@@ -300,8 +300,7 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
     }
     menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, menuItemWidth, fontHeight), ColorBg);
     int lh = fontHeight;
-    int x1 = 0;
-    int xOff = x1;
+    int xOff = 0;
     for (int i = 0; i < MaxTabs; i++) {
         const char *s = GetTabbedText(Text, i);
         if( s ) {
@@ -316,12 +315,7 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
             bool isRunning = false;
 
             int xt = Tab(i);
-            int xt2 = Tab(i+1);
-            if( xt2 == 0 || i == MaxTabs || (GetTabbedText(Text, i+1) == NULL) )
-                xt2 = menuItemWidth;
 
-            if( xt >= menuItemWidth )
-                continue;
             if( true ) {
                 // check if timer info symbols: " !#>"
                 if (i == 0 && strlen(s) == 1 && strchr(" !#>", s[0])) {
@@ -352,7 +346,7 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                         if (s[3] == '*') isRunning = true;
                 }
             }
-            xOff = x1 + Tab(i) + Config.decorBorderMenuItemSize;
+            xOff = Tab(i) + Config.decorBorderMenuItemSize;
 
             if( istimer ) {
                 // timer menu
@@ -438,21 +432,21 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                             std::string first = tilde.substr(0, found);
                             std::string second = tilde.substr(found +2, tilde.length() );
 
-                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font);
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font, menuItemWidth - xt - Config.decorBorderMenuItemSize);
                             int l = font->Width( first.c_str() );
-                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), ColorExtraTextFg, ColorBg, font, xt2 - xt);
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), ColorExtraTextFg, ColorBg, font, menuItemWidth - xt - Config.decorBorderMenuItemSize - l);
                         } else if ( found2 != string::npos ) {
                             std::string first = tilde.substr(0, found2);
                             std::string second = tilde.substr(found2 +1, tilde.length() );
 
-                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font, xt2 - xt);
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), first.c_str(), ColorFg, ColorBg, font, menuItemWidth - xt - Config.decorBorderMenuItemSize);
                             int l = font->Width( first.c_str() );
                             l += font->Width("X");
-                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), ColorExtraTextFg, ColorBg, font, xt2 - xt);
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize + l, y), second.c_str(), ColorExtraTextFg, ColorBg, font, menuItemWidth - xt - Config.decorBorderMenuItemSize -l);
                         } else
-                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font, xt2 - xt);
+                            menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font, menuItemWidth - xt - Config.decorBorderMenuItemSize);
                     } else
-                        menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font, xt2 - xt);
+                        menuPixmap->DrawText(cPoint(xt + Config.decorBorderMenuItemSize, y), s, ColorFg, ColorBg, font, menuItemWidth - xt - Config.decorBorderMenuItemSize);
                 }
             }
         }
