@@ -8,6 +8,7 @@ cStringList MenuTimerViews;
 cStringList MenuEventViews;
 cStringList MenuRecordingViews;
 cStringList DecorDescriptions;
+cStringList MessageColorPositions;
 
 cFlatSetup::cFlatSetup(void) {
     SetupConfig = Config;
@@ -75,6 +76,10 @@ void cFlatSetup::Setup(void) {
     MenuRecordingViews.Append( strdup(tr("flatPlus long")) );
     MenuRecordingViews.Append( strdup(tr("flatPlus short")) );
     MenuRecordingViews.Append( strdup(tr("flatPlus short + Info")) );
+
+    MessageColorPositions.Clear();
+    MessageColorPositions.Append( strdup(tr("vertical")) );
+    MessageColorPositions.Append( strdup(tr("hoizontal")) );
 
     Add(new cOsdItem(tr("General settings"), osUnknown, true));
     Add(new cOsdItem(tr("Channelinfo settings"), osUnknown, true));
@@ -217,6 +222,7 @@ void cFlatSetup::Store(void) {
     SetupStore("EpgRerunsShow", Config.EpgRerunsShow);
     SetupStore("TVScraperEPGInfoShowActors", Config.TVScraperEPGInfoShowActors);
     SetupStore("TVScraperRecInfoShowActors", Config.TVScraperRecInfoShowActors);
+    SetupStore("MessageColorPosition", Config.MessageColorPosition);
 
     Config.Init();
 }
@@ -264,7 +270,7 @@ void cFlatSetupGeneral::Setup(void) {
     Add(new cMenuEditBoolItem(tr("TopBar show conflicts"), &SetupConfig->TopBarRecConflictsShow));
     Add(new cMenuEditIntItem(tr("Conflicts min value for red"), &SetupConfig->TopBarRecConflictsHigh));
     Add(new cMenuEditIntItem(tr("Message bottom offset"), &SetupConfig->MessageOffset));
-
+    Add(new cMenuEditStraItem(tr("Message color position"), &SetupConfig->MessageColorPosition, MessageColorPositions.Size(), &MessageColorPositions[0]));
 
     Add(new cMenuEditBoolItem(tr("TopBar border by decor-file?"), &SetupConfig->decorBorderTopBarByTheme));
     if( SetupConfig->decorBorderTopBarByTheme ) {

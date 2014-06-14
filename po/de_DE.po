@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.3.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-05-30 15:08+0200\n"
+"POT-Creation-Date: 2014-06-14 11:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -213,6 +213,12 @@ msgstr "flatPlus kurz + EPG"
 msgid "flatPlus short + Info"
 msgstr "flatPlus kurz + Info"
 
+msgid "vertical"
+msgstr "vertikal"
+
+msgid "hoizontal"
+msgstr "horizontal"
+
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
@@ -272,6 +278,9 @@ msgstr "Konflikte min Wert für Rot"
 
 msgid "Message bottom offset"
 msgstr "Meldung unterer Abstand"
+
+msgid "Message color position"
+msgstr "Meldungsfarbe Position"
 
 msgid "TopBar border by decor-file?"
 msgstr "TopBar Rand von Decordatei?"

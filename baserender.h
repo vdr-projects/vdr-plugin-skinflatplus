@@ -78,7 +78,7 @@ class cFlatBaseRender
         bool buttonsDrawn;
 
         // Nachricht
-        cPixmap *messagePixmap;
+        cPixmap *messagePixmap, *messageIconPixmap;
         int messageWidth, messageHeight;
 
         // Mehrzeiliger Content mit Scrollbalken

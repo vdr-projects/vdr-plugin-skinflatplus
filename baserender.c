@@ -34,6 +34,7 @@ cFlatBaseRender::cFlatBaseRender(void) {
     topBarPixmap = NULL;
     buttonsPixmap = NULL;
     messagePixmap = NULL;
+    messageIconPixmap = NULL;
     contentPixmap = NULL;
     contentEpgImagePixmap = NULL;
     progressBarPixmap = NULL;
@@ -56,6 +57,8 @@ cFlatBaseRender::~cFlatBaseRender(void) {
             osd->DestroyPixmap(buttonsPixmap);
         if( messagePixmap )
             osd->DestroyPixmap(messagePixmap);
+        if( messageIconPixmap )
+            osd->DestroyPixmap(messageIconPixmap);
         if( contentPixmap )
             osd->DestroyPixmap(contentPixmap);
         if( progressBarPixmap )
@@ -456,31 +459,49 @@ bool cFlatBaseRender::ButtonsDrawn(void) {
 
 void cFlatBaseRender::MessageCreate(void) {
     messageHeight = fontHeight + marginItem*2;
+    if( Config.MessageColorPosition == 1 )
+        messageHeight += 20;
     int top = osdHeight - Config.MessageOffset - messageHeight - Config.decorBorderMessageSize;
     messagePixmap = osd->CreatePixmap(5, cRect(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight));
     messagePixmap->Fill(clrTransparent);
+    messageIconPixmap = osd->CreatePixmap(5, cRect(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight));
+    messageIconPixmap->Fill(clrTransparent);
 }
 
 void cFlatBaseRender::MessageSet(eMessageType Type, const char *Text) {
     tColor col = Theme.Color(clrMessageStatus);
+    cString icon;
     switch (Type) {
         case mtStatus:
             col = Theme.Color(clrMessageStatus);
+            icon = "message_status";
             break;
         case mtInfo:
             col = Theme.Color(clrMessageInfo);
+            icon = "message_info";
             break;
         case mtWarning:
             col = Theme.Color(clrMessageWarning);
+            icon = "message_warning";
             break;
         case mtError:
             col = Theme.Color(clrMessageError);
+            icon = "message_error";
             break;
     }
     messagePixmap->Fill(Theme.Color(clrMessageBg));
 
-    messagePixmap->DrawRectangle(cRect( 0, 0, messageHeight, messageHeight), col);
-    messagePixmap->DrawRectangle(cRect( osdWidth - messageHeight - Config.decorBorderMessageSize*2, 0, messageHeight, messageHeight), col);
+    cImage *img = imgLoader.LoadIcon(icon, fontHeight, fontHeight);
+    if( img ) {
+        messageIconPixmap->DrawImage( cPoint(marginItem + 10, marginItem), *img );
+    }
+
+    if( Config.MessageColorPosition == 0 ) {
+        messagePixmap->DrawRectangle(cRect( 0, 0, 8, messageHeight), col);
+        messagePixmap->DrawRectangle(cRect( osdWidth - 8 - Config.decorBorderMessageSize*2, 0, 8, messageHeight), col);
+    } else {
+        messagePixmap->DrawRectangle(cRect( 0, messageHeight - 8, osdWidth, 8), col);
+    }
 
     int textWidth = font->Width(Text);
 
@@ -515,6 +536,7 @@ void cFlatBaseRender::MessageSet(eMessageType Type, const char *Text) {
 
 void cFlatBaseRender::MessageClear(void) {
     messagePixmap->Fill(clrTransparent);
+    messageIconPixmap->Fill(clrTransparent);
     DecorBorderClearByFrom(BorderMessage);
     DecorBorderRedrawAll();
 }

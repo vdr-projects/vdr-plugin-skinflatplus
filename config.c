@@ -44,6 +44,8 @@ cFlatConfig::cFlatConfig(void) {
     TopBarFontSize = 0.05;
     MessageOffset = 50;
 
+    MessageColorPosition = 1;
+
     MainMenuItemScale = 1.0;
 
     MenuChannelView = 1;
@@ -223,6 +225,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "EpgRerunsShow") == 0)                        EpgRerunsShow = atoi(Value);
     else if (strcmp(Name, "TVScraperEPGInfoShowActors") == 0)           TVScraperEPGInfoShowActors = atoi(Value);
     else if (strcmp(Name, "TVScraperRecInfoShowActors") == 0)           TVScraperRecInfoShowActors = atoi(Value);
+    else if (strcmp(Name, "MessageColorPosition") == 0)                 MessageColorPosition = atoi(Value);
 
     else return false;
 

@@ -193,6 +193,10 @@ class cFlatConfig
         int MenuEventView;
         int MenuRecordingView;
 
+        // 0 = vertikal
+        // 1 = horizontal
+        int MessageColorPosition;
+
         /* hidden configs (only in setup.conf, no osd menu) */
         int MenuItemRecordingClearPercent;
         int MenuItemRecordingShowFolderDate;    // 0 = disable, 1 = newest recording date, 2 = oldest recording date
