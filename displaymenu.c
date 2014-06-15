@@ -6,21 +6,8 @@
     #define VDRLOGO "vdrlogo_default"
 #endif
 
-#include "symbols/1080/Cnew.xpm"
-#include "symbols/1080/Carrowturn.xpm"
-#include "symbols/1080/Crec.xpm"
-#include "symbols/1080/Cclock.xpm"
-#include "symbols/1080/Cclocksml.xpm"
-#include "symbols/1080/Cvpssml.xpm"
 #include "flat.h"
 #include "locale"
-
-cBitmap cFlatDisplayMenu::bmCNew(Cnew_xpm);
-cBitmap cFlatDisplayMenu::bmCArrowTurn(Carrowturn_xpm);
-cBitmap cFlatDisplayMenu::bmCRec(Crec_xpm);
-cBitmap cFlatDisplayMenu::bmCClock(Cclock_xpm);
-cBitmap cFlatDisplayMenu::bmCClocksml(Cclocksml_xpm);
-cBitmap cFlatDisplayMenu::bmCVPS(Cvpssml_xpm);
 
 /* Possible values of the stream content descriptor according to ETSI EN 300 468 */
 enum stream_content
@@ -79,12 +66,6 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
 
     menuCategory = mcUndefined;
 
-    bmNew       = &bmCNew;
-    bmRec       = &bmCRec;
-    bmArrowTurn = &bmCArrowTurn;
-    bmClock     = &bmCClock;
-    bmClocksml  = &bmCClocksml;
-    bmVPS       = &bmCVPS;
 }
 
 cFlatDisplayMenu::~cFlatDisplayMenu() {
@@ -288,14 +269,35 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
         ColorFg = Theme.Color(clrItemCurrentFont);
         ColorBg = Theme.Color(clrItemCurrentBg);
         ColorExtraTextFg = Theme.Color(clrMenuItemExtraTextCurrentFont);
+
+        iconTimerFull = imgLoader.LoadIcon("text_timer_full_cur", fontHeight, fontHeight);
+        iconTimerPartial = imgLoader.LoadIcon("text_timer_partial_cur", fontHeight, fontHeight);
+        iconArrowTurn = imgLoader.LoadIcon("text_arrowturn_cur", fontHeight, fontHeight);
+        iconRec = imgLoader.LoadIcon("text_rec_cur", fontHeight, fontHeight);
+        iconVps = imgLoader.LoadIcon("text_vps_cur", fontHeight, fontHeight);
+        iconNew = imgLoader.LoadIcon("text_new_cur", fontHeight, fontHeight);
     }
     else {
         if( Selectable ) {
             ColorFg = Theme.Color(clrItemSelableFont);
             ColorBg = Theme.Color(clrItemSelableBg);
+
+            iconTimerFull = imgLoader.LoadIcon("text_timer_full_sel", fontHeight, fontHeight);
+            iconTimerPartial = imgLoader.LoadIcon("text_timer_partial_sel", fontHeight, fontHeight);
+            iconArrowTurn = imgLoader.LoadIcon("text_arrowturn_sel", fontHeight, fontHeight);
+            iconRec = imgLoader.LoadIcon("text_rec_sel", fontHeight, fontHeight);
+            iconVps = imgLoader.LoadIcon("text_vps_sel", fontHeight, fontHeight);
+            iconNew = imgLoader.LoadIcon("text_new_sel", fontHeight, fontHeight);
         } else {
             ColorFg = Theme.Color(clrItemFont);
             ColorBg = Theme.Color(clrItemBg);
+
+            iconTimerFull = imgLoader.LoadIcon("text_timer_full", fontHeight, fontHeight);
+            iconTimerPartial = imgLoader.LoadIcon("text_timer_partial", fontHeight, fontHeight);
+            iconArrowTurn = imgLoader.LoadIcon("text_arrowturn", fontHeight, fontHeight);
+            iconRec = imgLoader.LoadIcon("text_rec", fontHeight, fontHeight);
+            iconVps = imgLoader.LoadIcon("text_vps", fontHeight, fontHeight);
+            iconNew = imgLoader.LoadIcon("text_new", fontHeight, fontHeight);
         }
     }
     menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, menuItemWidth, fontHeight), ColorBg);
@@ -352,33 +354,37 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                 // timer menu
                 switch( s[0] ) {
                     case '!':
-                       menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmArrowTurn->Height()) / 2), *bmArrowTurn, ColorFg, ColorBg);
-                       break;
+                        if( iconArrowTurn )
+                            menuIconsPixmap->DrawImage( cPoint(xOff, y + (lh - iconArrowTurn->Height()) / 2), *iconArrowTurn );
+                        break;
                     case '#':
-                       menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmRec->Height()) / 2), *bmRec, ColorFg, ColorBg);
-                       break;
+                        if( iconRec )
+                            menuIconsPixmap->DrawImage( cPoint(xOff, y + (lh - iconRec->Height()) / 2), *iconRec );
+                        break;
                     case '>':
-                       menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmClock->Height()) / 2), *bmClock, ColorFg, ColorBg);
-                       break;
+                        if( iconTimerFull )
+                            menuIconsPixmap->DrawImage( cPoint(xOff, y + (lh - iconTimerFull->Height()) / 2), *iconTimerFull );
+                        break;
                     case ' ':
                     default:
                        break;
                 }
             } else if( isRecording || hasEventtimer || haspartEventtimer || hasVPS || isRunning ) {
                 // program schedule menu
-                if( isRecording )
-                   menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmRec->Height()) / 2), *bmRec, ColorFg, ColorBg);
+                if( isRecording && iconRec )
+                    menuIconsPixmap->DrawImage( cPoint(xOff, y + (lh - iconRec->Height()) / 2), *iconRec );
                 else {
-                   if( hasEventtimer )
-                      menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmClock->Height()) / 2), *bmClock, ColorFg, ColorBg);
-                   if( haspartEventtimer )
-                      menuPixmap->DrawBitmap(cPoint(xOff + (bmClock->Height() - bmClocksml->Height()) / 2, y + (lh - bmClocksml->Height()) / 2), *bmClocksml, ColorFg, ColorBg);
+                    if( hasEventtimer && iconTimerFull )
+                        menuIconsPixmap->DrawImage( cPoint(xOff, y + (lh - iconTimerFull->Height()) / 2), *iconTimerFull );
+                    if( haspartEventtimer && iconTimerPartial )
+                        menuIconsPixmap->DrawImage( cPoint(xOff, y + (lh - iconTimerPartial->Height()) / 2), *iconTimerPartial );
                 }
-                xOff += bmClock->Width(); // clock is wider than rec
+                xOff += iconTimerFull->Width(); // clock is wider than rec
 
-                if( hasVPS )
-                   menuPixmap->DrawBitmap(cPoint(xOff, y + (lh - bmVPS->Height()) / 2), *bmVPS, ColorFg, ColorBg);
-                xOff += bmVPS->Width();
+                if( hasVPS && iconVps ) {
+                    menuIconsPixmap->DrawImage( cPoint(xOff, y + (lh - iconVps->Height()) / 2), *iconVps );
+                    xOff += iconVps->Width();
+                }
 
                 if( isRunning )
                     menuPixmap->DrawText(cPoint(xOff, y), "*", ColorFg, ColorBg, font, AvailableTextWidth - xOff);
@@ -388,8 +394,10 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                 menuPixmap->DrawText(cPoint(xOff, y), buffer, ColorFg, ColorBg, font, AvailableTextWidth - xOff);
 
                 // draw symbol "new" centered
-                int gap = std::max(0, (Tab(i+1)-Tab(i)- font->Width(buffer) - bmNew->Width()) / 2);
-                menuPixmap->DrawBitmap(cPoint(xOff + font->Width(buffer) + gap, y + (lh - bmNew->Height()) / 2), *bmNew, ColorFg, ColorBg);
+                if( iconNew ) {
+                    int gap = std::max(0, (Tab(i+1)-Tab(i)- font->Width(buffer) - iconNew->Width()) / 2);
+                    menuIconsPixmap->DrawImage( cPoint(xOff + font->Width(buffer) + gap, y + (lh - iconNew->Height()) / 2), *iconNew );
+                }
             } else if( CheckProgressBar( s ) ) {
                 int colWidth = Tab(i+1) - Tab(i);
 

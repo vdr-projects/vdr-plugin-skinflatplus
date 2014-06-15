@@ -41,6 +41,15 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
 
         cString ItemEventLastChannelName;
 
+        // Icons
+        cImage *iconTimerFull;
+        cImage *iconTimerPartial;
+        cImage *iconArrowTurn;
+        cImage *iconRec;
+        cImage *iconVps;
+        cImage *iconNew;
+        // Icons
+
         void ItemBorderInsertUnique(sDecorBorder ib);
         void ItemBorderDrawAllWithScrollbar(void);
         void ItemBorderDrawAllWithoutScrollbar(void);
@@ -60,8 +69,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         bool CheckProgressBar(const char *text);
         void DrawProgressBarFromText(cRect rec, cRect recBg, const char *bar, tColor ColorFg, tColor ColorBarFg, tColor ColorBg);
 
-        cBitmap *bmNew, *bmRec, *bmArrowTurn, *bmClock, *bmClocksml, *bmVPS;
-        static cBitmap bmCNew, bmCRec, bmCArrowTurn, bmCClock, bmCClocksml, bmCHD, bmCVPS;
+        static cBitmap bmCNew, bmCRec, bmCArrowTurn, bmCHD, bmCVPS;
         void DrawItemExtraEvent(const cEvent *Event, cString EmptyText);
         void DrawItemExtraRecording(const cRecording *Recording, cString EmptyText);
     public:
