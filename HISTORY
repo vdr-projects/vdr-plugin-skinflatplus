@@ -12,6 +12,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [update] MV-Themes
 - [update] left align number recordings of folders in recording view
 - [update] Makefile, add --remove-destination to install icons, to override symlinks
+- [update] clock symbols
 - [add] theme colors clrMenuEventTitleLine and clrMenuRecTitleLine for the line under title in event and recording
 - [add] theme color clrChannelEPGBorderFg and clrChannelEPGBorderBg for border color of epg image in chanel info
 - [add] decor option ChannelEPGBorderType and ChannelEPGBorderSize for border of epg image in chanel info
