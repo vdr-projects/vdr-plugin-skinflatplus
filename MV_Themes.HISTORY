@@ -74,3 +74,6 @@ HISTORY
               - Timer- und VPS-Symbol (EPG) in Themenfarbe und mit Schlagschatten
               - Stern-Symbol (Aufnahmeliste) in Themenfarbe und mit Schlagschatten
  [02.06.2014] - Farbe fuer Laufende Timer auf #FF5050 (Helles Rot) geaendert
+ [15.06.2014] - Symbole fuer Nachrichten in Farbe (Info, Status, Warnung und Fehler)
+ [16.06.2014] - Symbole 'mesasge_info.png', 'mesasge_status.png' und
+                'mesasge_warning.png' durch "volle" Versionen ersetzt

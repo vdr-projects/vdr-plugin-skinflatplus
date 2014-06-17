@@ -5,8 +5,8 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] epg image position on channel info
 - [fix] Bug #1847 - SetRecording border with deleteresume.patch
 - [fix] test if decor-files are installed in setup
-- [fix] cut text on tab size
-- [update] tvsraper service api. ! Use only with new TVScraper Version 0.2.0 or greater !
+- [fix] correct cut text on tab size
+- [update] tvscraper service api. ! Use only with new TVScraper Version 0.2.0 or greater !
 - [update] crypted.png
 - [update] use 10_rect_sml.decor as default
 - [update] MV-Themes
