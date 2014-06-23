@@ -57,6 +57,11 @@ cFlatConfig::cFlatConfig(void) {
     MenuItemRecordingShowFolderDate = 1;
     MenuItemParseTilde = 1;
 
+    ScrollerEnable = 1;
+    ScrollerStep = 2;
+    ScrollerDelay = 40;
+    ScrollerType = 0;
+
     TVScraperChanInfoShowPoster = 1;
     TVScraperChanInfoPosterSize = 0.01;
 
@@ -226,6 +231,10 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "TVScraperEPGInfoShowActors") == 0)           TVScraperEPGInfoShowActors = atoi(Value);
     else if (strcmp(Name, "TVScraperRecInfoShowActors") == 0)           TVScraperRecInfoShowActors = atoi(Value);
     else if (strcmp(Name, "MessageColorPosition") == 0)                 MessageColorPosition = atoi(Value);
+    else if (strcmp(Name, "ScrollerEnable") == 0)                       ScrollerEnable = atoi(Value);
+    else if (strcmp(Name, "ScrollerStep") == 0)                         ScrollerStep = atoi(Value);
+    else if (strcmp(Name, "ScrollerDelay") == 0)                        ScrollerDelay = atoi(Value);
+    else if (strcmp(Name, "ScrollerType") == 0)                         ScrollerType = atoi(Value);
 
     else return false;
 

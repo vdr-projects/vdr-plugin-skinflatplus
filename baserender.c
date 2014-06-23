@@ -43,6 +43,10 @@ cFlatBaseRender::cFlatBaseRender(void) {
 
     Config.ThemeCheckAndInit();
     Config.DecorCheckAndInit();
+
+    scrollers.SetScrollStep( Config.ScrollerStep );
+    scrollers.SetScrollDelay( Config.ScrollerDelay );
+    scrollers.SetScrollType( Config.ScrollerType );
 }
 
 cFlatBaseRender::~cFlatBaseRender(void) {
@@ -51,6 +55,8 @@ cFlatBaseRender::~cFlatBaseRender(void) {
     delete fontFixed;
 
     if( osd ) {
+        scrollers.Clear();
+
         if( topBarPixmap )
             osd->DestroyPixmap(topBarPixmap);
         if( buttonsPixmap )

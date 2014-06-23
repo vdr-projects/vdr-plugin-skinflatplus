@@ -203,6 +203,12 @@ class cFlatConfig
         int MenuItemParseTilde;
         /* hidden configs (only in setup.conf, no osd menu) */
 
+        // Text Scroller
+        int ScrollerEnable;
+        int ScrollerStep;
+        int ScrollerDelay;
+        int ScrollerType;
+
         // TVScraper
         int TVScraperChanInfoShowPoster;
         double TVScraperChanInfoPosterSize;

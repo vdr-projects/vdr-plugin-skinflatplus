@@ -3,6 +3,7 @@
 #include "imageloader.h"
 #include <list>
 #include "flat.h"
+#include "textscroller.h"
 
 enum eBorder {
     BorderMenuItem,
@@ -101,6 +102,9 @@ class cFlatBaseRender
 
         cPixmap *decorPixmap;
         std::list<sDecorBorder> Borders; // for clear specific Borders (clear only MenuItems and not TopBar)
+
+        // TextScroller
+        cTextScrollers scrollers;
 
         void contentDraw(void);
         void contentEventDraw(void);

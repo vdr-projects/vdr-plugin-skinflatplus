@@ -9,6 +9,7 @@ cStringList MenuEventViews;
 cStringList MenuRecordingViews;
 cStringList DecorDescriptions;
 cStringList MessageColorPositions;
+cStringList ScrollerTypes;
 
 cFlatSetup::cFlatSetup(void) {
     SetupConfig = Config;
@@ -80,6 +81,10 @@ void cFlatSetup::Setup(void) {
     MessageColorPositions.Clear();
     MessageColorPositions.Append( strdup(tr("vertical")) );
     MessageColorPositions.Append( strdup(tr("hoizontal")) );
+
+    ScrollerTypes.Clear();
+    ScrollerTypes.Append( strdup( tr("carriage return")) );
+    ScrollerTypes.Append( strdup( tr("left-right-left")) );
 
     Add(new cOsdItem(tr("General settings"), osUnknown, true));
     Add(new cOsdItem(tr("Channelinfo settings"), osUnknown, true));
@@ -223,6 +228,10 @@ void cFlatSetup::Store(void) {
     SetupStore("TVScraperEPGInfoShowActors", Config.TVScraperEPGInfoShowActors);
     SetupStore("TVScraperRecInfoShowActors", Config.TVScraperRecInfoShowActors);
     SetupStore("MessageColorPosition", Config.MessageColorPosition);
+    SetupStore("ScrollerEnable", Config.ScrollerEnable);
+    SetupStore("ScrollerStep", Config.ScrollerStep);
+    SetupStore("ScrollerDelay", Config.ScrollerDelay);
+    SetupStore("ScrollerType", Config.ScrollerType);
 
     Config.Init();
 }
@@ -271,6 +280,20 @@ void cFlatSetupGeneral::Setup(void) {
     Add(new cMenuEditIntItem(tr("Conflicts min value for red"), &SetupConfig->TopBarRecConflictsHigh));
     Add(new cMenuEditIntItem(tr("Message bottom offset"), &SetupConfig->MessageOffset));
     Add(new cMenuEditStraItem(tr("Message color position"), &SetupConfig->MessageColorPosition, MessageColorPositions.Size(), &MessageColorPositions[0]));
+
+    Add(new cMenuEditBoolItem(tr("Use Textscroller?"), &SetupConfig->ScrollerEnable));
+    if( SetupConfig->ScrollerEnable ) {
+        Add(new cMenuEditIntItem(tr("Scroller step (in pixel)"), &SetupConfig->ScrollerStep));
+        Add(new cMenuEditIntItem(tr("Scroller delay (in ms)"), &SetupConfig->ScrollerDelay));
+        Add(new cMenuEditStraItem(tr("Scroller type"), &SetupConfig->ScrollerType, ScrollerTypes.Size(), &ScrollerTypes[0]));
+    } else {
+        cString step = cString::sprintf("%s:\t%d", tr("Scroller step (in pixel)"), SetupConfig->ScrollerStep);
+        Add(new cOsdItem(step, osUnknown, false));
+        cString delay = cString::sprintf("%s:\t%d", tr("Scroller delay (in ms)"), SetupConfig->ScrollerDelay);
+        Add(new cOsdItem(delay, osUnknown, false));
+        cString type = cString::sprintf("%s:\t%s", tr("Scroller type"), ScrollerTypes[SetupConfig->ScrollerType]);
+        Add(new cOsdItem(type, osUnknown, false));
+    }
 
     Add(new cMenuEditBoolItem(tr("TopBar border by decor-file?"), &SetupConfig->decorBorderTopBarByTheme));
     if( SetupConfig->decorBorderTopBarByTheme ) {
@@ -330,6 +353,7 @@ eOSState cFlatSetupGeneral::ProcessKey(eKeys Key) {
         const char* ItemText = Get(Current())->Text();
         if( strstr(ItemText, tr("TopBar border by decor-file?")) != NULL ||
             strstr(ItemText, tr("Message border by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Use Textscroller?")) != NULL ||
             strstr(ItemText, tr("Button border by decor-file?")) != NULL
         ) {
             ItemLastSel = Current();

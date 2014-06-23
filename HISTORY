@@ -1,6 +1,10 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
+2014-MM-DD: Version 0.4.0
+- [add] Textscroller support
+        new options in general settings
+
 2014-06-19: Version 0.3.1
 - [fix] epg image position on channel info
 - [fix] Bug #1847 - SetRecording border with deleteresume.patch

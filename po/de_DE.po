@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.3.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-06-14 11:52+0200\n"
+"POT-Creation-Date: 2014-06-23 21:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -219,6 +219,12 @@ msgstr "vertikal"
 msgid "hoizontal"
 msgstr "horizontal"
 
+msgid "carriage return"
+msgstr "carriage return"
+
+msgid "left-right-left"
+msgstr "links-rechts-links"
+
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
@@ -281,6 +287,18 @@ msgstr "Meldung unterer Abstand"
 
 msgid "Message color position"
 msgstr "Meldungsfarbe Position"
+
+msgid "Use Textscroller?"
+msgstr "Nutze Textscroller?"
+
+msgid "Scroller step (in pixel)"
+msgstr "Scroller Schrittweite (in Pixel)"
+
+msgid "Scroller delay (in ms)"
+msgstr "Scroller Verzögerung (in ms)"
+
+msgid "Scroller type"
+msgstr "Scroller Typ"
 
 msgid "TopBar border by decor-file?"
 msgstr "TopBar Rand von Decordatei?"
