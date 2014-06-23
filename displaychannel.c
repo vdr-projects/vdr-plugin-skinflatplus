@@ -401,7 +401,7 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         int timeStringWidth = fontSml->Width(*timeString) + fontSml->Width("  ");
 
         int epgWidth = font->Width(Following->Title()) + marginItem*2;
-        int epgShortWidth = fontSml->Width("1234567890 asdf asdf lkjdf nv.x,cvfgnjöawketu 2934785zjghk ldu3") + marginItem*2;
+        int epgShortWidth = fontSml->Width(Following->ShortText()) + marginItem*2;
 
         if( Following->HasTimer() ) {
             epgWidth += marginItem + RecWidth;
@@ -413,7 +413,6 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
 
         epg = Following->Title();
         epgShort = Following->ShortText();
-        epgShort = "1234567890 asdf asdf lkjdf nv.x,cvfgnjöawketu 2934785zjghk ldu3";
 /*
         if( epgWidth > channelWidth - left - timeStringWidth ) {
             int dotsWidth = font->Width("... ");
