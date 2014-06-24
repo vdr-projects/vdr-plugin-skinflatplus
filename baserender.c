@@ -43,10 +43,6 @@ cFlatBaseRender::cFlatBaseRender(void) {
 
     Config.ThemeCheckAndInit();
     Config.DecorCheckAndInit();
-
-    scrollers.SetScrollStep( Config.ScrollerStep );
-    scrollers.SetScrollDelay( Config.ScrollerDelay );
-    scrollers.SetScrollType( Config.ScrollerType );
 }
 
 cFlatBaseRender::~cFlatBaseRender(void) {
@@ -55,8 +51,8 @@ cFlatBaseRender::~cFlatBaseRender(void) {
     delete fontFixed;
 
     if( osd ) {
-        scrollers.Clear();
-
+        messageScroller.Clear();
+        topBarScroller.Clear();
         if( topBarPixmap )
             osd->DestroyPixmap(topBarPixmap);
         if( buttonsPixmap )
@@ -124,6 +120,11 @@ void cFlatBaseRender::TopBarCreate(void) {
     topBarPixmap->Fill(clrTransparent);
     topBarIconBGPixmap->Fill(clrTransparent);
     topBarIconPixmap->Fill(clrTransparent);
+
+    topBarScroller.SetOsd(osd);
+    topBarScroller.SetScrollStep( Config.ScrollerStep );
+    topBarScroller.SetScrollDelay( Config.ScrollerDelay );
+    topBarScroller.SetScrollType( Config.ScrollerType );
 
     if( Config.DiskUsageShow == 3)
         TopBarEnableDiskUsage();
@@ -206,6 +207,7 @@ void cFlatBaseRender::TopBarUpdate(void) {
     int MenuIconWidth = 0;
 
     if ( strcmp(curDate, topBarLastDate) || topBarUpdateTitle ) {
+        topBarScroller.Clear();
         topBarUpdateTitle = false;
         topBarLastDate = curDate;
 
@@ -282,8 +284,11 @@ void cFlatBaseRender::TopBarUpdate(void) {
         int extra2Width = topBarFontSml->Width(tobBarTitleExtra2);
         int extraMaxWidth = max(extra1Width, extra2Width);
 
+        TitleWidthLeft -= extraMaxWidth + marginItem * 2;
+
         int extraLeft = TopBarWidth/2 - extraMaxWidth/2;
-        extraLeft = max(MenuIconWidth + marginItem*4 + TitleWidth, extraLeft);
+//        if( !Config.ScrollerEnable )
+//            extraLeft = max(MenuIconWidth + marginItem*4 + TitleWidth, extraLeft);
 
         topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop), tobBarTitleExtra1, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
         topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop + topBarFontSmlHeight), tobBarTitleExtra2, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
@@ -358,15 +363,18 @@ void cFlatBaseRender::TopBarUpdate(void) {
             TitleWidthLeft -= ConW + marginItem*2;
         }
 
-        if( TitleWidth > TitleWidthLeft ) {
-            int dotsWidth = topBarFont->Width("... ");
+        int maxWidth = extraLeft - (MenuIconWidth + marginItem*2) - marginItem;
+        if( (TitleWidth > maxWidth) && Config.ScrollerEnable ) {
+            topBarScroller.AddScroller(*topBarTitle, cRect(MenuIconWidth + marginItem*2, fontTop, maxWidth, topBarFontHeight), Theme.Color(clrTopBarFont), clrTransparent, topBarFont);
+            TitleWidth = TitleWidthLeft;
+        } else {
+/*            int dotsWidth = topBarFont->Width("... ");
             cTextWrapper TitleWrapper(topBarTitle, topBarFont, TitleWidthLeft - dotsWidth);
             topBarTitle = TitleWrapper.GetLine(0);
             topBarTitle = cString::sprintf("%s...", *topBarTitle);
             TitleWidth = topBarFont->Width(topBarTitle);
+*/            topBarPixmap->DrawText(cPoint(MenuIconWidth + marginItem*2, fontTop), topBarTitle, Theme.Color(clrTopBarFont), Theme.Color(clrTopBarBg), topBarFont, maxWidth);
         }
-
-        topBarPixmap->DrawText(cPoint(MenuIconWidth + marginItem*2, fontTop), topBarTitle, Theme.Color(clrTopBarFont), Theme.Color(clrTopBarBg), topBarFont);
 
         if( TitleWidth > RecLeft )
             RecLeft = TitleWidth + marginItem*2;
@@ -472,6 +480,12 @@ void cFlatBaseRender::MessageCreate(void) {
     messagePixmap->Fill(clrTransparent);
     messageIconPixmap = osd->CreatePixmap(5, cRect(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight));
     messageIconPixmap->Fill(clrTransparent);
+
+    messageScroller.SetOsd(osd);
+    messageScroller.SetScrollStep( Config.ScrollerStep );
+    messageScroller.SetScrollDelay( Config.ScrollerDelay );
+    messageScroller.SetScrollType( Config.ScrollerType );
+    messageScroller.SetPixmapLayer( 5 );
 }
 
 void cFlatBaseRender::MessageSet(eMessageType Type, const char *Text) {
@@ -496,6 +510,7 @@ void cFlatBaseRender::MessageSet(eMessageType Type, const char *Text) {
             break;
     }
     messagePixmap->Fill(Theme.Color(clrMessageBg));
+    messageScroller.Clear();
 
     cImage *img = imgLoader.LoadIcon(icon, fontHeight, fontHeight);
     if( img ) {
@@ -510,6 +525,7 @@ void cFlatBaseRender::MessageSet(eMessageType Type, const char *Text) {
     }
 
     int textWidth = font->Width(Text);
+    int maxWidth = osdWidth - Config.decorBorderMessageSize*2 - fontHeight - marginItem*3 - 10;
 
     if( Config.MenuItemParseTilde ) {
         std::string tilde = Text;
@@ -530,10 +546,18 @@ void cFlatBaseRender::MessageSet(eMessageType Type, const char *Text) {
             int l = font->Width( first.c_str() );
             l += font->Width("X");
             messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2 + l, marginItem), second.c_str(), Theme.Color(clrMenuItemExtraTextFont), Theme.Color(clrMessageBg), font);
-        } else
+        } else {
+            if( (textWidth > maxWidth) && Config.ScrollerEnable)
+                messageScroller.AddScroller(Text, cRect(Config.decorBorderMessageSize + fontHeight + marginItem*3+10, osdHeight - Config.MessageOffset - messageHeight - Config.decorBorderMessageSize, maxWidth, fontHeight), Theme.Color(clrMessageFont), clrTransparent, font);
+            else
+                messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2, marginItem), Text, Theme.Color(clrMessageFont), Theme.Color(clrMessageBg), font);
+        }
+    } else {
+        if( (textWidth > maxWidth) && Config.ScrollerEnable )
+            messageScroller.AddScroller(Text, cRect(Config.decorBorderMessageSize + fontHeight + marginItem*3 + 10, osdHeight - Config.MessageOffset - messageHeight - Config.decorBorderMessageSize, maxWidth, fontHeight), Theme.Color(clrMessageFont), clrTransparent, font);
+        else
             messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2, marginItem), Text, Theme.Color(clrMessageFont), Theme.Color(clrMessageBg), font);
-    } else
-        messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2, marginItem), Text, Theme.Color(clrMessageFont), Theme.Color(clrMessageBg), font);
+    }
 
 
     int top = osdHeight - Config.MessageOffset - messageHeight - Config.decorBorderMessageSize;
@@ -545,6 +569,7 @@ void cFlatBaseRender::MessageClear(void) {
     messageIconPixmap->Fill(clrTransparent);
     DecorBorderClearByFrom(BorderMessage);
     DecorBorderRedrawAll();
+    messageScroller.Clear();
 }
 
 void cFlatBaseRender::ProgressBarCreate(int Left, int Top, int Width, int Height, int MarginHor, int MarginVer, tColor ColorFg, tColor ColorBarFg, tColor ColorBg, int Type, bool SetBackground, bool isSignal) {

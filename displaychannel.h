@@ -31,6 +31,9 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         // TVScraper
         int TVSLeft, TVSTop, TVSWidth, TVSHeight;
 
+        // TextScroller
+        cTextScrollers scrollers;
+
         bool isRecording;
         bool isRadioChannel;
         bool isGroup;

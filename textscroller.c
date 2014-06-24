@@ -15,7 +15,7 @@ void cTextScroll::SetText(const char *text, cRect position, tColor colorFg, tCol
     if( Osd && Pixmap )
         Osd->DestroyPixmap(Pixmap);
 
-    Pixmap = Osd->CreatePixmap(2, Position, drawPort);
+    Pixmap = Osd->CreatePixmap(Layer, Position, drawPort);
     Pixmap->Fill( colorBg );
     Draw();
 }
@@ -82,6 +82,7 @@ void cTextScroll::DoStep(int Step) {
 }
 
 cTextScrollers::cTextScrollers() {
+    Layer = 2;
 }
 
 cTextScrollers::~cTextScrollers() {
@@ -105,7 +106,7 @@ void cTextScrollers::AddScroller(const char *text, cRect position, tColor colorF
     while (Active())
         cCondWait::SleepMs(10);
 
-    Scrollers.push_back( new cTextScroll(Osd, scrollType) );
+    Scrollers.push_back( new cTextScroll(Osd, scrollType, Layer) );
     Scrollers.back()->SetText(text, position, colorFg, colorBg, font);
 
     if( !Running() ) {

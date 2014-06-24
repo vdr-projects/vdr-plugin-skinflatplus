@@ -44,6 +44,7 @@ class cFlatBaseRender
         cPixmap *topBarIconBGPixmap;
         cFont *topBarFont, *topBarFontSml;
         int topBarFontHeight, topBarFontSmlHeight;
+        cTextScrollers topBarScroller;
 
         cString topBarTitle;
         cString tobBarTitleExtra1, tobBarTitleExtra2;
@@ -81,6 +82,7 @@ class cFlatBaseRender
         // Nachricht
         cPixmap *messagePixmap, *messageIconPixmap;
         int messageWidth, messageHeight;
+        cTextScrollers messageScroller;
 
         // Mehrzeiliger Content mit Scrollbalken
         cPixmap *contentPixmap;
@@ -102,9 +104,6 @@ class cFlatBaseRender
 
         cPixmap *decorPixmap;
         std::list<sDecorBorder> Borders; // for clear specific Borders (clear only MenuItems and not TopBar)
-
-        // TextScroller
-        cTextScrollers scrollers;
 
         void contentDraw(void);
         void contentEventDraw(void);

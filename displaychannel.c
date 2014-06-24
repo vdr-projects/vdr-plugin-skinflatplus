@@ -83,6 +83,9 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     chanInfoTopPixmap->Fill( clrTransparent );
 
     scrollers.SetOsd(osd);
+    scrollers.SetScrollStep( Config.ScrollerStep );
+    scrollers.SetScrollDelay( Config.ScrollerDelay );
+    scrollers.SetScrollType( Config.ScrollerType );
 
     DecorBorderDraw(Config.decorBorderChannelSize, Config.decorBorderChannelSize+channelHeight - height,
         channelWidth, heightTop + heightBottom + Config.decorProgressChannelSize+marginItem*2,
@@ -93,6 +96,8 @@ cFlatDisplayChannel::~cFlatDisplayChannel() {
     if( !doOutput )
         return;
     if (osd) {
+        scrollers.Clear();
+
         if( chanInfoTopPixmap )
             osd->DestroyPixmap(chanInfoTopPixmap);
         if( chanInfoBottomPixmap )
