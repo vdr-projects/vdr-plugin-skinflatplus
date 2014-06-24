@@ -345,45 +345,23 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
 
         epg = Present->Title();
         epgShort = Present->ShortText();
-        /*
-        if( epgWidth > channelWidth - left - timeStringWidth) {
-            int dotsWidth = font->Width("... ");
-            cTextWrapper epgInfoWrapper(Present->Title(), font, channelWidth - left - timeStringWidth - dotsWidth);
-            epg = epgInfoWrapper.GetLine(0);
-            epg = cString::sprintf("%s...", *epg);
-            epgWidth = font->Width(*epg);
-            if( Present->HasTimer() ) {
-                isRec = true;
-                epgWidth += marginItem + RecWidth;
-            }
-        } else {
-            epg = Present->Title();
-        }
+        int maxWidth = max(timeStringWidth, seenWidth);
 
-        if( epgShortWidth > channelWidth - left - seenWidth) {
-            int dotsWidth = fontSml->Width("... ");
-            cTextWrapper epgInfoWrapper(Present->ShortText(), fontSml, channelWidth - left - timeStringWidth - dotsWidth);
-            epgShort = epgInfoWrapper.GetLine(0);
-            epgShort = cString::sprintf("%s...", *epgShort);
-        } else {
-            epgShort = Present->ShortText();
-        }
-        */
         chanInfoBottomPixmap->DrawText(cPoint(channelWidth - timeStringWidth - marginItem * 2, 0), *timeString,
             Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontSml, timeStringWidth, 0, taRight);
         chanInfoBottomPixmap->DrawText(cPoint(channelWidth - seenWidth - marginItem * 2, fontSmlHeight), *seen,
                 Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontSml, seenWidth, 0, taRight);
 
-        if( (epgWidth > channelWidth - left - timeStringWidth) && Config.ScrollerEnable ) {
-            scrollers.AddScroller(*epg, cRect(Config.decorBorderChannelSize + left, Config.decorBorderChannelSize+channelHeight - heightBottom, channelWidth - left - timeStringWidth, fontHeight), Theme.Color(clrChannelFontEpg), clrTransparent, font);
+        if( (epgWidth > channelWidth - left - maxWidth) && Config.ScrollerEnable ) {
+            scrollers.AddScroller(*epg, cRect(Config.decorBorderChannelSize + left, Config.decorBorderChannelSize+channelHeight - heightBottom, channelWidth - left - maxWidth, fontHeight), Theme.Color(clrChannelFontEpg), clrTransparent, font);
         } else {
-            chanInfoBottomPixmap->DrawText(cPoint(left, 0), *epg, Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), font, channelWidth - left - timeStringWidth);
+            chanInfoBottomPixmap->DrawText(cPoint(left, 0), *epg, Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), font, channelWidth - left - maxWidth);
         }
 
-        if( (epgShortWidth > channelWidth - left - seenWidth) && Config.ScrollerEnable ) {
-            scrollers.AddScroller(*epgShort, cRect(Config.decorBorderChannelSize + left, Config.decorBorderChannelSize+channelHeight - heightBottom + fontHeight, channelWidth - left - seenWidth, fontSmlHeight), Theme.Color(clrChannelFontEpg), clrTransparent, fontSml);
+        if( (epgShortWidth > channelWidth - left - maxWidth) && Config.ScrollerEnable ) {
+            scrollers.AddScroller(*epgShort, cRect(Config.decorBorderChannelSize + left, Config.decorBorderChannelSize+channelHeight - heightBottom + fontHeight, channelWidth - left - maxWidth, fontSmlHeight), Theme.Color(clrChannelFontEpg), clrTransparent, fontSml);
         } else {
-            chanInfoBottomPixmap->DrawText(cPoint(left, fontHeight), *epgShort, Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontSml, channelWidth - left - seenWidth);
+            chanInfoBottomPixmap->DrawText(cPoint(left, fontHeight), *epgShort, Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontSml, channelWidth - left - maxWidth);
         }
 
         if( isRec ) {
@@ -411,48 +389,28 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         cString dur = cString::sprintf("%d min", Following->Duration() / 60);
         int durWidth = fontSml->Width(*dur) + fontSml->Width("  ");
 
+        int maxWidth = max(timeStringWidth, durWidth);
+
         epg = Following->Title();
         epgShort = Following->ShortText();
-/*
-        if( epgWidth > channelWidth - left - timeStringWidth ) {
-            int dotsWidth = font->Width("... ");
-            cTextWrapper epgInfoWrapper(Following->Title(), font, channelWidth - left - timeStringWidth - dotsWidth);
-            epg = epgInfoWrapper.GetLine(0);
-            epg = cString::sprintf("%s...", *epg);
-            epgWidth = font->Width(*epg);
-            if( Following->HasTimer() ) {
-                isRec = true;
-                epgWidth += marginItem + RecWidth;
-            }
-        } else {
-            epg = Following->Title();
-        }
-        if (epgShortWidth > channelWidth - left - durWidth ) {
-            int dotsWidth = fontSml->Width("... ");
-            cTextWrapper epgInfoWrapper(Following->ShortText(), fontSml, channelWidth - left - timeStringWidth - dotsWidth);
-            epgShort = epgInfoWrapper.GetLine(0);
-            epgShort = cString::sprintf("%s...", *epgShort);
-        } else {
-            epgShort = Following->ShortText();
-        }
-*/
+
         chanInfoBottomPixmap->DrawText(cPoint(channelWidth - timeStringWidth - marginItem * 2, fontHeight + fontSmlHeight), *timeString,
                 Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), fontSml, timeStringWidth, 0, taRight);
         chanInfoBottomPixmap->DrawText(cPoint(channelWidth - durWidth - marginItem * 2, fontHeight + fontSmlHeight*2), *dur,
                 Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), fontSml, durWidth, 0, taRight);
 
-        if( (epgWidth > channelWidth - left - timeStringWidth) && Config.ScrollerEnable ) {
-            scrollers.AddScroller(*epg, cRect(Config.decorBorderChannelSize + left, Config.decorBorderChannelSize+channelHeight - heightBottom + fontHeight + fontSmlHeight, channelWidth - left - timeStringWidth, fontHeight), Theme.Color(clrChannelFontEpg), clrTransparent, font);
+        if( (epgWidth > channelWidth - left - maxWidth) && Config.ScrollerEnable ) {
+            scrollers.AddScroller(*epg, cRect(Config.decorBorderChannelSize + left, Config.decorBorderChannelSize+channelHeight - heightBottom + fontHeight + fontSmlHeight, channelWidth - left - maxWidth, fontHeight), Theme.Color(clrChannelFontEpgFollow), clrTransparent, font);
         } else {
             chanInfoBottomPixmap->DrawText(cPoint(left, fontHeight + fontSmlHeight), *epg,
-                Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), font, channelWidth - left - timeStringWidth);
+                Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), font, channelWidth - left - maxWidth);
         }
 
-        if( (epgShortWidth > channelWidth - left - durWidth) && Config.ScrollerEnable ) {
-            scrollers.AddScroller(*epgShort, cRect(Config.decorBorderChannelSize + left, Config.decorBorderChannelSize+channelHeight - heightBottom + fontHeight*2 + fontSmlHeight, channelWidth - left - durWidth, fontSmlHeight), Theme.Color(clrChannelFontEpg), clrTransparent, fontSml);
+        if( (epgShortWidth > channelWidth - left - maxWidth) && Config.ScrollerEnable ) {
+            scrollers.AddScroller(*epgShort, cRect(Config.decorBorderChannelSize + left, Config.decorBorderChannelSize+channelHeight - heightBottom + fontHeight*2 + fontSmlHeight, channelWidth - left - maxWidth, fontSmlHeight), Theme.Color(clrChannelFontEpgFollow), clrTransparent, fontSml);
         } else {
             chanInfoBottomPixmap->DrawText(cPoint(left, fontHeight*2 + fontSmlHeight), *epgShort,
-                Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), fontSml, channelWidth - left - durWidth);
+                Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), fontSml, channelWidth - left - maxWidth);
         }
 
         if( isRec ) {
