@@ -126,6 +126,7 @@ void cFlatBaseRender::TopBarCreate(void) {
     topBarScroller.SetScrollStep( Config.ScrollerStep );
     topBarScroller.SetScrollDelay( Config.ScrollerDelay );
     topBarScroller.SetScrollType( Config.ScrollerType );
+    topBarScroller.Clear();
 
     if( Config.DiskUsageShow == 3)
         TopBarEnableDiskUsage();
@@ -377,6 +378,7 @@ void cFlatBaseRender::TopBarUpdate(void) {
             }
             TitleWidth = TitleWidthLeft;
         } else {
+            topBarScroller.Clear();
 /*            int dotsWidth = topBarFont->Width("... ");
             cTextWrapper TitleWrapper(topBarTitle, topBarFont, TitleWidthLeft - dotsWidth);
             topBarTitle = TitleWrapper.GetLine(0);

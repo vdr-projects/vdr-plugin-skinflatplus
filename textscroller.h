@@ -34,7 +34,6 @@ public:
         isReserveStep = false;
         WAITSTEPS = waitsteps;
         ResetX = false;
-        dsyslog("waitSteps: %d", waitSteps);
     }
     cTextScroll(cOsd *osd, int type, int pixels, int waitsteps) {
         Font = NULL;
