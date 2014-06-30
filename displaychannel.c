@@ -315,9 +315,6 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
     cString epg("");
 
     scrollers.Clear();
-    //scrollers.AddScroller("very long, stupid Text to scroll and other", cRect(20, 500, 300, fontHeight), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), font);
-    //scrollers.AddScroller("second very long", cRect(20, 600, 400, fontHeight), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), font);
-    //scrollers.AddScroller("third very long, stupid Text to scroll and other", cRect(20, 700, 500, fontHeight), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), font);
 
     chanInfoBottomPixmap->Fill(Theme.Color(clrChannelBg));
     chanIconsPixmap->Fill( clrTransparent );

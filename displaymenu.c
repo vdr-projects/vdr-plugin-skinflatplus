@@ -66,9 +66,16 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
 
     menuCategory = mcUndefined;
 
+    scrollers.SetOsd(osd);
+    scrollers.SetScrollStep( Config.ScrollerStep );
+    scrollers.SetScrollDelay( Config.ScrollerDelay );
+    scrollers.SetScrollType( Config.ScrollerType );
+
 }
 
 cFlatDisplayMenu::~cFlatDisplayMenu() {
+    scrollers.Clear();
+
     osd->DestroyPixmap(menuPixmap);
     osd->DestroyPixmap(menuIconsPixmap);
     osd->DestroyPixmap(menuIconsBGPixmap);

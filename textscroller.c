@@ -34,7 +34,7 @@ void cTextScroll::Draw(void) {
     Pixmap->DrawText(cPoint(0, 0), Text.c_str(), ColorFg, ColorBg, Font);
 }
 
-void cTextScroll::DoStep(int Step) {
+void cTextScroll::DoStep(void) {
     if( !Pixmap )
         return;
 
@@ -54,16 +54,16 @@ void cTextScroll::DoStep(int Step) {
     int drawPortX = Pixmap->DrawPort().X();
 
     if( isReserveStep )
-        drawPortX += Step;
+        drawPortX += PixelsPerStep;
     else
-        drawPortX -= Step;
+        drawPortX -= PixelsPerStep;
 
     int maxX = Pixmap->DrawPort().Width() - Pixmap->ViewPort().Width();
     maxX *= -1;
 
     if( ScrollType == 0 ) {
         if( drawPortX <= maxX ) {
-            drawPortX += Step;
+            drawPortX += PixelsPerStep;
             ResetX = true;
             waitSteps = WAITSTEPS;
         }
@@ -75,7 +75,6 @@ void cTextScroll::DoStep(int Step) {
             isReserveStep = false;
             waitSteps = WAITSTEPS;
         }
-
     }
 
     Pixmap->SetDrawPortPoint(cPoint(drawPortX, 0));
@@ -103,18 +102,30 @@ void cTextScrollers::Clear(void) {
 
 void cTextScrollers::AddScroller(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font) {
     Cancel(-1);
-    while (Active())
+    while( Active() )
         cCondWait::SleepMs(10);
 
-    Scrollers.push_back( new cTextScroll(Osd, scrollType, Layer) );
+    Scrollers.push_back( new cTextScroll(Osd, scrollType, scrollStep, (int)((double)WAITDELAY / (double)scrollDelay), Layer) );
     Scrollers.back()->SetText(text, position, colorFg, colorBg, font);
 
-    if( !Running() ) {
+    StartScrolling();
+}
+
+void cTextScrollers::StartScrolling(void) {
+    if( !Running() && Scrollers.size() > 0 ) {
         Start();
     }
 }
 
 void cTextScrollers::Action(void) {
+    // wait 1 second so the osd is finished
+    for(int i = 0; i < 100 && Running(); i++ ) {
+        cCondWait::SleepMs(10);
+    }
+
+    if( !Running() )
+        return;
+
     std::vector<cTextScroll *>::iterator it;
     for( it = Scrollers.begin(); it != Scrollers.end(); it++) {
         if( !Running() )
@@ -125,20 +136,20 @@ void cTextScrollers::Action(void) {
     }
 
     while( Running() ) {
+        if (Running())
+            cCondWait::SleepMs(scrollDelay);
+
         std::vector<cTextScroll *>::iterator it;
         for( it = Scrollers.begin(); it != Scrollers.end(); it++) {
             if( !Running() )
                 return;
             cPixmap::Lock();
-            (*it)->DoStep(scrollStep);
+            (*it)->DoStep();
             cPixmap::Unlock();
         }
 
-        if (Running())
+        if( Running() )
             Osd->Flush();
-
-        if (Running())
-            cCondWait::SleepMs(scrollDelay);
     }
 }
 

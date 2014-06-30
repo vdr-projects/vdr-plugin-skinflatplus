@@ -17,6 +17,7 @@ cFlatBaseRender::cFlatBaseRender(void) {
     tobBarTitleExtra2 = "";
     topBarLastDate = "";
     topBarUpdateTitle = false;
+    topBarUpdateScroller = false;
     topBarHeight = 0;
     topBarExtraIconSet = false;
     topBarMenuIconSet = false;
@@ -131,6 +132,11 @@ void cFlatBaseRender::TopBarCreate(void) {
 }
 
 void cFlatBaseRender::TopBarSetTitle(cString title) {
+    if( strcmp(*topBarTitle, *title) != 0 )
+        topBarUpdateScroller = true;
+
+    dsyslog("topBarTitle: %s title: %s topBarUpdateScroller: %d", *topBarTitle, *title, topBarUpdateScroller);
+
     topBarTitle = title;
     tobBarTitleExtra1 = "";
     tobBarTitleExtra2 = "";
@@ -200,14 +206,13 @@ void cFlatBaseRender::TopBarEnableDiskUsage(void) {
     TopBarSetTitleExtra(extra1, extra2);
     TopBarSetExtraIcon(iconName);
 }
-// sollte bei jedum "Flush" aufgerufen werden!
+// sollte bei jedem "Flush" aufgerufen werden!
 void cFlatBaseRender::TopBarUpdate(void) {
     cString curDate = DayDateTime();
     int TopBarWidth = osdWidth - Config.decorBorderTopBarSize*2;
     int MenuIconWidth = 0;
 
     if ( strcmp(curDate, topBarLastDate) || topBarUpdateTitle ) {
-        topBarScroller.Clear();
         topBarUpdateTitle = false;
         topBarLastDate = curDate;
 
@@ -365,7 +370,11 @@ void cFlatBaseRender::TopBarUpdate(void) {
 
         int maxWidth = extraLeft - (MenuIconWidth + marginItem*2) - marginItem;
         if( (TitleWidth > maxWidth) && Config.ScrollerEnable ) {
-            topBarScroller.AddScroller(*topBarTitle, cRect(MenuIconWidth + marginItem*2, fontTop, maxWidth, topBarFontHeight), Theme.Color(clrTopBarFont), clrTransparent, topBarFont);
+            if( topBarUpdateScroller ) {
+                topBarScroller.Clear();
+                topBarScroller.AddScroller(*topBarTitle, cRect(MenuIconWidth + marginItem*2, fontTop, maxWidth, topBarFontHeight), Theme.Color(clrTopBarFont), clrTransparent, topBarFont);
+                topBarUpdateScroller = false;
+            }
             TitleWidth = TitleWidthLeft;
         } else {
 /*            int dotsWidth = topBarFont->Width("... ");
@@ -403,7 +412,6 @@ void cFlatBaseRender::TopBarUpdate(void) {
             else
                 topBarPixmap->DrawText(cPoint(ConLeft + ConW + marginItem, fontSmlTop), ConNum, Theme.Color(clrTopBarConflictHighFg), Theme.Color(clrTopBarConflictHighBg), topBarFontSml);
         }
-
     }
 }
 
@@ -558,7 +566,6 @@ void cFlatBaseRender::MessageSet(eMessageType Type, const char *Text) {
         else
             messagePixmap->DrawText(cPoint((osdWidth - textWidth) / 2, marginItem), Text, Theme.Color(clrMessageFont), Theme.Color(clrMessageBg), font);
     }
-
 
     int top = osdHeight - Config.MessageOffset - messageHeight - Config.decorBorderMessageSize;
     DecorBorderDraw(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight, Config.decorBorderMessageSize, Config.decorBorderMessageType, Config.decorBorderMessageFg, Config.decorBorderMessageBg, BorderMessage);

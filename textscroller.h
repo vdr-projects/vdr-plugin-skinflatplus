@@ -5,7 +5,7 @@
 #include <string.h>
 #include <vdr/thread.h>
 
-#define WAITSTEPS 50
+#define WAITDELAY 1000 // in ms
 
 class cTextScroll
 {
@@ -18,32 +18,33 @@ private:
     cPixmap *Pixmap;
     cOsd *Osd;
     int Layer;
-
-    int waitSteps;
+    int PixelsPerStep;
+    int WAITSTEPS, waitSteps;
     bool isReserveStep;
     bool ResetX;
     int ScrollType;
 public:
-    cTextScroll(cOsd *osd, int type, int layer) {
+    cTextScroll(cOsd *osd, int type, int pixels, int waitsteps, int layer) {
         Font = NULL;
         Pixmap = NULL;
         Osd = osd;
         Layer = layer;
-
+        PixelsPerStep = pixels;
         ScrollType = type;
         isReserveStep = false;
-        waitSteps = WAITSTEPS;
+        WAITSTEPS = waitsteps;
         ResetX = false;
+        dsyslog("waitSteps: %d", waitSteps);
     }
-    cTextScroll(cOsd *osd, int type) {
+    cTextScroll(cOsd *osd, int type, int pixels, int waitsteps) {
         Font = NULL;
         Pixmap = NULL;
         Osd = osd;
         Layer = 2;
-
+        PixelsPerStep = pixels;
         ScrollType = type;
         isReserveStep = false;
-        waitSteps = WAITSTEPS;
+        WAITSTEPS = waitsteps;
         ResetX = false;
     }
 
@@ -56,7 +57,7 @@ public:
 
     void Reset(void);
     void SetText(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font);
-    void DoStep(int Step);
+    void DoStep(void);
     void Draw(void);
 
 };
@@ -71,6 +72,7 @@ private:
     int scrollType;
     int Layer;
     virtual void Action(void);
+    void StartScrolling(void);
 public:
     cTextScrollers();
     ~cTextScrollers();
@@ -82,4 +84,5 @@ public:
     void SetScrollDelay(int delay) { scrollDelay = delay; }
     void SetScrollType(int type) { scrollType = type; }
     void AddScroller(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font);
+    bool isActive(void) { return Active(); }
 };
