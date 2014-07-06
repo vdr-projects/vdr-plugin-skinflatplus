@@ -1,6 +1,6 @@
 #include "textscroller.h"
 
-void cTextScroll::SetText(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font) {
+void cTextScroll::SetText(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font, tColor colorExtraTextFg) {
     if( Osd == NULL )
         return;
 
@@ -9,7 +9,7 @@ void cTextScroll::SetText(const char *text, cRect position, tColor colorFg, tCol
     Font = font;
     Position = position;
 
-    ColorFg = colorFg; ColorBg = colorBg;
+    ColorFg = colorFg; ColorBg = colorBg; ColorExtraTextFg = colorExtraTextFg;
     cRect drawPort(0, 0, font->Width(Text.c_str()), Position.Height());
 
     if( Osd && Pixmap )
@@ -31,7 +31,31 @@ void cTextScroll::Reset(void) {
 void cTextScroll::Draw(void) {
     if( !Pixmap )
         return;
-    Pixmap->DrawText(cPoint(0, 0), Text.c_str(), ColorFg, ColorBg, Font);
+
+    if( ColorExtraTextFg ) {
+        std::string tilde = Text;
+        size_t found = tilde.find(" ~ ");
+        size_t found2 = tilde.find("~");
+        if( found != std::string::npos ) {
+            std::string first = tilde.substr(0, found);
+            std::string second = tilde.substr(found +2, tilde.length() );
+
+            Pixmap->DrawText(cPoint(0, 0), first.c_str(), ColorFg, ColorBg, Font);
+            int l = Font->Width( first.c_str() );
+            Pixmap->DrawText(cPoint(l, 0), second.c_str(), ColorExtraTextFg, ColorBg, Font);
+        } else if ( found2 != std::string::npos ) {
+            std::string first = tilde.substr(0, found2);
+            std::string second = tilde.substr(found2 +1, tilde.length() );
+
+            Pixmap->DrawText(cPoint(0, 0), first.c_str(), ColorFg, ColorBg, Font);
+            int l = Font->Width( first.c_str() );
+            l += Font->Width("X");
+            Pixmap->DrawText(cPoint(l, 0), second.c_str(), ColorExtraTextFg, ColorBg, Font);
+        } else
+            Pixmap->DrawText(cPoint(0, 0), Text.c_str(), ColorFg, ColorBg, Font);
+    } else {
+        Pixmap->DrawText(cPoint(0, 0), Text.c_str(), ColorFg, ColorBg, Font);
+    }
 }
 
 void cTextScroll::DoStep(void) {
@@ -88,6 +112,7 @@ cTextScrollers::~cTextScrollers() {
 }
 
 void cTextScrollers::Clear(void) {
+    dsyslog("Clear");
     Cancel(-1);
     while( Active() )
         cCondWait::SleepMs(10);
@@ -100,13 +125,13 @@ void cTextScrollers::Clear(void) {
     Scrollers.clear();
 }
 
-void cTextScrollers::AddScroller(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font) {
+void cTextScrollers::AddScroller(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font, tColor ColorExtraTextFg) {
     Cancel(-1);
     while( Active() )
         cCondWait::SleepMs(10);
 
     Scrollers.push_back( new cTextScroll(Osd, scrollType, scrollStep, (int)((double)WAITDELAY / (double)scrollDelay), Layer) );
-    Scrollers.back()->SetText(text, position, colorFg, colorBg, font);
+    Scrollers.back()->SetText(text, position, colorFg, colorBg, font, ColorExtraTextFg);
 
     StartScrolling();
 }

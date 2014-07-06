@@ -40,7 +40,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         cComplexContent ComplexContent;
 
         // TextScroller
-        cTextScrollers scrollers;
+        cTextScrollers menuItemScroller;
 
         cString ItemEventLastChannelName;
 

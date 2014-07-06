@@ -12,7 +12,7 @@ class cTextScroll
 private:
     cRect Position;
 
-    tColor ColorFg, ColorBg;
+    tColor ColorFg, ColorExtraTextFg, ColorBg;
     std::string Text;
     cFont *Font;
     cPixmap *Pixmap;
@@ -55,7 +55,7 @@ public:
     }
 
     void Reset(void);
-    void SetText(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font);
+    void SetText(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font, tColor ColorExtraTextFg = 0);
     void DoStep(void);
     void Draw(void);
 
@@ -82,6 +82,6 @@ public:
     void SetScrollStep(int step) { scrollStep = step; }
     void SetScrollDelay(int delay) { scrollDelay = delay; }
     void SetScrollType(int type) { scrollType = type; }
-    void AddScroller(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font);
+    void AddScroller(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font, tColor ColorExtraTextFg = 0);
     bool isActive(void) { return Active(); }
 };

@@ -44,8 +44,6 @@ class cFlatBaseRender
         cPixmap *topBarIconBGPixmap;
         cFont *topBarFont, *topBarFontSml;
         int topBarFontHeight, topBarFontSmlHeight;
-        cTextScrollers topBarScroller;
-        bool topBarUpdateScroller;
 
         cString topBarTitle;
         cString tobBarTitleExtra1, tobBarTitleExtra2;

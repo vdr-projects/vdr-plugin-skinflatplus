@@ -17,7 +17,6 @@ cFlatBaseRender::cFlatBaseRender(void) {
     tobBarTitleExtra2 = "";
     topBarLastDate = "";
     topBarUpdateTitle = false;
-    topBarUpdateScroller = false;
     topBarHeight = 0;
     topBarExtraIconSet = false;
     topBarMenuIconSet = false;
@@ -53,7 +52,6 @@ cFlatBaseRender::~cFlatBaseRender(void) {
 
     if( osd ) {
         messageScroller.Clear();
-        topBarScroller.Clear();
         if( topBarPixmap )
             osd->DestroyPixmap(topBarPixmap);
         if( buttonsPixmap )
@@ -122,22 +120,11 @@ void cFlatBaseRender::TopBarCreate(void) {
     topBarIconBGPixmap->Fill(clrTransparent);
     topBarIconPixmap->Fill(clrTransparent);
 
-    topBarScroller.SetOsd(osd);
-    topBarScroller.SetScrollStep( Config.ScrollerStep );
-    topBarScroller.SetScrollDelay( Config.ScrollerDelay );
-    topBarScroller.SetScrollType( Config.ScrollerType );
-    topBarScroller.Clear();
-
     if( Config.DiskUsageShow == 3)
         TopBarEnableDiskUsage();
 }
 
 void cFlatBaseRender::TopBarSetTitle(cString title) {
-    if( strcmp(*topBarTitle, *title) != 0 )
-        topBarUpdateScroller = true;
-
-    dsyslog("topBarTitle: %s title: %s topBarUpdateScroller: %d", *topBarTitle, *title, topBarUpdateScroller);
-
     topBarTitle = title;
     tobBarTitleExtra1 = "";
     tobBarTitleExtra2 = "";
@@ -207,7 +194,7 @@ void cFlatBaseRender::TopBarEnableDiskUsage(void) {
     TopBarSetTitleExtra(extra1, extra2);
     TopBarSetExtraIcon(iconName);
 }
-// sollte bei jedem "Flush" aufgerufen werden!
+// sollte bei jedum "Flush" aufgerufen werden!
 void cFlatBaseRender::TopBarUpdate(void) {
     cString curDate = DayDateTime();
     int TopBarWidth = osdWidth - Config.decorBorderTopBarSize*2;
@@ -217,18 +204,13 @@ void cFlatBaseRender::TopBarUpdate(void) {
         topBarUpdateTitle = false;
         topBarLastDate = curDate;
 
-        int TitleWidthLeft = TopBarWidth;
-
         int fontTop = (topBarHeight - topBarFontHeight) / 2;
         int fontSmlTop = (topBarHeight - topBarFontSmlHeight*2) / 2;
-
-        int RecLeft = TopBarWidth / 2;
 
         topBarPixmap->Fill(Theme.Color(clrTopBarBg));
         topBarIconPixmap->Fill(clrTransparent);
         topBarIconBGPixmap->Fill(clrTransparent);
 
-        int TitleWidth = topBarFont->Width(topBarTitle);
         time_t t;
         time(&t);
 
@@ -236,9 +218,8 @@ void cFlatBaseRender::TopBarUpdate(void) {
         cString time2 = cString::sprintf("%s %s", *time, tr("clock"));
 
         int timeWidth = topBarFont->Width(*time2) + marginItem*2;
-        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth, fontTop), time2, Theme.Color(clrTopBarTimeFont), Theme.Color(clrTopBarBg), topBarFont);
-
-        TitleWidthLeft -= timeWidth;
+        int Right = TopBarWidth - timeWidth;
+        topBarPixmap->DrawText(cPoint(Right, fontTop), time2, Theme.Color(clrTopBarTimeFont), Theme.Color(clrTopBarBg), topBarFont);
 
         cString weekday = WeekDayNameFull(t);
         int weekdayWidth = topBarFontSml->Width(*weekday);
@@ -246,9 +227,122 @@ void cFlatBaseRender::TopBarUpdate(void) {
         cString date = ShortDateString(t);
         int dateWidth = topBarFontSml->Width(*date);
 
-        int fullWidth = max(weekdayWidth, dateWidth);
-        TitleWidthLeft -= fullWidth;
-        int DateRight = TopBarWidth - timeWidth - fullWidth - marginItem*2;
+        Right = TopBarWidth - timeWidth - max(weekdayWidth, dateWidth) - marginItem;
+        topBarPixmap->DrawText(cPoint(Right, fontSmlTop), weekday, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, max(weekdayWidth, dateWidth), 0, taRight);
+        topBarPixmap->DrawText(cPoint(Right, fontSmlTop + topBarFontSmlHeight), date, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, max(weekdayWidth, dateWidth), 0, taRight);
+
+        int numConflicts = 0, ConW = 0;
+        if( Config.TopBarRecConflictsShow ) {
+            cPlugin *p = cPluginManager::GetPlugin("epgsearch");
+            if (p) {
+                Epgsearch_lastconflictinfo_v1_0 *serviceData = new Epgsearch_lastconflictinfo_v1_0;
+                if (serviceData) {
+                    serviceData->nextConflict = 0;
+                    serviceData->relevantConflicts = 0;
+                    serviceData->totalConflicts = 0;
+                    p->Service("Epgsearch-lastconflictinfo-v1.0", serviceData);
+                    if (serviceData->relevantConflicts > 0) {
+                        numConflicts = serviceData->relevantConflicts;
+                    }
+                    delete serviceData;
+                }
+            }
+            if( numConflicts ) {
+                cImage *imgCon = NULL;
+                if( numConflicts < Config.TopBarRecConflictsHigh )
+                    imgCon = imgLoader.LoadIcon("topbar_timerconflict_low", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
+                else
+                    imgCon = imgLoader.LoadIcon("topbar_timerconflict_high", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
+
+                if( imgCon ) {
+                    ConW = imgCon->Width();
+                    cString Con = cString::sprintf("%d", numConflicts);
+                    ConW += topBarFontSml->Width(*Con);
+                    Right -= ConW + marginItem;
+
+                    int iconTop = (topBarFontHeight - imgCon->Height()) / 2;
+                    topBarIconPixmap->DrawImage( cPoint(Right, iconTop), *imgCon );
+                    ConW = imgCon->Width();
+
+                    cString ConNum = cString::sprintf("%d", numConflicts);
+                    if( numConflicts < Config.TopBarRecConflictsHigh )
+                        topBarPixmap->DrawText(cPoint(Right + imgCon->Width(), fontSmlTop), ConNum, Theme.Color(clrTopBarConflictLowFg), Theme.Color(clrTopBarConflictLowBg), topBarFontSml);
+                    else
+                        topBarPixmap->DrawText(cPoint(Right + imgCon->Width(), fontSmlTop), ConNum, Theme.Color(clrTopBarConflictHighFg), Theme.Color(clrTopBarConflictHighBg), topBarFontSml);
+                }
+            }
+        }
+        if( numConflicts == 0 ) {
+            cImage *imgCon = NULL;
+            if( numConflicts < Config.TopBarRecConflictsHigh )
+                imgCon = imgLoader.LoadIcon("topbar_timerconflict_low", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
+            else
+                imgCon = imgLoader.LoadIcon("topbar_timerconflict_high", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
+
+            if( imgCon ) {
+                ConW = imgCon->Width();
+                cString Con = cString::sprintf("%d", numConflicts);
+                ConW += topBarFontSml->Width(*Con);
+                Right -= ConW + marginItem;
+            }
+        }
+
+        int RecW = 0;
+        int numRec = 0;
+        if( Config.TopBarRecordingShow ) {
+            // look for timers
+            for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
+                if( ti->Matches(t) ) {
+                    numRec++;
+                }
+            }
+            if( numRec ) {
+                cImage *imgRec = imgLoader.LoadIcon("topbar_timer", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
+                if( imgRec ) {
+                    RecW = imgRec->Width();
+
+                    cString Rec = cString::sprintf("%d", numRec);
+                    RecW += topBarFontSml->Width(*Rec);
+                    Right -= RecW + marginItem;
+
+                    int iconTop = (topBarFontHeight - imgRec->Height()) / 2;
+                    topBarIconPixmap->DrawImage( cPoint(Right, iconTop), *imgRec );
+                    RecW = imgRec->Width() + marginItem;
+
+                    cString RecNum = cString::sprintf("%d", numRec);
+                    topBarPixmap->DrawText(cPoint(Right + imgRec->Width(), fontSmlTop), RecNum, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFontSml);
+                }
+            }
+        }
+        if( numRec == 0 ) {
+            cImage *imgRec = imgLoader.LoadIcon("topbar_timer", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
+            if( imgRec ) {
+                RecW = imgRec->Width();
+
+                cString Rec = cString::sprintf("%d", numRec);
+                RecW += topBarFontSml->Width(*Rec);
+                Right -= RecW + marginItem;
+            }
+        }
+
+
+        int extra1Width = topBarFontSml->Width(tobBarTitleExtra1);
+        int extra2Width = topBarFontSml->Width(tobBarTitleExtra2);
+        int extraMaxWidth = max(extra1Width, extra2Width);
+
+        if( topBarExtraIconSet ) {
+            cImage *img = imgLoader.LoadIcon(*topBarExtraIcon, 999, topBarHeight);
+            if( img ) {
+                int iconTop = 0;
+                Right -= img->Width() + marginItem;
+                topBarIconPixmap->DrawImage(cPoint(Right, iconTop), *img);
+            }
+        }
+
+        Right -= extraMaxWidth + marginItem;
+
+        topBarPixmap->DrawText(cPoint(Right, fontSmlTop), tobBarTitleExtra1, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
+        topBarPixmap->DrawText(cPoint(Right, fontSmlTop + topBarFontSmlHeight), tobBarTitleExtra2, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
 
         if( topBarMenuIconSet && Config.TopBarMenuIconShow ) {
             int IconLeft = marginItem;
@@ -257,7 +351,6 @@ void cFlatBaseRender::TopBarUpdate(void) {
                 int iconTop = (topBarHeight / 2 - img->Height()/2);
                 topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), *img);
                 MenuIconWidth = img->Width()+marginItem*2;
-                TitleWidthLeft -= MenuIconWidth + marginItem*3;
             }
         }
 
@@ -283,137 +376,11 @@ void cFlatBaseRender::TopBarUpdate(void) {
                 topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), *img);
             }
             MenuIconWidth = imageBGWidth+marginItem*2;
-            TitleWidthLeft -= MenuIconWidth + marginItem*3;
         }
 
-        int extra1Width = topBarFontSml->Width(tobBarTitleExtra1);
-        int extra2Width = topBarFontSml->Width(tobBarTitleExtra2);
-        int extraMaxWidth = max(extra1Width, extra2Width);
-
-        TitleWidthLeft -= extraMaxWidth + marginItem * 2;
-
-        int extraLeft = TopBarWidth/2 - extraMaxWidth/2;
-//        if( !Config.ScrollerEnable )
-//            extraLeft = max(MenuIconWidth + marginItem*4 + TitleWidth, extraLeft);
-
-        topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop), tobBarTitleExtra1, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
-        topBarPixmap->DrawText(cPoint(extraLeft, fontSmlTop + topBarFontSmlHeight), tobBarTitleExtra2, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
-
-        RecLeft = extraLeft + extraMaxWidth + marginItem;
-
-        if( topBarExtraIconSet ) {
-            int extraIconLeft = extraLeft + extraMaxWidth + marginItem;
-            cImage *img = imgLoader.LoadIcon(*topBarExtraIcon, 999, topBarHeight);
-            if( img ) {
-                if( (extraIconLeft + img->Width() + marginItem) < DateRight ) {
-                    int iconTop = 0;
-                    topBarIconPixmap->DrawImage(cPoint(extraIconLeft, iconTop), *img);
-
-                    RecLeft += topBarHeight + marginItem;
-                }
-            }
-        }
-
-        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop), weekday, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, fullWidth, 0, taRight);
-        topBarPixmap->DrawText(cPoint(TopBarWidth - timeWidth - fullWidth - marginItem*2, fontSmlTop + topBarFontSmlHeight), date, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, fullWidth, 0, taRight);
+        topBarPixmap->DrawText(cPoint(MenuIconWidth + marginItem*2, fontTop), topBarTitle, Theme.Color(clrTopBarFont), Theme.Color(clrTopBarBg), topBarFont, Right - MenuIconWidth - marginItem*4);
 
         DecorBorderDraw(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight, Config.decorBorderTopBarSize, Config.decorBorderTopBarType, Config.decorBorderTopBarFg, Config.decorBorderTopBarBg);
-
-        int RecW = 0;
-        int numRec = 0;
-        cImage *imgRec = imgLoader.LoadIcon("topbar_timer", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
-        if( imgRec )
-            RecW = imgRec->Width();
-        if( Config.TopBarRecordingShow ) {
-            // look for timers
-            for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
-                if( ti->Matches(t) ) {
-                    numRec++;
-                }
-            }
-            if( numRec ) {
-                cString Rec = cString::sprintf("%d", numRec);
-                RecW += topBarFont->Width(*Rec);
-                TitleWidthLeft -= RecW + marginItem*2;
-            }
-        }
-
-        int numConflicts = 0, ConW = 0;
-        if( Config.TopBarRecConflictsShow ) {
-            cPlugin *p = cPluginManager::GetPlugin("epgsearch");
-            if (p) {
-                Epgsearch_lastconflictinfo_v1_0 *serviceData = new Epgsearch_lastconflictinfo_v1_0;
-                if (serviceData) {
-                    serviceData->nextConflict = 0;
-                    serviceData->relevantConflicts = 0;
-                    serviceData->totalConflicts = 0;
-                    p->Service("Epgsearch-lastconflictinfo-v1.0", serviceData);
-                    if (serviceData->relevantConflicts > 0) {
-                        numConflicts = serviceData->relevantConflicts;
-                    }
-                    delete serviceData;
-                }
-            }
-        }
-        cImage *imgCon = NULL;
-        if( numConflicts < Config.TopBarRecConflictsHigh )
-            imgCon = imgLoader.LoadIcon("topbar_timerconflict_low", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
-        else
-            imgCon = imgLoader.LoadIcon("topbar_timerconflict_high", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
-
-        if( imgCon )
-            ConW = imgCon->Width();
-        if( numConflicts ) {
-            cString Con = cString::sprintf("%d", numRec);
-            ConW += topBarFont->Width(*Con);
-            TitleWidthLeft -= ConW + marginItem*2;
-        }
-
-        int maxWidth = extraLeft - (MenuIconWidth + marginItem*2) - marginItem;
-        if( (TitleWidth > maxWidth) && Config.ScrollerEnable ) {
-            if( topBarUpdateScroller ) {
-                topBarScroller.Clear();
-                topBarScroller.AddScroller(*topBarTitle, cRect(MenuIconWidth + marginItem*2, fontTop, maxWidth, topBarFontHeight), Theme.Color(clrTopBarFont), clrTransparent, topBarFont);
-                topBarUpdateScroller = false;
-            }
-            TitleWidth = TitleWidthLeft;
-        } else {
-            topBarScroller.Clear();
-/*            int dotsWidth = topBarFont->Width("... ");
-            cTextWrapper TitleWrapper(topBarTitle, topBarFont, TitleWidthLeft - dotsWidth);
-            topBarTitle = TitleWrapper.GetLine(0);
-            topBarTitle = cString::sprintf("%s...", *topBarTitle);
-            TitleWidth = topBarFont->Width(topBarTitle);
-*/            topBarPixmap->DrawText(cPoint(MenuIconWidth + marginItem*2, fontTop), topBarTitle, Theme.Color(clrTopBarFont), Theme.Color(clrTopBarBg), topBarFont, maxWidth);
-        }
-
-        if( TitleWidth > RecLeft )
-            RecLeft = TitleWidth + marginItem*2;
-        if( numRec > 0 && Config.TopBarRecordingShow && (RecLeft + RecW) < DateRight ) {
-            if( imgRec ) {
-                int iconTop = (topBarFontHeight - imgRec->Height()) / 2;
-                topBarIconPixmap->DrawImage( cPoint(RecLeft, iconTop), *imgRec );
-                RecW = imgRec->Width() + marginItem;
-            }
-            cString RecNum = cString::sprintf("%d", numRec);
-            topBarPixmap->DrawText(cPoint(RecLeft + RecW, fontSmlTop), RecNum, Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrTopBarRecordingActiveBg), topBarFontSml);
-            RecLeft += RecW + marginItem*2 + topBarFontSml->Width(RecNum);
-        }
-
-        int ConLeft = RecLeft + marginItem;
-        if( numConflicts > 0 && Config.TopBarRecConflictsShow && (ConLeft + ConW) < DateRight ) {
-            if( imgCon ) {
-                int iconTop = (topBarFontHeight - imgCon->Height()) / 2;
-                topBarIconPixmap->DrawImage( cPoint(RecLeft, iconTop), *imgCon );
-                ConW = imgCon->Width();
-            }
-
-            cString ConNum = cString::sprintf("%d", numConflicts);
-            if( numConflicts < Config.TopBarRecConflictsHigh )
-                topBarPixmap->DrawText(cPoint(ConLeft + ConW + marginItem, fontSmlTop), ConNum, Theme.Color(clrTopBarConflictLowFg), Theme.Color(clrTopBarConflictLowBg), topBarFontSml);
-            else
-                topBarPixmap->DrawText(cPoint(ConLeft + ConW + marginItem, fontSmlTop), ConNum, Theme.Color(clrTopBarConflictHighFg), Theme.Color(clrTopBarConflictHighBg), topBarFontSml);
-        }
     }
 }
 
