@@ -16,6 +16,7 @@ cFlatConfig::cFlatConfig(void) {
     SignalQualityUseColors = false;
 
     DiskUsageShow = true;
+    DiskUsageShort = false;
 
     MenuContentFullSize = true;
 
@@ -235,6 +236,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "ScrollerStep") == 0)                         ScrollerStep = atoi(Value);
     else if (strcmp(Name, "ScrollerDelay") == 0)                        ScrollerDelay = atoi(Value);
     else if (strcmp(Name, "ScrollerType") == 0)                         ScrollerType = atoi(Value);
+    else if (strcmp(Name, "DiskUsageShort") == 0)                       DiskUsageShort = atoi(Value);
 
     else return false;
 

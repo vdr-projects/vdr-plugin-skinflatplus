@@ -232,6 +232,7 @@ void cFlatSetup::Store(void) {
     SetupStore("ScrollerStep", Config.ScrollerStep);
     SetupStore("ScrollerDelay", Config.ScrollerDelay);
     SetupStore("ScrollerType", Config.ScrollerType);
+    SetupStore("DiskUsageShort", Config.DiskUsageShort);
 
     Config.Init();
 }
@@ -272,6 +273,7 @@ void cFlatSetupGeneral::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show empty color-buttons"), &SetupConfig->ButtonsShowEmpty));
     Add(new cMenuEditBoolItem(tr("Show TopBar menu icons"), &SetupConfig->TopBarMenuIconShow));
     Add(new cMenuEditStraItem(tr("Show Diskusage stats"), &SetupConfig->DiskUsageShow, DiskUsages.Size(), &DiskUsages[0]));
+    Add(new cMenuEditBoolItem(tr("Diskusage short display"), &SetupConfig->DiskUsageShort));
     Add(new cMenuEditIntItem(tr("OSD vertical margin"), &SetupConfig->marginOsdVer));
     Add(new cMenuEditIntItem(tr("OSD horizontal margin"), &SetupConfig->marginOsdHor));
     Add(new cMenuEditPrcItem(tr("TopBar font size"), &SetupConfig->TopBarFontSize, 0.01, 0.2, 1));

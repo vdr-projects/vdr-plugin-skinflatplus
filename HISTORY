@@ -2,6 +2,7 @@ VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
 2014-MM-DD: Version 0.4.0
+- [update] topbar position of text
 - [add] Textscroller support
         - text in displaychannel for epg-text and epgshort-text
         - messages
@@ -10,6 +11,7 @@ VDR Plugin 'skinflatplus' Revision History
         - menu item recording
         - menu item event
 - [add] new options in general settings for textscroller
+- [add] new option "diskusage short display" for only show percantage and free hours
 
 2014-06-19: Version 0.3.1
 - [fix] epg image position on channel info

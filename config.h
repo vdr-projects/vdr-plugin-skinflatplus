@@ -163,6 +163,7 @@ class cFlatConfig
         int SignalQualityShow;
         int SignalQualityUseColors;
         int DiskUsageShow;
+        int DiskUsageShort;
 
         int MenuItemPadding;
         int marginOsdVer, marginOsdHor;
