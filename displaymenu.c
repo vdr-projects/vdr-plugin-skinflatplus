@@ -84,8 +84,9 @@ cFlatDisplayMenu::~cFlatDisplayMenu() {
 }
 
 void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
-    ItemBorderClear();
     menuItemScroller.Clear();
+
+    ItemBorderClear();
     isScrolling = false;
     ShowRecording = ShowEvent = ShowText = false;
 
@@ -183,7 +184,7 @@ int cFlatDisplayMenu::ItemsHeight(void) {
 }
 
 void cFlatDisplayMenu::Clear(void) {
-    textScroller.Reset();
+    menuItemScroller.Clear();
     menuPixmap->Fill(clrTransparent);
     menuIconsPixmap->Fill(clrTransparent);
     menuIconsBGPixmap->Fill(clrTransparent);

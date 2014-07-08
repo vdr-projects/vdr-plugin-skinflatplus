@@ -112,7 +112,6 @@ cTextScrollers::~cTextScrollers() {
 }
 
 void cTextScrollers::Clear(void) {
-    dsyslog("Clear");
     Cancel(-1);
     while( Active() )
         cCondWait::SleepMs(10);
