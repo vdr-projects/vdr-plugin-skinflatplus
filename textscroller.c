@@ -20,6 +20,12 @@ void cTextScroll::SetText(const char *text, cRect position, tColor colorFg, tCol
     Draw();
 }
 
+void cTextScroll::UpdateViewPortWidth(int w) {
+    cRect viewPort = Pixmap->ViewPort();
+    viewPort.SetWidth(viewPort.Width() - w);
+    Pixmap->SetViewPort(viewPort);
+}
+
 void cTextScroll::Reset(void) {
     if( !Pixmap )
         return;
@@ -133,6 +139,15 @@ void cTextScrollers::AddScroller(const char *text, cRect position, tColor colorF
     Scrollers.back()->SetText(text, position, colorFg, colorBg, font, ColorExtraTextFg);
 
     StartScrolling();
+}
+
+void cTextScrollers::UpdateViewPortWidth(int w) {
+    std::vector<cTextScroll *>::iterator it;
+    for( it = Scrollers.begin(); it != Scrollers.end(); it++) {
+        cPixmap::Lock();
+        (*it)->UpdateViewPortWidth(w);
+        cPixmap::Unlock();
+    }
 }
 
 void cTextScrollers::StartScrolling(void) {

@@ -54,7 +54,9 @@ public:
         }
     }
 
+    void UpdateViewPortWidth(int w);
     void Reset(void);
+
     void SetText(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font, tColor ColorExtraTextFg = 0);
     void DoStep(void);
     void Draw(void);
@@ -83,5 +85,6 @@ public:
     void SetScrollDelay(int delay) { scrollDelay = delay; }
     void SetScrollType(int type) { scrollType = type; }
     void AddScroller(const char *text, cRect position, tColor colorFg, tColor colorBg, cFont *font, tColor ColorExtraTextFg = 0);
+    void UpdateViewPortWidth(int w);
     bool isActive(void) { return Active(); }
 };
