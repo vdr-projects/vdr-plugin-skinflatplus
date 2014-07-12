@@ -910,33 +910,37 @@ void cFlatBaseRender::ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Heig
 
     if (Total > 0 && Total > Shown) {
         Pixmap->Fill(clrTransparent);
-        Pixmap->DrawRectangle(cRect(Left, Top, scrollBarWidth, Height), Theme.Color(clrScrollbarBg));
+        Pixmap->DrawRectangle(cRect(Left, Top, scrollBarWidth, Height), Config.decorScrollBarBg);
         switch( Type ) {
             default:
             case 0:
+            {
+                int lineWidth = 6;
                 if( scrollBarWidth <= 10 )
-                    Pixmap->DrawRectangle(cRect(Left, Top, 2, Height), Theme.Color(clrScrollbarFg));
+                    lineWidth = 2;
                 else if( scrollBarWidth <= 20 )
-                    Pixmap->DrawRectangle(cRect(Left, Top, 4, Height), Theme.Color(clrScrollbarFg));
-                else
-                    Pixmap->DrawRectangle(cRect(Left, Top, 6, Height), Theme.Color(clrScrollbarFg));
-                Pixmap->DrawRectangle(cRect(Left, scrollTop, scrollBarWidth, scrollHeight), Theme.Color(clrScrollbarBarFg));
+                    lineWidth = 4;
+                Pixmap->DrawRectangle(cRect(Left, Top, lineWidth, Height), Config.decorScrollBarFg);
+
+                // Bar
+                Pixmap->DrawRectangle(cRect(Left + lineWidth, scrollTop, scrollBarWidth - lineWidth, scrollHeight), Config.decorScrollBarBarFg);
                 break;
+            }
             case 1:
             {
                 int dotHeight = scrollBarWidth / 2;
+                int lineWidth = 6;
                 if( scrollBarWidth <= 10 )
-                    Pixmap->DrawRectangle(cRect(Left, Top, 2, Height), Theme.Color(clrScrollbarFg));
+                    lineWidth = 2;
                 else if( scrollBarWidth <= 20 )
-                    Pixmap->DrawRectangle(cRect(Left, Top, 4, Height), Theme.Color(clrScrollbarFg));
-                else
-                    Pixmap->DrawRectangle(cRect(Left, Top, 6, Height), Theme.Color(clrScrollbarFg));
+                    lineWidth = 4;
+                Pixmap->DrawRectangle(cRect(Left, Top, lineWidth, Height), Config.decorScrollBarFg);
 
-                Pixmap->DrawRectangle(cRect(Left, scrollTop + dotHeight, scrollBarWidth, scrollHeight - dotHeight*2), Theme.Color(clrScrollbarBarFg));
+                // Bar
+                Pixmap->DrawRectangle(cRect(Left + lineWidth, scrollTop + dotHeight, scrollBarWidth - lineWidth, scrollHeight - dotHeight*2), Config.decorScrollBarBarFg);
                 // dot
-                Pixmap->DrawEllipse(cRect( Left, scrollTop, scrollBarWidth, scrollBarWidth), Theme.Color(clrScrollbarBarFg), 0);
-                Pixmap->DrawEllipse(cRect( Left, scrollTop + scrollHeight - dotHeight*2, scrollBarWidth, scrollBarWidth), Theme.Color(clrScrollbarBarFg), 0);
-
+                Pixmap->DrawEllipse(cRect( Left + lineWidth, scrollTop, scrollBarWidth - lineWidth, scrollBarWidth - lineWidth), Config.decorScrollBarBarFg, 0);
+                Pixmap->DrawEllipse(cRect( Left + lineWidth, scrollTop + scrollHeight - dotHeight*2, scrollBarWidth - lineWidth, scrollBarWidth - lineWidth), Config.decorScrollBarBarFg, 0);
                 break;
             }
             case 2:
@@ -948,8 +952,9 @@ void cFlatBaseRender::ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Heig
                 else if( scrollBarWidth <= 20 )
                     lineWidth = 4;
 
-                Pixmap->DrawRectangle(cRect(Middle - lineWidth/2, Top, lineWidth, Height), Theme.Color(clrScrollbarFg));
-                Pixmap->DrawRectangle(cRect(Left, scrollTop, scrollBarWidth, scrollHeight), Theme.Color(clrScrollbarBarFg));
+                Pixmap->DrawRectangle(cRect(Middle - lineWidth/2, Top, lineWidth, Height), Config.decorScrollBarFg);
+                // Bar
+                Pixmap->DrawRectangle(cRect(Left, scrollTop, scrollBarWidth, scrollHeight), Config.decorScrollBarBarFg);
                 break;
             }
             case 3:
@@ -962,13 +967,13 @@ void cFlatBaseRender::ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Heig
                 else if( scrollBarWidth <= 20 )
                     lineWidth = 4;
 
-                Pixmap->DrawRectangle(cRect(Middle - lineWidth/2, Top, lineWidth, Height), Theme.Color(clrScrollbarFg));
+                Pixmap->DrawRectangle(cRect(Middle - lineWidth/2, Top, lineWidth, Height), Config.decorScrollBarFg);
 
-                Pixmap->DrawRectangle(cRect(Left, scrollTop + dotHeight, scrollBarWidth, scrollHeight - dotHeight*2), Theme.Color(clrScrollbarBarFg));
+                // Bar
+                Pixmap->DrawRectangle(cRect(Left, scrollTop + dotHeight, scrollBarWidth, scrollHeight - dotHeight*2), Config.decorScrollBarBarFg);
                 // dot
-                Pixmap->DrawEllipse(cRect( Left, scrollTop, scrollBarWidth, scrollBarWidth), Theme.Color(clrScrollbarBarFg), 0);
-                Pixmap->DrawEllipse(cRect( Left, scrollTop + scrollHeight - dotHeight*2, scrollBarWidth, scrollBarWidth), Theme.Color(clrScrollbarBarFg), 0);
-
+                Pixmap->DrawEllipse(cRect( Left, scrollTop, scrollBarWidth, scrollBarWidth), Config.decorScrollBarBarFg, 0);
+                Pixmap->DrawEllipse(cRect( Left, scrollTop + scrollHeight - dotHeight*2, scrollBarWidth, scrollBarWidth), Config.decorScrollBarBarFg, 0);
                 break;
             }
             case 4:
@@ -977,13 +982,13 @@ void cFlatBaseRender::ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Heig
                 if( scrollBarWidth > 10 )
                     out = 2;
                 // outline
-                Pixmap->DrawRectangle(cRect( Left, Top, scrollBarWidth, out), Theme.Color(clrScrollbarBarFg));
-                Pixmap->DrawRectangle(cRect( Left, Top + Height - out, scrollBarWidth, out), Theme.Color(clrScrollbarBarFg));
-                Pixmap->DrawRectangle(cRect( Left, Top, out, Height), Theme.Color(clrScrollbarBarFg));
-                Pixmap->DrawRectangle(cRect( Left + scrollBarWidth - out, Top, out, Height), Theme.Color(clrScrollbarBarFg));
+                Pixmap->DrawRectangle(cRect( Left, Top, scrollBarWidth, out), Config.decorScrollBarFg);
+                Pixmap->DrawRectangle(cRect( Left, Top + Height - out, scrollBarWidth, out), Config.decorScrollBarFg);
+                Pixmap->DrawRectangle(cRect( Left, Top, out, Height), Config.decorScrollBarFg);
+                Pixmap->DrawRectangle(cRect( Left + scrollBarWidth - out, Top, out, Height), Config.decorScrollBarFg);
 
                 // bar
-                Pixmap->DrawRectangle(cRect(Left + out, scrollTop + out, scrollBarWidth - out*2, scrollHeight - out*2), Theme.Color(clrScrollbarBarFg));
+                Pixmap->DrawRectangle(cRect(Left + out, scrollTop + out, scrollBarWidth - out*2, scrollHeight - out*2), Config.decorScrollBarBarFg);
                 break;
             }
             case 5:
@@ -993,31 +998,31 @@ void cFlatBaseRender::ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Heig
                 if( scrollBarWidth > 10 )
                     out = 2;
                 // outline
-                Pixmap->DrawRectangle(cRect( Left, Top, scrollBarWidth, out), Theme.Color(clrScrollbarBarFg));
-                Pixmap->DrawRectangle(cRect( Left, Top + Height - out, scrollBarWidth, out), Theme.Color(clrScrollbarBarFg));
-                Pixmap->DrawRectangle(cRect( Left, Top, out, Height), Theme.Color(clrScrollbarBarFg));
-                Pixmap->DrawRectangle(cRect( Left + scrollBarWidth - out, Top, out, Height), Theme.Color(clrScrollbarBarFg));
+                Pixmap->DrawRectangle(cRect( Left, Top, scrollBarWidth, out), Config.decorScrollBarFg);
+                Pixmap->DrawRectangle(cRect( Left, Top + Height - out, scrollBarWidth, out), Config.decorScrollBarFg);
+                Pixmap->DrawRectangle(cRect( Left, Top, out, Height), Config.decorScrollBarFg);
+                Pixmap->DrawRectangle(cRect( Left + scrollBarWidth - out, Top, out, Height), Config.decorScrollBarFg);
 
                 // bar
-                Pixmap->DrawRectangle(cRect(Left + out, scrollTop + dotHeight + out, scrollBarWidth - out*2, scrollHeight - dotHeight*2 - out*2), Theme.Color(clrScrollbarBarFg));
+                Pixmap->DrawRectangle(cRect(Left + out, scrollTop + dotHeight + out, scrollBarWidth - out*2, scrollHeight - dotHeight*2 - out*2), Config.decorScrollBarBarFg);
                 // dot
-                Pixmap->DrawEllipse(cRect( Left + out, scrollTop + out, scrollBarWidth - out*2, scrollBarWidth - out*2), Theme.Color(clrScrollbarBarFg), 0);
-                Pixmap->DrawEllipse(cRect( Left + out, scrollTop + scrollHeight - dotHeight*2 + out, scrollBarWidth - out*2, scrollBarWidth - out*2), Theme.Color(clrScrollbarBarFg), 0);
+                Pixmap->DrawEllipse(cRect( Left + out, scrollTop + out, scrollBarWidth - out*2, scrollBarWidth - out*2), Config.decorScrollBarBarFg, 0);
+                Pixmap->DrawEllipse(cRect( Left + out, scrollTop + scrollHeight - dotHeight*2 + out, scrollBarWidth - out*2, scrollBarWidth - out*2), Config.decorScrollBarBarFg, 0);
                 break;
             }
             case 6:
             {
-                Pixmap->DrawRectangle(cRect(Left, scrollTop, scrollBarWidth, scrollHeight), Theme.Color(clrScrollbarBarFg));
+                Pixmap->DrawRectangle(cRect(Left, scrollTop, scrollBarWidth, scrollHeight), Config.decorScrollBarBarFg);
                 break;
             }
             case 7:
             {
                 int dotHeight = scrollBarWidth / 2;
 
-                Pixmap->DrawRectangle(cRect(Left, scrollTop + dotHeight, scrollBarWidth, scrollHeight - dotHeight*2), Theme.Color(clrScrollbarBarFg));
+                Pixmap->DrawRectangle(cRect(Left, scrollTop + dotHeight, scrollBarWidth, scrollHeight - dotHeight*2), Config.decorScrollBarBarFg);
                 // dot
-                Pixmap->DrawEllipse(cRect( Left, scrollTop, scrollBarWidth, scrollBarWidth), Theme.Color(clrScrollbarBarFg), 0);
-                Pixmap->DrawEllipse(cRect( Left, scrollTop + scrollHeight - dotHeight*2, scrollBarWidth, scrollBarWidth), Theme.Color(clrScrollbarBarFg), 0);
+                Pixmap->DrawEllipse(cRect( Left, scrollTop, scrollBarWidth, scrollBarWidth), Config.decorScrollBarBarFg, 0);
+                Pixmap->DrawEllipse(cRect( Left, scrollTop + scrollHeight - dotHeight*2, scrollBarWidth, scrollBarWidth), Config.decorScrollBarBarFg, 0);
 
                 break;
             }
