@@ -17,15 +17,15 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
         osdWidth - Config.decorBorderReplaySize*2, labelHeight));
     iconsPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorBorderReplaySize,
         osdWidth - Config.decorBorderReplaySize*2, labelHeight));
-    
+
     ProgressBarCreate(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorProgressReplaySize - Config.decorBorderReplaySize - marginItem,
         osdWidth - Config.decorBorderReplaySize*2, Config.decorProgressReplaySize, marginItem, 0,
         Config.decorProgressReplayFg, Config.decorProgressReplayBarFg, Config.decorProgressReplayBg, Config.decorProgressReplayType);
 
-    labelJump = osd->CreatePixmap(1, cRect(Config.decorBorderReplaySize, 
+    labelJump = osd->CreatePixmap(1, cRect(Config.decorBorderReplaySize,
         osdHeight - labelHeight - Config.decorProgressReplaySize - marginItem*3 - fontHeight - Config.decorBorderReplaySize*2,
         osdWidth - Config.decorBorderReplaySize*2, fontHeight));
-    
+
     labelPixmap->Fill(Theme.Color(clrReplayBg));
     labelJump->Fill(clrTransparent);
     iconsPixmap->Fill(clrTransparent);
@@ -67,7 +67,7 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
 
         cString rewind, pause, play, forward;
         cString speed;
-        
+
         if( Speed == -1 ) {
             if( Play ) {
                 rewind = "rewind";
@@ -79,7 +79,7 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
                 pause = "pause_sel";
                 play = "play";
                 forward = "forward";
-            }                
+            }
         } else {
             speed = cString::sprintf("%d", Speed);
             if( Forward ) {
@@ -94,7 +94,7 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
                 play = "play";
                 forward = "forward";
                 labelPixmap->DrawText(cPoint(left - font->Width(speed) - marginItem, 0), speed, Theme.Color(clrReplayFontSpeed), Theme.Color(clrReplayBg), font);
-            }                
+            }
         }
         cImage *img = imgLoader.LoadIcon(*rewind, fontHeight, fontHeight);
         if( img )
@@ -113,7 +113,7 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
             iconsPixmap->DrawImage( cPoint(left + fontHeight*3 + marginItem*3, 0), *img );
 
     }
-    
+
     if( ProgressShown )
         DecorBorderDraw(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorProgressReplaySize - Config.decorBorderReplaySize - marginItem,
             osdWidth - Config.decorBorderReplaySize*2, labelHeight + Config.decorProgressReplaySize + marginItem,
@@ -122,7 +122,7 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
         DecorBorderDraw(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorBorderReplaySize,
             osdWidth - Config.decorBorderReplaySize*2, labelHeight,
             Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg);
-        
+
     ResolutionAspectDraw();
 }
 
@@ -238,15 +238,15 @@ void cFlatDisplayReplay::UpdateInfo(void) {
 
 void cFlatDisplayReplay::SetJump(const char *Jump) {
     DecorBorderClearByFrom(BorderRecordJump);
-    
+
     if( !Jump )
     {
         labelJump->Fill(clrTransparent);
         return;
-    }        
+    }
     int left = osdWidth - Config.decorBorderReplaySize*2 - font->Width(Jump);
     left /= 2;
-    
+
     labelJump->DrawText(cPoint(left, 0), Jump, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(Jump), fontHeight, taCenter);
 
     DecorBorderDraw(left + Config.decorBorderReplaySize,
@@ -259,7 +259,7 @@ void cFlatDisplayReplay::ResolutionAspectDraw(void) {
     int left = osdWidth - Config.decorBorderReplaySize*2;
     int imageTop = 0;
     cImage *img = NULL;
-    
+
     if( screenWidth > 0 ) {
     if( Config.RecordingResolutionAspectShow ) {         // Show Aspect
         cString asp = "unknown_asp";                     // ???
@@ -322,7 +322,7 @@ void cFlatDisplayReplay::ResolutionAspectDraw(void) {
             }
 
             //printf("Width: %d Height: %d Aspect: %.2f\n", screenWidth, screenHeight, screenAspect);
-        
+
             img = imgLoader.LoadIcon(*res, 999, fontSmlHeight);
             if (img) {
                 imageTop = fontHeight + (fontSmlHeight - img->Height())/2;
@@ -388,8 +388,8 @@ void cFlatDisplayReplay::PreLoadImages(void) {
     imgLoader.LoadIcon("forward_sel", fontHeight, fontHeight);
     imgLoader.LoadIcon("rewind_sel", fontHeight, fontHeight);
     imgLoader.LoadIcon("pause_sel", fontHeight, fontHeight);
-    imgLoader.LoadIcon("recording_cutted", fontHeight, fontHeight);
-    
+    imgLoader.LoadIcon("recording_cutted_extra", fontHeight, fontHeight);
+
     imgLoader.LoadIcon("43", 999, fontSmlHeight);
     imgLoader.LoadIcon("169", 999, fontSmlHeight);
     imgLoader.LoadIcon("221", 999, fontSmlHeight);

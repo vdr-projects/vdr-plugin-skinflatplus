@@ -66,7 +66,7 @@ HISTORY
  [30.05.2014] - '70_MV_rect_sml.decor' angepast
               - Neue Farben 'clrMenuEventTitleLine', 'clrMenuRecTitleLine'
                 'clrChannelEPGBorderFg' und 'clrChannelEPGBorderBg' eingefuegt
- [31.05.2014] - Hellere Farbe (+10) bei den Bereichstrennern
+ [31.05.2014] - Hellere Farbe (+35) bei den Bereichstrennern
               - Update der empfohlenen Einstellungen in der MV_Themes.INFO
               - Alle Themen, Decor und *.png ohne Execute-Flag (chmod -x)
  [01.06.2014] - Textfarbe bei Bereichstrennern heller
@@ -77,3 +77,10 @@ HISTORY
  [15.06.2014] - Symbole fuer Nachrichten in Farbe (Info, Status, Warnung und Fehler)
  [16.06.2014] - Symbole 'mesasge_info.png', 'mesasge_status.png' und
                 'mesasge_warning.png' durch "volle" Versionen ersetzt
+ [28.06.2014] - Neue Symbole fuer 'text_arrow_turn*.png' und 'text_timer_full*.png'
+              - Symbole 'text_new*.png', 'text_rec*.png', 'text_timer_partial*.png'
+                und 'text_vps*.png' mit vorhandenen Symbolen verlinkt
+ [11.07.2014] - Symbol fuer geschnittene Aufnahmen ('recording_cutted.png') in Farbe
+ [12.07.2014] - Symbole 'recording_cutted.png', 'recording_new.png', 'timer_full.png',
+                'timer_partial.png' und 'vps.png' Schatten entfernt und ein dazu
+                passendes '_cur.png' erstellt

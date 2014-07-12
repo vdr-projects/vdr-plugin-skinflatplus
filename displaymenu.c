@@ -1506,13 +1506,23 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     }
 
     if( TimerMatch == tmFull ) {
-        img = imgLoader.LoadIcon("timer_full", imageHeight, imageHeight);
+        img = NULL;
+        if( Current )
+            img = imgLoader.LoadIcon("timer_full_cur", imageHeight, imageHeight);
+        if( img == NULL )
+            img = imgLoader.LoadIcon("timer_full", imageHeight, imageHeight);
+
         if( img ) {
             imageTop = Top;
             menuIconsPixmap->DrawImage( cPoint(Left, imageTop), *img );
         }
     } else if( TimerMatch == tmPartial ) {
-        img = imgLoader.LoadIcon("timer_partial", imageHeight, imageHeight);
+        img = NULL;
+        if( Current )
+            img = imgLoader.LoadIcon("timer_partial_cur", imageHeight, imageHeight);
+        if( img == NULL )
+            img = imgLoader.LoadIcon("timer_partial", imageHeight, imageHeight);
+
         if( img ) {
             imageTop = Top;
             menuIconsPixmap->DrawImage( cPoint(Left, imageTop), *img );
@@ -1521,7 +1531,12 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     Left += imageHeight + marginItem;
     if( Event && Selectable ) {
         if( Event->Vps() && (Event->Vps() - Event->StartTime()) ) {
-            img = imgLoader.LoadIcon("vps", imageHeight, imageHeight);
+            img = NULL;
+            if( Current )
+                img = imgLoader.LoadIcon("vps_cur", imageHeight, imageHeight);
+            if( img == NULL )
+                img = imgLoader.LoadIcon("vps", imageHeight, imageHeight);
+
             if( img ) {
                 imageTop = Top;
                 menuIconsPixmap->DrawImage( cPoint(Left, imageTop), *img );
@@ -1705,9 +1720,23 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
 
     menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, menuItemWidth, Height), ColorBg);
     cImage *img = NULL;
-    cImage *imgRecNew = imgLoader.LoadIcon("recording_new", fontHeight, fontHeight);
-    cImage *imgRecNewSml = imgLoader.LoadIcon("recording_new", fontSmlHeight, fontSmlHeight);
-    cImage *imgRecCut = imgLoader.LoadIcon("recording_cutted", fontHeight, fontHeight);
+    cImage *imgRecNew = NULL;
+    if( Current )
+        imgRecNew = imgLoader.LoadIcon("recording_new_cur", fontHeight, fontHeight);
+    if( imgRecNew == NULL )
+        imgRecNew = imgLoader.LoadIcon("recording_new", fontHeight, fontHeight);
+
+    cImage *imgRecNewSml = NULL;
+    if( Current )
+        imgRecNewSml = imgLoader.LoadIcon("recording_new_cur", fontSmlHeight, fontSmlHeight);
+    if( imgRecNewSml == NULL )
+        imgRecNewSml = imgLoader.LoadIcon("recording_new", fontSmlHeight, fontSmlHeight);
+
+    cImage *imgRecCut = NULL;
+    if( Current )
+        imgRecCut = imgLoader.LoadIcon("recording_cutted_cur", fontHeight, fontHeight);
+    if( imgRecCut == NULL )
+        imgRecCut = imgLoader.LoadIcon("recording_cutted", fontHeight, fontHeight);
 
     int Left, Top;
     Left = Config.decorBorderMenuItemSize + marginItem;
@@ -3405,12 +3434,17 @@ void cFlatDisplayMenu::PreLoadImages(void) {
     imgLoader.LoadIcon("tv", 999, topBarHeight - marginItem*2);
 
     imgLoader.LoadIcon("timer_full", imageHeight, imageHeight);
+    imgLoader.LoadIcon("timer_full_cur", imageHeight, imageHeight);
     imgLoader.LoadIcon("timer_partial", imageHeight, imageHeight);
     imgLoader.LoadIcon("vps", imageHeight, imageHeight);
+    imgLoader.LoadIcon("vps_cur", imageHeight, imageHeight);
 
     imgLoader.LoadIcon("recording_new", fontHeight, fontHeight);
     imgLoader.LoadIcon("recording_new", fontSmlHeight, fontSmlHeight);
     imgLoader.LoadIcon("recording_cutted", fontHeight, fontHeight);
+    imgLoader.LoadIcon("recording_new_cur", fontHeight, fontHeight);
+    imgLoader.LoadIcon("recording_new_cur", fontSmlHeight, fontSmlHeight);
+    imgLoader.LoadIcon("recording_cutted_cur", fontHeight, fontHeight);
     imgLoader.LoadIcon("recording", fontHeight, fontHeight);
     imgLoader.LoadIcon("folder", fontHeight, fontHeight);
 }
