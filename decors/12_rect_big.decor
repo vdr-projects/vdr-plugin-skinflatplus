@@ -67,3 +67,7 @@ VolumeBorderType = 1
 VolumeBorderSize = 20
 VolumeProgressType = 3
 VolumeProgressSize = 10
+
+# Scrollbar
+ScrollBarType = 0
+ScrollBarSize = 20

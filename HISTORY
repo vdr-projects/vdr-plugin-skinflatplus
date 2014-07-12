@@ -15,6 +15,19 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] new option "diskusage short display" for only show percantage and free hours
 - [add] image _cur version for recording_cutted, recording_new, timer_full, timer_partial, vps
         if it is the current/selected menu item the cur version of the image will be loaded
+- [add] Support for scrollbar type and size like border and progressbar
+        You can specify the scrollbar type and size in the decor file (ScrollBarType & ScrollBarSize)
+        You can also override the type and size in the setup
+        8 Types:
+            * 0 = left line + rect bar
+            * 1 = left line + round bar
+            * 2 = middle line + rect bar
+            * 3 = middle line + round bar
+            * 4 = outline + rect bar
+            * 5 = outline + round bar
+            * 6 = rect bar
+            * 7 = round bar
+- [update] decor-files for new scrollbar options
 
 2014-06-19: Version 0.3.1
 - [fix] epg image position on channel info

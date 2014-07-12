@@ -157,6 +157,22 @@ class cFlatConfig
         int decorProgressSignalType, decorProgressSignalSize;
         tColor decorProgressSignalFg, decorProgressSignalBarFg, decorProgressSignalBg;
 
+        /* Types
+        * 0 = left line + rect bar
+        * 1 = left line + round bar
+        * 2 = middle line + rect bar
+        * 3 = middle line + round bar
+        * 4 = outline + rect bar
+        * 5 = outline + round bar
+        * 6 = rect bar
+        * 7 = round bar
+        */
+        int decorScrollBarByTheme;
+        int decorScrollBarTypeTheme, decorScrollBarSizeTheme;
+        int decorScrollBarTypeUser, decorScrollBarSizeUser;
+        int decorScrollBarType, decorScrollBarSize;
+        tColor decorScrollBarFg, decorScrollBarBarFg, decorScrollBarBg;
+
         // General Config
         int ButtonsShowEmpty;
         int ChannelIconsShow;

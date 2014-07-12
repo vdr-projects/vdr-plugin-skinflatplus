@@ -10,6 +10,7 @@ cStringList MenuRecordingViews;
 cStringList DecorDescriptions;
 cStringList MessageColorPositions;
 cStringList ScrollerTypes;
+cStringList ScrollBarTypes;
 
 cFlatSetup::cFlatSetup(void) {
     SetupConfig = Config;
@@ -85,6 +86,16 @@ void cFlatSetup::Setup(void) {
     ScrollerTypes.Clear();
     ScrollerTypes.Append( strdup( tr("carriage return")) );
     ScrollerTypes.Append( strdup( tr("left-right-left")) );
+
+    ScrollBarTypes.Clear();
+    ScrollBarTypes.Append( strdup( tr("left line + rect bar")) );
+    ScrollBarTypes.Append( strdup( tr("left line + round bar")) );
+    ScrollBarTypes.Append( strdup( tr("middle line + rect bar")) );
+    ScrollBarTypes.Append( strdup( tr("middle line + round bar")) );
+    ScrollBarTypes.Append( strdup( tr("outline + rect bar")) );
+    ScrollBarTypes.Append( strdup( tr("outline + round bar")) );
+    ScrollBarTypes.Append( strdup( tr("rect bar")) );
+    ScrollBarTypes.Append( strdup( tr("round bar")) );
 
     Add(new cOsdItem(tr("General settings"), osUnknown, true));
     Add(new cOsdItem(tr("Channelinfo settings"), osUnknown, true));
@@ -187,6 +198,9 @@ void cFlatSetup::Store(void) {
     SetupStore("decorProgressSignalByTheme", Config.decorProgressSignalByTheme);
     SetupStore("decorProgressSignalTypeUser", Config.decorProgressSignalTypeUser);
     SetupStore("decorProgressSignalSizeUser", Config.decorProgressSignalSizeUser);
+    SetupStore("decorScrollBarByTheme", Config.decorScrollBarByTheme);
+    SetupStore("decorScrollBarTypeUser", Config.decorScrollBarTypeUser);
+    SetupStore("decorScrollBarSizeUser", Config.decorScrollBarSizeUser);
     SetupStore("ButtonsShowEmpty", Config.ButtonsShowEmpty);
     SetupStore("ChannelIconsShow", Config.ChannelIconsShow);
     SetupStore("SignalQualityShow", Config.SignalQualityShow);
@@ -477,6 +491,17 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditStraItem(tr("Menu event view"), &SetupConfig->MenuEventView, MenuEventViews.Size(), &MenuEventViews[0]));
     Add(new cMenuEditStraItem(tr("Menu recording view"), &SetupConfig->MenuRecordingView, MenuRecordingViews.Size(), &MenuRecordingViews[0]));
 
+    Add(new cMenuEditBoolItem(tr("Scrollbar by decor-file?"), &SetupConfig->decorScrollBarByTheme));
+    if( SetupConfig->decorScrollBarByTheme ) {
+        cString type = cString::sprintf("%s:\t%s", tr("Scrollbar type"), ScrollBarTypes[SetupConfig->decorScrollBarTypeTheme]);
+        Add(new cOsdItem(type, osUnknown, false));
+        cString size = cString::sprintf("%s:\t%d", tr("Scrollbar size"), SetupConfig->decorScrollBarSizeTheme);
+        Add(new cOsdItem(size, osUnknown, false));
+    } else {
+        Add(new cMenuEditStraItem(tr("Scrollbar type"), &SetupConfig->decorScrollBarTypeUser, ScrollBarTypes.Size(), &ScrollBarTypes[0]));
+        Add(new cMenuEditIntItem(tr("Scrollbar size"), &SetupConfig->decorScrollBarSizeUser));
+    }
+
     Add(new cMenuEditBoolItem(tr("Menuitem border by decor-file?"), &SetupConfig->decorBorderMenuItemByTheme));
     if( SetupConfig->decorBorderMenuItemByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Menuitem border type"), Bordertypes[SetupConfig->decorBorderMenuItemTypeTheme]);
@@ -544,7 +569,8 @@ eOSState cFlatSetupMenu::ProcessKey(eKeys Key) {
         if( strstr(ItemText, tr("Menuitem border by decor-file?")) != NULL ||
             strstr(ItemText, tr("Menucont. border by decor-file?")) != NULL ||
             strstr(ItemText, tr("Menucont. head border by decor-file?")) != NULL ||
-            strstr(ItemText, tr("Menuitem progress by decor-file?")) != NULL
+            strstr(ItemText, tr("Menuitem progress by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Scrollbar by decor-file?")) != NULL
         ) {
             ItemLastSel = Current();
             Setup();

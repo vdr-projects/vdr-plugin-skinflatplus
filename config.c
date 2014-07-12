@@ -136,6 +136,12 @@ cFlatConfig::cFlatConfig(void) {
     decorProgressSignalTypeUser = 0;
     decorProgressSignalSizeUser = 20;
 
+    decorScrollBarByTheme = 0;
+    decorScrollBarTypeTheme = 0;
+    decorScrollBarSizeTheme = 20;
+    decorScrollBarTypeUser = 0;
+    decorScrollBarSizeUser = 20;
+
     ThemeCurrent = "";
 }
 
@@ -191,6 +197,9 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "decorProgressSignalByTheme") == 0)           decorProgressSignalByTheme = atoi(Value);
     else if (strcmp(Name, "decorProgressSignalTypeUser") == 0)          decorProgressSignalTypeUser = atoi(Value);
     else if (strcmp(Name, "decorProgressSignalSizeUser") == 0)          decorProgressSignalSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorScrollBarByTheme") == 0)                decorScrollBarByTheme = atoi(Value);
+    else if (strcmp(Name, "decorScrollBarTypeUser") == 0)               decorScrollBarTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorScrollBarSizeUser") == 0)               decorScrollBarSizeUser = atoi(Value);
     else if (strcmp(Name, "ButtonsShowEmpty") == 0)                     ButtonsShowEmpty = atoi(Value);
     else if (strcmp(Name, "ChannelIconsShow") == 0)                     ChannelIconsShow = atoi(Value);
     else if (strcmp(Name, "SignalQualityShow") == 0)                    SignalQualityShow = atoi(Value);
@@ -384,6 +393,14 @@ void cFlatConfig::DecorCheckAndInit(void) {
         decorProgressSignalSize = decorProgressSignalSizeUser;
     }
 
+    if( decorScrollBarByTheme ) {
+        decorScrollBarType = decorScrollBarTypeTheme;
+        decorScrollBarSize = decorScrollBarSizeTheme;
+    } else {
+        decorScrollBarType = decorScrollBarTypeUser;
+        decorScrollBarSize = decorScrollBarSizeUser;
+    }
+
     if( decorBorderChannelType == 0 )
         decorBorderChannelSize = 0;
     if( decorBorderTopBarType == 0 )
@@ -470,6 +487,10 @@ void cFlatConfig::ThemeInit(void) {
     decorProgressSignalFg = Theme.Color(clrChannelSignalProgressFg);
     decorProgressSignalBarFg = Theme.Color(clrChannelSignalProgressBarFg);
     decorProgressSignalBg = Theme.Color(clrChannelSignalProgressBg);
+
+    decorScrollBarFg = Theme.Color(clrScrollbarFg);
+    decorScrollBarBarFg = Theme.Color(clrScrollbarBarFg);
+    decorScrollBarBg = Theme.Color(clrScrollbarBg);
 }
 
 void cFlatConfig::Init(void) {
@@ -652,6 +673,10 @@ void cFlatConfig::DecorLoadFile(cString File) {
                         decorProgressSignalTypeTheme = value; continue; }
                     if( strstr(n, "ChannelSignalProgressSize") == n ) {
                         decorProgressSignalSizeTheme = value; continue; }
+                    if( strstr(n, "ScrollBarType") == n ) {
+                        decorScrollBarTypeTheme = value; continue; }
+                    if( strstr(n, "ScrollBarSize") == n ) {
+                        decorScrollBarSizeTheme = value; continue; }
                 }
             }
         }

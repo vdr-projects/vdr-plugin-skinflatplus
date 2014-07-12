@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.3.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-07-07 23:24+0200\n"
+"POT-Creation-Date: 2014-07-12 16:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -225,6 +225,30 @@ msgstr "carriage return"
 msgid "left-right-left"
 msgstr "links-rechts-links"
 
+msgid "left line + rect bar"
+msgstr ""
+
+msgid "left line + round bar"
+msgstr ""
+
+msgid "middle line + rect bar"
+msgstr ""
+
+msgid "middle line + round bar"
+msgstr ""
+
+msgid "outline + rect bar"
+msgstr ""
+
+msgid "outline + round bar"
+msgstr ""
+
+msgid "rect bar"
+msgstr ""
+
+msgid "round bar"
+msgstr ""
+
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
@@ -419,6 +443,15 @@ msgstr "Menü Programm Ansicht"
 
 msgid "Menu recording view"
 msgstr "Menü Aufzeichnungen Ansicht"
+
+msgid "Scrollbar by decor-file?"
+msgstr "Scrollbar von Decordatei?"
+
+msgid "Scrollbar type"
+msgstr "Scrollbar Typ"
+
+msgid "Scrollbar size"
+msgstr "Scrollbar Größe"
 
 msgid "Menuitem border by decor-file?"
 msgstr "Menüitem Rand von Decordatei?"
