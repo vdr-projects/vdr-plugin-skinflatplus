@@ -17,6 +17,7 @@ cFlatConfig::cFlatConfig(void) {
 
     DiskUsageShow = true;
     DiskUsageShort = false;
+    DiskUsageFree = 1;
 
     MenuContentFullSize = true;
 
@@ -246,6 +247,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "ScrollerDelay") == 0)                        ScrollerDelay = atoi(Value);
     else if (strcmp(Name, "ScrollerType") == 0)                         ScrollerType = atoi(Value);
     else if (strcmp(Name, "DiskUsageShort") == 0)                       DiskUsageShort = atoi(Value);
+    else if (strcmp(Name, "DiskUsageFree") == 0)                        DiskUsageFree = atoi(Value);
 
     else return false;
 

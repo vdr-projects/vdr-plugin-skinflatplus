@@ -1,4 +1,4 @@
-flatPlus-MV_Themen erstellt am 12.07.2014 11:23
+flatPlus-MV_Themen erstellt am 12.07.2014 17:44
 Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
 
 => Installationshimnweise am Ende der Datei! <=
@@ -40,7 +40,7 @@ Optional (Pfade evtl. Anpassen!):
  - Schrift(en) aus dem Ordner contrib nach /usr/share/fonts kopieren.
    Die Schriften enthalten auch die VDR-Symbole.
 
-Empfohlene Einstellungen im skin-flatplus-Plugin:
+Empfohlene Einstellungen (setup.conf) im skin-flatplus-Plugin:
 skinflatplus.ButtonsShowEmpty = 0
 skinflatplus.ChannelFormatShow = 1
 skinflatplus.ChannelIconsShow = 1
@@ -79,7 +79,7 @@ skinflatplus.decorBorderTrackTypeUser = 0
 skinflatplus.decorBorderVolumeByTheme = 1
 skinflatplus.decorBorderVolumeSizeUser = 0
 skinflatplus.decorBorderVolumeTypeUser = 0
-skinflatplus.DecorIndex = 21
+skinflatplus.DecorIndex = 1
 skinflatplus.decorProgressChannelByTheme = 1
 skinflatplus.decorProgressChannelSizeUser = 20
 skinflatplus.decorProgressChannelTypeUser = 0
@@ -95,6 +95,10 @@ skinflatplus.decorProgressSignalTypeUser = 0
 skinflatplus.decorProgressVolumeByTheme = 1
 skinflatplus.decorProgressVolumeSizeUser = 20
 skinflatplus.decorProgressVolumeTypeUser = 0
+skinflatplus.decorScrollBarByTheme = 1
+skinflatplus.decorScrollBarSizeUser = 15
+skinflatplus.decorScrollBarTypeUser = 0
+skinflatplus.DiskUsageShort = 1
 skinflatplus.DiskUsageShow = 2
 skinflatplus.EpgAdditionalInfoShow = 1
 skinflatplus.EpgRerunsShow = 0
@@ -111,11 +115,16 @@ skinflatplus.MenuItemRecordingClearPercent = 1
 skinflatplus.MenuItemRecordingShowFolderDate = 1
 skinflatplus.MenuRecordingView = 1
 skinflatplus.MenuTimerView = 3
+skinflatplus.MessageColorPosition = 1
 skinflatplus.MessageOffset = 0
 skinflatplus.RecordingAdditionalInfoShow = 1
 skinflatplus.RecordingFormatShow = 1
 skinflatplus.RecordingResolutionAspectShow = 1
 skinflatplus.RecordingSimpleAspectFormat = 1
+skinflatplus.ScrollerDelay = 25
+skinflatplus.ScrollerEnable = 1
+skinflatplus.ScrollerStep = 3
+skinflatplus.ScrollerType = 1
 skinflatplus.SignalQualityShow = 1
 skinflatplus.SignalQualityUseColors = 1
 skinflatplus.TopBarFontSize = 0.050000
@@ -125,12 +134,12 @@ skinflatplus.TopBarRecConflictsShow = 1
 skinflatplus.TopBarRecordingShow = 1
 skinflatplus.TVScraperChanInfoPosterSize = 0.010000
 skinflatplus.TVScraperChanInfoShowPoster = 1
-skinflatplus.TVScraperEPGInfoShowActors = 0
+skinflatplus.TVScraperEPGInfoShowActors = 1
 skinflatplus.TVScraperEPGInfoShowPoster = 1
-skinflatplus.TVScraperRecInfoShowActors = 0
+skinflatplus.TVScraperRecInfoShowActors = 1
 skinflatplus.TVScraperRecInfoShowPoster = 1
 
-Empfohlene Einstellungen im VDR (Menue - Einstellungen - OSD):
+Empfohlene Einstellungen (setup.conf) im VDR (Menue - Einstellungen - OSD):
 FontFix = Nimbus Mono L:Bold
 FontFixSize = 30
 FontFixSizeP = 0.028000

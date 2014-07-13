@@ -180,6 +180,9 @@ class cFlatConfig
         int SignalQualityUseColors;
         int DiskUsageShow;
         int DiskUsageShort;
+        // 0 = occupied
+        // 1 = free
+        int DiskUsageFree;
 
         int MenuItemPadding;
         int marginOsdVer, marginOsdHor;

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.3.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-07-12 16:34+0200\n"
+"POT-Creation-Date: 2014-07-13 12:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,11 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "disk usage"
-msgstr "Plattennutzung"
+msgid "Disk"
+msgstr "Platte"
 
 msgid "free"
 msgstr "frei"
+
+msgid "occupied"
+msgstr "belegt"
 
 msgid "clock"
 msgstr "Uhr"
@@ -285,11 +288,14 @@ msgstr "Zeige leere Farbtasten"
 msgid "Show TopBar menu icons"
 msgstr "Zeige TopBar menu Icons"
 
-msgid "Show Diskusage stats"
-msgstr "Zeige HDD Verbrauch"
+msgid "Diskusage show"
+msgstr "Plattenverbrauch anzeigen"
 
 msgid "Diskusage short display"
-msgstr "HDD Verbrauch kurze Anzeige"
+msgstr "Plattenverbrauch kurze Anzeige"
+
+msgid "Diskusage free/occupied"
+msgstr "Plattenverbrauch frei/belegt"
 
 msgid "OSD vertical margin"
 msgstr "OSD vertikaler Rand"

@@ -11,6 +11,7 @@ cStringList DecorDescriptions;
 cStringList MessageColorPositions;
 cStringList ScrollerTypes;
 cStringList ScrollBarTypes;
+cStringList DiskUsageFree;
 
 cFlatSetup::cFlatSetup(void) {
     SetupConfig = Config;
@@ -53,6 +54,10 @@ void cFlatSetup::Setup(void) {
     DiskUsages.Append( strdup(tr("timer & recording menu")) );
     DiskUsages.Append( strdup(tr("always on the menu")) );
     DiskUsages.Append( strdup(tr("always show")) );
+
+    DiskUsageFree.Clear();
+    DiskUsageFree.Append( strdup(tr("occupied")) );
+    DiskUsageFree.Append( strdup(tr("free")) );
 
     MenuChannelViews.Clear();
     MenuChannelViews.Append( strdup(tr("VDR default")) );
@@ -247,6 +252,7 @@ void cFlatSetup::Store(void) {
     SetupStore("ScrollerDelay", Config.ScrollerDelay);
     SetupStore("ScrollerType", Config.ScrollerType);
     SetupStore("DiskUsageShort", Config.DiskUsageShort);
+    SetupStore("DiskUsageFree", Config.DiskUsageFree);
 
     Config.Init();
 }
@@ -286,8 +292,9 @@ void cFlatSetupGeneral::Setup(void) {
 
     Add(new cMenuEditBoolItem(tr("Show empty color-buttons"), &SetupConfig->ButtonsShowEmpty));
     Add(new cMenuEditBoolItem(tr("Show TopBar menu icons"), &SetupConfig->TopBarMenuIconShow));
-    Add(new cMenuEditStraItem(tr("Show Diskusage stats"), &SetupConfig->DiskUsageShow, DiskUsages.Size(), &DiskUsages[0]));
+    Add(new cMenuEditStraItem(tr("Diskusage show"), &SetupConfig->DiskUsageShow, DiskUsages.Size(), &DiskUsages[0]));
     Add(new cMenuEditBoolItem(tr("Diskusage short display"), &SetupConfig->DiskUsageShort));
+    Add(new cMenuEditStraItem(tr("Diskusage free/occupied"), &SetupConfig->DiskUsageFree, DiskUsageFree.Size(), &DiskUsageFree[0]));
     Add(new cMenuEditIntItem(tr("OSD vertical margin"), &SetupConfig->marginOsdVer));
     Add(new cMenuEditIntItem(tr("OSD horizontal margin"), &SetupConfig->marginOsdHor));
     Add(new cMenuEditPrcItem(tr("TopBar font size"), &SetupConfig->TopBarFontSize, 0.01, 0.2, 1));

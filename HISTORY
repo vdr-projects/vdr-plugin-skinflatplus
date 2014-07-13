@@ -12,7 +12,8 @@ VDR Plugin 'skinflatplus' Revision History
         - menu item recording
         - menu item event
 - [add] new options in general settings for textscroller
-- [add] new option "diskusage short display" for only show percantage and free hours
+- [add] new option "Diskusage free/occupied" to show free or occupied percantage and hours
+- [add] new option "Diskusage short display" for only show percantage and free/occupied hours
 - [add] image _cur version for recording_cutted, recording_new, timer_full, timer_partial, vps
         if it is the current/selected menu item the cur version of the image will be loaded
 - [add] Support for scrollbar type and size like border and progressbar

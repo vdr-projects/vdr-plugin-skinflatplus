@@ -173,29 +173,49 @@ void cFlatBaseRender::TopBarEnableDiskUsage(void) {
     cVideoDiskUsage::HasChanged(VideoDiskUsageState);
     int DiskUsage = cVideoDiskUsage::UsedPercent();
     double FreeGB = cVideoDiskUsage::FreeMB() / 1024.0;
+    double AllGB = FreeGB / (double)((double)(100 - DiskUsage) / 100.0);
     int FreeMinutes = cVideoDiskUsage::FreeMinutes();
+    double AllMinutes = FreeMinutes / (double)((100 - DiskUsage) / 100.0);
+    double OccupiedGB = AllGB - FreeGB;
+    int OccupiedMinutes = AllMinutes - FreeMinutes;
+
     cString extra1;
     cString extra2;
-    if( Config.DiskUsageShort == false ) {
-        extra1 = cString::sprintf("%s: %d%%", tr("disk usage"), DiskUsage);
-        extra2 = cString::sprintf("%s: %.1f GB ~ %02d:%02d", tr("free"), FreeGB, FreeMinutes / 60, FreeMinutes % 60);
+    // show in free mode
+    if( Config.DiskUsageFree == 1 ) {
+        if( Config.DiskUsageShort == false ) {
+            extra1 = cString::sprintf("%s: %d%% %s", tr("Disk"), 100 - DiskUsage, tr("free") );
+            extra2 = cString::sprintf("%.1f GB ~ %02d:%02d", FreeGB, FreeMinutes / 60, FreeMinutes % 60);
+        } else {
+            extra1 = cString::sprintf("%d%% %s", 100 - DiskUsage, tr("free") );
+            extra2 = cString::sprintf("~ %02d:%02d", FreeMinutes / 60, FreeMinutes % 60);
+        }
     } else {
-        extra1 = cString::sprintf("%d%%", DiskUsage);
-        extra2 = cString::sprintf("%02d:%02d", FreeMinutes / 60, FreeMinutes % 60);
+        if( Config.DiskUsageShort == false ) {
+            extra1 = cString::sprintf("%s: %d%% %s", tr("Disk"), DiskUsage, tr("occupied") );
+            extra2 = cString::sprintf("%.1f GB ~ %02d:%02d", OccupiedGB, OccupiedMinutes / 60, OccupiedMinutes % 60);
+        } else {
+            extra1 = cString::sprintf("%d%% %s", 100 - DiskUsage, tr("occupied") );
+            extra2 = cString::sprintf("~ %02d:%02d", OccupiedMinutes / 60, OccupiedMinutes % 60);
+        }
     }
 
+    int ChartDiskUsage = DiskUsage;
+    if( Config.DiskUsageFree == 1 )
+        ChartDiskUsage = 100 - DiskUsage;
+
     cString iconName("chart1");
-    if( DiskUsage > 14 )
+    if( ChartDiskUsage > 14 )
         iconName = "chart2";
-    if( DiskUsage > 28 )
+    if( ChartDiskUsage > 28 )
         iconName = "chart3";
-    if( DiskUsage > 42 )
+    if( ChartDiskUsage > 42 )
         iconName = "chart4";
-    if( DiskUsage > 56 )
+    if( ChartDiskUsage > 56 )
         iconName = "chart5";
-    if( DiskUsage > 70 )
+    if( ChartDiskUsage > 70 )
         iconName = "chart6";
-    if( DiskUsage > 84 )
+    if( ChartDiskUsage > 84 )
         iconName = "chart7";
 
     TopBarSetTitleExtra(extra1, extra2);
