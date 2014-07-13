@@ -29,6 +29,7 @@ VDR Plugin 'skinflatplus' Revision History
             * 6 = rect bar
             * 7 = round bar
 - [update] decor-files for new scrollbar options
+- [fix] position in menu item event
 
 2014-06-19: Version 0.3.1
 - [fix] epg image position on channel info

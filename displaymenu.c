@@ -1407,7 +1407,11 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         LeftSecond = Left;
 
         cString channame;
+
         w = menuItemWidth / 10 * 2;
+        if( !isScrolling )
+            w = (menuItemWidth - scrollBarWidth)/ 10 * 2;
+
         if( Config.MenuEventView == 2 || Config.MenuEventView == 3 ) {
             channame = Channel->Name();
             w = font->Width(channame);
@@ -1426,7 +1430,10 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
         Left += w + marginItem * 2;
 
         if( Event ) {
-            int PBWidth = menuItemWidth/20;
+            int PBWidth = menuItemWidth / 20;
+
+            if( !isScrolling )
+                PBWidth = (menuItemWidth - scrollBarWidth) / 20;
             time_t now = time(NULL);
 
             if( (now >= (Event->StartTime() - 2*60) ) ) {
