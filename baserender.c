@@ -201,23 +201,37 @@ void cFlatBaseRender::TopBarEnableDiskUsage(void) {
     }
 
     int ChartDiskUsage = DiskUsage;
-    if( Config.DiskUsageFree == 1 )
+    cString iconName("chart1");
+    if( Config.DiskUsageFree == 1 ) {
         ChartDiskUsage = 100 - DiskUsage;
 
-    cString iconName("chart1");
-    if( ChartDiskUsage > 14 )
-        iconName = "chart2";
-    if( ChartDiskUsage > 28 )
-        iconName = "chart3";
-    if( ChartDiskUsage > 42 )
-        iconName = "chart4";
-    if( ChartDiskUsage > 56 )
-        iconName = "chart5";
-    if( ChartDiskUsage > 70 )
-        iconName = "chart6";
-    if( ChartDiskUsage > 84 )
-        iconName = "chart7";
-
+        iconName = "chart1b";
+        if( ChartDiskUsage > 14 )
+            iconName = "chart2b";
+        if( ChartDiskUsage > 28 )
+            iconName = "chart3b";
+        if( ChartDiskUsage > 42 )
+            iconName = "chart4b";
+        if( ChartDiskUsage > 56 )
+            iconName = "chart5b";
+        if( ChartDiskUsage > 70 )
+            iconName = "chart6b";
+        if( ChartDiskUsage > 84 )
+            iconName = "chart7b";
+    } else {
+        if( ChartDiskUsage > 14 )
+            iconName = "chart2";
+        if( ChartDiskUsage > 28 )
+            iconName = "chart3";
+        if( ChartDiskUsage > 42 )
+            iconName = "chart4";
+        if( ChartDiskUsage > 56 )
+            iconName = "chart5";
+        if( ChartDiskUsage > 70 )
+            iconName = "chart6";
+        if( ChartDiskUsage > 84 )
+            iconName = "chart7";
+    }
     TopBarSetTitleExtra(extra1, extra2);
     TopBarSetExtraIcon(iconName);
 }
