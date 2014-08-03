@@ -86,3 +86,8 @@ HISTORY
                 passendes '_cur.png' erstellt
               - '70_MV_rect_sml.decor' angepasst
               - Empfohlene Einstellungen aktualisiert
+ [14.07.2014] - Symbol 'chart1b.png' mit 'chart7.png' verlinkt; Symbole 'chart2b.png'
+                bis 'chart7b.png' mit den default Symbolen 'chart6.png' bis 
+                'chart1.png' verlinkt
+ [02.08.2014] - Vorschaubilder fuer alle Themen im Ordner 'preview'
+              - Icons auch fuer MVGreen erstellt

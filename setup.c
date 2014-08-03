@@ -253,6 +253,9 @@ void cFlatSetup::Store(void) {
     SetupStore("ScrollerType", Config.ScrollerType);
     SetupStore("DiskUsageShort", Config.DiskUsageShort);
     SetupStore("DiskUsageFree", Config.DiskUsageFree);
+    SetupStore("TopBarFontClockScale", dtoa(Config.TopBarFontClockScale));
+    SetupStore("RecordingSmallSecs", Config.RecordingSmallSecs);
+    SetupStore("ChannelBitrateShow", Config.ChannelBitrateShow);
 
     Config.Init();
 }
@@ -300,6 +303,7 @@ void cFlatSetupGeneral::Setup(void) {
     Add(new cMenuEditPrcItem(tr("TopBar font size"), &SetupConfig->TopBarFontSize, 0.01, 0.2, 1));
     Add(new cMenuEditBoolItem(tr("TopBar show recording"), &SetupConfig->TopBarRecordingShow));
     Add(new cMenuEditBoolItem(tr("TopBar show conflicts"), &SetupConfig->TopBarRecConflictsShow));
+    Add(new cMenuEditPrcItem(tr("TopBar clock font scale"), &SetupConfig->TopBarFontClockScale, 0.005, 0.02, 1));
     Add(new cMenuEditIntItem(tr("Conflicts min value for red"), &SetupConfig->TopBarRecConflictsHigh));
     Add(new cMenuEditIntItem(tr("Message bottom offset"), &SetupConfig->MessageOffset));
     Add(new cMenuEditStraItem(tr("Message color position"), &SetupConfig->MessageColorPosition, MessageColorPositions.Size(), &MessageColorPositions[0]));
@@ -399,6 +403,7 @@ void cFlatSetupChannelInfo::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Colors for signal quality"), &SetupConfig->SignalQualityUseColors));
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->ChannelResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->ChannelFormatShow));
+    Add(new cMenuEditBoolItem(tr("Show video/audio bitrate"), &SetupConfig->ChannelBitrateShow));
     Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->ChannelSimpleAspectFormat));
 
     Add(new cMenuEditBoolItem(tr("Channelinfo border by decor-file?"), &SetupConfig->decorBorderChannelByTheme));
@@ -598,6 +603,7 @@ void cFlatSetupReplay::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->RecordingResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->RecordingFormatShow));
     Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->RecordingSimpleAspectFormat));
+    Add(new cMenuEditBoolItem(tr("Draw small seconds"), &SetupConfig->RecordingSmallSecs));
 
     if( SetupConfig->decorBorderReplayByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Replay border type"), Bordertypes[SetupConfig->decorBorderReplayTypeTheme]);

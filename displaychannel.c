@@ -1,7 +1,7 @@
 #include "displaychannel.h"
 #include "flat.h"
 
-cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
+cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) : m_Receiver(NULL) {
     if (firstDisplay) {
         firstDisplay = false;
         doOutput = false;
@@ -87,12 +87,27 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     scrollers.SetScrollDelay( Config.ScrollerDelay );
     scrollers.SetScrollType( Config.ScrollerType );
 
+    bitrateVideo = bitrateAudio = bitrateDolby = 0.0;
+    m_Receiver = NULL;
+    if( Config.ChannelBitrateShow ) {
+        const cChannel *channel = Channels.GetByNumber(cDevice::CurrentChannel());
+        eTrackType track = cDevice::PrimaryDevice()->GetCurrentAudioTrack();
+        if( channel ) {
+            m_Receiver = new cFemonReceiver(channel, IS_AUDIO_TRACK(track) ? int(track - ttAudioFirst) : 0, IS_DOLBY_TRACK(track) ? int(track - ttDolbyFirst) : 0);
+            cDevice::ActualDevice()->AttachReceiver(m_Receiver);
+        }
+    }
     DecorBorderDraw(Config.decorBorderChannelSize, Config.decorBorderChannelSize+channelHeight - height,
         channelWidth, heightTop + heightBottom + Config.decorProgressChannelSize+marginItem*2,
         Config.decorBorderChannelSize, Config.decorBorderChannelType, Config.decorBorderChannelFg, Config.decorBorderChannelBg);
 }
 
 cFlatDisplayChannel::~cFlatDisplayChannel() {
+
+    if (m_Receiver != NULL ) {
+        m_Receiver->Deactivate();
+        delete m_Receiver;
+    }
     if( !doOutput )
         return;
     if (osd) {
@@ -517,6 +532,71 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
 
 }
 
+void cFlatDisplayChannel::BitrateDraw(void) {
+    int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
+    top += max(fontSmlHeight, Config.decorProgressSignalSize) / 2 - fontSmlHeight / 2;
+    int left = marginItem * 2;
+    cFont *SignalFont = cFont::CreateFont(Setup.FontOsd, Config.decorProgressSignalSize);
+
+    if( Config.SignalQualityShow ) {
+        int signalWidth = channelWidth / 2;
+        int progressLeft = left + SignalFont->Width("STR") + SignalFont->Width(" ") + marginItem;
+        int progressWidth = signalWidth / 2 - progressLeft - marginItem;
+
+        left = progressLeft + progressWidth + marginItem * 4;
+    }
+
+    cString videoBit = cString::sprintf("%.2f", bitrateVideo / 1000000.0 );
+    cString audioBit = cString::sprintf("%.2f", bitrateAudio / 1000.0);
+
+    cString video = cString::sprintf("Video: %s Mbit/s", *videoBit );
+    cString audio = cString::sprintf("Audio: %s kbit/s", *audioBit );
+
+    chanInfoBottomPixmap->DrawText(cPoint(left, top), video, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), SignalFont);
+    top += Config.decorProgressSignalSize + marginItem;
+    chanInfoBottomPixmap->DrawText(cPoint(left, top), audio, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), SignalFont);
+}
+
+void cFlatDisplayChannel::ChannelSwitch(const cDevice * device, int channelNumber, bool liveView)
+{
+    if( !Config.ChannelBitrateShow )
+        return;
+
+    bitrateVideo = bitrateAudio = bitrateDolby = 0.0;
+    eTrackType track = cDevice::PrimaryDevice()->GetCurrentAudioTrack();
+    const cChannel *channel = Channels.GetByNumber(cDevice::CurrentChannel());
+
+    if (!liveView || !channelNumber || !channel || channel->Number() != channelNumber)
+        return;
+
+    if (m_Receiver) {
+        m_Receiver->Deactivate();
+        DELETENULL(m_Receiver);
+    }
+    if (channel) {
+        m_Receiver = new cFemonReceiver(channel, IS_AUDIO_TRACK(track) ? int(track - ttAudioFirst) : 0, IS_DOLBY_TRACK(track) ? int(track - ttDolbyFirst) : 0);
+        cDevice::ActualDevice()->AttachReceiver(m_Receiver);
+    }
+}
+
+void cFlatDisplayChannel::SetAudioTrack(int Index, const char * const *Tracks)
+{
+    if( !Config.ChannelBitrateShow )
+        return;
+
+    bitrateVideo = bitrateAudio = bitrateDolby = 0.0;
+    eTrackType track = cDevice::PrimaryDevice()->GetCurrentAudioTrack();
+    if (m_Receiver) {
+        m_Receiver->Deactivate();
+        DELETENULL(m_Receiver);
+    }
+    const cChannel *channel = Channels.GetByNumber(cDevice::CurrentChannel());
+    if (channel) {
+        m_Receiver = new cFemonReceiver(channel, IS_AUDIO_TRACK(track) ? int(track - ttAudioFirst) : 0, IS_DOLBY_TRACK(track) ? int(track - ttDolbyFirst) : 0);
+        cDevice::ActualDevice()->AttachReceiver(m_Receiver);
+    }
+}
+
 void cFlatDisplayChannel::Flush(void) {
     if( !doOutput )
         return;
@@ -540,6 +620,16 @@ void cFlatDisplayChannel::Flush(void) {
             ChannelIconsDraw(CurChannel, true);
         }
     }
+
+    if( Config.ChannelBitrateShow ) {
+
+        bitrateVideo = m_Receiver->VideoBitrate();
+        bitrateAudio = m_Receiver->AudioBitrate();
+        bitrateDolby = m_Receiver->AC3Bitrate();
+
+        BitrateDraw();
+    }
+
     TopBarUpdate();
     osd->Flush();
 }

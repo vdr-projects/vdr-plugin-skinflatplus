@@ -42,8 +42,8 @@ class cFlatBaseRender
         cPixmap *topBarPixmap;
         cPixmap *topBarIconPixmap;
         cPixmap *topBarIconBGPixmap;
-        cFont *topBarFont, *topBarFontSml;
-        int topBarFontHeight, topBarFontSmlHeight;
+        cFont *topBarFont, *topBarFontSml, *topBarFontClock;
+        int topBarFontHeight, topBarFontSmlHeight, topBarFontClockHeight;
 
         cString topBarTitle;
         cString tobBarTitleExtra1, tobBarTitleExtra2;

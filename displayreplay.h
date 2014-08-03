@@ -5,18 +5,19 @@
 class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay {
     private:
         cString current, total;
-    
+
         int labelHeight;
         cPixmap *labelPixmap;
         cPixmap *labelJump;
         cPixmap *iconsPixmap;
 
+        cFont *fontSecs;
         const cRecording *recording;
 
         int screenWidth, lastScreenWidth;
         int screenHeight;
         double screenAspect;
-    
+
         bool ProgressShown;
         void UpdateInfo(void);
         void ResolutionAspectDraw(void);

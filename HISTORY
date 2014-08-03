@@ -14,6 +14,9 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] new options in general settings for textscroller
 - [add] new option "Diskusage free/occupied" to show free or occupied percantage and hours
 - [add] new option "Diskusage short display" for only show percantage and free/occupied hours
+- [add] new option "TopBar clock font scale" to scale the clock font
+- [add] new option "Draw small seconds" to draw the seconds small in recording view
+- [add] new option "Show video/audio bitrate" to show the bitrate of audio/video in display channel (lent code from femon, thanks!)
 - [add] image _cur version for recording_cutted, recording_new, timer_full, timer_partial, vps
         if it is the current/selected menu item the cur version of the image will be loaded
 - [add] Support for scrollbar type and size like border and progressbar
@@ -30,6 +33,7 @@ VDR Plugin 'skinflatplus' Revision History
             * 7 = round bar
 - [update] decor-files for new scrollbar options
 - [fix] position in menu item event
+- [fix] wrong margin of folder icon in recordings menu
 
 2014-06-19: Version 0.3.1
 - [fix] epg image position on channel info

@@ -7,6 +7,7 @@ cFlatBaseRender::cFlatBaseRender(void) {
     font = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize );
     fontSml = cFont::CreateFont(Setup.FontSml, Setup.FontSmlSize);
     fontFixed = cFont::CreateFont(Setup.FontFix, Setup.FontFixSize);
+    topBarFontClock = NULL;
 
     fontHeight = font->Height();
     fontSmlHeight = fontSml->Height();
@@ -49,6 +50,8 @@ cFlatBaseRender::~cFlatBaseRender(void) {
     delete font;
     delete fontSml;
     delete fontFixed;
+    if( topBarFontClock != NULL )
+        delete topBarFontClock;
 
     if( osd ) {
         messageScroller.Clear();
@@ -104,9 +107,11 @@ void cFlatBaseRender::CreateOsd(int left, int top, int width, int height) {
 void cFlatBaseRender::TopBarCreate(void) {
     int fs = int(round(cOsd::OsdHeight() * Config.TopBarFontSize));
     topBarFont = cFont::CreateFont(Setup.FontOsd, fs);
+    topBarFontClock = cFont::CreateFont(Setup.FontOsd, fs * Config.TopBarFontClockScale * 100.0);
     topBarFontSml = cFont::CreateFont(Setup.FontOsd, fs / 2);
     topBarFontHeight = topBarFont->Height();
     topBarFontSmlHeight = topBarFontSml->Height();
+    topBarFontClockHeight = topBarFontClock->Height();
 
     if( topBarFontHeight > topBarFontSmlHeight*2 )
         topBarHeight = topBarFontHeight;
@@ -249,6 +254,7 @@ void cFlatBaseRender::TopBarUpdate(void) {
 
         int fontTop = (topBarHeight - topBarFontHeight) / 2;
         int fontSmlTop = (topBarHeight - topBarFontSmlHeight*2) / 2;
+        int fontClockTop = (topBarHeight - topBarFontClockHeight) / 2;
 
         topBarPixmap->Fill(Theme.Color(clrTopBarBg));
         topBarIconPixmap->Fill(clrTransparent);
@@ -297,9 +303,9 @@ void cFlatBaseRender::TopBarUpdate(void) {
         cString time = TimeString(t);
         cString time2 = cString::sprintf("%s %s", *time, tr("clock"));
 
-        int timeWidth = topBarFont->Width(*time2) + marginItem*2;
+        int timeWidth = topBarFontClock->Width(*time2) + marginItem*2;
         int Right = TopBarWidth - timeWidth;
-        topBarPixmap->DrawText(cPoint(Right, fontTop), time2, Theme.Color(clrTopBarTimeFont), Theme.Color(clrTopBarBg), topBarFont);
+        topBarPixmap->DrawText(cPoint(Right, fontClockTop), time2, Theme.Color(clrTopBarTimeFont), Theme.Color(clrTopBarBg), topBarFontClock);
 
         cString weekday = WeekDayNameFull(t);
         int weekdayWidth = topBarFontSml->Width(*weekday);

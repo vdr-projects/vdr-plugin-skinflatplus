@@ -24,10 +24,13 @@ cFlatConfig::cFlatConfig(void) {
     ChannelFormatShow = true;
     ChannelResolutionAspectShow = true;
     ChannelSimpleAspectFormat = true;
+    ChannelBitrateShow = false;
+    ChannelBitrateShowCalcInterval = 50;
 
     RecordingResolutionAspectShow = true;
     RecordingFormatShow = true;
     RecordingSimpleAspectFormat = true;
+    RecordingSmallSecs = true;
 
     RecordingAdditionalInfoShow = true;
     EpgAdditionalInfoShow = true;
@@ -63,6 +66,8 @@ cFlatConfig::cFlatConfig(void) {
     ScrollerStep = 2;
     ScrollerDelay = 40;
     ScrollerType = 0;
+
+    TopBarFontClockScale = 0.01;
 
     TVScraperChanInfoShowPoster = 1;
     TVScraperChanInfoPosterSize = 0.01;
@@ -248,6 +253,9 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "ScrollerType") == 0)                         ScrollerType = atoi(Value);
     else if (strcmp(Name, "DiskUsageShort") == 0)                       DiskUsageShort = atoi(Value);
     else if (strcmp(Name, "DiskUsageFree") == 0)                        DiskUsageFree = atoi(Value);
+    else if (strcmp(Name, "ChannelBitrateShow") == 0)                   ChannelBitrateShow = atoi(Value);
+    else if (strcmp(Name, "TopBarFontClockScale") == 0)                 TopBarFontClockScale = atod(Value);
+    else if (strcmp(Name, "RecordingSmallSecs") == 0)                   RecordingSmallSecs = atoi(Value);
 
     else return false;
 

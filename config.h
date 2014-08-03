@@ -190,14 +190,19 @@ class cFlatConfig
 
         int MenuContentFullSize;
         double TopBarFontSize;
+        double TopBarFontClockScale;
 
         int ChannelResolutionAspectShow;
         int ChannelFormatShow;
         int ChannelSimpleAspectFormat;
+        int ChannelBitrateShow;
+        int ChannelBitrateShowCalcInterval;
         int RecordingResolutionAspectShow;
         int RecordingFormatShow;
         int RecordingSimpleAspectFormat;
         int RecordingAdditionalInfoShow;
+        int RecordingSmallSecs;
+
         int EpgRerunsShow;
         int EpgAdditionalInfoShow;
         int TopBarRecordingShow;

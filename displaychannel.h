@@ -1,10 +1,12 @@
 #pragma once
 
+#include <vdr/status.h>
 #include "baserender.h"
 #include "flat.h"
 #include "services/scraper2vdr.h"
+#include "femonreceiver.h"
 
-class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
+class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel, public cStatus {
     private:
         bool doOutput;
         const cEvent *present;
@@ -28,6 +30,10 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
 
         int LastSignalStrength, LastSignalQuality;
 
+        // femon
+        cFemonReceiver *m_Receiver;
+        double bitrateVideo, bitrateAudio, bitrateDolby;
+
         // TVScraper
         int TVSLeft, TVSTop, TVSWidth, TVSHeight;
 
@@ -39,6 +45,7 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         bool isGroup;
 
         void SignalQualityDraw(void);
+        void BitrateDraw(void);
         void ChannelIconsDraw(const cChannel *Channel, bool Resolution);
 
     public:
@@ -50,4 +57,7 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel {
         virtual void Flush(void);
 
         void PreLoadImages(void);
+    protected:
+        virtual void ChannelSwitch(const cDevice *device, int channelNumber, bool liveView);
+        virtual void SetAudioTrack(int Index, const char * const *Tracks);
 };

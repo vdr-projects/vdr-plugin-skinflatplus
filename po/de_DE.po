@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.3.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-07-13 12:09+0200\n"
+"POT-Creation-Date: 2014-08-03 22:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -312,6 +312,9 @@ msgstr "TopBar zeige Aufnahme"
 msgid "TopBar show conflicts"
 msgstr "TopBar zeige Konflikte"
 
+msgid "TopBar clock font scale"
+msgstr "TopBar Uhr Skalierung"
+
 msgid "Conflicts min value for red"
 msgstr "Konflikte min Wert für Rot"
 
@@ -377,6 +380,9 @@ msgstr "Zeige Auflösung & Aspect"
 
 msgid "Show format (hd/sd)"
 msgstr "Zeige Format (hd/sd)"
+
+msgid "Show video/audio bitrate"
+msgstr "Zeige Video/Audio Bitrate"
 
 msgid "Simple aspect & format"
 msgstr "Einfache Aspekt und Formatanzeige"
@@ -497,6 +503,9 @@ msgstr "Menüitem Progress Größe"
 
 msgid "Replay border by decor-file?"
 msgstr "Replay Rand von Decordatei?"
+
+msgid "Draw small seconds"
+msgstr "Zeichne kleine Sekunden"
 
 msgid "Replay border type"
 msgstr "Replay Rand Typ"
