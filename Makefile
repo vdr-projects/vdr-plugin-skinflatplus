@@ -66,7 +66,7 @@ SOFILE = libvdr-$(PLUGIN).so
 
 ### Includes and Defines and Dependencies (add further entries here):
 
-INCLUDES += $(shell pkg-config --cflags Magick++)
+INCLUDES += $(shell pkg-config --cflags Magick++ freetype2 fontconfig)
 
 DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' -DVDRLOGO=\"$(VDRLOGO)\"
 

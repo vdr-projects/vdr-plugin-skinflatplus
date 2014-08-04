@@ -256,6 +256,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "ChannelBitrateShow") == 0)                   ChannelBitrateShow = atoi(Value);
     else if (strcmp(Name, "TopBarFontClockScale") == 0)                 TopBarFontClockScale = atod(Value);
     else if (strcmp(Name, "RecordingSmallSecs") == 0)                   RecordingSmallSecs = atoi(Value);
+    else if (strcmp(Name, "ChannelBitrateShowCalcInterval") == 0)       ChannelBitrateShowCalcInterval = atoi(Value);
 
     else return false;
 

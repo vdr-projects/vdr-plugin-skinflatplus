@@ -256,6 +256,7 @@ void cFlatSetup::Store(void) {
     SetupStore("TopBarFontClockScale", dtoa(Config.TopBarFontClockScale));
     SetupStore("RecordingSmallSecs", Config.RecordingSmallSecs);
     SetupStore("ChannelBitrateShow", Config.ChannelBitrateShow);
+    SetupStore("ChannelBitrateShowCalcInterval", Config.ChannelBitrateShowCalcInterval);
 
     Config.Init();
 }

@@ -30,7 +30,7 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
     labelJump->Fill(clrTransparent);
     iconsPixmap->Fill(clrTransparent);
 
-    fontSecs = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize * 0.6);
+    fontSecs = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize * 0.5);
 }
 
 cFlatDisplayReplay::~cFlatDisplayReplay() {
@@ -149,6 +149,10 @@ void cFlatDisplayReplay::UpdateInfo(void) {
     cString cutted;
     bool iscutted = false;
 
+    int fontBaseHeight = GetFontBaseHeight(Setup.FontOsd, fontHeight);
+    int fontSecsBaseHeight = GetFontBaseHeight(Setup.FontOsd, fontSecs->Height());
+    int topSecs = fontBaseHeight - fontSecsBaseHeight - (fontSecs->Height() - fontSecsBaseHeight);
+
     const char *foundDot = strchr(current, '.');
     if( foundDot != NULL || !Config.RecordingSmallSecs )
         labelPixmap->DrawText(cPoint(marginItem, 0), current, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(current), fontHeight);
@@ -160,7 +164,7 @@ void cFlatDisplayReplay::UpdateInfo(void) {
             std::string secs = cur.substr(found, cur.length() - found);
 
             labelPixmap->DrawText(cPoint(marginItem, 0), hm.c_str(), Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(hm.c_str()), fontHeight);
-            labelPixmap->DrawText(cPoint(marginItem + font->Width(hm.c_str()), fontHeight - fontSecs->Height() - marginItem), secs.c_str(), Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), fontSecs, fontSecs->Width(secs.c_str()), fontSecs->Height());
+            labelPixmap->DrawText(cPoint(marginItem + font->Width(hm.c_str()), topSecs), secs.c_str(), Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), fontSecs, fontSecs->Width(secs.c_str()), fontSecs->Height());
         } else {
             labelPixmap->DrawText(cPoint(marginItem, 0), current, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(current), fontHeight);
         }
@@ -235,6 +239,7 @@ void cFlatDisplayReplay::UpdateInfo(void) {
         }
         delete index;
     }
+
     if( iscutted ) {
         cImage *imgRecCut = imgLoader.LoadIcon("recording_cutted_extra", fontHeight, fontHeight);
         int imgWidth = 0;
@@ -287,7 +292,7 @@ void cFlatDisplayReplay::UpdateInfo(void) {
                 std::string secs = cutt.substr(found, cutt.length() - found);
 
                 labelPixmap->DrawText(cPoint(right - marginItem, 0), hm.c_str(), Theme.Color(clrMenuItemExtraTextFont), Theme.Color(clrReplayBg), font, font->Width(hm.c_str()), fontHeight);
-                labelPixmap->DrawText(cPoint(right - marginItem + font->Width(hm.c_str()), fontHeight - fontSecs->Height() - marginItem), secs.c_str(), Theme.Color(clrMenuItemExtraTextFont), Theme.Color(clrReplayBg), fontSecs, fontSecs->Width(secs.c_str()), fontSecs->Height());
+                labelPixmap->DrawText(cPoint(right - marginItem + font->Width(hm.c_str()), fontHeight - fontBaseHeight + fontSecs->Height()), secs.c_str(), Theme.Color(clrMenuItemExtraTextFont), Theme.Color(clrReplayBg), fontSecs, fontSecs->Width(secs.c_str()), fontSecs->Height());
             } else {
                 labelPixmap->DrawText(cPoint(right - marginItem, 0), cutted, Theme.Color(clrMenuItemExtraTextFont), Theme.Color(clrReplayBg), font, font->Width(cutted), fontHeight);
             }
@@ -296,6 +301,7 @@ void cFlatDisplayReplay::UpdateInfo(void) {
         }
     } else {
         int right = osdWidth - Config.decorBorderReplaySize*2 - font->Width(total);
+
         if( Config.RecordingSmallSecs ) {
             std::string tot = *total;
             size_t found = tot.find_last_of(':');
@@ -305,7 +311,7 @@ void cFlatDisplayReplay::UpdateInfo(void) {
 
                 right = osdWidth - Config.decorBorderReplaySize*2 - font->Width(hm.c_str()) - fontSecs->Width(secs.c_str());
                 labelPixmap->DrawText(cPoint(right - marginItem, 0), hm.c_str(), Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(hm.c_str()), fontHeight);
-                labelPixmap->DrawText(cPoint(right - marginItem + font->Width(hm.c_str()), fontHeight - fontSecs->Height() - marginItem), secs.c_str(), Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), fontSecs, fontSecs->Width(secs.c_str()), fontSecs->Height());
+                labelPixmap->DrawText(cPoint(right - marginItem + font->Width(hm.c_str()), fontHeight - fontBaseHeight), secs.c_str(), Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), fontSecs, fontSecs->Width(secs.c_str()), fontSecs->Height());
             } else {
                 labelPixmap->DrawText(cPoint(right - marginItem, 0), total, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(total), fontHeight);
             }

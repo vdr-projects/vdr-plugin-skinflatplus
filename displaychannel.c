@@ -554,7 +554,7 @@ void cFlatDisplayChannel::BitrateDraw(void) {
     else
         bitrateText = cString::sprintf("Video: %.2f Mbit/s | Dolby: %.2f kbit/s", bitrateVideo / 1000000.0, bitrateDolby / 1000.0 );
 
-    chanInfoBottomPixmap->DrawText(cPoint(left, top), bitrateText, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), BitrateFont);
+    chanInfoBottomPixmap->DrawText(cPoint(left, top), bitrateText, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), BitrateFont, BitrateFont->Width(bitrateText) * 2);
 
     delete SignalFont;
     delete BitrateFont;
@@ -625,7 +625,6 @@ void cFlatDisplayChannel::Flush(void) {
     }
 
     if( Config.ChannelBitrateShow ) {
-
         bitrateVideo = m_Receiver->VideoBitrate();
         bitrateAudio = m_Receiver->AudioBitrate();
         bitrateDolby = m_Receiver->AC3Bitrate();
