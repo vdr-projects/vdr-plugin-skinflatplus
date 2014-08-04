@@ -30,7 +30,7 @@ cFlatConfig::cFlatConfig(void) {
     RecordingResolutionAspectShow = true;
     RecordingFormatShow = true;
     RecordingSimpleAspectFormat = true;
-    RecordingSmallSecs = true;
+    TimeSecsScale = 1.0;
 
     RecordingAdditionalInfoShow = true;
     EpgAdditionalInfoShow = true;
@@ -255,7 +255,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "DiskUsageFree") == 0)                        DiskUsageFree = atoi(Value);
     else if (strcmp(Name, "ChannelBitrateShow") == 0)                   ChannelBitrateShow = atoi(Value);
     else if (strcmp(Name, "TopBarFontClockScale") == 0)                 TopBarFontClockScale = atod(Value);
-    else if (strcmp(Name, "RecordingSmallSecs") == 0)                   RecordingSmallSecs = atoi(Value);
+    else if (strcmp(Name, "TimeSecsScale") == 0)                        TimeSecsScale = atod(Value);
     else if (strcmp(Name, "ChannelBitrateShowCalcInterval") == 0)       ChannelBitrateShowCalcInterval = atoi(Value);
 
     else return false;

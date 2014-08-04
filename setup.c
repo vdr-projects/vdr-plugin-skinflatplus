@@ -254,7 +254,7 @@ void cFlatSetup::Store(void) {
     SetupStore("DiskUsageShort", Config.DiskUsageShort);
     SetupStore("DiskUsageFree", Config.DiskUsageFree);
     SetupStore("TopBarFontClockScale", dtoa(Config.TopBarFontClockScale));
-    SetupStore("RecordingSmallSecs", Config.RecordingSmallSecs);
+    SetupStore("TimeSecsScale", dtoa(Config.TimeSecsScale));
     SetupStore("ChannelBitrateShow", Config.ChannelBitrateShow);
     SetupStore("ChannelBitrateShowCalcInterval", Config.ChannelBitrateShowCalcInterval);
 
@@ -604,7 +604,7 @@ void cFlatSetupReplay::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->RecordingResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->RecordingFormatShow));
     Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->RecordingSimpleAspectFormat));
-    Add(new cMenuEditBoolItem(tr("Draw small seconds"), &SetupConfig->RecordingSmallSecs));
+    Add(new cMenuEditPrcItem(tr("Time seconds font scale"), &SetupConfig->TimeSecsScale, 0.004, 0.01, 1));
 
     if( SetupConfig->decorBorderReplayByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Replay border type"), Bordertypes[SetupConfig->decorBorderReplayTypeTheme]);

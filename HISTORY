@@ -15,7 +15,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] new option "Diskusage free/occupied" to show free or occupied percantage and hours
 - [add] new option "Diskusage short display" for only show percantage and free/occupied hours
 - [add] new option "TopBar clock font scale" to scale the clock font
-- [add] new option "Draw small seconds" to draw the seconds small in recording view
+- [add] new option "Time seconds font scale" to scale the seconds in recording view
 - [add] new option "Show video/audio bitrate" to show the bitrate of audio/video in display channel (lent code from femon, thanks!)
         new hidden config "ChannelBitrateShowCalcInterval" to set the interval of the video/audio bitrate calculation
 - [add] image _cur version for recording_cutted, recording_new, timer_full, timer_partial, vps

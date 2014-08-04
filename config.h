@@ -201,7 +201,7 @@ class cFlatConfig
         int RecordingFormatShow;
         int RecordingSimpleAspectFormat;
         int RecordingAdditionalInfoShow;
-        int RecordingSmallSecs;
+        double TimeSecsScale;
 
         int EpgRerunsShow;
         int EpgAdditionalInfoShow;
