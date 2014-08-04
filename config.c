@@ -25,7 +25,7 @@ cFlatConfig::cFlatConfig(void) {
     ChannelResolutionAspectShow = true;
     ChannelSimpleAspectFormat = true;
     ChannelBitrateShow = false;
-    ChannelBitrateShowCalcInterval = 50;
+    ChannelBitrateShowCalcInterval = 20;
 
     RecordingResolutionAspectShow = true;
     RecordingFormatShow = true;

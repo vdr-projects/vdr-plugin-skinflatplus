@@ -502,7 +502,7 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
     cFont *SignalFont = cFont::CreateFont(Setup.FontOsd, Config.decorProgressSignalSize);
 
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
-    top += max(fontSmlHeight, Config.decorProgressSignalSize) / 2 - fontSmlHeight / 2;
+    top += max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem;
     int left = marginItem * 2;
     int progressTop = fontHeight*2 + fontSmlHeight*2 + marginItem;
     progressTop += max(fontSmlHeight, Config.decorProgressSignalSize) / 2 - Config.decorProgressSignalSize / 2;
@@ -530,13 +530,15 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
         cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize), SignalQuality, 100,
         Config.decorProgressSignalFg, Config.decorProgressSignalBarFg, Config.decorProgressSignalBg, Config.decorProgressSignalType, false, Config.SignalQualityUseColors);
 
+    delete SignalFont;
 }
 
 void cFlatDisplayChannel::BitrateDraw(void) {
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
-    top += max(fontSmlHeight, Config.decorProgressSignalSize) / 2 - fontSmlHeight / 2;
+    top += max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem;
     int left = marginItem * 2;
     cFont *SignalFont = cFont::CreateFont(Setup.FontOsd, Config.decorProgressSignalSize);
+    cFont *BitrateFont = cFont::CreateFont(Setup.FontOsd, (Config.decorProgressSignalSize*2));
 
     if( Config.SignalQualityShow ) {
         int signalWidth = channelWidth / 2;
@@ -546,15 +548,16 @@ void cFlatDisplayChannel::BitrateDraw(void) {
         left = progressLeft + progressWidth + marginItem * 4;
     }
 
-    cString videoBit = cString::sprintf("%.2f", bitrateVideo / 1000000.0 );
-    cString audioBit = cString::sprintf("%.2f", bitrateAudio / 1000.0);
+    cString bitrateText;
+    if( bitrateAudio > 0.0 || bitrateDolby == 0.0 )
+        bitrateText = cString::sprintf("Video: %.2f Mbit/s | Audio: %.2f kbit/s", bitrateVideo / 1000000.0, bitrateAudio / 1000.0 );
+    else
+        bitrateText = cString::sprintf("Video: %.2f Mbit/s | Dolby: %.2f kbit/s", bitrateVideo / 1000000.0, bitrateDolby / 1000.0 );
 
-    cString video = cString::sprintf("Video: %s Mbit/s", *videoBit );
-    cString audio = cString::sprintf("Audio: %s kbit/s", *audioBit );
+    chanInfoBottomPixmap->DrawText(cPoint(left, top), bitrateText, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), BitrateFont);
 
-    chanInfoBottomPixmap->DrawText(cPoint(left, top), video, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), SignalFont);
-    top += Config.decorProgressSignalSize + marginItem;
-    chanInfoBottomPixmap->DrawText(cPoint(left, top), audio, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), SignalFont);
+    delete SignalFont;
+    delete BitrateFont;
 }
 
 void cFlatDisplayChannel::ChannelSwitch(const cDevice * device, int channelNumber, bool liveView)
