@@ -4,6 +4,7 @@ VDR Plugin 'skinflatplus' Revision History
 2014-MM-DD: Version 0.4.0
 - [update] topbar position of text
 - [update] MVThemes
+        new preview images in "preview" folder
 - [add] Textscroller support
         - text in displaychannel for epg-text and epgshort-text
         - messages

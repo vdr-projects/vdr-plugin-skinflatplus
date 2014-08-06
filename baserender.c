@@ -1393,24 +1393,23 @@ void cFlatBaseRender::DecorDrawGlowEllipseBR(cPixmap *pixmap, int Left, int Top,
     }
 }
 
-int cFlatBaseRender::GetFontBaseHeight(const char *Name, int CharHeight, int CharWidth) {
+int cFlatBaseRender::GetFontAscender(const char *Name, int CharHeight, int CharWidth) {
     FT_Library library;
     FT_Face face;
     cString fontFileName = cFont::GetFontFileName(Name);
-    int baseHeight = CharHeight;
+    int Ascender = CharHeight;
     int error = FT_Init_FreeType(&library);
     if (!error) {
         error = FT_New_Face(library, fontFileName, 0, &face);
         if (!error) {
             if (face->num_fixed_sizes && face->available_sizes) { // fixed font
                 // TODO what exactly does all this mean?
-                baseHeight = face->available_sizes->height;
+                Ascender = face->available_sizes->height;
             } else {
                 error = FT_Set_Char_Size(face, CharWidth * 64, CharHeight * 64, 0, 0);
                 if (!error) {
-                    //dsyslog("base: %d asc: %d desc: %d", baseHeight, face->size->metrics.ascender, face->size->metrics.descender + 63);
-                    baseHeight = (face->size->metrics.ascender) / 64;
-                    //dsyslog("base: %d", baseHeight);
+                    dsyslog("GetFontAscender font: %s height: %d asc: %d desc: %d", Name, CharHeight, face->size->metrics.ascender/64, face->size->metrics.descender/64);
+                    Ascender = face->size->metrics.ascender/64;
                 }
                 else
                     esyslog("ERROR: FreeType: error %d during FT_Set_Char_Size (font = %s)\n", error, *fontFileName);
@@ -1425,5 +1424,5 @@ int cFlatBaseRender::GetFontBaseHeight(const char *Name, int CharHeight, int Cha
     FT_Done_Face(face);
     FT_Done_FreeType(library);
 
-    return baseHeight;
+    return Ascender;
 }

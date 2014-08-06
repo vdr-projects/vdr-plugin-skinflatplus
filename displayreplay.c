@@ -149,9 +149,10 @@ void cFlatDisplayReplay::UpdateInfo(void) {
     cString cutted;
     bool iscutted = false;
 
-    int fontBaseHeight = GetFontBaseHeight(Setup.FontOsd, fontHeight);
-    int fontSecsBaseHeight = GetFontBaseHeight(Setup.FontOsd, fontSecs->Height());
-    int topSecs = fontBaseHeight - fontSecsBaseHeight - (fontSecs->Height() - fontSecsBaseHeight);
+    int fontAscender = GetFontAscender(Setup.FontOsd, fontHeight);
+    int fontSecsAscender = GetFontAscender(Setup.FontOsd, fontSecs->Height());
+    int topSecs = fontAscender - fontSecsAscender;
+    dsyslog("fontHeight: %d fontAscender: %d fontSecsHeight: %d fontSecsAscender: %d topSecs: %d", fontHeight, fontAscender, fontSecs->Height(), fontSecsAscender, topSecs);
 
     if( Config.TimeSecsScale == 1.0 )
         labelPixmap->DrawText(cPoint(marginItem, 0), current, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(current), fontHeight);

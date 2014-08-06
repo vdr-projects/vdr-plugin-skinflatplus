@@ -167,5 +167,5 @@ class cFlatBaseRender
         void DecorBorderRedrawAll(void);
         void DecorBorderClearByFrom(int From);
 
-        int GetFontBaseHeight(const char *Name, int CharHeight, int CharWidth = 0);
+        int GetFontAscender(const char *Name, int CharHeight, int CharWidth = 0);
 };
