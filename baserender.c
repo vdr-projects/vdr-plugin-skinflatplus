@@ -1408,7 +1408,6 @@ int cFlatBaseRender::GetFontAscender(const char *Name, int CharHeight, int CharW
             } else {
                 error = FT_Set_Char_Size(face, CharWidth * 64, CharHeight * 64, 0, 0);
                 if (!error) {
-                    dsyslog("GetFontAscender font: %s height: %d asc: %d desc: %d", Name, CharHeight, face->size->metrics.ascender/64, face->size->metrics.descender/64);
                     Ascender = face->size->metrics.ascender/64;
                 }
                 else
@@ -1426,3 +1425,4 @@ int cFlatBaseRender::GetFontAscender(const char *Name, int CharHeight, int CharW
 
     return Ascender;
 }
+
