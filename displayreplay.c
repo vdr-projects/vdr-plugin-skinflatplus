@@ -353,6 +353,8 @@ void cFlatDisplayReplay::ResolutionAspectDraw(void) {
                 asp = "43";
             else if( screenAspect == 16.0/9.0 )
                 asp = "169";
+            else if( screenAspect == 20.0/11.0 )
+                asp = "169w";
             else if( screenAspect == 2.21 )
                 asp = "221";
         }
@@ -475,6 +477,7 @@ void cFlatDisplayReplay::PreLoadImages(void) {
 
     imgLoader.LoadIcon("43", 999, fontSmlHeight);
     imgLoader.LoadIcon("169", 999, fontSmlHeight);
+    imgLoader.LoadIcon("169w", 999, fontSmlHeight);
     imgLoader.LoadIcon("221", 999, fontSmlHeight);
     imgLoader.LoadIcon("1920x1080", 999, fontSmlHeight);
     imgLoader.LoadIcon("1440x1080", 999, fontSmlHeight);

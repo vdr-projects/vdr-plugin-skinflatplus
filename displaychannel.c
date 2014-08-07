@@ -234,6 +234,8 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
                     asp = "43";
                 else if( screenAspect == 16.0/9.0 )
                     asp = "169";
+                else if( screenAspect == 20.0/11.0 )
+                    asp = "169w";
                 else if( screenAspect == 2.21 )
                     asp = "221";
             }
@@ -666,6 +668,7 @@ void cFlatDisplayChannel::PreLoadImages(void) {
     imgLoader.LoadIcon("unknown_asp", 999, height);
     imgLoader.LoadIcon("43", 999, height);
     imgLoader.LoadIcon("169", 999, height);
+    imgLoader.LoadIcon("169w", 999, height);
     imgLoader.LoadIcon("221", 999, height);
     imgLoader.LoadIcon("1920x1080", 999, height);
     imgLoader.LoadIcon("1440x1080", 999, height);
