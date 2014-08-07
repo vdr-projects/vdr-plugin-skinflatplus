@@ -12,6 +12,8 @@ VDR Plugin 'skinflatplus' Revision History
         - menu item timer
         - menu item recording
         - menu item event
+- [add] new plugin icons
+- [add] new icon 169w screen resolution icon
 - [add] new options in general settings for textscroller
 - [add] new option "Diskusage free/occupied" to show free or occupied percantage and hours
 - [add] new option "Diskusage short display" for only show percantage and free/occupied hours
