@@ -1,4 +1,4 @@
-flatPlus-MV_Themen erstellt am 04.08.2014 10:51
+flatPlus-MV_Themen erstellt am 09.08.2014 12:11
 Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
 
 => Installationshimnweise am Ende der Datei! <=
@@ -41,103 +41,8 @@ Optional (Pfade evtl. Anpassen!):
    Die Schriften enthalten auch die VDR-Symbole.
 
 Empfohlene Einstellungen (setup.conf) im skin-flatplus-Plugin:
-skinflatplus.ButtonsShowEmpty = 0
-skinflatplus.ChannelFormatShow = 1
-skinflatplus.ChannelIconsShow = 1
-skinflatplus.ChannelResolutionAspectShow = 1
-skinflatplus.ChannelSimpleAspectFormat = 1
-skinflatplus.decorBorderButtonByTheme = 1
-skinflatplus.decorBorderButtonSizeUser = 5
-skinflatplus.decorBorderButtonTypeUser = 0
-skinflatplus.decorBorderChannelByTheme = 1
-skinflatplus.decorBorderChannelEPGByTheme = 1
-skinflatplus.decorBorderChannelEPGSizeUser = 0
-skinflatplus.decorBorderChannelEPGTypeUser = 0
-skinflatplus.decorBorderChannelSizeUser = 5
-skinflatplus.decorBorderChannelTypeUser = 1
-skinflatplus.decorBorderMenuContentByTheme = 1
-skinflatplus.decorBorderMenuContentHeadByTheme = 1
-skinflatplus.decorBorderMenuContentHeadSizeUser = 0
-skinflatplus.decorBorderMenuContentHeadTypeUser = 0
-skinflatplus.decorBorderMenuContentSizeUser = 0
-skinflatplus.decorBorderMenuContentTypeUser = 0
-skinflatplus.decorBorderMenuItemByTheme = 1
-skinflatplus.decorBorderMenuItemSizeUser = 2
-skinflatplus.decorBorderMenuItemTypeUser = 1
-skinflatplus.decorBorderMessageByTheme = 1
-skinflatplus.decorBorderMessageSizeUser = 0
-skinflatplus.decorBorderMessageTypeUser = 0
-skinflatplus.decorBorderReplayByTheme = 1
-skinflatplus.decorBorderReplaySizeUser = 0
-skinflatplus.decorBorderReplayTypeUser = 1
-skinflatplus.decorBorderTopBarByTheme = 1
-skinflatplus.decorBorderTopBarSizeUser = 5
-skinflatplus.decorBorderTopBarTypeUser = 1
-skinflatplus.decorBorderTrackByTheme = 1
-skinflatplus.decorBorderTrackSizeUser = 0
-skinflatplus.decorBorderTrackTypeUser = 0
-skinflatplus.decorBorderVolumeByTheme = 1
-skinflatplus.decorBorderVolumeSizeUser = 0
-skinflatplus.decorBorderVolumeTypeUser = 0
-skinflatplus.DecorIndex = 1
-skinflatplus.decorProgressChannelByTheme = 1
-skinflatplus.decorProgressChannelSizeUser = 20
-skinflatplus.decorProgressChannelTypeUser = 0
-skinflatplus.decorProgressMenuItemByTheme = 1
-skinflatplus.decorProgressMenuItemSizeUser = 20
-skinflatplus.decorProgressMenuItemTypeUser = 0
-skinflatplus.decorProgressReplayByTheme = 1
-skinflatplus.decorProgressReplaySizeUser = 20
-skinflatplus.decorProgressReplayTypeUser = 0
-skinflatplus.decorProgressSignalByTheme = 1
-skinflatplus.decorProgressSignalSizeUser = 20
-skinflatplus.decorProgressSignalTypeUser = 0
-skinflatplus.decorProgressVolumeByTheme = 1
-skinflatplus.decorProgressVolumeSizeUser = 20
-skinflatplus.decorProgressVolumeTypeUser = 0
-skinflatplus.decorScrollBarByTheme = 1
-skinflatplus.decorScrollBarSizeUser = 15
-skinflatplus.decorScrollBarTypeUser = 0
-skinflatplus.DiskUsageShort = 1
-skinflatplus.DiskUsageShow = 2
-skinflatplus.EpgAdditionalInfoShow = 1
-skinflatplus.EpgRerunsShow = 0
-skinflatplus.MainMenuItemScale = 1.000000
-skinflatplus.marginOsdHor = 0
-skinflatplus.marginOsdVer = 0
-skinflatplus.MenuChannelView = 1
-skinflatplus.MenuContentFullSize = 0
-skinflatplus.MenuEventView = 1
-skinflatplus.MenuItemIconsShow = 1
-skinflatplus.MenuItemPadding = 0
-skinflatplus.MenuItemParseTilde = 1
-skinflatplus.MenuItemRecordingClearPercent = 1
-skinflatplus.MenuItemRecordingShowFolderDate = 1
-skinflatplus.MenuRecordingView = 1
-skinflatplus.MenuTimerView = 3
-skinflatplus.MessageColorPosition = 1
-skinflatplus.MessageOffset = 0
-skinflatplus.RecordingAdditionalInfoShow = 1
-skinflatplus.RecordingFormatShow = 1
-skinflatplus.RecordingResolutionAspectShow = 1
-skinflatplus.RecordingSimpleAspectFormat = 1
-skinflatplus.ScrollerDelay = 25
-skinflatplus.ScrollerEnable = 1
-skinflatplus.ScrollerStep = 3
-skinflatplus.ScrollerType = 1
-skinflatplus.SignalQualityShow = 1
-skinflatplus.SignalQualityUseColors = 1
-skinflatplus.TopBarFontSize = 0.050000
-skinflatplus.TopBarMenuIconShow = 1
-skinflatplus.TopBarRecConflictsHigh = 3
-skinflatplus.TopBarRecConflictsShow = 1
-skinflatplus.TopBarRecordingShow = 1
-skinflatplus.TVScraperChanInfoPosterSize = 0.010000
-skinflatplus.TVScraperChanInfoShowPoster = 1
-skinflatplus.TVScraperEPGInfoShowActors = 1
-skinflatplus.TVScraperEPGInfoShowPoster = 1
-skinflatplus.TVScraperRecInfoShowActors = 1
-skinflatplus.TVScraperRecInfoShowPoster = 1
+Laden mit "Menue - Einstellungen - Plugins - SkinFlatPlus - Allgemeine Einstellungen:"
+"OK druecken um die Konfigdatei zu laden: MV_default - OK"
 
 Empfohlene Einstellungen (setup.conf) im VDR (Menue - Einstellungen - OSD):
 FontFix = Nimbus Mono L:Bold
