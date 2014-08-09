@@ -30,6 +30,8 @@ class cFlatConfig
         void DecorLoadFile(cString File);
         void DecorLoadCurrent(void);
         void DecorCheckAndInit(void);
+
+        void GetConfigFiles(cStringList &Files);
     public:
 
         cString ThemeCurrent;
@@ -245,4 +247,8 @@ class cFlatConfig
         int TVScraperRecInfoShowActors;
 
         int DecorIndex;
+
+        void Store(const char *Name, const char *Value, const char *Filename);
+        void Store(const char *Name, int Value, const char *Filename);
+        void Store(const char *Name, double &Value, const char *Filename);
 };

@@ -141,7 +141,11 @@ install-icons:
 	mkdir -p $(DESTDIR)$(PLGRESDIR)/icons
 	cp -r --remove-destination icons/* $(DESTDIR)$(PLGRESDIR)/icons
 
-install: install-lib install-i18n install-themes install-icons install-decors
+install-configs:
+	mkdir -p $(DESTDIR)$(PLGRESDIR)/configs
+	cp configs/* $(DESTDIR)$(PLGRESDIR)/configs
+
+install: install-lib install-i18n install-themes install-icons install-decors install-configs
 
 dist: $(I18Npo) clean
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)

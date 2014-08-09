@@ -33,6 +33,9 @@ class cFlatSetupGeneral : public cMenuSetupSubMenu {
     private:
     protected:
         void Setup(void);
+        void SaveCurrentSettings(void);
+        void LoadConfigFile(void);
+        bool SetupParse(const char *Name, const char *Value);
     public:
         cFlatSetupGeneral(cFlatConfig *data);
         virtual eOSState ProcessKey(eKeys Key);

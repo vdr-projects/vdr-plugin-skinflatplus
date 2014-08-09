@@ -705,3 +705,37 @@ cString cFlatConfig::checkSlashAtEnd(std::string path) {
     } catch (...) {return path.c_str();}
     return path.c_str();
 }
+
+void cFlatConfig::Store(const char *Name, int Value, const char *Filename) {
+    Store(Name, cString::sprintf("%d", Value), Filename);
+}
+
+void cFlatConfig::Store(const char *Name, double &Value, const char *Filename) {
+    Store(Name, dtoa(Value), Filename);
+}
+
+void cFlatConfig::Store(const char *Name, const char *Value, const char *Filename) {
+    FILE *f = fopen(Filename, "a");
+    if(f == NULL)
+        return;
+    fprintf(f, "%s = %s\n", Name, Value);
+    fclose(f);
+}
+
+void cFlatConfig::GetConfigFiles(cStringList &Files) {
+    cString configsPath = cString::sprintf("%s/configs", PLUGINRESOURCEPATH);
+    std::vector<std::string> files;
+    Files.Clear();
+
+    cReadDir d(configsPath);
+    struct dirent *e;
+    while ((e = d.Next()) != NULL) {
+        files.push_back(e->d_name);
+    }
+
+    std::sort(files.begin(), files.end(), stringCompare);
+    for (unsigned i = 0; i < files.size(); i++) {
+        std::string FileName = files.at(i);
+        Files.Append(strdup(FileName.c_str()));
+    }
+}

@@ -8,10 +8,13 @@ cStringList MenuTimerViews;
 cStringList MenuEventViews;
 cStringList MenuRecordingViews;
 cStringList DecorDescriptions;
+cStringList ConfigFiles;
 cStringList MessageColorPositions;
 cStringList ScrollerTypes;
 cStringList ScrollBarTypes;
 cStringList DiskUsageFree;
+
+int ConfigFileSelection;
 
 cFlatSetup::cFlatSetup(void) {
     SetupConfig = Config;
@@ -261,6 +264,267 @@ void cFlatSetup::Store(void) {
     Config.Init();
 }
 
+void cFlatSetupGeneral::LoadConfigFile(void) {
+    cString Filename = cString::sprintf("%s/configs/%s", PLUGINRESOURCEPATH, ConfigFiles[ConfigFileSelection]);
+
+    FILE *f = fopen(Filename, "r");
+    if( f ) {
+        int line = 0;
+        char *s;
+        cReadLine ReadLine;
+        while( (s = ReadLine.Read(f)) != NULL ) {
+            line++;
+            char *p = strchr(s, '#');
+            if (p)
+                *p = 0;
+            s = stripspace(skipspace(s));
+            if (!isempty(s)) {
+                char *n = s;
+                char *v = strchr(s, '=');
+                if (v) {
+                    *v++ = 0;
+                    n = stripspace(skipspace(n));
+                    v = stripspace(skipspace(v));
+                    bool error = SetupParse(n, v);
+                    if( error )
+                        dsyslog("flatplus: failed to load config: %s with value: ", n, v);
+                }
+            }
+        }
+    }
+    cString msg = cString::sprintf("%s %s %s", tr("configfile"), ConfigFiles[ConfigFileSelection], tr("loaded"));
+    Skins.Message(mtInfo, msg);
+}
+
+bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
+    if      (strcmp(Name, "decorBorderChannelByTheme") == 0)            SetupConfig->decorBorderChannelByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderChannelTypeUser") == 0)           SetupConfig->decorBorderChannelTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderChannelSizeUser") == 0)           SetupConfig->decorBorderChannelSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderChannelEPGByTheme") == 0)         SetupConfig->decorBorderChannelEPGByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderChannelEPGTypeUser") == 0)        SetupConfig->decorBorderChannelEPGTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderChannelEPGSizeUser") == 0)        SetupConfig->decorBorderChannelEPGSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderTopBarByTheme") == 0)             SetupConfig->decorBorderTopBarByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderTopBarTypeUser") == 0)            SetupConfig->decorBorderTopBarTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderTopBarSizeUser") == 0)            SetupConfig->decorBorderTopBarSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderMessageByTheme") == 0)            SetupConfig->decorBorderMessageByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderMessageTypeUser") == 0)           SetupConfig->decorBorderMessageTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderMessageSizeUser") == 0)           SetupConfig->decorBorderMessageSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderVolumeByTheme") == 0)             SetupConfig->decorBorderVolumeByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderVolumeTypeUser") == 0)            SetupConfig->decorBorderVolumeTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderVolumeSizeUser") == 0)            SetupConfig->decorBorderVolumeSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderTrackByTheme") == 0)              SetupConfig->decorBorderTrackByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderTrackTypeUser") == 0)             SetupConfig->decorBorderTrackTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderTrackSizeUser") == 0)             SetupConfig->decorBorderTrackSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderReplayByTheme") == 0)             SetupConfig->decorBorderReplayByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderReplayTypeUser") == 0)            SetupConfig->decorBorderReplayTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderReplaySizeUser") == 0)            SetupConfig->decorBorderReplaySizeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderMenuItemByTheme") == 0)           SetupConfig->decorBorderMenuItemByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderMenuItemTypeUser") == 0)          SetupConfig->decorBorderMenuItemTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderMenuItemSizeUser") == 0)          SetupConfig->decorBorderMenuItemSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderMenuContentHeadByTheme") == 0)    SetupConfig->decorBorderMenuContentHeadByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderMenuContentHeadTypeUser") == 0)   SetupConfig->decorBorderMenuContentHeadTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderMenuContentHeadSizeUser") == 0)   SetupConfig->decorBorderMenuContentHeadSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderMenuContentByTheme") == 0)        SetupConfig->decorBorderMenuContentByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderMenuContentTypeUser") == 0)       SetupConfig->decorBorderMenuContentTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderMenuContentSizeUser") == 0)       SetupConfig->decorBorderMenuContentSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderButtonByTheme") == 0)             SetupConfig->decorBorderButtonByTheme = atoi(Value);
+    else if (strcmp(Name, "decorBorderButtonTypeUser") == 0)            SetupConfig->decorBorderButtonTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorBorderButtonSizeUser") == 0)            SetupConfig->decorBorderButtonSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorProgressChannelByTheme") == 0)          SetupConfig->decorProgressChannelByTheme = atoi(Value);
+    else if (strcmp(Name, "decorProgressChannelTypeUser") == 0)         SetupConfig->decorProgressChannelTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorProgressChannelSizeUser") == 0)         SetupConfig->decorProgressChannelSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorProgressVolumeByTheme") == 0)           SetupConfig->decorProgressVolumeByTheme = atoi(Value);
+    else if (strcmp(Name, "decorProgressVolumeTypeUser") == 0)          SetupConfig->decorProgressVolumeTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorProgressVolumeSizeUser") == 0)          SetupConfig->decorProgressVolumeSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorProgressMenuItemByTheme") == 0)         SetupConfig->decorProgressMenuItemByTheme = atoi(Value);
+    else if (strcmp(Name, "decorProgressMenuItemTypeUser") == 0)        SetupConfig->decorProgressMenuItemTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorProgressMenuItemSizeUser") == 0)        SetupConfig->decorProgressMenuItemSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorProgressReplayByTheme") == 0)           SetupConfig->decorProgressReplayByTheme = atoi(Value);
+    else if (strcmp(Name, "decorProgressReplayTypeUser") == 0)          SetupConfig->decorProgressReplayTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorProgressReplaySizeUser") == 0)          SetupConfig->decorProgressReplaySizeUser = atoi(Value);
+    else if (strcmp(Name, "decorProgressSignalByTheme") == 0)           SetupConfig->decorProgressSignalByTheme = atoi(Value);
+    else if (strcmp(Name, "decorProgressSignalTypeUser") == 0)          SetupConfig->decorProgressSignalTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorProgressSignalSizeUser") == 0)          SetupConfig->decorProgressSignalSizeUser = atoi(Value);
+    else if (strcmp(Name, "decorScrollBarByTheme") == 0)                SetupConfig->decorScrollBarByTheme = atoi(Value);
+    else if (strcmp(Name, "decorScrollBarTypeUser") == 0)               SetupConfig->decorScrollBarTypeUser = atoi(Value);
+    else if (strcmp(Name, "decorScrollBarSizeUser") == 0)               SetupConfig->decorScrollBarSizeUser = atoi(Value);
+    else if (strcmp(Name, "ButtonsShowEmpty") == 0)                     SetupConfig->ButtonsShowEmpty = atoi(Value);
+    else if (strcmp(Name, "ChannelIconsShow") == 0)                     SetupConfig->ChannelIconsShow = atoi(Value);
+    else if (strcmp(Name, "SignalQualityShow") == 0)                    SetupConfig->SignalQualityShow = atoi(Value);
+    else if (strcmp(Name, "DiskUsageShow") == 0)                        SetupConfig->DiskUsageShow = atoi(Value);
+    else if (strcmp(Name, "MenuItemPadding") == 0)                      SetupConfig->MenuItemPadding = atoi(Value);
+    else if (strcmp(Name, "marginOsdVer") == 0)                         SetupConfig->marginOsdVer = atoi(Value);
+    else if (strcmp(Name, "marginOsdHor") == 0)                         SetupConfig->marginOsdHor = atoi(Value);
+    else if (strcmp(Name, "MessageOffset") == 0)                        SetupConfig->MessageOffset = atoi(Value);
+    else if (strcmp(Name, "TopBarFontSize") == 0)                       SetupConfig->TopBarFontSize = atod(Value);
+    else if (strcmp(Name, "MenuContentFullSize") == 0)                  SetupConfig->MenuContentFullSize = atoi(Value);
+    else if (strcmp(Name, "ChannelResolutionAspectShow") == 0)          SetupConfig->ChannelResolutionAspectShow = atoi(Value);
+    else if (strcmp(Name, "ChannelFormatShow") == 0)                    SetupConfig->ChannelFormatShow = atoi(Value);
+    else if (strcmp(Name, "RecordingResolutionAspectShow") == 0)        SetupConfig->RecordingResolutionAspectShow = atoi(Value);
+    else if (strcmp(Name, "RecordingFormatShow") == 0)                  SetupConfig->RecordingFormatShow = atoi(Value);
+    else if (strcmp(Name, "RecordingAdditionalInfoShow") == 0)          SetupConfig->RecordingAdditionalInfoShow = atoi(Value);
+    else if (strcmp(Name, "EpgAdditionalInfoShow") == 0)                SetupConfig->EpgAdditionalInfoShow = atoi(Value);
+    else if (strcmp(Name, "TopBarRecordingShow") == 0)                  SetupConfig->TopBarRecordingShow = atoi(Value);
+    else if (strcmp(Name, "MenuItemIconsShow") == 0)                    SetupConfig->MenuItemIconsShow = atoi(Value);
+    else if (strcmp(Name, "TopBarMenuIconShow") == 0)                   SetupConfig->TopBarMenuIconShow = atoi(Value);
+    else if (strcmp(Name, "DecorIndex") == 0)                           SetupConfig->DecorIndex = atoi(Value);
+    else if (strcmp(Name, "MainMenuItemScale") == 0)                    SetupConfig->MainMenuItemScale = atod(Value);
+    else if (strcmp(Name, "MenuChannelView") == 0)                      SetupConfig->MenuChannelView = atoi(Value);
+    else if (strcmp(Name, "MenuTimerView") == 0)                        SetupConfig->MenuTimerView = atoi(Value);
+    else if (strcmp(Name, "MenuEventView") == 0)                        SetupConfig->MenuEventView = atoi(Value);
+    else if (strcmp(Name, "MenuRecordingView") == 0)                    SetupConfig->MenuRecordingView = atoi(Value);
+    else if (strcmp(Name, "ChannelSimpleAspectFormat") == 0)            SetupConfig->ChannelSimpleAspectFormat = atoi(Value);
+    else if (strcmp(Name, "RecordingSimpleAspectFormat") == 0)          SetupConfig->RecordingSimpleAspectFormat = atoi(Value);
+    else if (strcmp(Name, "MenuItemRecordingClearPercent") == 0)        SetupConfig->MenuItemRecordingClearPercent = atoi(Value);
+    else if (strcmp(Name, "MenuItemRecordingShowFolderDate") == 0)      SetupConfig->MenuItemRecordingShowFolderDate = atoi(Value);
+    else if (strcmp(Name, "MenuItemParseTilde") == 0)                   SetupConfig->MenuItemParseTilde = atoi(Value);
+    else if (strcmp(Name, "TopBarRecConflictsShow") == 0)               SetupConfig->TopBarRecConflictsShow = atoi(Value);
+    else if (strcmp(Name, "TopBarRecConflictsHigh") == 0)               SetupConfig->TopBarRecConflictsHigh = atoi(Value);
+    else if (strcmp(Name, "SignalQualityUseColors") == 0)               SetupConfig->SignalQualityUseColors = atoi(Value);
+    else if (strcmp(Name, "TVScraperChanInfoShowPoster") == 0)          SetupConfig->TVScraperChanInfoShowPoster = atoi(Value);
+    else if (strcmp(Name, "TVScraperChanInfoPosterSize") == 0)          SetupConfig->TVScraperChanInfoPosterSize = atod(Value);
+    else if (strcmp(Name, "TVScraperEPGInfoShowPoster") == 0)           SetupConfig->TVScraperEPGInfoShowPoster = atoi(Value);
+    else if (strcmp(Name, "TVScraperRecInfoShowPoster") == 0)           SetupConfig->TVScraperRecInfoShowPoster = atoi(Value);
+    else if (strcmp(Name, "EpgRerunsShow") == 0)                        SetupConfig->EpgRerunsShow = atoi(Value);
+    else if (strcmp(Name, "TVScraperEPGInfoShowActors") == 0)           SetupConfig->TVScraperEPGInfoShowActors = atoi(Value);
+    else if (strcmp(Name, "TVScraperRecInfoShowActors") == 0)           SetupConfig->TVScraperRecInfoShowActors = atoi(Value);
+    else if (strcmp(Name, "MessageColorPosition") == 0)                 SetupConfig->MessageColorPosition = atoi(Value);
+    else if (strcmp(Name, "ScrollerEnable") == 0)                       SetupConfig->ScrollerEnable = atoi(Value);
+    else if (strcmp(Name, "ScrollerStep") == 0)                         SetupConfig->ScrollerStep = atoi(Value);
+    else if (strcmp(Name, "ScrollerDelay") == 0)                        SetupConfig->ScrollerDelay = atoi(Value);
+    else if (strcmp(Name, "ScrollerType") == 0)                         SetupConfig->ScrollerType = atoi(Value);
+    else if (strcmp(Name, "DiskUsageShort") == 0)                       SetupConfig->DiskUsageShort = atoi(Value);
+    else if (strcmp(Name, "DiskUsageFree") == 0)                        SetupConfig->DiskUsageFree = atoi(Value);
+    else if (strcmp(Name, "ChannelBitrateShow") == 0)                   SetupConfig->ChannelBitrateShow = atoi(Value);
+    else if (strcmp(Name, "TopBarFontClockScale") == 0)                 SetupConfig->TopBarFontClockScale = atod(Value);
+    else if (strcmp(Name, "TimeSecsScale") == 0)                        SetupConfig->TimeSecsScale = atod(Value);
+    else if (strcmp(Name, "ChannelBitrateShowCalcInterval") == 0)       SetupConfig->ChannelBitrateShowCalcInterval = atoi(Value);
+
+    else return false;
+
+    return true;
+}
+
+void cFlatSetupGeneral::SaveCurrentSettings(void) {
+    time_t t;
+    time(&t);
+    tm *tm = localtime(&t);
+    char time[32];
+    strftime(time, sizeof(time)-1, "%d.%m.%Y_%H:%M", tm);
+    cString File = time;
+    cString Filename = cString::sprintf("%s/configs/%s", PLUGINRESOURCEPATH, *File);
+
+    // if file exist remove it
+    if( access( Filename, F_OK ) != -1 ) {
+        remove(Filename);
+    }
+
+    Config.Store("decorBorderChannelByTheme", SetupConfig->decorBorderChannelByTheme, *Filename);
+    Config.Store("decorBorderChannelTypeUser", SetupConfig->decorBorderChannelTypeUser, *Filename);
+    Config.Store("decorBorderChannelSizeUser", SetupConfig->decorBorderChannelSizeUser, *Filename);
+    Config.Store("decorBorderChannelEPGByTheme", SetupConfig->decorBorderChannelEPGByTheme, *Filename);
+    Config.Store("decorBorderChannelEPGTypeUser", SetupConfig->decorBorderChannelEPGTypeUser, *Filename);
+    Config.Store("decorBorderChannelEPGSizeUser", SetupConfig->decorBorderChannelEPGSizeUser, *Filename);
+    Config.Store("decorBorderTopBarByTheme", SetupConfig->decorBorderTopBarByTheme, *Filename);
+    Config.Store("decorBorderTopBarTypeUser", SetupConfig->decorBorderTopBarTypeUser, *Filename);
+    Config.Store("decorBorderTopBarSizeUser", SetupConfig->decorBorderTopBarSizeUser, *Filename);
+    Config.Store("decorBorderMessageByTheme", SetupConfig->decorBorderMessageByTheme, *Filename);
+    Config.Store("decorBorderMessageTypeUser", SetupConfig->decorBorderMessageTypeUser, *Filename);
+    Config.Store("decorBorderMessageSizeUser", SetupConfig->decorBorderMessageSizeUser, *Filename);
+    Config.Store("decorBorderVolumeByTheme", SetupConfig->decorBorderVolumeByTheme, *Filename);
+    Config.Store("decorBorderVolumeTypeUser", SetupConfig->decorBorderVolumeTypeUser, *Filename);
+    Config.Store("decorBorderVolumeSizeUser", SetupConfig->decorBorderVolumeSizeUser, *Filename);
+    Config.Store("decorBorderTrackByTheme", SetupConfig->decorBorderTrackByTheme, *Filename);
+    Config.Store("decorBorderTrackTypeUser", SetupConfig->decorBorderTrackTypeUser, *Filename);
+    Config.Store("decorBorderTrackSizeUser", SetupConfig->decorBorderTrackSizeUser, *Filename);
+    Config.Store("decorBorderReplayByTheme", SetupConfig->decorBorderReplayByTheme, *Filename);
+    Config.Store("decorBorderReplayTypeUser", SetupConfig->decorBorderReplayTypeUser, *Filename);
+    Config.Store("decorBorderReplaySizeUser", SetupConfig->decorBorderReplaySizeUser, *Filename);
+    Config.Store("decorBorderMenuItemByTheme", SetupConfig->decorBorderMenuItemByTheme, *Filename);
+    Config.Store("decorBorderMenuItemTypeUser", SetupConfig->decorBorderMenuItemTypeUser, *Filename);
+    Config.Store("decorBorderMenuItemSizeUser", SetupConfig->decorBorderMenuItemSizeUser, *Filename);
+    Config.Store("decorBorderMenuContentHeadByTheme", SetupConfig->decorBorderMenuContentHeadByTheme, *Filename);
+    Config.Store("decorBorderMenuContentHeadTypeUser", SetupConfig->decorBorderMenuContentHeadTypeUser, *Filename);
+    Config.Store("decorBorderMenuContentHeadSizeUser", SetupConfig->decorBorderMenuContentHeadSizeUser, *Filename);
+    Config.Store("decorBorderMenuContentByTheme", SetupConfig->decorBorderMenuContentByTheme, *Filename);
+    Config.Store("decorBorderMenuContentTypeUser", SetupConfig->decorBorderMenuContentTypeUser, *Filename);
+    Config.Store("decorBorderMenuContentSizeUser", SetupConfig->decorBorderMenuContentSizeUser, *Filename);
+    Config.Store("decorBorderButtonByTheme", SetupConfig->decorBorderButtonByTheme, *Filename);
+    Config.Store("decorBorderButtonTypeUser", SetupConfig->decorBorderButtonTypeUser, *Filename);
+    Config.Store("decorBorderButtonSizeUser", SetupConfig->decorBorderButtonSizeUser, *Filename);
+    Config.Store("decorProgressChannelByTheme", SetupConfig->decorProgressChannelByTheme, *Filename);
+    Config.Store("decorProgressChannelTypeUser", SetupConfig->decorProgressChannelTypeUser, *Filename);
+    Config.Store("decorProgressChannelSizeUser", SetupConfig->decorProgressChannelSizeUser, *Filename);
+    Config.Store("decorProgressVolumeByTheme", SetupConfig->decorProgressVolumeByTheme, *Filename);
+    Config.Store("decorProgressVolumeTypeUser", SetupConfig->decorProgressVolumeTypeUser, *Filename);
+    Config.Store("decorProgressVolumeSizeUser", SetupConfig->decorProgressVolumeSizeUser, *Filename);
+    Config.Store("decorProgressMenuItemByTheme", SetupConfig->decorProgressMenuItemByTheme, *Filename);
+    Config.Store("decorProgressMenuItemTypeUser", SetupConfig->decorProgressMenuItemTypeUser, *Filename);
+    Config.Store("decorProgressMenuItemSizeUser", SetupConfig->decorProgressMenuItemSizeUser, *Filename);
+    Config.Store("decorProgressReplayByTheme", SetupConfig->decorProgressReplayByTheme, *Filename);
+    Config.Store("decorProgressReplayTypeUser", SetupConfig->decorProgressReplayTypeUser, *Filename);
+    Config.Store("decorProgressReplaySizeUser", SetupConfig->decorProgressReplaySizeUser, *Filename);
+    Config.Store("decorProgressSignalByTheme", SetupConfig->decorProgressSignalByTheme, *Filename);
+    Config.Store("decorProgressSignalTypeUser", SetupConfig->decorProgressSignalTypeUser, *Filename);
+    Config.Store("decorProgressSignalSizeUser", SetupConfig->decorProgressSignalSizeUser, *Filename);
+    Config.Store("decorScrollBarByTheme", SetupConfig->decorScrollBarByTheme, *Filename);
+    Config.Store("decorScrollBarTypeUser", SetupConfig->decorScrollBarTypeUser, *Filename);
+    Config.Store("decorScrollBarSizeUser", SetupConfig->decorScrollBarSizeUser, *Filename);
+    Config.Store("ButtonsShowEmpty", SetupConfig->ButtonsShowEmpty, *Filename);
+    Config.Store("ChannelIconsShow", SetupConfig->ChannelIconsShow, *Filename);
+    Config.Store("SignalQualityShow", SetupConfig->SignalQualityShow, *Filename);
+    Config.Store("DiskUsageShow", SetupConfig->DiskUsageShow, *Filename);
+    Config.Store("MenuItemPadding", SetupConfig->MenuItemPadding, *Filename);
+    Config.Store("marginOsdVer", SetupConfig->marginOsdVer, *Filename);
+    Config.Store("marginOsdHor", SetupConfig->marginOsdHor, *Filename);
+    Config.Store("TopBarFontSize", dtoa(Config.TopBarFontSize), *Filename);
+    Config.Store("MessageOffset", SetupConfig->MessageOffset, *Filename);
+    Config.Store("MenuContentFullSize", SetupConfig->MenuContentFullSize, *Filename);
+    Config.Store("ChannelResolutionAspectShow", SetupConfig->ChannelResolutionAspectShow, *Filename);
+    Config.Store("ChannelFormatShow", SetupConfig->ChannelFormatShow, *Filename);
+    Config.Store("RecordingResolutionAspectShow", SetupConfig->RecordingResolutionAspectShow, *Filename);
+    Config.Store("RecordingFormatShow", SetupConfig->RecordingFormatShow, *Filename);
+    Config.Store("RecordingAdditionalInfoShow", SetupConfig->RecordingAdditionalInfoShow, *Filename);
+    Config.Store("EpgAdditionalInfoShow", SetupConfig->EpgAdditionalInfoShow, *Filename);
+    Config.Store("TopBarRecordingShow", SetupConfig->TopBarRecordingShow, *Filename);
+    Config.Store("MenuItemIconsShow", SetupConfig->MenuItemIconsShow, *Filename);
+    Config.Store("TopBarMenuIconShow", SetupConfig->TopBarMenuIconShow, *Filename);
+    Config.Store("DecorIndex", SetupConfig->DecorIndex, *Filename);
+    Config.Store("MainMenuItemScale", dtoa(Config.MainMenuItemScale), *Filename);
+    Config.Store("MenuChannelView", SetupConfig->MenuChannelView, *Filename);
+    Config.Store("MenuTimerView", SetupConfig->MenuTimerView, *Filename);
+    Config.Store("MenuEventView", SetupConfig->MenuEventView, *Filename);
+    Config.Store("MenuRecordingView", SetupConfig->MenuRecordingView, *Filename);
+    Config.Store("ChannelSimpleAspectFormat", SetupConfig->ChannelSimpleAspectFormat, *Filename);
+    Config.Store("RecordingSimpleAspectFormat", SetupConfig->RecordingSimpleAspectFormat, *Filename);
+    Config.Store("MenuItemRecordingClearPercent", SetupConfig->MenuItemRecordingClearPercent, *Filename);
+    Config.Store("MenuItemRecordingShowFolderDate", SetupConfig->MenuItemRecordingShowFolderDate, *Filename);
+    Config.Store("MenuItemParseTilde", SetupConfig->MenuItemParseTilde, *Filename);
+    Config.Store("TopBarRecConflictsShow", SetupConfig->TopBarRecConflictsShow, *Filename);
+    Config.Store("TopBarRecConflictsHigh", SetupConfig->TopBarRecConflictsHigh, *Filename);
+    Config.Store("SignalQualityUseColors", SetupConfig->SignalQualityUseColors, *Filename);
+    Config.Store("TVScraperChanInfoShowPoster", SetupConfig->TVScraperChanInfoShowPoster, *Filename);
+    Config.Store("TVScraperChanInfoPosterSize", dtoa(Config.TVScraperChanInfoPosterSize), *Filename);
+    Config.Store("TVScraperEPGInfoShowPoster", SetupConfig->TVScraperEPGInfoShowPoster, *Filename);
+    Config.Store("TVScraperRecInfoShowPoster", SetupConfig->TVScraperEPGInfoShowPoster, *Filename);
+    Config.Store("EpgRerunsShow", SetupConfig->EpgRerunsShow, *Filename);
+    Config.Store("TVScraperEPGInfoShowActors", SetupConfig->TVScraperEPGInfoShowActors, *Filename);
+    Config.Store("TVScraperRecInfoShowActors", SetupConfig->TVScraperRecInfoShowActors, *Filename);
+    Config.Store("MessageColorPosition", SetupConfig->MessageColorPosition, *Filename);
+    Config.Store("ScrollerEnable", SetupConfig->ScrollerEnable, *Filename);
+    Config.Store("ScrollerStep", SetupConfig->ScrollerStep, *Filename);
+    Config.Store("ScrollerDelay", SetupConfig->ScrollerDelay, *Filename);
+    Config.Store("ScrollerType", SetupConfig->ScrollerType, *Filename);
+    Config.Store("DiskUsageShort", SetupConfig->DiskUsageShort, *Filename);
+    Config.Store("DiskUsageFree", SetupConfig->DiskUsageFree, *Filename);
+    Config.Store("TopBarFontClockScale", dtoa(Config.TopBarFontClockScale), *Filename);
+    Config.Store("TimeSecsScale", dtoa(Config.TimeSecsScale), *Filename);
+    Config.Store("ChannelBitrateShow", SetupConfig->ChannelBitrateShow, *Filename);
+    Config.Store("ChannelBitrateShowCalcInterval", SetupConfig->ChannelBitrateShowCalcInterval, *Filename);
+
+    cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
+    Skins.Message(mtInfo, msg);
+}
 //------------------------------------------------------------------------------------------------------------------
 
 cMenuSetupSubMenu::cMenuSetupSubMenu(const char* Title, cFlatConfig* data) : cOsdMenu(Title, 30) {
@@ -293,6 +557,21 @@ void cFlatSetupGeneral::Setup(void) {
         Add(new cOsdItem(tr("no decorfiles found, check install"), osUnknown, false));
     } else
         Add(new cMenuEditStraItem(tr("Decorfile"), &SetupConfig->DecorIndex, DecorDescriptions.Size(), &DecorDescriptions[0]));
+
+    ConfigFiles.Clear();
+    SetupConfig->GetConfigFiles( ConfigFiles );
+    for(int i = 0; i < ConfigFiles.Size(); i++)
+        dsyslog("ConfigFile: %s", ConfigFiles[i]);
+
+    ConfigFileSelection = 0;
+    if( ConfigFiles.Size() == 0 ) {
+        esyslog("skinflatplus: no config files found, please check your installation!");
+        Add(new cOsdItem(tr("no config-files found, check install"), osUnknown, false));
+    } else
+        Add(new cMenuEditStraItem(tr("Press ok to load config file"), &ConfigFileSelection, ConfigFiles.Size(), &ConfigFiles[0]));
+
+    cString saveSettings = cString::sprintf("%s:\t%s", tr("Save current settings"), tr("press ok to save current settings"));
+    Add(new cOsdItem(saveSettings, osUnknown, true));
 
     Add(new cMenuEditBoolItem(tr("Show empty color-buttons"), &SetupConfig->ButtonsShowEmpty));
     Add(new cMenuEditBoolItem(tr("Show TopBar menu icons"), &SetupConfig->TopBarMenuIconShow));
@@ -372,7 +651,18 @@ eOSState cFlatSetupGeneral::ProcessKey(eKeys Key) {
     if (state == osUnknown) {
         switch (Key) {
             case kOk:
-                return osBack;
+            {
+                const char* ItemText = Get(Current())->Text();
+                if( strstr(ItemText, tr("Save current settings")) != NULL ) {
+                    SaveCurrentSettings();
+                    return osUnknown;
+                } else if( strstr(ItemText, tr("Press ok to load config file")) != NULL ) {
+                    LoadConfigFile();
+                    return osBack;
+                } else {
+                    return osBack;
+                }
+            }
             default:
                 break;
         }
