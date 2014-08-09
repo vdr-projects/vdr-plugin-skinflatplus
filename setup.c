@@ -287,7 +287,7 @@ void cFlatSetupGeneral::LoadConfigFile(void) {
                     v = stripspace(skipspace(v));
                     bool error = SetupParse(n, v);
                     if( error )
-                        dsyslog("flatplus: failed to load config: %s with value: ", n, v);
+                        dsyslog("flatplus: failed to load config: %s with value: %s", n, v);
                 }
             }
         }
