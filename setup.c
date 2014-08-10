@@ -13,6 +13,7 @@ cStringList MessageColorPositions;
 cStringList ScrollerTypes;
 cStringList ScrollBarTypes;
 cStringList DiskUsageFree;
+cStringList ChannelTimeLefts;
 
 int ConfigFileSelection;
 
@@ -104,6 +105,12 @@ void cFlatSetup::Setup(void) {
     ScrollBarTypes.Append( strdup( tr("outline + round bar")) );
     ScrollBarTypes.Append( strdup( tr("rect bar")) );
     ScrollBarTypes.Append( strdup( tr("round bar")) );
+
+    ChannelTimeLefts.Clear();
+    ChannelTimeLefts.Append( strdup( tr("past / remaining")) );
+    ChannelTimeLefts.Append( strdup( tr("past")) );
+    ChannelTimeLefts.Append( strdup( tr("remaining")) );
+
 
     Add(new cOsdItem(tr("General settings"), osUnknown, true));
     Add(new cOsdItem(tr("Channelinfo settings"), osUnknown, true));
@@ -260,6 +267,8 @@ void cFlatSetup::Store(void) {
     SetupStore("TimeSecsScale", dtoa(Config.TimeSecsScale));
     SetupStore("ChannelBitrateShow", Config.ChannelBitrateShow);
     SetupStore("ChannelBitrateShowCalcInterval", Config.ChannelBitrateShowCalcInterval);
+    SetupStore("TopBarHideClockText", Config.TopBarHideClockText);
+    SetupStore("ChannelTimeLeft", Config.ChannelTimeLeft);
 
     Config.Init();
 }
@@ -399,6 +408,8 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "TopBarFontClockScale") == 0)                 SetupConfig->TopBarFontClockScale = atod(Value);
     else if (strcmp(Name, "TimeSecsScale") == 0)                        SetupConfig->TimeSecsScale = atod(Value);
     else if (strcmp(Name, "ChannelBitrateShowCalcInterval") == 0)       SetupConfig->ChannelBitrateShowCalcInterval = atoi(Value);
+    else if (strcmp(Name, "TopBarHideClockText") == 0)                  SetupConfig->TopBarHideClockText = atoi(Value);
+    else if (strcmp(Name, "ChannelTimeLeft") == 0)                      SetupConfig->ChannelTimeLeft = atoi(Value);
 
     else return false;
 
@@ -521,13 +532,15 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("TimeSecsScale", dtoa(Config.TimeSecsScale), *Filename);
     Config.Store("ChannelBitrateShow", SetupConfig->ChannelBitrateShow, *Filename);
     Config.Store("ChannelBitrateShowCalcInterval", SetupConfig->ChannelBitrateShowCalcInterval, *Filename);
+    Config.Store("TopBarHideClockText", SetupConfig->TopBarHideClockText, *Filename);
+    Config.Store("ChannelTimeLeft", SetupConfig->ChannelTimeLeft, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
 }
 //------------------------------------------------------------------------------------------------------------------
 
-cMenuSetupSubMenu::cMenuSetupSubMenu(const char* Title, cFlatConfig* data) : cOsdMenu(Title, 30) {
+cMenuSetupSubMenu::cMenuSetupSubMenu(const char* Title, cFlatConfig* data) : cOsdMenu(Title, 35) {
     SetupConfig = data;
     ItemLastSel = -1;
 }
@@ -583,6 +596,7 @@ void cFlatSetupGeneral::Setup(void) {
     Add(new cMenuEditPrcItem(tr("TopBar font size"), &SetupConfig->TopBarFontSize, 0.01, 0.2, 1));
     Add(new cMenuEditBoolItem(tr("TopBar show recording"), &SetupConfig->TopBarRecordingShow));
     Add(new cMenuEditBoolItem(tr("TopBar show conflicts"), &SetupConfig->TopBarRecConflictsShow));
+    Add(new cMenuEditBoolItem(tr("TopBar hide clock text"), &SetupConfig->TopBarHideClockText));
     Add(new cMenuEditPrcItem(tr("TopBar clock font scale"), &SetupConfig->TopBarFontClockScale, 0.005, 0.02, 1));
     Add(new cMenuEditIntItem(tr("Conflicts min value for red"), &SetupConfig->TopBarRecConflictsHigh));
     Add(new cMenuEditIntItem(tr("Message bottom offset"), &SetupConfig->MessageOffset));
@@ -696,6 +710,7 @@ void cFlatSetupChannelInfo::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->ChannelFormatShow));
     Add(new cMenuEditBoolItem(tr("Show video/audio bitrate"), &SetupConfig->ChannelBitrateShow));
     Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->ChannelSimpleAspectFormat));
+    Add(new cMenuEditStraItem(tr("program past/remaining time format"), &SetupConfig->ChannelTimeLeft, ChannelTimeLefts.Size(), &ChannelTimeLefts[0]));
 
     Add(new cMenuEditBoolItem(tr("Channelinfo border by decor-file?"), &SetupConfig->decorBorderChannelByTheme));
     if( SetupConfig->decorBorderChannelByTheme ) {

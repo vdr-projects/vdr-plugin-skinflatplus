@@ -26,6 +26,7 @@ cFlatConfig::cFlatConfig(void) {
     ChannelSimpleAspectFormat = true;
     ChannelBitrateShow = false;
     ChannelBitrateShowCalcInterval = 20;
+    ChannelTimeLeft = 0;
 
     RecordingResolutionAspectShow = true;
     RecordingFormatShow = true;
@@ -68,6 +69,7 @@ cFlatConfig::cFlatConfig(void) {
     ScrollerType = 0;
 
     TopBarFontClockScale = 0.01;
+    TopBarHideClockText = 0;
 
     TVScraperChanInfoShowPoster = 1;
     TVScraperChanInfoPosterSize = 0.01;
@@ -257,6 +259,8 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "TopBarFontClockScale") == 0)                 TopBarFontClockScale = atod(Value);
     else if (strcmp(Name, "TimeSecsScale") == 0)                        TimeSecsScale = atod(Value);
     else if (strcmp(Name, "ChannelBitrateShowCalcInterval") == 0)       ChannelBitrateShowCalcInterval = atoi(Value);
+    else if (strcmp(Name, "TopBarHideClockText") == 0)                  TopBarHideClockText = atoi(Value);
+    else if (strcmp(Name, "ChannelTimeLeft") == 0)                      ChannelTimeLeft = atoi(Value);
 
     else return false;
 

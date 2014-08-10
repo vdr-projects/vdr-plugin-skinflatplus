@@ -1,6 +1,11 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
+2014-08-10: Version 0.4.1
+- [add] option to hide "clock" text
+- [add] option to set program past/remaining time format (past/remaining, past, remaining)
+- [update] plugin settings column width from 30 to 35
+
 2014-08-09: Version 0.4.0
 - [update] topbar position of text
 - [update] MVThemes

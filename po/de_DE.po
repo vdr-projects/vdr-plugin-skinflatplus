@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-08-09 10:05+0200\n"
+"POT-Creation-Date: 2014-08-10 11:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -252,6 +252,15 @@ msgstr ""
 msgid "round bar"
 msgstr ""
 
+msgid "past / remaining"
+msgstr "vergangen / verbleibend"
+
+msgid "past"
+msgstr "vergangen"
+
+msgid "remaining"
+msgstr "verbleibend"
+
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
 
@@ -333,6 +342,9 @@ msgstr "TopBar zeige Aufnahme"
 msgid "TopBar show conflicts"
 msgstr "TopBar zeige Konflikte"
 
+msgid "TopBar hide clock text"
+msgstr "TopBar verstecke Uhr Text"
+
 msgid "TopBar clock font scale"
 msgstr "TopBar Uhr Skalierung"
 
@@ -407,6 +419,9 @@ msgstr "Zeige Video/Audio Bitrate"
 
 msgid "Simple aspect & format"
 msgstr "Einfache Aspekt und Formatanzeige"
+
+msgid "program past/remaining time format"
+msgstr "Programm vergangen/verbleibend Format"
 
 msgid "Channelinfo border by decor-file?"
 msgstr "Kanalinfo Rand von Decordatei?"

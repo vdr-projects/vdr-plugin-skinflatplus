@@ -199,6 +199,7 @@ class cFlatConfig
         int ChannelSimpleAspectFormat;
         int ChannelBitrateShow;
         int ChannelBitrateShowCalcInterval; // hidden config
+        int ChannelTimeLeft;
         int RecordingResolutionAspectShow;
         int RecordingFormatShow;
         int RecordingSimpleAspectFormat;
@@ -212,6 +213,7 @@ class cFlatConfig
         int TopBarRecConflictsHigh;
         int MenuItemIconsShow;
         int TopBarMenuIconShow;
+        int TopBarHideClockText;
 
         double MainMenuItemScale;
 

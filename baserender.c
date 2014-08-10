@@ -304,6 +304,8 @@ void cFlatBaseRender::TopBarUpdate(void) {
 
         cString time = TimeString(t);
         cString time2 = cString::sprintf("%s %s", *time, tr("clock"));
+        if( Config.TopBarHideClockText )
+            time2 = cString::sprintf("%s", *time);
 
         int timeWidth = topBarFontClock->Width(*time2) + marginItem*2;
         int Right = TopBarWidth - timeWidth;

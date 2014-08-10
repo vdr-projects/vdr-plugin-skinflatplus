@@ -359,7 +359,14 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         int s = (int)(time(NULL) - Present->StartTime()) / 60;
         int sleft = (Present->Duration() / 60) - s;
 
-        cString seen = cString::sprintf("%d-/%d+ %d min", s, sleft, Present->Duration() / 60);
+        cString seen;
+        if( Config.ChannelTimeLeft == 0 )
+            seen = cString::sprintf("%d-/%d+ %d min", s, sleft, Present->Duration() / 60);
+        else if( Config.ChannelTimeLeft == 1 )
+            seen = cString::sprintf("%d- %d min", s, Present->Duration() / 60);
+        else if( Config.ChannelTimeLeft == 2 )
+            seen = cString::sprintf("%d+ %d min", sleft, Present->Duration() / 60);
+
         int seenWidth = fontSml->Width(*seen) + fontSml->Width("  ");
 
         epg = Present->Title();
