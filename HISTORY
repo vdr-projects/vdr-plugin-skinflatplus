@@ -5,6 +5,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] option to hide "clock" text
 - [add] option to set program past/remaining time format (past/remaining, past, remaining)
 - [update] plugin settings column width from 30 to 35
+- [update] fnu anthra themes (thanks to Frank [fnu@vdr-portal])
 
 2014-08-09: Version 0.4.0
 - [update] topbar position of text
