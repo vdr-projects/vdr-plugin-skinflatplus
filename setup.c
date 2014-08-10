@@ -274,7 +274,7 @@ void cFlatSetup::Store(void) {
 }
 
 void cFlatSetupGeneral::LoadConfigFile(void) {
-    cString Filename = cString::sprintf("%s/configs/%s", PLUGINRESOURCEPATH, ConfigFiles[ConfigFileSelection]);
+    cString Filename = cString::sprintf("%s/configs/%s", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), ConfigFiles[ConfigFileSelection]);
 
     FILE *f = fopen(Filename, "r");
     if( f ) {
@@ -294,13 +294,14 @@ void cFlatSetupGeneral::LoadConfigFile(void) {
                     *v++ = 0;
                     n = stripspace(skipspace(n));
                     v = stripspace(skipspace(v));
-                    bool error = SetupParse(n, v);
-                    if( error )
+                    bool success = SetupParse(n, v);
+                    if( !success )
                         dsyslog("flatplus: failed to load config: %s with value: %s", n, v);
                 }
             }
         }
-    }
+    } else
+        dsyslog("flatplus: failed to load config: file <%s> not found", *Filename);
     cString msg = cString::sprintf("%s %s %s", tr("configfile"), ConfigFiles[ConfigFileSelection], tr("loaded"));
     Skins.Message(mtInfo, msg);
 }
@@ -410,7 +411,6 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "ChannelBitrateShowCalcInterval") == 0)       SetupConfig->ChannelBitrateShowCalcInterval = atoi(Value);
     else if (strcmp(Name, "TopBarHideClockText") == 0)                  SetupConfig->TopBarHideClockText = atoi(Value);
     else if (strcmp(Name, "ChannelTimeLeft") == 0)                      SetupConfig->ChannelTimeLeft = atoi(Value);
-
     else return false;
 
     return true;

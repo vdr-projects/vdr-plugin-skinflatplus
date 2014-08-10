@@ -142,8 +142,8 @@ install-icons:
 	cp -r --remove-destination icons/* $(DESTDIR)$(PLGRESDIR)/icons
 
 install-configs:
-	mkdir -p $(DESTDIR)$(PLGRESDIR)/configs
-	cp configs/* $(DESTDIR)$(PLGRESDIR)/configs
+	mkdir -p $(DESTDIR)$(VDRCONFDIR)/plugins/$(PLUGIN)/configs
+	cp configs/* $(DESTDIR)$(VDRCONFDIR)/plugins/$(PLUGIN)/configs
 
 install: install-lib install-i18n install-themes install-icons install-decors install-configs
 

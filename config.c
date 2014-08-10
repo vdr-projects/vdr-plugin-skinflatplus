@@ -727,7 +727,7 @@ void cFlatConfig::Store(const char *Name, const char *Value, const char *Filenam
 }
 
 void cFlatConfig::GetConfigFiles(cStringList &Files) {
-    cString configsPath = cString::sprintf("%s/configs", PLUGINRESOURCEPATH);
+    cString configsPath = cString::sprintf("%s/configs", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N));
     std::vector<std::string> files;
     Files.Clear();
 
