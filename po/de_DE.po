@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.2\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-08-10 11:31+0200\n"
+"POT-Creation-Date: 2014-09-26 15:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -479,6 +479,9 @@ msgstr "Zeige Wiederholungen bei EPG"
 
 msgid "Main menuitem scale"
 msgstr "Hauptmenüeintrag Scale"
+
+msgid "Menu draw background over the entire height"
+msgstr "Menü zeichne Hintergrund über gesamte Höhe"
 
 msgid "Menu channel view"
 msgstr "Menü Kanal Ansicht"

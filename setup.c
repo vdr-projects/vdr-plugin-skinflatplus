@@ -269,6 +269,7 @@ void cFlatSetup::Store(void) {
     SetupStore("ChannelBitrateShowCalcInterval", Config.ChannelBitrateShowCalcInterval);
     SetupStore("TopBarHideClockText", Config.TopBarHideClockText);
     SetupStore("ChannelTimeLeft", Config.ChannelTimeLeft);
+    SetupStore("MenuFullOsd", Config.MenuFullOsd);
 
     Config.Init();
 }
@@ -411,6 +412,7 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "ChannelBitrateShowCalcInterval") == 0)       SetupConfig->ChannelBitrateShowCalcInterval = atoi(Value);
     else if (strcmp(Name, "TopBarHideClockText") == 0)                  SetupConfig->TopBarHideClockText = atoi(Value);
     else if (strcmp(Name, "ChannelTimeLeft") == 0)                      SetupConfig->ChannelTimeLeft = atoi(Value);
+    else if (strcmp(Name, "MenuFullOsd") == 0)                          SetupConfig->MenuFullOsd = atoi(Value);
     else return false;
 
     return true;
@@ -534,6 +536,7 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("ChannelBitrateShowCalcInterval", SetupConfig->ChannelBitrateShowCalcInterval, *Filename);
     Config.Store("TopBarHideClockText", SetupConfig->TopBarHideClockText, *Filename);
     Config.Store("ChannelTimeLeft", SetupConfig->ChannelTimeLeft, *Filename);
+    Config.Store("MenuFullOsd", SetupConfig->MenuFullOsd, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -803,6 +806,7 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show additional EPG info"), &SetupConfig->EpgAdditionalInfoShow));
     Add(new cMenuEditBoolItem(tr("Show reruns in EPG info"), &SetupConfig->EpgRerunsShow));
     Add(new cMenuEditPrcItem(tr("Main menuitem scale"), &SetupConfig->MainMenuItemScale, 0.2, 1, 0));
+    Add(new cMenuEditBoolItem(tr("Menu draw background over the entire height"), &SetupConfig->MenuFullOsd));
 
     Add(new cMenuEditStraItem(tr("Menu channel view"), &SetupConfig->MenuChannelView, MenuChannelViews.Size(), &MenuChannelViews[0]));
     Add(new cMenuEditStraItem(tr("Menu timer view"), &SetupConfig->MenuTimerView, MenuTimerViews.Size(), &MenuTimerViews[0]));

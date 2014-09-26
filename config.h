@@ -221,6 +221,7 @@ class cFlatConfig
         int MenuTimerView;
         int MenuEventView;
         int MenuRecordingView;
+        int MenuFullOsd;
 
         // 0 = vertikal
         // 1 = horizontal

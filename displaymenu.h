@@ -17,6 +17,8 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
 
         int menuTop, menuWidth;
         int menuItemWidth;
+        int menuItemLastHeight;
+        bool MenuFullOsdIsDrawn;
 
         eMenuCategory menuCategory;
         int VideoDiskUsageState;

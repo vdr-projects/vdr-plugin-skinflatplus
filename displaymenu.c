@@ -44,6 +44,9 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
 
     ItemEventLastChannelName = "";
 
+    menuItemLastHeight = 0;
+    MenuFullOsdIsDrawn = false;
+
     menuWidth = osdWidth;
     menuTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize;
     menuPixmap = osd->CreatePixmap(1, cRect(0, menuTop, menuWidth, scrollBarHeight ));
@@ -113,7 +116,6 @@ void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
         else if( Config.MenuRecordingView == 2 || Config.MenuRecordingView == 3 )
             itemRecordingHeight = fontHeight + fontSmlHeight + marginItem + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
     }
-
 }
 
 void cFlatDisplayMenu::SetScrollbar(int Total, int Offset) {
@@ -197,6 +199,9 @@ void cFlatDisplayMenu::Clear(void) {
     DecorBorderClearByFrom(BorderContent);
     DecorBorderClearAll();
     isScrolling = false;
+
+    menuItemLastHeight = 0;
+    MenuFullOsdIsDrawn = false;
 
     ComplexContent.Clear();
     ShowRecording = ShowEvent = ShowText = false;
@@ -312,6 +317,10 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
             iconNew = imgLoader.LoadIcon("text_new", fontHeight, fontHeight);
         }
     }
+
+    if( y + itemHeight > menuItemLastHeight )
+        menuItemLastHeight = y + itemHeight;
+
     menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, menuItemWidth, fontHeight), ColorBg);
     int lh = fontHeight;
     int xOff = 0;
@@ -662,6 +671,9 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
             ColorBg = Theme.Color(clrItemBg);
         }
     }
+
+    if( y + itemChannelHeight > menuItemLastHeight )
+        menuItemLastHeight = y + itemChannelHeight;
 
     menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, menuItemWidth, Height), ColorBg);
 
@@ -1080,6 +1092,9 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
         }
     }
 
+    if( y + itemTimerHeight > menuItemLastHeight )
+        menuItemLastHeight = y + itemTimerHeight;
+
     menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, menuItemWidth, Height), ColorBg);
     cImage *img = NULL;
     int Left, Top;
@@ -1336,6 +1351,9 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
             ColorBg = Theme.Color(clrItemBg);
         }
     }
+
+    if( y + itemEventHeight > menuItemLastHeight )
+        menuItemLastHeight = y + itemEventHeight;
 
     menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, menuItemWidth, Height), ColorBg);
 
@@ -1724,6 +1742,9 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             ColorBg = Theme.Color(clrItemBg);
         }
     }
+
+    if( y + itemRecordingHeight > menuItemLastHeight )
+        menuItemLastHeight = y + itemRecordingHeight;
 
     menuPixmap->DrawRectangle(cRect(Config.decorBorderMenuItemSize, y, menuItemWidth, Height), ColorBg);
     cImage *img = NULL;
@@ -3299,6 +3320,15 @@ const cFont *cFlatDisplayMenu::GetTextAreaFont(bool FixedFont) const {
 
 void cFlatDisplayMenu::Flush(void) {
     TopBarUpdate();
+
+    if( Config.MenuFullOsd && !MenuFullOsdIsDrawn ) {
+        dsyslog("menuItemLastHeight: %d ItemsHeight() - menuItemLastHeight: %d", menuItemLastHeight, ItemsHeight() - menuItemLastHeight );
+        menuPixmap->DrawRectangle(cRect(0, menuItemLastHeight - Config.decorBorderMenuItemSize, menuItemWidth + Config.decorBorderMenuItemSize*2, menuPixmap->ViewPort().Height() - menuItemLastHeight + marginItem), Theme.Color(clrItemSelableBg));
+        //menuPixmap->DrawRectangle(cRect(0, menuPixmap->ViewPort().Height() - 5, menuItemWidth + Config.decorBorderMenuItemSize*2, 5), Theme.Color(clrItemSelableBg));
+        MenuFullOsdIsDrawn = true;
+    }
+
+
     osd->Flush();
 }
 
