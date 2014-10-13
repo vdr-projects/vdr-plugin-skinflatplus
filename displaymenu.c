@@ -50,17 +50,22 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     menuWidth = osdWidth;
     menuTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize;
     menuPixmap = osd->CreatePixmap(1, cRect(0, menuTop, menuWidth, scrollBarHeight ));
+    dsyslog("skinflatplus: menuPixmap left: %d top: %d width: %d height: %d", 0, menuTop, menuWidth, scrollBarHeight );
 
     menuIconsBGPixmap = osd->CreatePixmap(2, cRect(0, menuTop, menuWidth, scrollBarHeight ));
+    dsyslog("skinflatplus: menuIconsBGPixmap left: %d top: %d width: %d height: %d", 0, menuTop, menuWidth, scrollBarHeight );
     menuIconsPixmap = osd->CreatePixmap(3, cRect(0, menuTop, menuWidth, scrollBarHeight ));
+    dsyslog("skinflatplus: menuIconsPixmap left: %d top: %d width: %d height: %d", 0, menuTop, menuWidth, scrollBarHeight );
 
     chLeft = Config.decorBorderMenuContentHeadSize;
     chTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentHeadSize;
     chWidth = menuWidth - Config.decorBorderMenuContentHeadSize*2;
     chHeight = fontHeight + fontSmlHeight*2 + marginItem*2;
     contentHeadPixmap = osd->CreatePixmap(1, cRect(chLeft, chTop, chWidth, chHeight));
+    dsyslog("skinflatplus: contentHeadPixmap left: %d top: %d width: %d height: %d", chLeft, chTop, chWidth, chHeight );
 
     scrollbarPixmap = osd->CreatePixmap(2, cRect(0, scrollBarTop, menuWidth, scrollBarHeight + buttonsHeight + Config.decorBorderButtonSize*2));
+    dsyslog("skinflatplus: scrollbarPixmap left: %d top: %d width: %d height: %d", 0, scrollBarTop, menuWidth, scrollBarHeight + buttonsHeight + Config.decorBorderButtonSize*2 );
 
     menuPixmap->Fill(clrTransparent);
     menuIconsPixmap->Fill(clrTransparent);

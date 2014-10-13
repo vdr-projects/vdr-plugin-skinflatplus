@@ -16,6 +16,8 @@ void cTextScroll::SetText(const char *text, cRect position, tColor colorFg, tCol
         Osd->DestroyPixmap(Pixmap);
 
     Pixmap = Osd->CreatePixmap(Layer, Position, drawPort);
+    dsyslog("skinflatplus: TextScrollerPixmap left: %d top: %d width: %d height: %d", Position.Left(), Position.Top(), Position.Width(), Position.Height());
+    dsyslog("skinflatplus: TextScrollerPixmap drawPort left: %d top: %d width: %d height: %d", drawPort.Left(), drawPort.Top(), drawPort.Width(), drawPort.Height());
     Pixmap->Fill( colorBg );
     Draw();
 }
