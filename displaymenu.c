@@ -234,7 +234,12 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
                 icon = "menuIcons/Timers";
                 break;
             case mcRecording:
-                icon = "menuIcons/Recordings";
+                if( RecordingsSortMode == rsmName )
+                    icon = "menuIcons/RecsSortName";
+                else if( RecordingsSortMode == rsmTime )
+                    icon = "menuIcons/RecsSortDate";
+                else
+                    icon = "menuIcons/Recordings";
                 break;
             case mcSetup:
                 icon = "menuIcons/Setup";
