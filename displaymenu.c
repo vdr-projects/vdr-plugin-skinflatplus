@@ -216,7 +216,7 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
     TopBarSetTitle(Title);
 
     if( Config.TopBarMenuIconShow ) {
-        cString icon;
+        cString icon = "";
         switch( menuCategory ) {
             case mcMain:
                 TopBarSetTitle("");
@@ -229,17 +229,46 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
                 break;
             case mcChannel:
                 icon = "menuIcons/Channels";
+                if( Config.MenuChannelShowCount ) {
+                    int chanCount = 0;
+                    for(cChannel *Channel = Channels.First(); Channel; Channel = Channels.Next(Channel)) {
+                        if( !Channel->GroupSep() )
+                            chanCount++;
+                    }
+                    cString newTitle = cString::sprintf("%s (%d)", Title, chanCount);
+                    TopBarSetTitle(*newTitle);
+                }
                 break;
             case mcTimer:
                 icon = "menuIcons/Timers";
+                if( Config.MenuTimerShowCount ) {
+                    int timerCount = 0, timerRecCount = 0;
+                    for(cTimer *Timer = Timers.First(); Timer; Timer = Timers.Next(Timer)) {
+                        timerCount++;
+                        if( Timer->Recording() )
+                            timerRecCount++;
+                    }
+                    cString newTitle = cString::sprintf("%s (%d/%d)", Title, timerRecCount, timerCount);
+                    TopBarSetTitle(*newTitle);
+                }
                 break;
             case mcRecording:
                 if( RecordingsSortMode == rsmName )
-                    icon = "menuIcons/RecsSortName";
+                    TopBarSetMenuIconRight("menuIcons/RecsSortName");
                 else if( RecordingsSortMode == rsmTime )
-                    icon = "menuIcons/RecsSortDate";
-                else
-                    icon = "menuIcons/Recordings";
+                    TopBarSetMenuIconRight("menuIcons/RecsSortDate");
+
+                if( Config.MenuRecordingShowCount ) {
+                    int recCount = 0, recNewCount = 0;
+                    for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
+                        recCount++;
+                        if( Rec->IsNew() )
+                            recNewCount++;
+                    }
+                    cString newTitle = cString::sprintf("%s (%d*/%d)", Title, recNewCount, recCount);
+                    TopBarSetTitle(*newTitle);
+                }
+                icon = "menuIcons/Recordings";
                 break;
             case mcSetup:
                 icon = "menuIcons/Setup";

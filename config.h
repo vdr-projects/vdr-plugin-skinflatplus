@@ -223,6 +223,10 @@ class cFlatConfig
         int MenuRecordingView;
         int MenuFullOsd;
 
+        int MenuRecordingShowCount;
+        int MenuTimerShowCount;
+        int MenuChannelShowCount;
+
         // 0 = vertikal
         // 1 = horizontal
         int MessageColorPosition;

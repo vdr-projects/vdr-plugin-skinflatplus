@@ -59,6 +59,10 @@ cFlatConfig::cFlatConfig(void) {
     MenuEventView = 1;
     MenuRecordingView = 1;
 
+    MenuRecordingShowCount = 1;
+    MenuTimerShowCount = 1;
+    MenuChannelShowCount = 1;
+
     MenuFullOsd = 0;
 
     MenuItemRecordingClearPercent = 1;
@@ -264,6 +268,9 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "TopBarHideClockText") == 0)                  TopBarHideClockText = atoi(Value);
     else if (strcmp(Name, "ChannelTimeLeft") == 0)                      ChannelTimeLeft = atoi(Value);
     else if (strcmp(Name, "MenuFullOsd") == 0)                          MenuFullOsd = atoi(Value);
+    else if (strcmp(Name, "MenuRecordingShowCount") == 0)               MenuRecordingShowCount = atoi(Value);
+    else if (strcmp(Name, "MenuTimerShowCount") == 0)                   MenuTimerShowCount = atoi(Value);
+    else if (strcmp(Name, "MenuChannelShowCount") == 0)                 MenuChannelShowCount = atoi(Value);
 
     else return false;
 

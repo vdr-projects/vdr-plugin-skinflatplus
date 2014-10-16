@@ -270,6 +270,9 @@ void cFlatSetup::Store(void) {
     SetupStore("TopBarHideClockText", Config.TopBarHideClockText);
     SetupStore("ChannelTimeLeft", Config.ChannelTimeLeft);
     SetupStore("MenuFullOsd", Config.MenuFullOsd);
+    SetupStore("MenuRecordingShowCount", Config.MenuRecordingShowCount);
+    SetupStore("MenuTimerShowCount", Config.MenuTimerShowCount);
+    SetupStore("MenuChannelShowCount", Config.MenuChannelShowCount);
 
     Config.Init();
 }
@@ -413,6 +416,9 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "TopBarHideClockText") == 0)                  SetupConfig->TopBarHideClockText = atoi(Value);
     else if (strcmp(Name, "ChannelTimeLeft") == 0)                      SetupConfig->ChannelTimeLeft = atoi(Value);
     else if (strcmp(Name, "MenuFullOsd") == 0)                          SetupConfig->MenuFullOsd = atoi(Value);
+    else if (strcmp(Name, "MenuRecordingShowCount") == 0)               SetupConfig->MenuRecordingShowCount = atoi(Value);
+    else if (strcmp(Name, "MenuTimerShowCount") == 0)                   SetupConfig->MenuTimerShowCount = atoi(Value);
+    else if (strcmp(Name, "MenuChannelShowCount") == 0)                 SetupConfig->MenuChannelShowCount = atoi(Value);
     else return false;
 
     return true;
@@ -537,6 +543,9 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("TopBarHideClockText", SetupConfig->TopBarHideClockText, *Filename);
     Config.Store("ChannelTimeLeft", SetupConfig->ChannelTimeLeft, *Filename);
     Config.Store("MenuFullOsd", SetupConfig->MenuFullOsd, *Filename);
+    Config.Store("MenuRecordingShowCount", SetupConfig->MenuRecordingShowCount, *Filename);
+    Config.Store("MenuTimerShowCount", SetupConfig->MenuTimerShowCount, *Filename);
+    Config.Store("MenuChannelShowCount", SetupConfig->MenuChannelShowCount, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -807,6 +816,10 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show reruns in EPG info"), &SetupConfig->EpgRerunsShow));
     Add(new cMenuEditPrcItem(tr("Main menuitem scale"), &SetupConfig->MainMenuItemScale, 0.2, 1, 0));
     Add(new cMenuEditBoolItem(tr("Menu draw background over the entire height"), &SetupConfig->MenuFullOsd));
+
+    Add(new cMenuEditBoolItem(tr("Recording menu show recording count in title"), &SetupConfig->MenuRecordingShowCount));
+    Add(new cMenuEditBoolItem(tr("Timer menu show timer count in title"), &SetupConfig->MenuTimerShowCount));
+    Add(new cMenuEditBoolItem(tr("Channel menu show channel count in title"), &SetupConfig->MenuChannelShowCount));
 
     Add(new cMenuEditStraItem(tr("Menu channel view"), &SetupConfig->MenuChannelView, MenuChannelViews.Size(), &MenuChannelViews[0]));
     Add(new cMenuEditStraItem(tr("Menu timer view"), &SetupConfig->MenuTimerView, MenuTimerViews.Size(), &MenuTimerViews[0]));

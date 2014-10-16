@@ -51,6 +51,8 @@ class cFlatBaseRender
         bool topBarExtraIconSet;
         cString topBarMenuIcon;
         bool topBarMenuIconSet;
+        cString topBarMenuIconRight;
+        bool topBarMenuIconRightSet;
         cString topBarMenuLogo;
         bool topBarMenuLogoSet;
 
@@ -140,6 +142,7 @@ class cFlatBaseRender
         void TopBarSetTitle(cString title);
         void TopBarSetTitleExtra(cString extra1, cString extra2);
         void TopBarSetMenuIcon(cString icon);
+        void TopBarSetMenuIconRight(cString icon);
         void TopBarSetMenuLogo(cString icon);
         void TopBarSetExtraIcon(cString icon);
         void TopBarUpdate(void);

@@ -3,7 +3,10 @@ VDR Plugin 'skinflatplus' Revision History
 
 2014-XX-XX: Version 0.4.3
 - [add] option to draw the menu background over the entire height
-- [add] sort icons in recordings menu
+- [add] sort icon in recordings menu
+- [add] options to show the number of recordings in title in recording menu
+- [add] options to show the number of timers in title in timer menu
+- [add] options to show the number of channels in title in channel menu
 
 2014-08-10: Version 0.4.2
 - [update] change direcotry of config-files
