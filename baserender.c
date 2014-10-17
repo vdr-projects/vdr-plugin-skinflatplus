@@ -445,8 +445,8 @@ void cFlatBaseRender::TopBarUpdate(void) {
         if( topBarMenuIconRightSet ) {
             cImage *img = imgLoader.LoadIcon(*topBarMenuIconRight, 999, topBarHeight - marginItem*2);
             if( img ) {
-                titleMaxWidth -= img->Width()+marginItem*2;
-                int IconLeft = titleLeft + topBarFont->Width(topBarTitle) + marginItem;
+                titleMaxWidth -= img->Width()+marginItem*4;
+                int IconLeft = titleLeft + topBarFont->Width(topBarTitle) + marginItem*3;
                 int iconTop = (topBarHeight / 2 - img->Height()/2);
                 topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), *img);
             }

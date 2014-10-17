@@ -253,11 +253,6 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
                 }
                 break;
             case mcRecording:
-                if( RecordingsSortMode == rsmName )
-                    TopBarSetMenuIconRight("menuIcons/RecsSortName");
-                else if( RecordingsSortMode == rsmTime )
-                    TopBarSetMenuIconRight("menuIcons/RecsSortDate");
-
                 if( Config.MenuRecordingShowCount ) {
                     int recCount = 0, recNewCount = 0;
                     for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
@@ -268,6 +263,10 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
                     cString newTitle = cString::sprintf("%s (%d*/%d)", Title, recNewCount, recCount);
                     TopBarSetTitle(*newTitle);
                 }
+                if( RecordingsSortMode == rsmName )
+                    TopBarSetMenuIconRight("menuIcons/RecsSortName");
+                else if( RecordingsSortMode == rsmTime )
+                    TopBarSetMenuIconRight("menuIcons/RecsSortDate");
                 icon = "menuIcons/Recordings";
                 break;
             case mcSetup:
