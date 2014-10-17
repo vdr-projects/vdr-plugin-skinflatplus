@@ -242,13 +242,13 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
             case mcTimer:
                 icon = "menuIcons/Timers";
                 if( Config.MenuTimerShowCount ) {
-                    int timerCount = 0, timerRecCount = 0;
+                    int timerCount = 0, timerActiveCount = 0;
                     for(cTimer *Timer = Timers.First(); Timer; Timer = Timers.Next(Timer)) {
                         timerCount++;
-                        if( Timer->Recording() )
-                            timerRecCount++;
+                        if( Timer->HasFlags(tfActive) )
+                            timerActiveCount++;
                     }
-                    cString newTitle = cString::sprintf("%s (%d/%d)", Title, timerRecCount, timerCount);
+                    cString newTitle = cString::sprintf("%s (%d/%d)", Title, timerActiveCount, timerCount);
                     TopBarSetTitle(*newTitle);
                 }
                 break;
