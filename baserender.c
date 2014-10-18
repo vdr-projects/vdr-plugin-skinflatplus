@@ -393,6 +393,15 @@ void cFlatBaseRender::TopBarUpdate(void) {
                 middleWidth += img->Width() + marginItem;
             }
         }
+        int topBarMenuIconRightWidth = 0;
+        int topBarMenuIconRightLeft = 0;
+        if( topBarMenuIconRightSet ) {
+            cImage *img = imgLoader.LoadIcon(*topBarMenuIconRight, 999, topBarHeight);
+            if( img ) {
+                topBarMenuIconRightWidth = img->Width() + marginItem*3;
+                titleWitdh += topBarMenuIconRightWidth;
+            }
+        }
 
         int extra1Width = topBarFontSml->Width(tobBarTitleExtra1);
         int extra2Width = topBarFontSml->Width(tobBarTitleExtra2);
@@ -400,12 +409,20 @@ void cFlatBaseRender::TopBarUpdate(void) {
         middleWidth += extraMaxWidth;
         Right -= extraMaxWidth + marginItem;
 
-        if( (titleLeft + titleWitdh) < (TopBarWidth/2 - middleWidth/2) )
+        if( (titleLeft + titleWitdh) < (TopBarWidth/2 - middleWidth/2) ) {
             Right = TopBarWidth/2 - middleWidth/2;
-        else if( (titleLeft + titleWitdh) < Right )
+        } else if( (titleLeft + titleWitdh) < Right ) {
             Right = titleLeft + titleWitdh + marginItem;
+        }
 
         int titleMaxWidth = Right - titleLeft - marginItem;
+
+        if( topBarFont->Width(topBarTitle) + topBarMenuIconRightWidth > titleMaxWidth ) {
+            topBarMenuIconRightLeft = titleMaxWidth + marginItem*2;
+            titleMaxWidth -= topBarMenuIconRightWidth;
+        } else {
+            topBarMenuIconRightLeft = titleLeft + topBarFont->Width(topBarTitle) + marginItem*2;
+        }
 
         topBarPixmap->DrawText(cPoint(Right, fontSmlTop), tobBarTitleExtra1, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
         topBarPixmap->DrawText(cPoint(Right, fontSmlTop + topBarFontSmlHeight), tobBarTitleExtra2, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, extraMaxWidth, 0, taRight);
@@ -443,15 +460,12 @@ void cFlatBaseRender::TopBarUpdate(void) {
         }
 
         if( topBarMenuIconRightSet ) {
-            cImage *img = imgLoader.LoadIcon(*topBarMenuIconRight, 999, topBarHeight - marginItem*2);
+            cImage *img = imgLoader.LoadIcon(*topBarMenuIconRight, 999, topBarHeight);
             if( img ) {
-                titleMaxWidth -= img->Width()+marginItem*4;
-                int IconLeft = titleLeft + topBarFont->Width(topBarTitle) + marginItem*3;
                 int iconTop = (topBarHeight / 2 - img->Height()/2);
-                topBarIconPixmap->DrawImage(cPoint(IconLeft, iconTop), *img);
+                topBarIconPixmap->DrawImage(cPoint(topBarMenuIconRightLeft, iconTop), *img);
             }
         }
-
         topBarPixmap->DrawText(cPoint(titleLeft, fontTop), topBarTitle, Theme.Color(clrTopBarFont), Theme.Color(clrTopBarBg), topBarFont, titleMaxWidth);
 
         DecorBorderDraw(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight, Config.decorBorderTopBarSize, Config.decorBorderTopBarType, Config.decorBorderTopBarFg, Config.decorBorderTopBarBg);
