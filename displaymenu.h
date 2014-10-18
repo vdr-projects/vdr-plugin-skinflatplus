@@ -49,6 +49,9 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
 
         cString ItemEventLastChannelName;
 
+        const cRecording *LastItemRecording;
+        int LastItemRecordingLevel;
+
         // Icons
         cImage *iconTimerFull;
         cImage *iconTimerPartial;
