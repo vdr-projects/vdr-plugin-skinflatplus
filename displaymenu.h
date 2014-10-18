@@ -49,7 +49,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
 
         cString ItemEventLastChannelName;
 
-        const cRecording *LastItemRecording;
+        std::string RecFolder, LastRecFolder;
         int LastItemRecordingLevel;
 
         // Icons

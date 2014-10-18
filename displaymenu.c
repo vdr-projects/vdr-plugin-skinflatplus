@@ -43,7 +43,8 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     ShowText = false;
 
     ItemEventLastChannelName = "";
-    LastItemRecording = NULL;
+    RecFolder = "";
+    LastRecFolder = "";
 
     menuItemLastHeight = 0;
     MenuFullOsdIsDrawn = false;
@@ -259,10 +260,22 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
             case mcRecording:
                 if( Config.MenuRecordingShowCount ) {
                     int recCount = 0, recNewCount = 0;
-                    for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
-                        recCount++;
-                        if( Rec->IsNew() )
-                            recNewCount++;
+                    LastRecFolder = "";
+                    if( RecFolder != "" && LastItemRecordingLevel > 0 ) {
+                        for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
+                            std::string RecFolder2 = GetRecordingName(Rec, LastItemRecordingLevel-1, true);
+                            if( RecFolder == RecFolder2 ) {
+                                recCount++;
+                                if( Rec->IsNew() )
+                                    recNewCount++;
+                            }
+                        }
+                    } else {
+                        for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
+                            recCount++;
+                            if( Rec->IsNew() )
+                                recNewCount++;
+                        }
                     }
                     cString newTitle = cString::sprintf("%s (%d*/%d)", Title, recNewCount, recCount);
                     TopBarSetTitle(*newTitle);
@@ -1752,7 +1765,11 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
     cString buffer;
     cString RecName = GetRecordingName(Recording, Level, Total == 0);
 
-    LastItemRecording = Recording;
+    if( Level > 0 ) {
+        RecFolder = GetRecordingName(Recording, Level-1, true);
+    } else {
+        RecFolder = GetRecordingName(Recording, Level, true);
+    }
     LastItemRecordingLevel = Level;
 
     if( Current )
@@ -3387,9 +3404,9 @@ void cFlatDisplayMenu::Flush(void) {
             TopBarSetTitleWithoutClear(*newTitle);
         }
     }
-    if( Config.MenuRecordingShowCount && menuCategory == mcRecording && LastItemRecording && LastItemRecordingLevel > 0 ) {
-        std::string RecFolder = GetRecordingName(LastItemRecording, LastItemRecordingLevel-1, true);
-        dsyslog("MenuRecordingShowCount RecFolder: %s Level: %d", RecFolder.c_str(), LastItemRecordingLevel-1 );
+/*
+    if( Config.MenuRecordingShowCount && menuCategory == mcRecording && LastRecFolder != RecFolder && LastItemRecordingLevel > 0 ) {
+        LastRecFolder = RecFolder;
         int recCount = 0, recNewCount = 0;
         for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
             std::string RecFolder2 = GetRecordingName(Rec, LastItemRecordingLevel-1, true);
@@ -3399,10 +3416,10 @@ void cFlatDisplayMenu::Flush(void) {
                     recNewCount++;
             }
         }
-        cString newTitle = cString::sprintf("%s (%d*/%d)", *LastTitle, recNewCount, recCount);
+        cString newTitle = cString::sprintf("%s (%dSTERN/%d)", *LastTitle, recNewCount, recCount);
         TopBarSetTitleWithoutClear(*newTitle);
     }
-
+*/
     osd->Flush();
 }
 
