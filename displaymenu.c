@@ -214,6 +214,7 @@ void cFlatDisplayMenu::Clear(void) {
 
 void cFlatDisplayMenu::SetTitle(const char *Title) {
     TopBarSetTitle(Title);
+    LastTitle = Title;
 
     if( Config.TopBarMenuIconShow ) {
         cString icon = "";
@@ -248,6 +249,8 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
                         if( Timer->HasFlags(tfActive) )
                             timerActiveCount++;
                     }
+                    LastTimerCount = timerCount;
+                    LastTimerActiveCount = timerActiveCount;
                     cString newTitle = cString::sprintf("%s (%d/%d)", Title, timerActiveCount, timerCount);
                     TopBarSetTitle(*newTitle);
                 }
@@ -3361,13 +3364,26 @@ void cFlatDisplayMenu::Flush(void) {
     TopBarUpdate();
 
     if( Config.MenuFullOsd && !MenuFullOsdIsDrawn ) {
-        dsyslog("menuItemLastHeight: %d ItemsHeight() - menuItemLastHeight: %d", menuItemLastHeight, ItemsHeight() - menuItemLastHeight );
         menuPixmap->DrawRectangle(cRect(0, menuItemLastHeight - Config.decorBorderMenuItemSize, menuItemWidth + Config.decorBorderMenuItemSize*2, menuPixmap->ViewPort().Height() - menuItemLastHeight + marginItem), Theme.Color(clrItemSelableBg));
         //menuPixmap->DrawRectangle(cRect(0, menuPixmap->ViewPort().Height() - 5, menuItemWidth + Config.decorBorderMenuItemSize*2, 5), Theme.Color(clrItemSelableBg));
         MenuFullOsdIsDrawn = true;
     }
 
-
+    if( Config.MenuTimerShowCount && menuCategory == mcTimer ) {
+        int timerCount = 0, timerActiveCount = 0;
+        for(cTimer *Timer = Timers.First(); Timer; Timer = Timers.Next(Timer)) {
+            timerCount++;
+            if( Timer->HasFlags(tfActive) )
+                timerActiveCount++;
+        }
+        if( LastTimerCount != timerCount || LastTimerActiveCount != timerActiveCount ) {
+            LastTimerCount = timerCount;
+            LastTimerActiveCount = timerActiveCount;
+            cString newTitle = cString::sprintf("%s (%d/%d)", *LastTitle, timerActiveCount, timerCount);
+            TopBarSetTitleWithoutClear(*newTitle);
+            dsyslog("UPDATE UPDATE UPDATE");
+        }
+    }
     osd->Flush();
 }
 

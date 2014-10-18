@@ -140,6 +140,7 @@ class cFlatBaseRender
 
         void TopBarCreate(void);
         void TopBarSetTitle(cString title);
+        void TopBarSetTitleWithoutClear(cString title);
         void TopBarSetTitleExtra(cString extra1, cString extra2);
         void TopBarSetMenuIcon(cString icon);
         void TopBarSetMenuIconRight(cString icon);

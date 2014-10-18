@@ -23,6 +23,9 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         eMenuCategory menuCategory;
         int VideoDiskUsageState;
 
+        int LastTimerCount, LastTimerActiveCount;
+        cString LastTitle;
+
         int chLeft, chTop, chWidth, chHeight;
         cPixmap *contentHeadPixmap;
 

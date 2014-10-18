@@ -154,6 +154,13 @@ void cFlatBaseRender::TopBarSetTitle(cString title) {
         TopBarEnableDiskUsage();
 }
 
+void cFlatBaseRender::TopBarSetTitleWithoutClear(cString title) {
+    topBarTitle = title;
+    topBarUpdateTitle = true;
+    if( Config.DiskUsageShow == 3)
+        TopBarEnableDiskUsage();
+}
+
 void cFlatBaseRender::TopBarSetTitleExtra(cString extra1, cString extra2) {
     tobBarTitleExtra1 = extra1;
     tobBarTitleExtra2 = extra2;
