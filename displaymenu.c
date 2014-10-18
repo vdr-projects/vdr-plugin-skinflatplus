@@ -3389,6 +3389,7 @@ void cFlatDisplayMenu::Flush(void) {
     }
     if( Config.MenuRecordingShowCount && menuCategory == mcRecording && LastItemRecording && LastItemRecordingLevel > 0 ) {
         std::string RecFolder = GetRecordingName(LastItemRecording, LastItemRecordingLevel-1, true);
+        dsyslog("MenuRecordingShowCount RecFolder: %s Level: %d", RecFolder.c_str(), LastItemRecordingLevel-1 );
         int recCount = 0, recNewCount = 0;
         for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
             std::string RecFolder2 = GetRecordingName(Rec, LastItemRecordingLevel-1, true);
