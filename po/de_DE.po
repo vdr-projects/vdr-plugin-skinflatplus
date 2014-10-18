@@ -10,7 +10,7 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -370,7 +370,7 @@ msgid "Scroller type"
 msgstr "Scroller Typ"
 
 msgid "TopBar border by decor-file?"
-msgstr "Titelleiste Rand von Dekordatei?"
+msgstr "Titelleiste Rand aus Dekordatei?"
 
 msgid "TopBar border type"
 msgstr "Titelleiste Rand Typ"
@@ -379,7 +379,7 @@ msgid "TopBar border size"
 msgstr "Titelleiste Rand Größe"
 
 msgid "Message border by decor-file?"
-msgstr "Meldung Rand von Dekordatei?"
+msgstr "Meldung Rand aus Dekordatei?"
 
 msgid "Message border type"
 msgstr "Meldung Rand Typ"
@@ -388,7 +388,7 @@ msgid "Message border size"
 msgstr "Meldung Rand Größe"
 
 msgid "Button border by decor-file?"
-msgstr "Tasten Rand vom von Dekordatei?"
+msgstr "Tasten Rand aus Dekordatei?"
 
 msgid "Button border type"
 msgstr "Tasten Rand Typ"
@@ -400,7 +400,7 @@ msgid "Imagecache entries"
 msgstr "Bildercache Einträge"
 
 msgid "Show Channelinfo icons"
-msgstr "Zeige Kanalinfo Symbole"
+msgstr "Zeige Kanalinfo Logos"
 
 msgid "Show signal quality"
 msgstr "Zeige Signalqualität"
@@ -424,7 +424,7 @@ msgid "program past/remaining time format"
 msgstr "Programm vergangen/verbleibend Format"
 
 msgid "Channelinfo border by decor-file?"
-msgstr "Kanalinfo Rand von Dekordatei?"
+msgstr "Kanalinfo Rand aus Dekordatei?"
 
 msgid "Channelinfo border type"
 msgstr "Kanalinfo Rand Typ"
@@ -433,7 +433,7 @@ msgid "Channelinfo border size"
 msgstr "Kanalinfo Rand Größe"
 
 msgid "Channelinfo EPG border by decor-file?"
-msgstr "Kanalinfo EPG Rand von Dekordatei?"
+msgstr "Kanalinfo EPG Rand aus Dekordatei?"
 
 msgid "Channelinfo EPG border type"
 msgstr "Kanalinfo EPG Rand Typ"
@@ -442,7 +442,7 @@ msgid "Channelinfo EPG border size"
 msgstr "Kanalinfo EPG Rand Größe"
 
 msgid "Channelinfo progress by decor-file?"
-msgstr "Kanalinfo Fortschritt von Dekordatei?"
+msgstr "Kanalinfo Fortschritt aus Dekordatei?"
 
 msgid "Channelinfo progress type"
 msgstr "Kanalinfo Fortschritt Typ"
@@ -451,7 +451,7 @@ msgid "Channelinfo progress size"
 msgstr "Kanalinfo Fortschritt Größe"
 
 msgid "Signalquality progress by decor-file?"
-msgstr "Signalpegelanzeige von Decordatei?"
+msgstr "Signalpegelanzeige aus Dekordatei?"
 
 msgid "Signalquality progress type"
 msgstr "Signalpegelanzeige Typ"
@@ -505,7 +505,7 @@ msgid "Menu recording view"
 msgstr "Menü Aufzeichnungen Ansicht"
 
 msgid "Scrollbar by decor-file?"
-msgstr "Scrollbar von Dekordatei?"
+msgstr "Scrollbar aus Dekordatei?"
 
 msgid "Scrollbar type"
 msgstr "Scrollbar Typ"
@@ -514,7 +514,7 @@ msgid "Scrollbar size"
 msgstr "Scrollbar Größe"
 
 msgid "Menuitem border by decor-file?"
-msgstr "Menüpunkt Rand von Dekordatei?"
+msgstr "Menüpunkt Rand aus Dekordatei?"
 
 msgid "Menuitem border type"
 msgstr "Menüpunkt Rand Typ"
@@ -523,7 +523,7 @@ msgid "Menuitem border size"
 msgstr "Menüpunkt Rand Größe"
 
 msgid "Menucont. border by decor-file?"
-msgstr "Menüinhalt Rand von Dekordatei?"
+msgstr "Menüinhalt Rand aus Dekordatei?"
 
 msgid "Menucont. border type"
 msgstr "Menü Rand Typ"
@@ -532,7 +532,7 @@ msgid "Menucont. border size"
 msgstr "Menü Rand Größe"
 
 msgid "Menucont. head border by decor-file?"
-msgstr "Menükopf Rand von Dekordatei?"
+msgstr "Menükopf Rand aus Dekordatei?"
 
 msgid "Menucont. head border type"
 msgstr "Menükopf Rand Typ"
@@ -541,7 +541,7 @@ msgid "Menucont. head border size"
 msgstr "Menükopf Rand Größe"
 
 msgid "Menuitem progress by decor-file?"
-msgstr "Menüpunkt Fortschritt von Dekordatei?"
+msgstr "Menüpunkt Fortschritt aus Dekordatei?"
 
 msgid "Menuitem progress type"
 msgstr "Menüpunkt Fortschritt Typ"
@@ -550,7 +550,7 @@ msgid "Menuitem progress size"
 msgstr "Menüitem Fortschritt Größe"
 
 msgid "Replay border by decor-file?"
-msgstr "Wiedergabe Rand von Dekordatei?"
+msgstr "Wiedergabe Rand aus Dekordatei?"
 
 msgid "Time seconds font scale"
 msgstr "Uhrzeit Sekunden Skalierung"
@@ -562,13 +562,13 @@ msgid "Replay border size"
 msgstr "Wiedergabe Rand Größe"
 
 msgid "Replay progress by decor-file?"
-msgstr "Wiedergabe Fortschritt von Dekordatei?"
+msgstr "Wiedergabe Fortschritt aus Dekordatei?"
 
 msgid "Replay progress size"
 msgstr "Wiedergabe Fortschritt Größe"
 
 msgid "Volume border by decor-file?"
-msgstr "Lautstärke Rand von Dekordatei?"
+msgstr "Lautstärke Rand aus Dekordatei?"
 
 msgid "Volume border type"
 msgstr "Lautstärke Rand Typ"
@@ -577,7 +577,7 @@ msgid "Volume border size"
 msgstr "Lautstärke Rand Größe"
 
 msgid "Volume progress by decor-file?"
-msgstr "Lautstärke Fortschritt von Dekordatei?"
+msgstr "Lautstärke Fortschritt aus Dekordatei?"
 
 msgid "Volume progress type"
 msgstr "Lautstärke Fortschritt Typ"
@@ -586,7 +586,7 @@ msgid "Volume progress size"
 msgstr "Lautstärke Fortschritt Größe"
 
 msgid "Tracks border by decor-file?"
-msgstr "Audiospur Rand von Dekordatei?"
+msgstr "Audiospur Rand aus Dekordatei?"
 
 msgid "Tracks border type"
 msgstr "Audiospur Rand Typ"
