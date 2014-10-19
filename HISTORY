@@ -7,6 +7,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] options to show the number of recordings in title in recording menu
 - [add] options to show the number of timers in title in timer menu
 - [add] options to show the number of channels in title in channel menu
+- [add] inactive timer icon in short view with epg
 - [update] german translation (thanks to MegaV0lt)
 
 2014-08-10: Version 0.4.2

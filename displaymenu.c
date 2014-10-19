@@ -963,6 +963,7 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText
     cHeight = osdHeight - (topBarHeight + Config.decorBorderTopBarSize*2 +
         buttonsHeight + Config.decorBorderButtonSize*2 + marginItem*3 + Config.decorBorderMenuContentSize*2);
 
+    bool isEmpty = false;
     // Description
     ostringstream text;
     if( Event ) {
@@ -1038,8 +1039,10 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText
                     text << endl << tr("Subtitle") << ": "<< subtitle.str();
             }
         }
-    } else
+    } else {
         text << *EmptyText;
+        isEmpty = true;
+    }
 
     ComplexContent.Clear();
     ComplexContent.SetScrollSize(fontSmlHeight);
@@ -1048,52 +1051,60 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText
     ComplexContent.SetPosition(cRect(cLeft, cTop, cWidth, cHeight));
     ComplexContent.SetBGColor(Theme.Color(clrMenuEventBg));
 
-    std::string mediaPath;
-    int mediaWidth = 0;
-    int mediaHeight = 0;
-    int mediaType = 0;
-
-    // first try scraper2vdr
-    static cPlugin *pScraper = cPluginManager::GetPlugin("scraper2vdr");
-    if( !pScraper ) // if it doesn't exit, try tvscraper
-        pScraper = cPluginManager::GetPlugin("tvscraper");
-
-    if( Config.TVScraperEPGInfoShowPoster && pScraper ) {
-        ScraperGetPosterBanner call;
-        call.event = Event;
-        if (pScraper->Service("GetPosterBanner", &call)) {
-            if ((call.type == tSeries) && call.banner.path.size() > 0) {
-                mediaWidth = cWidth - marginItem*2;
-                mediaHeight = 999;
-                mediaPath = call.banner.path;
-                mediaType = 1;
-            } else if (call.type == tMovie && call.poster.path.size() > 0) {
-                mediaWidth = cWidth/2 - marginItem*3;
-                mediaHeight = 999;
-                mediaPath = call.poster.path;
-                mediaType = 2;
-            }
-        }
-    }
-
-    if( mediaPath.length() > 0 ) {
-        cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
-        if( img && mediaType == 2 ) {
-            ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
-                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
-        } else if( img && mediaType == 1 ) {
+    if( isEmpty ) {
+        cImage *img = imgLoader.LoadIcon("timerInactiveBig", 256, 256);
+        if( img ) {
             ComplexContent.AddImage(img, cRect(marginItem, marginItem, img->Width(), img->Height()) );
             ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem + img->Height(), cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
+        }
+    } else {
+        std::string mediaPath;
+        int mediaWidth = 0;
+        int mediaHeight = 0;
+        int mediaType = 0;
+
+        // first try scraper2vdr
+        static cPlugin *pScraper = cPluginManager::GetPlugin("scraper2vdr");
+        if( !pScraper ) // if it doesn't exit, try tvscraper
+            pScraper = cPluginManager::GetPlugin("tvscraper");
+
+        if( Config.TVScraperEPGInfoShowPoster && pScraper ) {
+            ScraperGetPosterBanner call;
+            call.event = Event;
+            if (pScraper->Service("GetPosterBanner", &call)) {
+                if ((call.type == tSeries) && call.banner.path.size() > 0) {
+                    mediaWidth = cWidth - marginItem*2;
+                    mediaHeight = 999;
+                    mediaPath = call.banner.path;
+                    mediaType = 1;
+                } else if (call.type == tMovie && call.poster.path.size() > 0) {
+                    mediaWidth = cWidth/2 - marginItem*3;
+                    mediaHeight = 999;
+                    mediaPath = call.poster.path;
+                    mediaType = 2;
+                }
+            }
+        }
+
+        if( mediaPath.length() > 0 ) {
+            cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
+            if( img && mediaType == 2 ) {
+                ComplexContent.AddImageWithFloatedText(img, CIP_Right, text.str().c_str(), cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
+                    Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
+            } else if( img && mediaType == 1 ) {
+                ComplexContent.AddImage(img, cRect(marginItem, marginItem, img->Width(), img->Height()) );
+                ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem + img->Height(), cWidth - marginItem*2, cHeight - marginItem*2),
+                    Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
+            } else {
+                ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
+                    Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
+            }
         } else {
             ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
         }
-    } else {
-        ComplexContent.AddText(text.str().c_str(), true, cRect(marginItem, marginItem, cWidth - marginItem*2, cHeight - marginItem*2),
-            Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
     }
-
     ComplexContent.CreatePixmaps(Config.MenuContentFullSize);
 
     ComplexContent.Draw();
@@ -3426,24 +3437,8 @@ void cFlatDisplayMenu::Flush(void) {
         }
         cString newTitle = cString::sprintf("%s (%d*/%d)", *LastTitle, recNewCount, recCount);
         TopBarSetTitleWithoutClear(*newTitle);
-        dsyslog("UPDATE UPDATE UPDATE");
     }
-/*
-    if( Config.MenuRecordingShowCount && menuCategory == mcRecording && LastRecFolder != RecFolder && LastItemRecordingLevel > 0 ) {
-        LastRecFolder = RecFolder;
-        int recCount = 0, recNewCount = 0;
-        for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
-            std::string RecFolder2 = GetRecordingName(Rec, LastItemRecordingLevel-1, true);
-            if( RecFolder == RecFolder2 ) {
-                recCount++;
-                if( Rec->IsNew() )
-                    recNewCount++;
-            }
-        }
-        cString newTitle = cString::sprintf("%s (%dSTERN/%d)", *LastTitle, recNewCount, recCount);
-        TopBarSetTitleWithoutClear(*newTitle);
-    }
-*/
+
     osd->Flush();
 }
 
