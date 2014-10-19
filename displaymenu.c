@@ -260,7 +260,7 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
             case mcRecording:
                 if( Config.MenuRecordingShowCount ) {
                     int recCount = 0, recNewCount = 0;
-                    LastRecFolder = "";
+                    LastRecFolder = RecFolder;
                     if( RecFolder != "" && LastItemRecordingLevel > 0 ) {
                         for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
                             std::string RecFolder2 = GetRecordingName(Rec, LastItemRecordingLevel-1, true);
@@ -1768,7 +1768,7 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
     if( Level > 0 ) {
         RecFolder = GetRecordingName(Recording, Level-1, true);
     } else {
-        RecFolder = GetRecordingName(Recording, Level, true);
+        RecFolder = "";
     }
     LastItemRecordingLevel = Level;
 
@@ -3403,6 +3403,30 @@ void cFlatDisplayMenu::Flush(void) {
             cString newTitle = cString::sprintf("%s (%d/%d)", *LastTitle, timerActiveCount, timerCount);
             TopBarSetTitleWithoutClear(*newTitle);
         }
+    }
+    if( Config.MenuRecordingShowCount && menuCategory == mcRecording && LastRecFolder != RecFolder ) {
+        dsyslog("LastRecFolder: %s RecFolder: %s", LastRecFolder.c_str(), RecFolder.c_str() );
+        int recCount = 0, recNewCount = 0;
+        LastRecFolder = RecFolder;
+        if( RecFolder != "" && LastItemRecordingLevel > 0 ) {
+            for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
+                std::string RecFolder2 = GetRecordingName(Rec, LastItemRecordingLevel-1, true);
+                if( RecFolder == RecFolder2 ) {
+                    recCount++;
+                    if( Rec->IsNew() )
+                        recNewCount++;
+                }
+            }
+        } else {
+            for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
+                recCount++;
+                if( Rec->IsNew() )
+                    recNewCount++;
+            }
+        }
+        cString newTitle = cString::sprintf("%s (%d*/%d)", *LastTitle, recNewCount, recCount);
+        TopBarSetTitleWithoutClear(*newTitle);
+        dsyslog("UPDATE UPDATE UPDATE");
     }
 /*
     if( Config.MenuRecordingShowCount && menuCategory == mcRecording && LastRecFolder != RecFolder && LastItemRecordingLevel > 0 ) {
