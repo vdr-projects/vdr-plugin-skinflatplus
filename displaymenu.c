@@ -65,6 +65,7 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     chHeight = fontHeight + fontSmlHeight*2 + marginItem*2;
     contentHeadPixmap = osd->CreatePixmap(1, cRect(chLeft, chTop, chWidth, chHeight));
     dsyslog("skinflatplus: contentHeadPixmap left: %d top: %d width: %d height: %d", chLeft, chTop, chWidth, chHeight );
+    contentHeadIconsPixmap = osd->CreatePixmap(1, cRect(chLeft, chTop, chWidth, chHeight));
 
     scrollbarPixmap = osd->CreatePixmap(2, cRect(0, scrollBarTop, menuWidth, scrollBarHeight + buttonsHeight + Config.decorBorderButtonSize*2));
     dsyslog("skinflatplus: scrollbarPixmap left: %d top: %d width: %d height: %d", 0, scrollBarTop, menuWidth, scrollBarHeight + buttonsHeight + Config.decorBorderButtonSize*2 );
@@ -73,6 +74,7 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     menuIconsPixmap->Fill(clrTransparent);
     menuIconsBGPixmap->Fill(clrTransparent);
     scrollbarPixmap->Fill(clrTransparent);
+    contentHeadIconsPixmap->Fill(clrTransparent);
 
     menuCategory = mcUndefined;
 
@@ -91,6 +93,7 @@ cFlatDisplayMenu::~cFlatDisplayMenu() {
     osd->DestroyPixmap(menuIconsBGPixmap);
     osd->DestroyPixmap(scrollbarPixmap);
     osd->DestroyPixmap(contentHeadPixmap);
+    osd->DestroyPixmap(contentHeadIconsPixmap);
 }
 
 void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
@@ -973,6 +976,23 @@ void cFlatDisplayMenu::DrawItemExtraEvent(const cEvent *Event, cString EmptyText
 
         if( Config.EpgAdditionalInfoShow ) {
             text << endl;
+            // Genre
+            bool firstContent = true;
+            for (int i = 0; Event->Contents(i); i++) {
+                if (!isempty(Event->ContentToString(Event->Contents(i)))) { // skip empty (user defined) content
+                    if (!firstContent)
+                        text << ", ";
+                    else
+                        text << endl << tr("Genre") << ": ";
+                    text << Event->ContentToString(Event->Contents(i));
+                    firstContent = false;
+                }
+            }
+            // FSK
+            if( Event->ParentalRating() ) {
+                text << endl << tr("FSK") << ": ";
+                text << *Event->GetParentalRatingString();
+            }
             const cComponents *Components = Event->Components();
             if (Components) {
                 ostringstream audio;
@@ -2098,6 +2118,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
 
     contentHeadPixmap->Fill(clrTransparent);
     contentHeadPixmap->DrawRectangle(cRect(0, 0, menuWidth, fontHeight + fontSmlHeight*2 + marginItem*2), Theme.Color(clrScrollbarBg));
+    contentHeadIconsPixmap->Fill(clrTransparent);
 
     cString date = Event->GetDateString();
     cString startTime = Event->GetTimeString();
@@ -2116,12 +2137,37 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         Config.decorBorderMenuContentHeadFg, Config.decorBorderMenuContentHeadBg);
 
     // Description
-    ostringstream text, textAdditional;
+    ostringstream text, textAdditional, ossGenres;
+    std::string Genres, Fsk;
+
     if( !isempty(Event->Description()) ) {
         text << Event->Description();
     }
 
     if( Config.EpgAdditionalInfoShow ) {
+        text << endl;
+        // Genre
+        bool firstContent = true;
+        for (int i = 0; Event->Contents(i); i++) {
+            if (!isempty(Event->ContentToString(Event->Contents(i)))) { // skip empty (user defined) content
+                if (!firstContent) {
+                    text << ", ";
+                    ossGenres << ",";
+                } else {
+                    text << endl << tr("Genre") << ": ";
+                }
+                text << Event->ContentToString(Event->Contents(i));
+                ossGenres << Event->ContentToString(Event->Contents(i)) << ",";
+                firstContent = false;
+            }
+        }
+        Genres = ossGenres.str();
+        // FSK
+        if( Event->ParentalRating() ) {
+            text << endl << tr("FSK") << ": ";
+            text << *Event->GetParentalRatingString();
+            Fsk = *Event->GetParentalRatingString();
+        }
         const cComponents *Components = Event->Components();
         if (Components) {
             ostringstream audio;
@@ -2191,6 +2237,46 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                     textAdditional << endl;
                 textAdditional << endl << tr("Subtitle") << ": "<< subtitle.str();
             }
+        }
+    }
+
+    int headIconTop = chHeight - fontHeight - marginItem;
+    int headIconLeft = chWidth - fontHeight - marginItem;
+
+    if( Fsk.length() > 0 ) {
+        cString iconName = cString::sprintf("EPGInfo/FSK/%s", Fsk.c_str());
+        cImage *img = imgLoader.LoadIcon(*iconName, fontHeight, fontHeight);
+        if( img ) {
+            contentHeadIconsPixmap->DrawImage(cPoint(headIconLeft, headIconTop), *img);
+            headIconLeft -= fontHeight + marginItem;
+        }
+    }
+    if( Genres.length() > 0 ) {
+        dsyslog("Genre: %s", Genres.c_str());
+        std::replace(Genres.begin(), Genres.end(), '/', ',');
+        dsyslog("Genre: %s", Genres.c_str());
+        size_t pos = 0;
+        std::string token;
+        std::string delimiter = ",";
+        std::list<std::string> listGenre;
+        while( (pos = Genres.find(delimiter)) != std::string::npos) {
+            token = Genres.substr(0, pos);
+            Genres.erase(0, pos + delimiter.length());
+            dsyslog("token: %s Genre: %s", token.c_str(), Genres.c_str());
+            if( token.length() == 0 )
+                continue;
+            listGenre.push_back(token);
+        }
+        listGenre.sort();
+        listGenre.unique();
+        while( !listGenre.empty() ) {
+            cString iconName = cString::sprintf("EPGInfo/Genre/%s", listGenre.back().c_str());
+            cImage *img = imgLoader.LoadIcon(*iconName, fontHeight, fontHeight);
+            if( img ) {
+                contentHeadIconsPixmap->DrawImage(cPoint(headIconLeft, headIconTop), *img);
+                headIconLeft -= fontHeight + marginItem;
+            }
+            listGenre.pop_back();
         }
     }
 

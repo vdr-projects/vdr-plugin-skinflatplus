@@ -28,6 +28,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
 
         int chLeft, chTop, chWidth, chHeight;
         cPixmap *contentHeadPixmap;
+        cPixmap *contentHeadIconsPixmap;
 
         int cLeft, cTop, cWidth, cHeight;
 

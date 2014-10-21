@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.2\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-10-16 20:16+0200\n"
+"POT-Creation-Date: 2014-10-21 18:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,6 +26,12 @@ msgstr "belegt"
 
 msgid "clock"
 msgstr "Uhr"
+
+msgid "Genre"
+msgstr ""
+
+msgid "FSK"
+msgstr ""
 
 msgid "Video"
 msgstr "Video"
