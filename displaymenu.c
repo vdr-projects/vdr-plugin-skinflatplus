@@ -2137,8 +2137,9 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         Config.decorBorderMenuContentHeadFg, Config.decorBorderMenuContentHeadBg);
 
     // Description
-    ostringstream text, textAdditional, ossGenres;
-    std::string Genres, Fsk;
+    ostringstream text, textAdditional;
+    std::string Fsk;
+    std::list<std::string> GenreIcons;
 
     if( !isempty(Event->Description()) ) {
         text << Event->Description();
@@ -2152,16 +2153,150 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
             if (!isempty(Event->ContentToString(Event->Contents(i)))) { // skip empty (user defined) content
                 if (!firstContent) {
                     text << ", ";
-                    ossGenres << ",";
                 } else {
                     text << endl << tr("Genre") << ": ";
                 }
                 text << Event->ContentToString(Event->Contents(i));
-                ossGenres << Event->ContentToString(Event->Contents(i)) << ",";
                 firstContent = false;
+                  switch (Event->Contents(i) & 0xF0) {
+                    case ecgMovieDrama:
+                         switch (Event->Contents(i) & 0x0F) {
+                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                           case 0x00: GenreIcons.push_back("Movie_Drama"); break;
+                           case 0x01: GenreIcons.push_back("Detective_Thriller"); break;
+                           case 0x02: GenreIcons.push_back("Adventure_Western_War"); break;
+                           case 0x03: GenreIcons.push_back("Science Fiction_Fantasy_Horror"); break;
+                           case 0x04: GenreIcons.push_back("Comedy"); break;
+                           case 0x05: GenreIcons.push_back("Soap_Melodrama_Folkloric"); break;
+                           case 0x06: GenreIcons.push_back("Romance"); break;
+                           case 0x07: GenreIcons.push_back("Serious_Classical_Religious_Historical Movie_Drama"); break;
+                           case 0x08: GenreIcons.push_back("Adult Movie_Drama"); break;
+                           }
+                         break;
+                    case ecgNewsCurrentAffairs:
+                         switch (Event->Contents(i) & 0x0F) {
+                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                           case 0x00: GenreIcons.push_back("News_Current Affairs"); break;
+                           case 0x01: GenreIcons.push_back("News_Weather Report"); break;
+                           case 0x02: GenreIcons.push_back("News Magazine"); break;
+                           case 0x03: GenreIcons.push_back("Documentary"); break;
+                           case 0x04: GenreIcons.push_back("Discussion_Inverview_Debate"); break;
+                           }
+                         break;
+                    case ecgShow:
+                         switch (Event->Contents(i) & 0x0F) {
+                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                           case 0x00: GenreIcons.push_back("Show_Game Show"); break;
+                           case 0x01: GenreIcons.push_back("Game Show_Quiz_Contest"); break;
+                           case 0x02: GenreIcons.push_back("Variety Show"); break;
+                           case 0x03: GenreIcons.push_back("Talk Show"); break;
+                           }
+                         break;
+                    case ecgSports:
+                         switch (Event->Contents(i) & 0x0F) {
+                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                           case 0x00: GenreIcons.push_back("Sports"); break;
+                           case 0x01: GenreIcons.push_back("Special Event"); break;
+                           case 0x02: GenreIcons.push_back("Sport Magazine"); break;
+                           case 0x03: GenreIcons.push_back("Football_Soccer"); break;
+                           case 0x04: GenreIcons.push_back("Tennis_Squash"); break;
+                           case 0x05: GenreIcons.push_back("Team Sports"); break;
+                           case 0x06: GenreIcons.push_back("Athletics"); break;
+                           case 0x07: GenreIcons.push_back("Motor Sport"); break;
+                           case 0x08: GenreIcons.push_back("Water Sport"); break;
+                           case 0x09: GenreIcons.push_back("Winter Sports"); break;
+                           case 0x0A: GenreIcons.push_back("Equestrian"); break;
+                           case 0x0B: GenreIcons.push_back("Martial Sports"); break;
+                           }
+                         break;
+                    case ecgChildrenYouth:
+                         switch (Event->Contents(i) & 0x0F) {
+                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                           case 0x00: GenreIcons.push_back("Childrens_Youth Programme"); break;
+                           case 0x01: GenreIcons.push_back("Pre-school Childrens Programme"); break;
+                           case 0x02: GenreIcons.push_back("Entertainment Programme for 6 to 14"); break;
+                           case 0x03: GenreIcons.push_back("Entertainment Programme for 10 to 16"); break;
+                           case 0x04: GenreIcons.push_back("Informational_Educational_School Programme"); break;
+                           case 0x05: GenreIcons.push_back("Cartoons_Puppets"); break;
+                           }
+                         break;
+                    case ecgMusicBalletDance:
+                         switch (Event->Contents(i) & 0x0F) {
+                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                           case 0x00: GenreIcons.push_back("Music_Ballet_Dance"); break;
+                           case 0x01: GenreIcons.push_back("Rock_Pop"); break;
+                           case 0x02: GenreIcons.push_back("Serious_Classical Music"); break;
+                           case 0x03: GenreIcons.push_back("Folk_Tradional Music"); break;
+                           case 0x04: GenreIcons.push_back("Jazz"); break;
+                           case 0x05: GenreIcons.push_back("Musical_Opera"); break;
+                           case 0x06: GenreIcons.push_back("Ballet"); break;
+                           }
+                         break;
+                    case ecgArtsCulture:
+                         switch (Event->Contents(i) & 0x0F) {
+                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                           case 0x00: GenreIcons.push_back("Arts_Culture"); break;
+                           case 0x01: GenreIcons.push_back("Performing Arts"); break;
+                           case 0x02: GenreIcons.push_back("Fine Arts"); break;
+                           case 0x03: GenreIcons.push_back("Religion"); break;
+                           case 0x04: GenreIcons.push_back("Popular Culture_Traditional Arts"); break;
+                           case 0x05: GenreIcons.push_back("Literature"); break;
+                           case 0x06: GenreIcons.push_back("Film_Cinema"); break;
+                           case 0x07: GenreIcons.push_back("Experimental Film_Video"); break;
+                           case 0x08: GenreIcons.push_back("Broadcasting_Press"); break;
+                           case 0x09: GenreIcons.push_back("New Media"); break;
+                           case 0x0A: GenreIcons.push_back("Arts_Culture Magazine"); break;
+                           case 0x0B: GenreIcons.push_back("Fashion"); break;
+                           }
+                         break;
+                    case ecgSocialPoliticalEconomics:
+                         switch (Event->Contents(i) & 0x0F) {
+                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                           case 0x00: GenreIcons.push_back("Social_Political_Economics"); break;
+                           case 0x01: GenreIcons.push_back("Magazine_Report_Documentary"); break;
+                           case 0x02: GenreIcons.push_back("Economics_Social Advisory"); break;
+                           case 0x03: GenreIcons.push_back("Remarkable People"); break;
+                           }
+                         break;
+                    case ecgEducationalScience:
+                         switch (Event->Contents(i) & 0x0F) {
+                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                           case 0x00: GenreIcons.push_back("Education_Science_Factual"); break;
+                           case 0x01: GenreIcons.push_back("Nature_Animals_Environment"); break;
+                           case 0x02: GenreIcons.push_back("Technology_Natural Sciences"); break;
+                           case 0x03: GenreIcons.push_back("Medicine_Physiology_Psychology"); break;
+                           case 0x04: GenreIcons.push_back("Foreign Countries_Expeditions"); break;
+                           case 0x05: GenreIcons.push_back("Social_Spiritual Sciences"); break;
+                           case 0x06: GenreIcons.push_back("Further Education"); break;
+                           case 0x07: GenreIcons.push_back("Languages"); break;
+                           }
+                         break;
+                    case ecgLeisureHobbies:
+                         switch (Event->Contents(i) & 0x0F) {
+                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                           case 0x00: GenreIcons.push_back("Leisure/Hobbies"); break;
+                           case 0x01: GenreIcons.push_back("Tourism/Travel"); break;
+                           case 0x02: GenreIcons.push_back("Handicraft"); break;
+                           case 0x03: GenreIcons.push_back("Motoring"); break;
+                           case 0x04: GenreIcons.push_back("Fitness & Health"); break;
+                           case 0x05: GenreIcons.push_back("Cooking"); break;
+                           case 0x06: GenreIcons.push_back("Advertisement/Shopping"); break;
+                           case 0x07: GenreIcons.push_back("Gardening"); break;
+                           }
+                         break;
+                    case ecgSpecial:
+                         switch (Event->Contents(i) & 0x0F) {
+                           case 0x00: GenreIcons.push_back("Original Language"); break;
+                           case 0x01: GenreIcons.push_back("Black & White"); break;
+                           case 0x02: GenreIcons.push_back("Unpublished"); break;
+                           case 0x03: GenreIcons.push_back("Live Broadcast"); break;
+                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                           }
+                         break;
+                    default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
+                    }
             }
         }
-        Genres = ossGenres.str();
         // FSK
         if( Event->ParentalRating() ) {
             text << endl << tr("FSK") << ": ";
@@ -2249,35 +2384,30 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         if( img ) {
             contentHeadIconsPixmap->DrawImage(cPoint(headIconLeft, headIconTop), *img);
             headIconLeft -= fontHeight + marginItem;
-        }
-    }
-    if( Genres.length() > 0 ) {
-        dsyslog("Genre: %s", Genres.c_str());
-        std::replace(Genres.begin(), Genres.end(), '/', ',');
-        dsyslog("Genre: %s", Genres.c_str());
-        size_t pos = 0;
-        std::string token;
-        std::string delimiter = ",";
-        std::list<std::string> listGenre;
-        while( (pos = Genres.find(delimiter)) != std::string::npos) {
-            token = Genres.substr(0, pos);
-            Genres.erase(0, pos + delimiter.length());
-            dsyslog("token: %s Genre: %s", token.c_str(), Genres.c_str());
-            if( token.length() == 0 )
-                continue;
-            listGenre.push_back(token);
-        }
-        listGenre.sort();
-        listGenre.unique();
-        while( !listGenre.empty() ) {
-            cString iconName = cString::sprintf("EPGInfo/Genre/%s", listGenre.back().c_str());
-            cImage *img = imgLoader.LoadIcon(*iconName, fontHeight, fontHeight);
+        } else {
+            isyslog("skinflatplus: FSK icon not found: %s", *iconName);
+            img = imgLoader.LoadIcon("EPGInfo/FSK/unknown", fontHeight, fontHeight);
             if( img ) {
                 contentHeadIconsPixmap->DrawImage(cPoint(headIconLeft, headIconTop), *img);
                 headIconLeft -= fontHeight + marginItem;
             }
-            listGenre.pop_back();
         }
+    }
+    while( !GenreIcons.empty() ) {
+        cString iconName = cString::sprintf("EPGInfo/Genre/%s", GenreIcons.back().c_str());
+        cImage *img = imgLoader.LoadIcon(*iconName, fontHeight, fontHeight);
+        if( img ) {
+            contentHeadIconsPixmap->DrawImage(cPoint(headIconLeft, headIconTop), *img);
+            headIconLeft -= fontHeight + marginItem;
+        } else {
+            isyslog("skinflatplus: Genre icon not found: %s", *iconName);
+            img = imgLoader.LoadIcon("EPGInfo/Genre/unknown", fontHeight, fontHeight);
+            if( img ) {
+                contentHeadIconsPixmap->DrawImage(cPoint(headIconLeft, headIconTop), *img);
+                headIconLeft -= fontHeight + marginItem;
+            }
+        }
+        GenreIcons.pop_back();
     }
 
     #ifdef DEBUGEPGTIME
