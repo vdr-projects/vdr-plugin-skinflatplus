@@ -8,8 +8,8 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] options to show the number of timers in title in timer menu
 - [add] options to show the number of channels in title in channel menu
 - [add] inactive timer icon in short view with epg
-- [add] fsk, genre text in epg info
-- [add] fsk, genre icon in epg info head
+- [add] fsk, genre text in epg/recording info (show additional epg info must be set) (thanks to MegaV0lt)
+- [add] fsk, genre icon in epg/recording info head (show additional epg info must be set) (thanks to MegaV0lt)
 - [update] german translation (thanks to MegaV0lt)
 
 2014-08-10: Version 0.4.2
