@@ -205,6 +205,7 @@ void cFlatDisplayMenu::Clear(void) {
     menuIconsBGPixmap->Fill(clrTransparent);
     scrollbarPixmap->Fill(clrTransparent);
     contentHeadPixmap->Fill(clrTransparent);
+    contentHeadIconsPixmap->Fill(clrTransparent);
     DecorBorderClearByFrom(BorderMenuItem);
     DecorBorderClearByFrom(BorderContent);
     DecorBorderClearAll();
@@ -2210,7 +2211,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                            }
                          break;
                     case ecgChildrenYouth:
-                         switch (Event->Contents(i) & 0x0F) {
+                         switch (Event->Contents(i) & 0x0F) { // no icons
                            default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
                            case 0x00: GenreIcons.push_back("Childrens_Youth Programme"); break;
                            case 0x01: GenreIcons.push_back("Pre-school Childrens Programme"); break;
@@ -2233,7 +2234,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                            }
                          break;
                     case ecgArtsCulture:
-                         switch (Event->Contents(i) & 0x0F) {
+                         switch (Event->Contents(i) & 0x0F) { // no icons
                            default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
                            case 0x00: GenreIcons.push_back("Arts_Culture"); break;
                            case 0x01: GenreIcons.push_back("Performing Arts"); break;
@@ -2394,17 +2395,23 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
         }
     }
     while( !GenreIcons.empty() ) {
+        GenreIcons.sort();
+        GenreIcons.unique();
         cString iconName = cString::sprintf("EPGInfo/Genre/%s", GenreIcons.back().c_str());
         cImage *img = imgLoader.LoadIcon(*iconName, fontHeight, fontHeight);
+        bool isUnknownDrawn = false;
         if( img ) {
             contentHeadIconsPixmap->DrawImage(cPoint(headIconLeft, headIconTop), *img);
             headIconLeft -= fontHeight + marginItem;
         } else {
             isyslog("skinflatplus: Genre icon not found: %s", *iconName);
-            img = imgLoader.LoadIcon("EPGInfo/Genre/unknown", fontHeight, fontHeight);
-            if( img ) {
-                contentHeadIconsPixmap->DrawImage(cPoint(headIconLeft, headIconTop), *img);
-                headIconLeft -= fontHeight + marginItem;
+            if( !isUnknownDrawn ) {
+                img = imgLoader.LoadIcon("EPGInfo/Genre/unknown", fontHeight, fontHeight);
+                if( img ) {
+                    contentHeadIconsPixmap->DrawImage(cPoint(headIconLeft, headIconTop), *img);
+                    headIconLeft -= fontHeight + marginItem;
+                    isUnknownDrawn = true;
+                }
             }
         }
         GenreIcons.pop_back();
