@@ -2159,143 +2159,7 @@ void cFlatDisplayMenu::SetEvent(const cEvent *Event) {
                 }
                 text << Event->ContentToString(Event->Contents(i));
                 firstContent = false;
-                  switch (Event->Contents(i) & 0xF0) {
-                    case ecgMovieDrama:
-                         switch (Event->Contents(i) & 0x0F) {
-                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                           case 0x00: GenreIcons.push_back("Movie_Drama"); break;
-                           case 0x01: GenreIcons.push_back("Detective_Thriller"); break;
-                           case 0x02: GenreIcons.push_back("Adventure_Western_War"); break;
-                           case 0x03: GenreIcons.push_back("Science Fiction_Fantasy_Horror"); break;
-                           case 0x04: GenreIcons.push_back("Comedy"); break;
-                           case 0x05: GenreIcons.push_back("Soap_Melodrama_Folkloric"); break;
-                           case 0x06: GenreIcons.push_back("Romance"); break;
-                           case 0x07: GenreIcons.push_back("Serious_Classical_Religious_Historical Movie_Drama"); break;
-                           case 0x08: GenreIcons.push_back("Adult Movie_Drama"); break;
-                           }
-                         break;
-                    case ecgNewsCurrentAffairs:
-                         switch (Event->Contents(i) & 0x0F) {
-                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                           case 0x00: GenreIcons.push_back("News_Current Affairs"); break;
-                           case 0x01: GenreIcons.push_back("News_Weather Report"); break;
-                           case 0x02: GenreIcons.push_back("News Magazine"); break;
-                           case 0x03: GenreIcons.push_back("Documentary"); break;
-                           case 0x04: GenreIcons.push_back("Discussion_Inverview_Debate"); break;
-                           }
-                         break;
-                    case ecgShow:
-                         switch (Event->Contents(i) & 0x0F) {
-                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                           case 0x00: GenreIcons.push_back("Show_Game Show"); break;
-                           case 0x01: GenreIcons.push_back("Game Show_Quiz_Contest"); break;
-                           case 0x02: GenreIcons.push_back("Variety Show"); break;
-                           case 0x03: GenreIcons.push_back("Talk Show"); break;
-                           }
-                         break;
-                    case ecgSports:
-                         switch (Event->Contents(i) & 0x0F) {
-                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                           case 0x00: GenreIcons.push_back("Sports"); break;
-                           case 0x01: GenreIcons.push_back("Special Event"); break;
-                           case 0x02: GenreIcons.push_back("Sport Magazine"); break;
-                           case 0x03: GenreIcons.push_back("Football_Soccer"); break;
-                           case 0x04: GenreIcons.push_back("Tennis_Squash"); break;
-                           case 0x05: GenreIcons.push_back("Team Sports"); break;
-                           case 0x06: GenreIcons.push_back("Athletics"); break;
-                           case 0x07: GenreIcons.push_back("Motor Sport"); break;
-                           case 0x08: GenreIcons.push_back("Water Sport"); break;
-                           case 0x09: GenreIcons.push_back("Winter Sports"); break;
-                           case 0x0A: GenreIcons.push_back("Equestrian"); break;
-                           case 0x0B: GenreIcons.push_back("Martial Sports"); break;
-                           }
-                         break;
-                    case ecgChildrenYouth:
-                         switch (Event->Contents(i) & 0x0F) { // no icons
-                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                           case 0x00: GenreIcons.push_back("Childrens_Youth Programme"); break;
-                           case 0x01: GenreIcons.push_back("Pre-school Childrens Programme"); break;
-                           case 0x02: GenreIcons.push_back("Entertainment Programme for 6 to 14"); break;
-                           case 0x03: GenreIcons.push_back("Entertainment Programme for 10 to 16"); break;
-                           case 0x04: GenreIcons.push_back("Informational_Educational_School Programme"); break;
-                           case 0x05: GenreIcons.push_back("Cartoons_Puppets"); break;
-                           }
-                         break;
-                    case ecgMusicBalletDance:
-                         switch (Event->Contents(i) & 0x0F) {
-                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                           case 0x00: GenreIcons.push_back("Music_Ballet_Dance"); break;
-                           case 0x01: GenreIcons.push_back("Rock_Pop"); break;
-                           case 0x02: GenreIcons.push_back("Serious_Classical Music"); break;
-                           case 0x03: GenreIcons.push_back("Folk_Tradional Music"); break;
-                           case 0x04: GenreIcons.push_back("Jazz"); break;
-                           case 0x05: GenreIcons.push_back("Musical_Opera"); break;
-                           case 0x06: GenreIcons.push_back("Ballet"); break;
-                           }
-                         break;
-                    case ecgArtsCulture:
-                         switch (Event->Contents(i) & 0x0F) { // no icons
-                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                           case 0x00: GenreIcons.push_back("Arts_Culture"); break;
-                           case 0x01: GenreIcons.push_back("Performing Arts"); break;
-                           case 0x02: GenreIcons.push_back("Fine Arts"); break;
-                           case 0x03: GenreIcons.push_back("Religion"); break;
-                           case 0x04: GenreIcons.push_back("Popular Culture_Traditional Arts"); break;
-                           case 0x05: GenreIcons.push_back("Literature"); break;
-                           case 0x06: GenreIcons.push_back("Film_Cinema"); break;
-                           case 0x07: GenreIcons.push_back("Experimental Film_Video"); break;
-                           case 0x08: GenreIcons.push_back("Broadcasting_Press"); break;
-                           case 0x09: GenreIcons.push_back("New Media"); break;
-                           case 0x0A: GenreIcons.push_back("Arts_Culture Magazine"); break;
-                           case 0x0B: GenreIcons.push_back("Fashion"); break;
-                           }
-                         break;
-                    case ecgSocialPoliticalEconomics:
-                         switch (Event->Contents(i) & 0x0F) {
-                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                           case 0x00: GenreIcons.push_back("Social_Political_Economics"); break;
-                           case 0x01: GenreIcons.push_back("Magazine_Report_Documentary"); break;
-                           case 0x02: GenreIcons.push_back("Economics_Social Advisory"); break;
-                           case 0x03: GenreIcons.push_back("Remarkable People"); break;
-                           }
-                         break;
-                    case ecgEducationalScience:
-                         switch (Event->Contents(i) & 0x0F) {
-                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                           case 0x00: GenreIcons.push_back("Education_Science_Factual"); break;
-                           case 0x01: GenreIcons.push_back("Nature_Animals_Environment"); break;
-                           case 0x02: GenreIcons.push_back("Technology_Natural Sciences"); break;
-                           case 0x03: GenreIcons.push_back("Medicine_Physiology_Psychology"); break;
-                           case 0x04: GenreIcons.push_back("Foreign Countries_Expeditions"); break;
-                           case 0x05: GenreIcons.push_back("Social_Spiritual Sciences"); break;
-                           case 0x06: GenreIcons.push_back("Further Education"); break;
-                           case 0x07: GenreIcons.push_back("Languages"); break;
-                           }
-                         break;
-                    case ecgLeisureHobbies:
-                         switch (Event->Contents(i) & 0x0F) {
-                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                           case 0x00: GenreIcons.push_back("Leisure_Hobbies"); break;
-                           case 0x01: GenreIcons.push_back("Tourism_Travel"); break;
-                           case 0x02: GenreIcons.push_back("Handicraft"); break;
-                           case 0x03: GenreIcons.push_back("Motoring"); break;
-                           case 0x04: GenreIcons.push_back("Fitness & Health"); break;
-                           case 0x05: GenreIcons.push_back("Cooking"); break;
-                           case 0x06: GenreIcons.push_back("Advertisement_Shopping"); break;
-                           case 0x07: GenreIcons.push_back("Gardening"); break;
-                           }
-                         break;
-                    case ecgSpecial:
-                         switch (Event->Contents(i) & 0x0F) {
-                           case 0x00: GenreIcons.push_back("Original Language"); break;
-                           case 0x01: GenreIcons.push_back("Black & White"); break;
-                           case 0x02: GenreIcons.push_back("Unpublished"); break;
-                           case 0x03: GenreIcons.push_back("Live Broadcast"); break;
-                           default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                           }
-                         break;
-                    default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                    }
+                GenreIcons.push_back(GetGenreIcon(Event->Contents(i)));
             }
         }
         // FSK
@@ -3112,143 +2976,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
                     }
                     text << Event->ContentToString(Event->Contents(i));
                     firstContent = false;
-                      switch (Event->Contents(i) & 0xF0) {
-                        case ecgMovieDrama:
-                             switch (Event->Contents(i) & 0x0F) {
-                               default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                               case 0x00: GenreIcons.push_back("Movie_Drama"); break;
-                               case 0x01: GenreIcons.push_back("Detective_Thriller"); break;
-                               case 0x02: GenreIcons.push_back("Adventure_Western_War"); break;
-                               case 0x03: GenreIcons.push_back("Science Fiction_Fantasy_Horror"); break;
-                               case 0x04: GenreIcons.push_back("Comedy"); break;
-                               case 0x05: GenreIcons.push_back("Soap_Melodrama_Folkloric"); break;
-                               case 0x06: GenreIcons.push_back("Romance"); break;
-                               case 0x07: GenreIcons.push_back("Serious_Classical_Religious_Historical Movie_Drama"); break;
-                               case 0x08: GenreIcons.push_back("Adult Movie_Drama"); break;
-                               }
-                             break;
-                        case ecgNewsCurrentAffairs:
-                             switch (Event->Contents(i) & 0x0F) {
-                               default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                               case 0x00: GenreIcons.push_back("News_Current Affairs"); break;
-                               case 0x01: GenreIcons.push_back("News_Weather Report"); break;
-                               case 0x02: GenreIcons.push_back("News Magazine"); break;
-                               case 0x03: GenreIcons.push_back("Documentary"); break;
-                               case 0x04: GenreIcons.push_back("Discussion_Inverview_Debate"); break;
-                               }
-                             break;
-                        case ecgShow:
-                             switch (Event->Contents(i) & 0x0F) {
-                               default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                               case 0x00: GenreIcons.push_back("Show_Game Show"); break;
-                               case 0x01: GenreIcons.push_back("Game Show_Quiz_Contest"); break;
-                               case 0x02: GenreIcons.push_back("Variety Show"); break;
-                               case 0x03: GenreIcons.push_back("Talk Show"); break;
-                               }
-                             break;
-                        case ecgSports:
-                             switch (Event->Contents(i) & 0x0F) {
-                               default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                               case 0x00: GenreIcons.push_back("Sports"); break;
-                               case 0x01: GenreIcons.push_back("Special Event"); break;
-                               case 0x02: GenreIcons.push_back("Sport Magazine"); break;
-                               case 0x03: GenreIcons.push_back("Football_Soccer"); break;
-                               case 0x04: GenreIcons.push_back("Tennis_Squash"); break;
-                               case 0x05: GenreIcons.push_back("Team Sports"); break;
-                               case 0x06: GenreIcons.push_back("Athletics"); break;
-                               case 0x07: GenreIcons.push_back("Motor Sport"); break;
-                               case 0x08: GenreIcons.push_back("Water Sport"); break;
-                               case 0x09: GenreIcons.push_back("Winter Sports"); break;
-                               case 0x0A: GenreIcons.push_back("Equestrian"); break;
-                               case 0x0B: GenreIcons.push_back("Martial Sports"); break;
-                               }
-                             break;
-                        case ecgChildrenYouth:
-                             switch (Event->Contents(i) & 0x0F) { // no icons
-                               default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                               case 0x00: GenreIcons.push_back("Childrens_Youth Programme"); break;
-                               case 0x01: GenreIcons.push_back("Pre-school Childrens Programme"); break;
-                               case 0x02: GenreIcons.push_back("Entertainment Programme for 6 to 14"); break;
-                               case 0x03: GenreIcons.push_back("Entertainment Programme for 10 to 16"); break;
-                               case 0x04: GenreIcons.push_back("Informational_Educational_School Programme"); break;
-                               case 0x05: GenreIcons.push_back("Cartoons_Puppets"); break;
-                               }
-                             break;
-                        case ecgMusicBalletDance:
-                             switch (Event->Contents(i) & 0x0F) {
-                               default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                               case 0x00: GenreIcons.push_back("Music_Ballet_Dance"); break;
-                               case 0x01: GenreIcons.push_back("Rock_Pop"); break;
-                               case 0x02: GenreIcons.push_back("Serious_Classical Music"); break;
-                               case 0x03: GenreIcons.push_back("Folk_Tradional Music"); break;
-                               case 0x04: GenreIcons.push_back("Jazz"); break;
-                               case 0x05: GenreIcons.push_back("Musical_Opera"); break;
-                               case 0x06: GenreIcons.push_back("Ballet"); break;
-                               }
-                             break;
-                        case ecgArtsCulture:
-                             switch (Event->Contents(i) & 0x0F) { // no icons
-                               default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                               case 0x00: GenreIcons.push_back("Arts_Culture"); break;
-                               case 0x01: GenreIcons.push_back("Performing Arts"); break;
-                               case 0x02: GenreIcons.push_back("Fine Arts"); break;
-                               case 0x03: GenreIcons.push_back("Religion"); break;
-                               case 0x04: GenreIcons.push_back("Popular Culture_Traditional Arts"); break;
-                               case 0x05: GenreIcons.push_back("Literature"); break;
-                               case 0x06: GenreIcons.push_back("Film_Cinema"); break;
-                               case 0x07: GenreIcons.push_back("Experimental Film_Video"); break;
-                               case 0x08: GenreIcons.push_back("Broadcasting_Press"); break;
-                               case 0x09: GenreIcons.push_back("New Media"); break;
-                               case 0x0A: GenreIcons.push_back("Arts_Culture Magazine"); break;
-                               case 0x0B: GenreIcons.push_back("Fashion"); break;
-                               }
-                             break;
-                        case ecgSocialPoliticalEconomics:
-                             switch (Event->Contents(i) & 0x0F) {
-                               default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                               case 0x00: GenreIcons.push_back("Social_Political_Economics"); break;
-                               case 0x01: GenreIcons.push_back("Magazine_Report_Documentary"); break;
-                               case 0x02: GenreIcons.push_back("Economics_Social Advisory"); break;
-                               case 0x03: GenreIcons.push_back("Remarkable People"); break;
-                               }
-                             break;
-                        case ecgEducationalScience:
-                             switch (Event->Contents(i) & 0x0F) {
-                               default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                               case 0x00: GenreIcons.push_back("Education_Science_Factual"); break;
-                               case 0x01: GenreIcons.push_back("Nature_Animals_Environment"); break;
-                               case 0x02: GenreIcons.push_back("Technology_Natural Sciences"); break;
-                               case 0x03: GenreIcons.push_back("Medicine_Physiology_Psychology"); break;
-                               case 0x04: GenreIcons.push_back("Foreign Countries_Expeditions"); break;
-                               case 0x05: GenreIcons.push_back("Social_Spiritual Sciences"); break;
-                               case 0x06: GenreIcons.push_back("Further Education"); break;
-                               case 0x07: GenreIcons.push_back("Languages"); break;
-                               }
-                             break;
-                        case ecgLeisureHobbies:
-                             switch (Event->Contents(i) & 0x0F) {
-                               default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                               case 0x00: GenreIcons.push_back("Leisure_Hobbies"); break;
-                               case 0x01: GenreIcons.push_back("Tourism_Travel"); break;
-                               case 0x02: GenreIcons.push_back("Handicraft"); break;
-                               case 0x03: GenreIcons.push_back("Motoring"); break;
-                               case 0x04: GenreIcons.push_back("Fitness & Health"); break;
-                               case 0x05: GenreIcons.push_back("Cooking"); break;
-                               case 0x06: GenreIcons.push_back("Advertisement_Shopping"); break;
-                               case 0x07: GenreIcons.push_back("Gardening"); break;
-                               }
-                             break;
-                        case ecgSpecial:
-                             switch (Event->Contents(i) & 0x0F) {
-                               case 0x00: GenreIcons.push_back("Original Language"); break;
-                               case 0x01: GenreIcons.push_back("Black & White"); break;
-                               case 0x02: GenreIcons.push_back("Unpublished"); break;
-                               case 0x03: GenreIcons.push_back("Live Broadcast"); break;
-                               default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                               }
-                             break;
-                        default: isyslog("skinflatplus: Genre not found: %x", Event->Contents(i));
-                        }
+                    GenreIcons.push_back(GetGenreIcon(Event->Contents(i)));
                 }
             }
             if( Event->Contents(0) )
@@ -4013,6 +3741,147 @@ const char * cFlatDisplayMenu::GetRecordingName(const cRecording *Recording, int
         }
     }
     return recNamePart.c_str();
+}
+
+const char* cFlatDisplayMenu::GetGenreIcon(uchar genre) {
+    switch (genre & 0xF0) {
+        case ecgMovieDrama:
+            switch (genre & 0x0F) {
+                default: isyslog("skinflatplus: Genre not found: %x", genre);
+                case 0x00: return "Movie_Drama";
+                case 0x01: return "Detective_Thriller";
+                case 0x02: return "Adventure_Western_War";
+                case 0x03: return "Science Fiction_Fantasy_Horror";
+                case 0x04: return "Comedy";
+                case 0x05: return "Soap_Melodrama_Folkloric";
+                case 0x06: return "Romance";
+                case 0x07: return "Serious_Classical_Religious_Historical Movie_Drama";
+                case 0x08: return "Adult Movie_Drama";
+            }
+            break;
+        case ecgNewsCurrentAffairs:
+            switch (genre & 0x0F) {
+                default: isyslog("skinflatplus: Genre not found: %x", genre);
+                case 0x00: return "News_Current Affairs";
+                case 0x01: return "News_Weather Report";
+                case 0x02: return "News Magazine";
+                case 0x03: return "Documentary";
+                case 0x04: return "Discussion_Inverview_Debate";
+            }
+            break;
+        case ecgShow:
+            switch (genre & 0x0F) {
+                default: isyslog("skinflatplus: Genre not found: %x", genre);
+                case 0x00: return "Show_Game Show";
+                case 0x01: return "Game Show_Quiz_Contest";
+                case 0x02: return "Variety Show";
+                case 0x03: return "Talk Show";
+            }
+            break;
+        case ecgSports:
+            switch (genre & 0x0F) {
+                default: isyslog("skinflatplus: Genre not found: %x", genre);
+                case 0x00: return "Sports";
+                case 0x01: return "Special Event";
+                case 0x02: return "Sport Magazine";
+                case 0x03: return "Football_Soccer";
+                case 0x04: return "Tennis_Squash";
+                case 0x05: return "Team Sports";
+                case 0x06: return "Athletics";
+                case 0x07: return "Motor Sport";
+                case 0x08: return "Water Sport";
+                case 0x09: return "Winter Sports";
+                case 0x0A: return "Equestrian";
+                case 0x0B: return "Martial Sports";
+            }
+            break;
+        case ecgChildrenYouth:
+            switch (genre & 0x0F) { // no icons
+                default: isyslog("skinflatplus: Genre not found: %x", genre);
+                case 0x00: return "Childrens_Youth Programme";
+                case 0x01: return "Pre-school Childrens Programme";
+                case 0x02: return "Entertainment Programme for 6 to 14";
+                case 0x03: return "Entertainment Programme for 10 to 16";
+                case 0x04: return "Informational_Educational_School Programme";
+                case 0x05: return "Cartoons_Puppets";
+            }
+            break;
+        case ecgMusicBalletDance:
+            switch (genre & 0x0F) {
+                default: isyslog("skinflatplus: Genre not found: %x", genre);
+                case 0x00: return "Music_Ballet_Dance";
+                case 0x01: return "Rock_Pop";
+                case 0x02: return "Serious_Classical Music";
+                case 0x03: return "Folk_Tradional Music";
+                case 0x04: return "Jazz";
+                case 0x05: return "Musical_Opera";
+                case 0x06: return "Ballet";
+            }
+            break;
+        case ecgArtsCulture:
+            switch (genre & 0x0F) { // no icons
+                default: isyslog("skinflatplus: Genre not found: %x", genre);
+                case 0x00: return "Arts_Culture";
+                case 0x01: return "Performing Arts";
+                case 0x02: return "Fine Arts";
+                case 0x03: return "Religion";
+                case 0x04: return "Popular Culture_Traditional Arts";
+                case 0x05: return "Literature";
+                case 0x06: return "Film_Cinema";
+                case 0x07: return "Experimental Film_Video";
+                case 0x08: return "Broadcasting_Press";
+                case 0x09: return "New Media";
+                case 0x0A: return "Arts_Culture Magazine";
+                case 0x0B: return "Fashion";
+            }
+            break;
+        case ecgSocialPoliticalEconomics:
+            switch (genre & 0x0F) {
+                default: isyslog("skinflatplus: Genre not found: %x", genre);
+                case 0x00: return "Social_Political_Economics";
+                case 0x01: return "Magazine_Report_Documentary";
+                case 0x02: return "Economics_Social Advisory";
+                case 0x03: return "Remarkable People";
+            }
+            break;
+        case ecgEducationalScience:
+            switch (genre & 0x0F) {
+                default: isyslog("skinflatplus: Genre not found: %x", genre);
+                case 0x00: return "Education_Science_Factual";
+                case 0x01: return "Nature_Animals_Environment";
+                case 0x02: return "Technology_Natural Sciences";
+                case 0x03: return "Medicine_Physiology_Psychology";
+                case 0x04: return "Foreign Countries_Expeditions";
+                case 0x05: return "Social_Spiritual Sciences";
+                case 0x06: return "Further Education";
+                case 0x07: return "Languages";
+            }
+            break;
+        case ecgLeisureHobbies:
+            switch (genre & 0x0F) {
+                default: isyslog("skinflatplus: Genre not found: %x", genre);
+                case 0x00: return "Leisure_Hobbies";
+                case 0x01: return "Tourism_Travel";
+                case 0x02: return "Handicraft";
+                case 0x03: return "Motoring";
+                case 0x04: return "Fitness & Health";
+                case 0x05: return "Cooking";
+                case 0x06: return "Advertisement_Shopping";
+                case 0x07: return "Gardening";
+            }
+            break;
+        case ecgSpecial:
+            switch (genre & 0x0F) {
+                case 0x00: return "Original Language";
+                case 0x01: return "Black & White";
+                case 0x02: return "Unpublished";
+                case 0x03: return "Live Broadcast";
+                default: isyslog("skinflatplus: Genre not found: %x", genre);
+            }
+            break;
+        default: isyslog("skinflatplus: Genre not found: %x", genre);
+    }
+    return "";
 }
 
 void cFlatDisplayMenu::PreLoadImages(void) {
