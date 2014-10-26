@@ -65,6 +65,8 @@ cFlatConfig::cFlatConfig(void) {
 
     MenuFullOsd = 0;
 
+    ShortRecordingCount = 0;
+
     MenuItemRecordingClearPercent = 1;
     MenuItemRecordingShowFolderDate = 1;
     MenuItemParseTilde = 1;
@@ -271,6 +273,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MenuRecordingShowCount") == 0)               MenuRecordingShowCount = atoi(Value);
     else if (strcmp(Name, "MenuTimerShowCount") == 0)                   MenuTimerShowCount = atoi(Value);
     else if (strcmp(Name, "MenuChannelShowCount") == 0)                 MenuChannelShowCount = atoi(Value);
+    else if (strcmp(Name, "ShortRecordingCount") == 0)                  ShortRecordingCount = atoi(Value);
 
     else return false;
 

@@ -282,6 +282,14 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
                         }
                     }
                     cString newTitle = cString::sprintf("%s (%d*/%d)", Title, recNewCount, recCount);
+                    if( Config.ShortRecordingCount ) {
+                        if( recNewCount == 0 ) // 0 neue Aufnahmen
+                            newTitle = cString::sprintf("%s (%d)", Title, recCount);
+                        else if( recNewCount == recCount ) //Nur neue Aufnahmen
+                            newTitle = cString::sprintf("%s (%d*)", Title, recNewCount);
+                        else // Anzeige (35*/56)
+                            newTitle = cString::sprintf("%s (%d*/%d)", Title, recNewCount, recCount);
+                    }
                     TopBarSetTitle(*newTitle);
                 }
                 if( RecordingsSortMode == rsmName )
@@ -3618,31 +3626,7 @@ void cFlatDisplayMenu::Flush(void) {
             TopBarSetTitleWithoutClear(*newTitle);
         }
     }
-    /*
-    if( Config.MenuRecordingShowCount && menuCategory == mcRecording && LastRecFolder != RecFolder ) {
-        dsyslog("LastRecFolder: %s RecFolder: %s", LastRecFolder.c_str(), RecFolder.c_str() );
-        int recCount = 0, recNewCount = 0;
-        LastRecFolder = RecFolder;
-        if( RecFolder != "" && LastItemRecordingLevel > 0 ) {
-            for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
-                std::string RecFolder2 = GetRecordingName(Rec, LastItemRecordingLevel-1, true);
-                if( RecFolder == RecFolder2 ) {
-                    recCount++;
-                    if( Rec->IsNew() )
-                        recNewCount++;
-                }
-            }
-        } else {
-            for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
-                recCount++;
-                if( Rec->IsNew() )
-                    recNewCount++;
-            }
-        }
-        cString newTitle = cString::sprintf("%s (%dSTAR/%d)", *LastTitle, recNewCount, recCount);
-        TopBarSetTitleWithoutClear(*newTitle);
-    }
-    */
+
     osd->Flush();
 }
 

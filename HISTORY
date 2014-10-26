@@ -5,6 +5,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] option to draw the menu background over the entire height
 - [add] sort icon in recordings menu
 - [add] options to show the number of recordings in title in recording menu
+- [add] hidden options "ShortRecordingCount" to show number of recordings in short format
 - [add] options to show the number of timers in title in timer menu
 - [add] options to show the number of channels in title in channel menu
 - [add] inactive timer icon in short view with epg

@@ -273,6 +273,7 @@ void cFlatSetup::Store(void) {
     SetupStore("MenuRecordingShowCount", Config.MenuRecordingShowCount);
     SetupStore("MenuTimerShowCount", Config.MenuTimerShowCount);
     SetupStore("MenuChannelShowCount", Config.MenuChannelShowCount);
+    SetupStore("ShortRecordingCount", Config.ShortRecordingCount);
 
     Config.Init();
 }
@@ -419,6 +420,7 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MenuRecordingShowCount") == 0)               SetupConfig->MenuRecordingShowCount = atoi(Value);
     else if (strcmp(Name, "MenuTimerShowCount") == 0)                   SetupConfig->MenuTimerShowCount = atoi(Value);
     else if (strcmp(Name, "MenuChannelShowCount") == 0)                 SetupConfig->MenuChannelShowCount = atoi(Value);
+    else if (strcmp(Name, "ShortRecordingCount") == 0)                  SetupConfig->ShortRecordingCount = atoi(Value);
     else return false;
 
     return true;
@@ -546,6 +548,7 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("MenuRecordingShowCount", SetupConfig->MenuRecordingShowCount, *Filename);
     Config.Store("MenuTimerShowCount", SetupConfig->MenuTimerShowCount, *Filename);
     Config.Store("MenuChannelShowCount", SetupConfig->MenuChannelShowCount, *Filename);
+    Config.Store("ShortRecordingCount", SetupConfig->ShortRecordingCount, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
