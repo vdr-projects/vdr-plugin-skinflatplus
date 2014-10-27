@@ -3731,7 +3731,6 @@ const char* cFlatDisplayMenu::GetGenreIcon(uchar genre) {
     switch (genre & 0xF0) {
         case ecgMovieDrama:
             switch (genre & 0x0F) {
-                default: isyslog("skinflatplus: Genre not found: %x", genre);
                 case 0x00: return "Movie_Drama";
                 case 0x01: return "Detective_Thriller";
                 case 0x02: return "Adventure_Western_War";
@@ -3741,30 +3740,30 @@ const char* cFlatDisplayMenu::GetGenreIcon(uchar genre) {
                 case 0x06: return "Romance";
                 case 0x07: return "Serious_Classical_Religious_Historical Movie_Drama";
                 case 0x08: return "Adult Movie_Drama";
+                default:   return "Movie_Drama";
             }
             break;
         case ecgNewsCurrentAffairs:
             switch (genre & 0x0F) {
-                default: isyslog("skinflatplus: Genre not found: %x", genre);
                 case 0x00: return "News_Current Affairs";
                 case 0x01: return "News_Weather Report";
                 case 0x02: return "News Magazine";
                 case 0x03: return "Documentary";
                 case 0x04: return "Discussion_Inverview_Debate";
+                default:   return "News_Current Affairs";
             }
             break;
         case ecgShow:
             switch (genre & 0x0F) {
-                default: isyslog("skinflatplus: Genre not found: %x", genre);
                 case 0x00: return "Show_Game Show";
                 case 0x01: return "Game Show_Quiz_Contest";
                 case 0x02: return "Variety Show";
                 case 0x03: return "Talk Show";
+                default:   return "Show_Game Show";
             }
             break;
         case ecgSports:
             switch (genre & 0x0F) {
-                default: isyslog("skinflatplus: Genre not found: %x", genre);
                 case 0x00: return "Sports";
                 case 0x01: return "Special Event";
                 case 0x02: return "Sport Magazine";
@@ -3777,22 +3776,22 @@ const char* cFlatDisplayMenu::GetGenreIcon(uchar genre) {
                 case 0x09: return "Winter Sports";
                 case 0x0A: return "Equestrian";
                 case 0x0B: return "Martial Sports";
+                default:   return "Sports";
             }
             break;
         case ecgChildrenYouth:
-            switch (genre & 0x0F) { // no icons
-                default: isyslog("skinflatplus: Genre not found: %x", genre);
+            switch (genre & 0x0F) {
                 case 0x00: return "Childrens_Youth Programme";
                 case 0x01: return "Pre-school Childrens Programme";
                 case 0x02: return "Entertainment Programme for 6 to 14";
                 case 0x03: return "Entertainment Programme for 10 to 16";
                 case 0x04: return "Informational_Educational_School Programme";
                 case 0x05: return "Cartoons_Puppets";
+                default:   return "Childrens_Youth Programme";
             }
             break;
         case ecgMusicBalletDance:
             switch (genre & 0x0F) {
-                default: isyslog("skinflatplus: Genre not found: %x", genre);
                 case 0x00: return "Music_Ballet_Dance";
                 case 0x01: return "Rock_Pop";
                 case 0x02: return "Serious_Classical Music";
@@ -3800,11 +3799,11 @@ const char* cFlatDisplayMenu::GetGenreIcon(uchar genre) {
                 case 0x04: return "Jazz";
                 case 0x05: return "Musical_Opera";
                 case 0x06: return "Ballet";
+                default:   return "Music_Ballet_Dance";
             }
             break;
         case ecgArtsCulture:
-            switch (genre & 0x0F) { // no icons
-                default: isyslog("skinflatplus: Genre not found: %x", genre);
+            switch (genre & 0x0F) {
                 case 0x00: return "Arts_Culture";
                 case 0x01: return "Performing Arts";
                 case 0x02: return "Fine Arts";
@@ -3817,20 +3816,20 @@ const char* cFlatDisplayMenu::GetGenreIcon(uchar genre) {
                 case 0x09: return "New Media";
                 case 0x0A: return "Arts_Culture Magazine";
                 case 0x0B: return "Fashion";
+                default:   return "Arts_Culture";
             }
             break;
         case ecgSocialPoliticalEconomics:
             switch (genre & 0x0F) {
-                default: isyslog("skinflatplus: Genre not found: %x", genre);
                 case 0x00: return "Social_Political_Economics";
                 case 0x01: return "Magazine_Report_Documentary";
                 case 0x02: return "Economics_Social Advisory";
                 case 0x03: return "Remarkable People";
+                default:   return "Social_Political_Economics";
             }
             break;
         case ecgEducationalScience:
             switch (genre & 0x0F) {
-                default: isyslog("skinflatplus: Genre not found: %x", genre);
                 case 0x00: return "Education_Science_Factual";
                 case 0x01: return "Nature_Animals_Environment";
                 case 0x02: return "Technology_Natural Sciences";
@@ -3839,19 +3838,20 @@ const char* cFlatDisplayMenu::GetGenreIcon(uchar genre) {
                 case 0x05: return "Social_Spiritual Sciences";
                 case 0x06: return "Further Education";
                 case 0x07: return "Languages";
+                default:   return "Education_Science_Factual";
             }
             break;
         case ecgLeisureHobbies:
             switch (genre & 0x0F) {
-                default: isyslog("skinflatplus: Genre not found: %x", genre);
                 case 0x00: return "Leisure_Hobbies";
                 case 0x01: return "Tourism_Travel";
                 case 0x02: return "Handicraft";
                 case 0x03: return "Motoring";
-                case 0x04: return "Fitness & Health";
+                case 0x04: return "Fitness_Health";
                 case 0x05: return "Cooking";
                 case 0x06: return "Advertisement_Shopping";
                 case 0x07: return "Gardening";
+                default:   return "Leisure_Hobbies";
             }
             break;
         case ecgSpecial:
@@ -3860,7 +3860,7 @@ const char* cFlatDisplayMenu::GetGenreIcon(uchar genre) {
                 case 0x01: return "Black & White";
                 case 0x02: return "Unpublished";
                 case 0x03: return "Live Broadcast";
-                default: isyslog("skinflatplus: Genre not found: %x", genre);
+                default:   return "Original Language";
             }
             break;
         default: isyslog("skinflatplus: Genre not found: %x", genre);
