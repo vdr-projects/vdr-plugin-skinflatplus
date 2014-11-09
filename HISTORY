@@ -13,6 +13,8 @@ VDR Plugin 'skinflatplus' Revision History
         - Widget temperatures
         - Widget custom command
     - Please see the example scripts and README-files
+- [update] icons
+    - update many icons with android material design icons
 
 2014-10-29: Version 0.4.3
 - [add] option to draw the menu background over the entire height
