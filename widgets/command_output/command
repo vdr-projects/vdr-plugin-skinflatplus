@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "MyTitle" > title
+
+echo "output line 1" > output
+echo "output line 2" >> output

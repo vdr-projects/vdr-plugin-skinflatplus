@@ -1,0 +1,134 @@
+#!/bin/bash
+
+# this script will be executed when the widget will be drawn
+# so make it short and fast
+
+# enable/disable items
+SHOW_SYS_VERSION=0
+SHOW_KERNEL_VERSION=0
+SHOW_UPTIME=1
+SHOW_LOAD=1
+SHOW_PROCESSES=1
+SHOW_MEM_USAGE=1
+SHOW_SWAP_USAGE=1
+SHOW_ROOT_USAGE=1
+SHOW_VIDEO_USAGE=1
+SHOW_VDR_CPU_USAGE=1
+SHOW_VDR_MEM_USAGE=1
+
+SHOW_TEMPERATURES=0
+SHOW_SYSUPDATES=0
+
+# Position of items
+# sys_version & kernel_version are drawn in one line
+# all others will be drawn in two column
+# for example
+# System Version: Ubuntu 14.04.1 LTS
+# Uptime: 1:20 5m       Load: 0.41
+
+# must begin with 01
+SYS_VERSION_POS="01"
+KERNEL_VERSION_POS="02"
+UPTIME_POS="03"
+LOAD_POS="04"
+PROCESSES_POS="05"
+MEM_USAGE_POS="06"
+SWAP_USAGE_POS="07"
+ROOT_USAGE_POS="08"
+VIDEO_USAGE_POS="09"
+VDR_CPU_USAGE_POS="10"
+VDR_MEM_USAGE_POS="11"
+
+TEMP_CPU_POS=15
+TEMP_PCCASE_POS=16
+TEMP_GPU_POS=17
+
+SYSUPD_POS=20
+SYSSECUPD_POS=21
+
+# mount point of vdr video disk
+VIDEO_MOUNT="/media/video"
+
+
+# force english output for filters
+LANG=en_EN
+
+# delete all files
+rm -f [0-99]*
+
+if [ $SHOW_SYS_VERSION = 1 ]; then
+    cat /etc/os-release | grep "PRETTY_NAME=" | cut -d"\"" -f 2 > ./${SYS_VERSION_POS}_sys_version
+fi
+
+if [ $SHOW_KERNEL_VERSION = 1 ]; then
+    uname -r > ./${KERNEL_VERSION_POS}_kernel_version
+fi
+
+if [ $SHOW_UPTIME = 1 ]; then
+    uptime | grep -ohe 'up .*' | sed 's/,//g' | awk '{ printf $2" "$3 }' > ./${UPTIME_POS}_uptime
+fi
+
+if [ $SHOW_LOAD = 1 ]; then
+    cat /proc/loadavg | awk '{print $1}' > ./${LOAD_POS}_load
+fi
+
+if [ $SHOW_PROCESSES = 1 ]; then
+    ps aux | wc -l > ./${PROCESSES_POS}_processes
+fi
+
+if [ $SHOW_MEM_USAGE = 1 ]; then
+    free -m | awk '/Mem:/ { total=$2 } /buffers\/cache/ { used=$3 } END { printf("%3.1f%%", used/total*100)}' > ./${MEM_USAGE_POS}_mem_usage
+fi
+
+if [ $SHOW_SWAP_USAGE = 1 ]; then
+    SWAP=`free -m | awk '/Swap/ {print($2)}'`
+    if [ $SWAP -gt 0 ]; then
+        free -m | awk '/Swap/ { printf("%3.1f%%", $3/$2*100) }' > ./${SWAP_USAGE_POS}_swap_usage
+    fi
+fi
+
+if [ $SHOW_ROOT_USAGE = 1 ]; then
+    df -h / | awk '/\// {print $(NF-1)}' > ./${ROOT_USAGE_POS}_root_usage
+fi
+
+if [ $SHOW_VIDEO_USAGE = 1 ] && [ -d ${VIDEO_MOUNT} ]; then
+    df -h ${VIDEO_MOUNT} | awk '/\// {print $(NF-1)}' > ./${VIDEO_USAGE_POS}_video_usage
+fi
+
+if [ $SHOW_VDR_CPU_USAGE = 1 ]; then
+    vdr_pid=`pidof vdr`
+    if [ $? = 0 ]; then
+        VALUE=`ps -p ${vdr_pid} -o %cpu | awk 'NR==2{print $0}' | tr -d ' '`
+        echo "${VALUE}%" > ./${VDR_CPU_USAGE_POS}_vdr_cpu_usage
+    fi
+fi
+
+if [ $SHOW_VDR_MEM_USAGE = 1 ]; then
+    vdr_pid=`pidof vdr`
+    if [ $? = 0 ]; then
+        VALUE=`ps -p ${vdr_pid} -o %mem | awk 'NR==2{print $0}' | tr -d ' '`
+        echo "${VALUE}%" > ./${VDR_MEM_USAGE_POS}_vdr_mem_usage
+    fi
+fi
+
+if [ $SHOW_TEMPERATURES = 1 ]; then
+    ./../temperatures/temperatures
+    if [ -f ./cpu ]; then
+        mv ./cpu ${TEMP_CPU_POS}_cpu
+    fi
+    if [ -f ./pccase ]; then
+        mv ./pccase ${TEMP_PCCASE_POS}_pccase
+    fi
+    if [ -f ./gpu ]; then
+        mv ./gpu ${TEMP_GPU_POS}_gpu
+    fi
+fi
+
+if [ $SHOW_SYSUPDATES = 1 ]; then
+    if [ -f ./../system_updatestatus/updates ]; then
+        cp ./../system_updatestatus/updates ${SYSUPD_POS}_updates
+    fi
+    if [ -f ./../system_updatestatus/security_updates ]; then
+        cp ./../system_updatestatus/security_updates ${SYSSECUPD_POS}_security_updates
+    fi
+fi

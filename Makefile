@@ -145,7 +145,11 @@ install-configs:
 	mkdir -p $(DESTDIR)$(VDRCONFDIR)/plugins/$(PLUGIN)/configs
 	cp configs/* $(DESTDIR)$(VDRCONFDIR)/plugins/$(PLUGIN)/configs
 
-install: install-lib install-i18n install-themes install-icons install-decors install-configs
+install-widgets:
+	mkdir -p $(DESTDIR)$(VDRCONFDIR)/plugins/$(PLUGIN)/widgets
+	cp -r widgets/* $(DESTDIR)$(VDRCONFDIR)/plugins/$(PLUGIN)/widgets
+
+install: install-lib install-i18n install-themes install-icons install-decors install-configs install-widgets
 
 dist: $(I18Npo) clean
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)

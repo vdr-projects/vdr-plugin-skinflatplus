@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.3\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-10-21 18:38+0200\n"
+"POT-Creation-Date: 2014-11-09 14:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -134,6 +134,117 @@ msgstr "Suchmuster"
 
 msgid "Recording information"
 msgstr "Aufnahme Informationen"
+
+msgid "DVB Devices"
+msgstr ""
+
+msgid "LiveTV"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "recording"
+msgstr ""
+
+msgid "not used"
+msgstr ""
+
+msgid "Active Timer"
+msgstr ""
+
+msgid "no active timer"
+msgstr ""
+
+msgid "Last Recordings"
+msgstr ""
+
+msgid "Timer Conflicts"
+msgstr ""
+
+msgid "no timer conflicts"
+msgstr ""
+
+msgid "timer conflicts"
+msgstr ""
+
+msgid "System Information"
+msgstr ""
+
+msgid "no information available please check the script"
+msgstr ""
+
+msgid "System Version"
+msgstr ""
+
+msgid "Kernel Version"
+msgstr ""
+
+msgid "Uptime"
+msgstr ""
+
+msgid "Load"
+msgstr ""
+
+msgid "Processes"
+msgstr ""
+
+msgid "Memory Usage"
+msgstr ""
+
+msgid "Swap Usage"
+msgstr ""
+
+msgid "Root Usage"
+msgstr ""
+
+msgid "Video Usage"
+msgstr ""
+
+msgid "VDR CPU Usage"
+msgstr ""
+
+msgid "Temp CPU"
+msgstr ""
+
+msgid "Temp GPU"
+msgstr ""
+
+msgid "Temp PC-Case"
+msgstr ""
+
+msgid "Updates"
+msgstr ""
+
+msgid "Security Updates"
+msgstr ""
+
+msgid "System Updates"
+msgstr ""
+
+msgid "Updatestatus not available please check the widget"
+msgstr ""
+
+msgid "Temperatures"
+msgstr ""
+
+msgid "Temperatures not available please check the widget"
+msgstr ""
+
+msgid "CPU"
+msgstr ""
+
+msgid "PC-Case"
+msgstr ""
+
+msgid "GPU"
+msgstr ""
+
+msgid "no title available"
+msgstr ""
+
+msgid "no output available"
+msgstr ""
 
 msgid "Audio Tracks"
 msgstr "Audio Spuren"
@@ -290,6 +401,9 @@ msgstr "TVScraper / scraper2vdr Einstellungen"
 
 msgid "TVScraper / scraper2vdr not installed"
 msgstr "TVScraper / scraper2vdr nicht installiert"
+
+msgid "Main menu widgets settings"
+msgstr ""
 
 msgid "configfile"
 msgstr "Konfigdatei"
@@ -483,9 +597,6 @@ msgstr "Zeige Zusatzinfo bei EPG"
 msgid "Show reruns in EPG info"
 msgstr "Zeige Wiederholungen bei EPG"
 
-msgid "Main menuitem scale"
-msgstr "Hauptmenüeintrag Skalierung"
-
 msgid "Menu draw background over the entire height"
 msgstr "Menü zeichne Hintergrund über gesamte Höhe"
 
@@ -600,6 +711,9 @@ msgstr "Audiospur Rand Typ"
 msgid "Tracks border size"
 msgstr "Audiospur Rand Größe"
 
+msgid "TVScraper settings"
+msgstr ""
+
 msgid "Channelinfo show poster?"
 msgstr "Kanalinfo zeige Poster?"
 
@@ -617,3 +731,99 @@ msgstr "EPG-Info zeige Schauspieler?"
 
 msgid "recording info show actors?"
 msgstr "Aufnahmeinfo zeige Schauspieler?"
+
+msgid "Enable main menu widgets"
+msgstr ""
+
+msgid "Main menu item scale"
+msgstr ""
+
+msgid "Widget DVB devices: enable"
+msgstr ""
+
+msgid "Widget DVB devices: position"
+msgstr ""
+
+msgid "Widget active timer: enable"
+msgstr ""
+
+msgid "Widget active timer: position"
+msgstr ""
+
+msgid "Widget active timer: max show"
+msgstr ""
+
+msgid "Widget active timer: hide if empty"
+msgstr ""
+
+msgid "Widget last recordings: enable"
+msgstr ""
+
+msgid "Widget last recordings: position"
+msgstr ""
+
+msgid "Widget last recordings: max show"
+msgstr ""
+
+msgid "Widget timer conflicts: enable"
+msgstr ""
+
+msgid "Widget timer conflicts: position"
+msgstr ""
+
+msgid "Widget timer conflicts: hide if empty"
+msgstr ""
+
+msgid "Widget system information: enable"
+msgstr ""
+
+msgid "Widget system information: position"
+msgstr ""
+
+msgid "Widget system updates: enable"
+msgstr ""
+
+msgid "Widget system updates: position"
+msgstr ""
+
+msgid "Widget system updates: hide if empty"
+msgstr ""
+
+msgid "Widget temperatures: enable"
+msgstr ""
+
+msgid "Widget temperatures: position"
+msgstr ""
+
+msgid "Widget custom commands: enable"
+msgstr ""
+
+msgid "Widget custom commands: position"
+msgstr ""
+
+msgid "Enable widget: DVB devices"
+msgstr ""
+
+msgid "Enable widget: active timer"
+msgstr ""
+
+msgid "Enable widget: last recordings"
+msgstr ""
+
+msgid "Enable widget: timer conflicts"
+msgstr ""
+
+msgid "Enable widget: system information"
+msgstr ""
+
+msgid "Enable widget: system updates"
+msgstr ""
+
+msgid "Enable widget: temperatures"
+msgstr ""
+
+msgid "Enable widget: custom commands"
+msgstr ""
+
+#~ msgid "Main menuitem scale"
+#~ msgstr "Hauptmenüeintrag Skalierung"

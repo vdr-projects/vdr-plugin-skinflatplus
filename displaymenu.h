@@ -2,6 +2,7 @@
 
 #include "baserender.h"
 #include "complexcontent.h"
+#include <vdr/menu.h>
 #include <list>
 #include <ctype.h>
 #include <iostream>
@@ -45,6 +46,9 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
 
         cComplexContent ComplexContent;
 
+        // Content for Widgets
+        cComplexContent contentWidget;
+
         // TextScroller
         cTextScrollers menuItemScroller;
 
@@ -86,6 +90,16 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         static cBitmap bmCNew, bmCRec, bmCArrowTurn, bmCHD, bmCVPS;
         void DrawItemExtraEvent(const cEvent *Event, cString EmptyText);
         void DrawItemExtraRecording(const cRecording *Recording, cString EmptyText);
+        void DrawMainMenuWidgets(void);
+        int DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int ContentTop);
+        int DrawMainMenuWidgetActiveTimers(int wLeft, int wWidth, int ContentTop);
+        int DrawMainMenuWidgetLastRecordings(int wLeft, int wWidth, int ContentTop);
+        int DrawMainMenuWidgetTimerConflicts(int wLeft, int wWidth, int ContentTop);
+        int DrawMainMenuWidgetSystemInformation(int wLeft, int wWidth, int ContentTop);
+        int DrawMainMenuWidgetSystemUpdates(int wLeft, int wWidth, int ContentTop);
+        int DrawMainMenuWidgetTemperaturs(int wLeft, int wWidth, int ContentTop);
+        int DrawMainMenuWidgetCommand(int wLeft, int wWidth, int ContentTop);
+
     public:
         cFlatDisplayMenu(void);
         virtual ~cFlatDisplayMenu();

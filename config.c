@@ -52,8 +52,6 @@ cFlatConfig::cFlatConfig(void) {
 
     MessageColorPosition = 1;
 
-    MainMenuItemScale = 1.0;
-
     MenuChannelView = 1;
     MenuTimerView = 1;
     MenuEventView = 1;
@@ -75,6 +73,39 @@ cFlatConfig::cFlatConfig(void) {
     ScrollerStep = 2;
     ScrollerDelay = 40;
     ScrollerType = 0;
+
+    // Widgets
+    MainMenuWidgetsEnable = 1;
+    MainMenuItemScale = 0.5;
+
+    MainMenuWidgetDVBDevicesShow = true;
+    MainMenuWidgetDVBDevicesPosition = 1;
+
+    MainMenuWidgetActiveTimerShow = true;
+    MainMenuWidgetActiveTimerPosition = 2;
+    MainMenuWidgetActiveTimerMaxCount = 2;
+    MainMenuWidgetActiveTimerHideEmpty = false;
+
+    MainMenuWidgetLastRecShow = false;
+    MainMenuWidgetLastRecPosition = 3;
+    MainMenuWidgetLastRecMaxCount = 3;
+
+    MainMenuWidgetTimerConflictsShow = false;
+    MainMenuWidgetTimerConflictsPosition = 4;
+    MainMenuWidgetTimerConflictsHideEmpty = false;
+
+    MainMenuWidgetSystemInfoShow = true;
+    MainMenuWidgetSystemInfoPosition = 5;
+
+    MainMenuWidgetSystemUpdatesShow = true;
+    MainMenuWidgetSystemUpdatesPosition = 6;
+    MainMenuWidgetSystemUpdatesHideIfZero = 0;
+
+    MainMenuWidgetTemperaturesShow = true;
+    MainMenuWidgetTemperaturesPosition = 7;
+
+    MainMenuWidgetCommandShow = true;
+    MainMenuWidgetCommandPosition = 8;
 
     TopBarFontClockScale = 0.01;
     TopBarHideClockText = 0;
@@ -274,6 +305,28 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MenuTimerShowCount") == 0)                   MenuTimerShowCount = atoi(Value);
     else if (strcmp(Name, "MenuChannelShowCount") == 0)                 MenuChannelShowCount = atoi(Value);
     else if (strcmp(Name, "ShortRecordingCount") == 0)                  ShortRecordingCount = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetsEnable") == 0)                MainMenuWidgetsEnable = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetDVBDevicesShow") == 0)         MainMenuWidgetDVBDevicesShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetDVBDevicesPosition") == 0)     MainMenuWidgetDVBDevicesPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShow") == 0)        MainMenuWidgetActiveTimerShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerPosition") == 0)    MainMenuWidgetActiveTimerPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerMaxCount") == 0)    MainMenuWidgetActiveTimerMaxCount = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerHideEmpty") == 0)   MainMenuWidgetActiveTimerHideEmpty = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetLastRecShow") == 0)            MainMenuWidgetLastRecShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetLastRecPosition") == 0)        MainMenuWidgetLastRecPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetLastRecMaxCount") == 0)        MainMenuWidgetLastRecMaxCount = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetTimerConflictsShow") == 0)     MainMenuWidgetTimerConflictsShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetTimerConflictsPosition") == 0) MainMenuWidgetTimerConflictsPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetTimerConflictsHideEmpty") == 0)MainMenuWidgetTimerConflictsHideEmpty = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetSystemInfoShow") == 0)         MainMenuWidgetSystemInfoShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetSystemInfoPosition") == 0)     MainMenuWidgetSystemInfoPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetSystemUpdatesShow") == 0)      MainMenuWidgetSystemUpdatesShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetSystemUpdatesPosition") == 0)  MainMenuWidgetSystemUpdatesPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetSystemUpdatesHideIfZero") == 0)MainMenuWidgetSystemUpdatesHideIfZero = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetTemperaturesShow") == 0)       MainMenuWidgetTemperaturesShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetTemperaturesPosition") == 0)   MainMenuWidgetTemperaturesPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetCommandShow") == 0)            MainMenuWidgetCommandShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetCommandPosition") == 0)        MainMenuWidgetCommandPosition = atoi(Value);
 
     else return false;
 
@@ -544,6 +597,14 @@ bool stringCompare( const std::string &left, const std::string &right ) {
    if( left.size() < right.size() )
       return true;
    return false;
+}
+
+bool pairCompareTimeStringDesc(const std::pair<time_t, std::string>&i, const std::pair<time_t, std::string>&j) {
+    return i.first < j.first;
+}
+
+bool pairCompareIntString(const std::pair<int, std::string>&i, const std::pair<int, std::string>&j) {
+    return i.first > j.first;
 }
 
 void cFlatConfig::DecorDescriptions(cStringList &Decors) {

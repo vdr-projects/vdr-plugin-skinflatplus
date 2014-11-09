@@ -128,6 +128,8 @@ void cFlatSetup::Setup(void) {
     else
         Add(new cOsdItem(tr("TVScraper / scraper2vdr not installed"), osUnknown, false));
 
+    Add(new cOsdItem(tr("Main menu widgets settings"), osUnknown, true));
+
     if( ItemLastSel >= 0 ) {
         SetCurrent(Get(ItemLastSel));
         ItemLastSel = -1;
@@ -158,6 +160,8 @@ eOSState cFlatSetup::ProcessKey(eKeys Key) {
                 state = AddSubMenu(new cFlatSetupTracks(&SetupConfig));
             if (strcmp(ItemText, tr("TVScraper / scraper2vdr settings")) == 0)
                 state = AddSubMenu(new cFlatSetupTvsraper(&SetupConfig));
+            if (strcmp(ItemText, tr("Main menu widgets settings")) == 0)
+                state = AddSubMenu(new cFlatSetupMMWidget(&SetupConfig));
         }
     }
     return state;
@@ -274,6 +278,28 @@ void cFlatSetup::Store(void) {
     SetupStore("MenuTimerShowCount", Config.MenuTimerShowCount);
     SetupStore("MenuChannelShowCount", Config.MenuChannelShowCount);
     SetupStore("ShortRecordingCount", Config.ShortRecordingCount);
+    SetupStore("MainMenuWidgetsEnable", Config.MainMenuWidgetsEnable);
+    SetupStore("MainMenuWidgetDVBDevicesShow", Config.MainMenuWidgetDVBDevicesShow);
+    SetupStore("MainMenuWidgetDVBDevicesPosition", Config.MainMenuWidgetDVBDevicesPosition);
+    SetupStore("MainMenuWidgetActiveTimerShow", Config.MainMenuWidgetActiveTimerShow);
+    SetupStore("MainMenuWidgetActiveTimerPosition", Config.MainMenuWidgetActiveTimerPosition);
+    SetupStore("MainMenuWidgetActiveTimerMaxCount", Config.MainMenuWidgetActiveTimerMaxCount);
+    SetupStore("MainMenuWidgetActiveTimerHideEmpty", Config.MainMenuWidgetActiveTimerHideEmpty);
+    SetupStore("MainMenuWidgetLastRecShow", Config.MainMenuWidgetLastRecShow);
+    SetupStore("MainMenuWidgetLastRecPosition", Config.MainMenuWidgetLastRecPosition);
+    SetupStore("MainMenuWidgetLastRecMaxCount", Config.MainMenuWidgetLastRecMaxCount);
+    SetupStore("MainMenuWidgetTimerConflictsShow", Config.MainMenuWidgetTimerConflictsShow);
+    SetupStore("MainMenuWidgetTimerConflictsPosition", Config.MainMenuWidgetTimerConflictsPosition);
+    SetupStore("MainMenuWidgetTimerConflictsHideEmpty", Config.MainMenuWidgetTimerConflictsHideEmpty);
+    SetupStore("MainMenuWidgetSystemInfoShow", Config.MainMenuWidgetSystemInfoShow);
+    SetupStore("MainMenuWidgetSystemInfoPosition", Config.MainMenuWidgetSystemInfoPosition);
+    SetupStore("MainMenuWidgetSystemUpdatesShow", Config.MainMenuWidgetSystemUpdatesShow);
+    SetupStore("MainMenuWidgetSystemUpdatesPosition", Config.MainMenuWidgetSystemUpdatesPosition);
+    SetupStore("MainMenuWidgetSystemUpdatesHideIfZero", Config.MainMenuWidgetSystemUpdatesHideIfZero);
+    SetupStore("MainMenuWidgetTemperaturesShow", Config.MainMenuWidgetTemperaturesShow);
+    SetupStore("MainMenuWidgetTemperaturesPosition", Config.MainMenuWidgetTemperaturesPosition);
+    SetupStore("MainMenuWidgetCommandShow", Config.MainMenuWidgetCommandShow);
+    SetupStore("MainMenuWidgetCommandPosition", Config.MainMenuWidgetCommandPosition);
 
     Config.Init();
 }
@@ -421,6 +447,28 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MenuTimerShowCount") == 0)                   SetupConfig->MenuTimerShowCount = atoi(Value);
     else if (strcmp(Name, "MenuChannelShowCount") == 0)                 SetupConfig->MenuChannelShowCount = atoi(Value);
     else if (strcmp(Name, "ShortRecordingCount") == 0)                  SetupConfig->ShortRecordingCount = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetsEnable") == 0)                SetupConfig->MainMenuWidgetsEnable = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetDVBDevicesShow") == 0)         SetupConfig->MainMenuWidgetDVBDevicesShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetDVBDevicesPosition") == 0)     SetupConfig->MainMenuWidgetDVBDevicesPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShow") == 0)        SetupConfig->MainMenuWidgetActiveTimerShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerPosition") == 0)    SetupConfig->MainMenuWidgetActiveTimerPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerMaxCount") == 0)    SetupConfig->MainMenuWidgetActiveTimerMaxCount = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerHideEmpty") == 0)   SetupConfig->MainMenuWidgetActiveTimerHideEmpty = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetLastRecShow") == 0)            SetupConfig->MainMenuWidgetLastRecShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetLastRecPosition") == 0)        SetupConfig->MainMenuWidgetLastRecPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetLastRecMaxCount") == 0)        SetupConfig->MainMenuWidgetLastRecMaxCount = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetTimerConflictsShow") == 0)     SetupConfig->MainMenuWidgetTimerConflictsShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetTimerConflictsPosition") == 0) SetupConfig->MainMenuWidgetTimerConflictsPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetTimerConflictsHideEmpty") == 0)SetupConfig->MainMenuWidgetTimerConflictsHideEmpty = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetSystemInfoShow") == 0)         SetupConfig->MainMenuWidgetSystemInfoShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetSystemInfoPosition") == 0)     SetupConfig->MainMenuWidgetSystemInfoPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetSystemUpdatesShow") == 0)      SetupConfig->MainMenuWidgetSystemUpdatesShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetSystemUpdatesPosition") == 0)  SetupConfig->MainMenuWidgetSystemUpdatesPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetSystemUpdatesHideIfZero") == 0)SetupConfig->MainMenuWidgetSystemUpdatesHideIfZero = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetTemperaturesShow") == 0)       SetupConfig->MainMenuWidgetTemperaturesShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetTemperaturesPosition") == 0)   SetupConfig->MainMenuWidgetTemperaturesPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetCommandShow") == 0)            SetupConfig->MainMenuWidgetCommandShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetCommandPosition") == 0)        SetupConfig->MainMenuWidgetCommandPosition = atoi(Value);
     else return false;
 
     return true;
@@ -549,6 +597,29 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("MenuTimerShowCount", SetupConfig->MenuTimerShowCount, *Filename);
     Config.Store("MenuChannelShowCount", SetupConfig->MenuChannelShowCount, *Filename);
     Config.Store("ShortRecordingCount", SetupConfig->ShortRecordingCount, *Filename);
+
+    Config.Store("MainMenuWidgetsEnable", SetupConfig->MainMenuWidgetsEnable, *Filename);
+    Config.Store("MainMenuWidgetDVBDevicesShow", SetupConfig->MainMenuWidgetDVBDevicesShow, *Filename);
+    Config.Store("MainMenuWidgetDVBDevicesPosition", SetupConfig->MainMenuWidgetDVBDevicesPosition, *Filename);
+    Config.Store("MainMenuWidgetActiveTimerShow", SetupConfig->MainMenuWidgetActiveTimerShow, *Filename);
+    Config.Store("MainMenuWidgetActiveTimerPosition", SetupConfig->MainMenuWidgetActiveTimerPosition, *Filename);
+    Config.Store("MainMenuWidgetActiveTimerMaxCount", SetupConfig->MainMenuWidgetActiveTimerMaxCount, *Filename);
+    Config.Store("MainMenuWidgetActiveTimerHideEmpty", SetupConfig->MainMenuWidgetActiveTimerHideEmpty, *Filename);
+    Config.Store("MainMenuWidgetLastRecShow", SetupConfig->MainMenuWidgetLastRecShow, *Filename);
+    Config.Store("MainMenuWidgetLastRecPosition", SetupConfig->MainMenuWidgetLastRecPosition, *Filename);
+    Config.Store("MainMenuWidgetLastRecMaxCount", SetupConfig->MainMenuWidgetLastRecMaxCount, *Filename);
+    Config.Store("MainMenuWidgetTimerConflictsShow", SetupConfig->MainMenuWidgetTimerConflictsShow, *Filename);
+    Config.Store("MainMenuWidgetTimerConflictsPosition", SetupConfig->MainMenuWidgetTimerConflictsPosition, *Filename);
+    Config.Store("MainMenuWidgetTimerConflictsHideEmpty", SetupConfig->MainMenuWidgetTimerConflictsHideEmpty, *Filename);
+    Config.Store("MainMenuWidgetSystemInfoShow", SetupConfig->MainMenuWidgetSystemInfoShow, *Filename);
+    Config.Store("MainMenuWidgetSystemInfoPosition", SetupConfig->MainMenuWidgetSystemInfoPosition, *Filename);
+    Config.Store("MainMenuWidgetSystemUpdatesShow", SetupConfig->MainMenuWidgetSystemUpdatesShow, *Filename);
+    Config.Store("MainMenuWidgetSystemUpdatesPosition", SetupConfig->MainMenuWidgetSystemUpdatesPosition, *Filename);
+    Config.Store("MainMenuWidgetSystemUpdatesHideIfZero", SetupConfig->MainMenuWidgetSystemUpdatesHideIfZero, *Filename);
+    Config.Store("MainMenuWidgetTemperaturesShow", SetupConfig->MainMenuWidgetTemperaturesShow, *Filename);
+    Config.Store("MainMenuWidgetTemperaturesPosition", SetupConfig->MainMenuWidgetTemperaturesPosition, *Filename);
+    Config.Store("MainMenuWidgetCommandShow", SetupConfig->MainMenuWidgetCommandShow, *Filename);
+    Config.Store("MainMenuWidgetCommandPosition", SetupConfig->MainMenuWidgetCommandPosition, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -817,7 +888,6 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show additional recording info"), &SetupConfig->RecordingAdditionalInfoShow));
     Add(new cMenuEditBoolItem(tr("Show additional EPG info"), &SetupConfig->EpgAdditionalInfoShow));
     Add(new cMenuEditBoolItem(tr("Show reruns in EPG info"), &SetupConfig->EpgRerunsShow));
-    Add(new cMenuEditPrcItem(tr("Main menuitem scale"), &SetupConfig->MainMenuItemScale, 0.2, 1, 0));
     Add(new cMenuEditBoolItem(tr("Menu draw background over the entire height"), &SetupConfig->MenuFullOsd));
 
     Add(new cMenuEditBoolItem(tr("Recording menu show recording count in title"), &SetupConfig->MenuRecordingShowCount));
@@ -1088,7 +1158,7 @@ eOSState cFlatSetupTracks::ProcessKey(eKeys Key) {
 }
 
 // TVScraper Settings
-cFlatSetupTvsraper::cFlatSetupTvsraper(cFlatConfig* data)  : cMenuSetupSubMenu(tr("Tracks settings"), data) {
+cFlatSetupTvsraper::cFlatSetupTvsraper(cFlatConfig* data)  : cMenuSetupSubMenu(tr("TVScraper settings"), data) {
     Setup();
 }
 
@@ -1120,15 +1190,108 @@ eOSState cFlatSetupTvsraper::ProcessKey(eKeys Key) {
                 break;
         }
     }
-    /*
+    return state;
+}
+
+// Main Menu Widgets Settings
+cFlatSetupMMWidget::cFlatSetupMMWidget(cFlatConfig* data)  : cMenuSetupSubMenu(tr("Main menu widgets settings"), data) {
+    Setup();
+}
+
+void cFlatSetupMMWidget::Setup(void) {
+    Clear();
+
+    Add(new cMenuEditBoolItem(tr("Enable main menu widgets"), &SetupConfig->MainMenuWidgetsEnable));
+    if( SetupConfig->MainMenuWidgetsEnable ) {
+        Add(new cMenuEditPrcItem(tr("Main menu item scale"), &SetupConfig->MainMenuItemScale, 0.3, 0.7, 0));
+
+        Add(new cOsdItem("Widget DVB devices", osUnknown, false));
+        Add(new cMenuEditBoolItem(tr("Widget DVB devices: enable"), &SetupConfig->MainMenuWidgetDVBDevicesShow));
+        if( SetupConfig->MainMenuWidgetDVBDevicesShow ) {
+            Add(new cMenuEditIntItem(tr("Widget DVB devices: position"), &SetupConfig->MainMenuWidgetDVBDevicesPosition));
+        }
+
+        Add(new cOsdItem("Widget active timer", osUnknown, false));
+        Add(new cMenuEditBoolItem(tr("Widget active timer: enable"), &SetupConfig->MainMenuWidgetActiveTimerShow));
+        if( SetupConfig->MainMenuWidgetActiveTimerShow ) {
+            Add(new cMenuEditIntItem(tr("Widget active timer: position"), &SetupConfig->MainMenuWidgetActiveTimerPosition));
+            Add(new cMenuEditIntItem(tr("Widget active timer: max show"), &SetupConfig->MainMenuWidgetActiveTimerMaxCount));
+            Add(new cMenuEditBoolItem(tr("Widget active timer: hide if empty"), &SetupConfig->MainMenuWidgetActiveTimerHideEmpty));
+        }
+
+        Add(new cOsdItem("Widget last recordings", osUnknown, false));
+        Add(new cMenuEditBoolItem(tr("Widget last recordings: enable"), &SetupConfig->MainMenuWidgetLastRecShow));
+        if( SetupConfig->MainMenuWidgetLastRecShow ) {
+            Add(new cMenuEditIntItem(tr("Widget last recordings: position"), &SetupConfig->MainMenuWidgetLastRecPosition));
+            Add(new cMenuEditIntItem(tr("Widget last recordings: max show"), &SetupConfig->MainMenuWidgetLastRecMaxCount));
+        }
+
+        Add(new cOsdItem("Widget timer conflicts", osUnknown, false));
+        Add(new cMenuEditBoolItem(tr("Widget timer conflicts: enable"), &SetupConfig->MainMenuWidgetTimerConflictsShow));
+        if( SetupConfig->MainMenuWidgetTimerConflictsShow ) {
+            Add(new cMenuEditIntItem(tr("Widget timer conflicts: position"), &SetupConfig->MainMenuWidgetTimerConflictsPosition));
+            Add(new cMenuEditBoolItem(tr("Widget timer conflicts: hide if empty"), &SetupConfig->MainMenuWidgetTimerConflictsHideEmpty));
+        }
+
+        Add(new cOsdItem("Widget system information", osUnknown, false));
+        Add(new cMenuEditBoolItem(tr("Widget system information: enable"), &SetupConfig->MainMenuWidgetSystemInfoShow));
+        if( SetupConfig->MainMenuWidgetSystemInfoShow ) {
+            Add(new cMenuEditIntItem(tr("Widget system information: position"), &SetupConfig->MainMenuWidgetSystemInfoPosition));
+        }
+
+        Add(new cOsdItem("Widget system updates", osUnknown, false));
+        Add(new cMenuEditBoolItem(tr("Widget system updates: enable"), &SetupConfig->MainMenuWidgetSystemUpdatesShow));
+        if( SetupConfig->MainMenuWidgetSystemUpdatesShow ) {
+            Add(new cMenuEditIntItem(tr("Widget system updates: position"), &SetupConfig->MainMenuWidgetSystemUpdatesPosition));
+            Add(new cMenuEditBoolItem(tr("Widget system updates: hide if empty"), &SetupConfig->MainMenuWidgetSystemUpdatesHideIfZero));
+        }
+
+        Add(new cOsdItem("Widget temperatures", osUnknown, false));
+        Add(new cMenuEditBoolItem(tr("Widget temperatures: enable"), &SetupConfig->MainMenuWidgetTemperaturesShow));
+        if( SetupConfig->MainMenuWidgetTemperaturesShow ) {
+            Add(new cMenuEditIntItem(tr("Widget temperatures: position"), &SetupConfig->MainMenuWidgetTemperaturesPosition));
+        }
+
+        Add(new cOsdItem("Widget custom commands", osUnknown, false));
+        Add(new cMenuEditBoolItem(tr("Widget custom commands: enable"), &SetupConfig->MainMenuWidgetCommandShow));
+        if( SetupConfig->MainMenuWidgetCommandShow ) {
+            Add(new cMenuEditIntItem(tr("Widget custom commands: position"), &SetupConfig->MainMenuWidgetCommandPosition));
+        }
+    }
+
+    if( ItemLastSel >= 0 ) {
+        SetCurrent(Get(ItemLastSel));
+        ItemLastSel = -1;
+    }
+
+    Display();
+}
+
+eOSState cFlatSetupMMWidget::ProcessKey(eKeys Key) {
+    eOSState state = cOsdMenu::ProcessKey(Key);
+    if (state == osUnknown) {
+        switch (Key) {
+            case kOk:
+                return osBack;
+            default:
+                break;
+        }
+    }
     if( Key == kLeft || Key == kRight ) {
         const char* ItemText = Get(Current())->Text();
-        if( strstr(ItemText, tr("Tracks border by decor-file?")) != NULL
+        if( strstr(ItemText, tr("Enable main menu widgets")) != NULL ||
+            strstr(ItemText, tr("Enable widget: DVB devices")) != NULL ||
+            strstr(ItemText, tr("Enable widget: active timer")) != NULL ||
+            strstr(ItemText, tr("Enable widget: last recordings")) != NULL ||
+            strstr(ItemText, tr("Enable widget: timer conflicts")) != NULL ||
+            strstr(ItemText, tr("Enable widget: system information")) != NULL ||
+            strstr(ItemText, tr("Enable widget: system updates")) != NULL ||
+            strstr(ItemText, tr("Enable widget: temperatures")) != NULL ||
+            strstr(ItemText, tr("Enable widget: custom commands")) != NULL
         ) {
             ItemLastSel = Current();
             Setup();
         }
     }
-    */
     return state;
 }

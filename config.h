@@ -9,6 +9,10 @@
 #define PLUGINCONFIGPATH (cPlugin::ConfigDirectory(PLUGIN_NAME_I18N))
 #define PLUGINRESOURCEPATH (cPlugin::ResourceDirectory(PLUGIN_NAME_I18N))
 
+bool stringCompare( const std::string &left, const std::string &right );
+bool pairCompareTimeStringDesc(const std::pair<time_t, std::string>&i, const std::pair<time_t, std::string>&j);
+bool pairCompareIntString(const std::pair<int, std::string>&i, const std::pair<int, std::string>&j);
+
 class cFlatConfig
 {
     private:
@@ -215,8 +219,6 @@ class cFlatConfig
         int TopBarMenuIconShow;
         int TopBarHideClockText;
 
-        double MainMenuItemScale;
-
         int MenuChannelView;
         int MenuTimerView;
         int MenuEventView;
@@ -243,6 +245,39 @@ class cFlatConfig
         int ScrollerStep;
         int ScrollerDelay;
         int ScrollerType;
+
+        // mainmenu widgets
+        int MainMenuWidgetsEnable;
+        double MainMenuItemScale;
+
+        int MainMenuWidgetDVBDevicesShow;
+        int MainMenuWidgetDVBDevicesPosition;
+
+        int MainMenuWidgetActiveTimerShow;
+        int MainMenuWidgetActiveTimerPosition;
+        int MainMenuWidgetActiveTimerMaxCount;
+        int MainMenuWidgetActiveTimerHideEmpty;
+
+        int MainMenuWidgetLastRecShow;
+        int MainMenuWidgetLastRecPosition;
+        int MainMenuWidgetLastRecMaxCount;
+
+        int MainMenuWidgetTimerConflictsShow;
+        int MainMenuWidgetTimerConflictsPosition;
+        int MainMenuWidgetTimerConflictsHideEmpty;
+
+        int MainMenuWidgetSystemInfoShow;
+        int MainMenuWidgetSystemInfoPosition;
+
+        int MainMenuWidgetSystemUpdatesShow;
+        int MainMenuWidgetSystemUpdatesPosition;
+        int MainMenuWidgetSystemUpdatesHideIfZero;
+
+        int MainMenuWidgetTemperaturesShow;
+        int MainMenuWidgetTemperaturesPosition;
+
+        int MainMenuWidgetCommandShow;
+        int MainMenuWidgetCommandPosition;
 
         // TVScraper
         int TVScraperChanInfoShowPoster;

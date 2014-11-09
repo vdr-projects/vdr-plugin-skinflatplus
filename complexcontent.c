@@ -81,7 +81,8 @@ void cComplexContent::CalculateDrawPortHeight(void) {
         if( (*it).GetBottom() > DrawPortHeight )
             DrawPortHeight = (*it).GetBottom();
     }
-    DrawPortHeight = ScrollTotal() * ScrollSize;
+    if( isScrollingActive )
+        DrawPortHeight = ScrollTotal() * ScrollSize;
 }
 
 int cComplexContent::BottomContent(void) {
@@ -97,6 +98,7 @@ int cComplexContent::BottomContent(void) {
 int cComplexContent::ContentHeight( bool Full ) {
     if( Full )
         return Height();
+    CalculateDrawPortHeight();
     if( DrawPortHeight > Height() )
         return Height();
 

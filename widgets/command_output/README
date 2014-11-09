@@ -1,0 +1,5 @@
+This widget is for an own command
+The command "command" will be executed every time the widget is drawn, so please keep it short and fast.
+The command have to provide two output files: "title" and "output".
+"title" is the title of the Widget.
+The "output" file is read line by line. And every line is drawn without wrap the lines if they are to long.

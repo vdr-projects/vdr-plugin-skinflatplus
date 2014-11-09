@@ -88,3 +88,11 @@ class cFlatSetupTvsraper : public cMenuSetupSubMenu {
         cFlatSetupTvsraper(cFlatConfig *data);
         virtual eOSState ProcessKey(eKeys Key);
 };
+
+class cFlatSetupMMWidget : public cMenuSetupSubMenu {
+    protected:
+        void Setup(void);
+    public:
+        cFlatSetupMMWidget(cFlatConfig *data);
+        virtual eOSState ProcessKey(eKeys Key);
+};

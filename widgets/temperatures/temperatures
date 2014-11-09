@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# please update this script to fit your needs
+# this script is call every time the widget will be drawn, so keep it short and fast ;)
+
+# if the script is executed from system_information script set the locale back for "°C"
+LANG=de_DE.UTF-8
+
+# there can be 3 files, cpu, gpu, case
+
+rm -f ./cpu ./pccase ./gpu
+
+# intel core-i cpu temp
+sensors -A coretemp-isa-0000 | grep "Core 0" | awk '{print $3}' | tr -d "+" > ./cpu
+
+# pc case temp
+sensors -A acpitz-virtual-0 | grep "temp1" | awk '{print $2}' | tr -d "+" > ./pccase
+
+# nvidia gpu temp
+# nvidia-settings must be run as the user of the x server
+GPU=`nvidia-settings -c :0 -t -query GPUCoreTemp | head -n 1`
+echo "$GPU°C" > ./gpu
