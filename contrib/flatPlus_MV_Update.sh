@@ -6,13 +6,14 @@
 #set -x
 
 # Ordner und Dateien
-ICONS="icons" ; THEMES="themes" ; DECORS="decors"
+ICONS="icons" ; THEMES="themes" ; DECORS="decors" ; CONFIGS="configs"
 INFO=MV_Themes.INFO ; HIST=MV_Themes.HISTORY
 
 # Ordner für Direktupdate (Im aktuellem Filesystem); Beispiel für Gen2VDR
 THEMEDIR="/etc/vdr/themes"
 ICONDIR="/etc/vdr/plugins/skinflatplus/icons"
 DECORDIR="/etc/vdr/plugins/skinflatplus/decors"
+CONFIGSDIR="/etc/vdr/plugins/skinflatplus/configs"
 
 timedout_read() {
   timeout=$1 ; varname=$2 ; old_tty_settings=`stty -g`
@@ -39,7 +40,6 @@ if [ ! -d "../$ICONS" -o ! -d "../$THEMES" -o ! -d "../$DECORS" ] ; then
   exit 1
 fi
 
-
 if [ -n "$1" ] ; then         # Parameter wurde übergeben
   case $1 in
     -Silent) SILENTUPDATE=1 ; echo "Silent Update! ($1)" ;;
@@ -61,9 +61,9 @@ if [ -z "$SILENTUPDATE" ] ; then
 fi
 
 if [ -n "$DIRECTUPDATE" ] ; then # Löschen im Dateisystem (/etc)
-  rm -rf $ICONDIR/MV*
-  rm -f $THEMEDIR/flatPlus-MV*
-  rm -f $DECORDIR/*MV*
+  [ -d $ICONDIR ] && rm -rf $ICONDIR/MV*
+  [ -d $THEMEDIR ] && rm -f $THEMEDIR/flatPlus-MV*
+  [ -d $DECORDIR ] && rm -f $DECORDIR/*MV*
 else                             # Löschen im Source-Dir von skinflatPlus
   rm -rf ../$ICONS/MV*
   rm -f ../$THEMES/flatPlus-MV*
@@ -84,17 +84,16 @@ fi
 
 cd ..
 # Download
-if [ -n "$DIRECTUPDATE" ] ; then
-  cd /tmp
-fi
+[ -n "$DIRECTUPDATE" ] && cd /tmp
 wget https://dl.dropboxusercontent.com/u/1490505/VDR/skinflatplus/MV_Themes.tar.xz
 tar -xJf MV_Themes.tar.xz    # Entpacken
-rm -rf MV_Themes.tar.xz      # Archiv entfernen
+rm -f MV_Themes.tar.xz       # Archiv entfernen
 
 if [ -n "$DIRECTUPDATE" ] ; then
-  cp -f themes/flatPlus-MV* $THEMEDIR
-  cp -f decors/*MV* $DECORDIR
-  cp -rf icons/MV* $ICONDIR
+  cp -f ${THEMES}/flatPlus-MV* $THEMEDIR
+  cp -f ${DECORS}/*MV* $DECORDIR
+  cp -rf ${ICONS}/MV* $ICONDIR
+  cp -f ${CONFIGS}/*MV* $CONFIGSDIR
 fi
 
 echo "-------------------------------"

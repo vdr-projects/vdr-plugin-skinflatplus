@@ -94,3 +94,10 @@ HISTORY
  [04.08.2014] - Symbol fuer Seitenverhaeltnis bei SD-Sender mit H.264 Codec (20:11)
                 erstellt (16:9 mit Warnsymbol)
  [09.08.2014] - Konfiguration 'MV_default' hinzugefuegt
+ [28.10.2014] - Konfiguration 'MV_default' aktualisiert fuer Version 0.4.3
+ [31.10.2014] - Neues Thema "Zitrone"
+ [02.11.2014] - Neues 'uncrypted.png' Symbol
+              - Hintergrundtransparenz bei den Themen "Fog" und "Zirtone"
+                auf 'A0' geaendert
+ [03.11.2014] - Farben 'FontTitle' und 'FontTitleLine' getauscht (Linie ist heller)
+ [11.11.2014] - Symbol 'changroup.png' aus dem default-Theme uebernommen; in Skinfarbe

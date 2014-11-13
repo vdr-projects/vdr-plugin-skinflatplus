@@ -1,16 +1,8 @@
-flatPlus-MV_Themen erstellt am 09.08.2014 12:11
+flatPlus-MV_Themen erstellt am 11.11.2014 14:38
 Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
 
 => Installationshimnweise am Ende der Datei! <=
 
-Thema: Blood, Farbe: 911D10, Hintergrund: 221111 
-Thema: DeepBlue, Farbe: 0545DF, Hintergrund: 101030 Schriftfarbe: DDDDEE
-Thema: Fog, Farbe: 111111, Hintergrund: DEDEDE Schriftfarbe: 647887
-Thema: Green 2, Farbe: 008A00, Hintergrund: 112211 
-Thema: HelloKitty 2, Farbe: F472D0, Hintergrund: FF80F0 
-Thema: HelloKitty, Farbe: F472D0 
-Thema: Rauchglas, Farbe: 825A2C, Hintergrund: 200F02 
-Thema: XMAS, Farbe: CC1111, Hintergrund: 114511 
 Thema: Berry, Farbe: A61D4D 
 Thema: Blue, Farbe: 0050EF 
 Thema: Cappuchino, Farbe: 87794E 
@@ -28,8 +20,17 @@ Thema: Pumpkin, Farbe: F0A30A
 Thema: Purple, Farbe: 6C0AAB 
 Thema: PurpleGrey, Farbe: 76608A 
 Thema: Red, Farbe: E51400 
-25 Themen erstellt. 7 davon mit Hintergrund.
-Insgesamt 26 Icon-Ordner erstellt
+Thema: Blood, Farbe: 911D10, Hintergrund: 221111 
+Thema: DeepBlue, Farbe: 0545DF, Hintergrund: 101030 Schriftfarbe: DDDDEE
+Thema: Fog, Farbe: 111111, Hintergrund: DEDEDE Schriftfarbe: 647887
+Thema: Green 2, Farbe: 008A00, Hintergrund: 112211 
+Thema: HelloKitty 2, Farbe: F472D0, Hintergrund: FF80F0 
+Thema: HelloKitty, Farbe: F472D0 
+Thema: Rauchglas, Farbe: 825A2C, Hintergrund: 200F02 
+Thema: XMAS, Farbe: CC1111, Hintergrund: 114511 
+Thema: Zitrone, Farbe: EEEE0F, Hintergrund: 88881A Schriftfarbe: FFFFAA
+26 Themen erstellt. 8 davon mit Hintergrund.
+Insgesamt 27 Icon-Ordner erstellt
 
 Installationshinweise:
  - Alle *.theme aus dem Ordner themes nach <vdrconfigdir>/themes kopieren.
