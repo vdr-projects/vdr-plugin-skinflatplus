@@ -15,13 +15,13 @@ private:
     std::string CacheName[MAX_IMAGE_CACHE];
     int CacheWidth[MAX_IMAGE_CACHE];
     int CacheHeight[MAX_IMAGE_CACHE];
-    
+
     int InsertIndex;
     bool Overflow;
 public:
     cImageCache();
     ~cImageCache();
-    
+
     void Create(void);
     void Clear(void);
 
@@ -29,6 +29,6 @@ public:
 
     cImage *GetImage(std::string Name, int Width, int Height);
     void InsertImage(cImage *Image, std::string Name, int Width, int Height);
-    
+
     void PreLoadImage(void);
 };

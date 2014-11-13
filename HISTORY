@@ -1,7 +1,7 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
-2014-MM-DD: Version 0.4.4
+2014-MM-DD: Version 0.5.0
 - [add] main menu widgets
     - there are several widgets that can be displayed in the main menu
         - Widget dvb devices
@@ -13,6 +13,11 @@ VDR Plugin 'skinflatplus' Revision History
         - Widget temperatures
         - Widget custom command
     - Please see the example scripts and README-files
+- [update] default themes
+    - background transparency slightly reduced
+    - use color palette of android material design
+    - default accent color is "Light Blue"
+    - add more default themes: DeepOrange, DeepPurple, Indigo, Red, Teal
 - [update] icons
     - update many icons with android material design icons
 

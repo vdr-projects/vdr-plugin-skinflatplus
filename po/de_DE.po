@@ -824,6 +824,3 @@ msgstr ""
 
 msgid "Enable widget: custom commands"
 msgstr ""
-
-#~ msgid "Main menuitem scale"
-#~ msgstr "Hauptmenüeintrag Skalierung"
