@@ -3907,6 +3907,8 @@ void cFlatDisplayMenu::DrawMainMenuWidgets(void) {
         widgets.push_back(std::make_pair(Config.MainMenuWidgetTimerConflictsPosition, "timer_conflicts"));
     if( Config.MainMenuWidgetCommandShow )
         widgets.push_back(std::make_pair(Config.MainMenuWidgetCommandPosition, "custom_command"));
+    if( Config.MainMenuWidgetWeatherShow )
+        widgets.push_back(std::make_pair(Config.MainMenuWidgetWeatherPosition, "weather"));
 
     std::sort(widgets.begin(), widgets.end(), pairCompareIntString);
 
@@ -3945,6 +3947,10 @@ void cFlatDisplayMenu::DrawMainMenuWidgets(void) {
                 ContentTop = addHeight + marginItem;
         } else if( widget.compare("custom_command") == 0 ) {
             int addHeight = DrawMainMenuWidgetCommand(wLeft, wWidth, ContentTop);
+            if( addHeight > 0 )
+                ContentTop = addHeight + marginItem;
+        } else if( widget.compare("weather") == 0 ) {
+            int addHeight = DrawMainMenuWidgetWeather(wLeft, wWidth, ContentTop);
             if( addHeight > 0 )
                 ContentTop = addHeight + marginItem;
         }
@@ -4607,6 +4613,165 @@ int cFlatDisplayMenu::DrawMainMenuWidgetCommand(int wLeft, int wWidth, int Conte
             Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
     }
 
+    return contentWidget.ContentHeight(false);
+}
+
+int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int ContentTop) {
+    if( ContentTop + fontHeight + 6 + fontSmlHeight > menuPixmap->ViewPort().Height() )
+        return -1;
+
+    cFont *fontTempSml = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize/2.0 );
+
+    std::string Location;
+    cString locationFilename = cString::sprintf("%s/widgets/weather/weather.location", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    std::ifstream file(*locationFilename, std::ifstream::in);
+    if( file.is_open() ) {
+        std::getline(file, Location);
+        file.close();
+    } else {
+        Location = tr("Unknown");
+    }
+    cString Title = cString::sprintf("%s - %s", tr("Weather"), Location.c_str());
+
+    cImage *img = imgLoader.LoadIcon("widgets/weather", fontHeight, fontHeight - marginItem*2);
+    if( img ) {
+        contentWidget.AddImage(img, cRect(marginItem, ContentTop + marginItem, fontHeight, fontHeight));
+    }
+    contentWidget.AddText(*Title, false, cRect(marginItem*2 + fontHeight, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
+    ContentTop += fontHeight;
+    contentWidget.AddRect(cRect(0, ContentTop, wWidth, 3), Theme.Color(clrMenuEventTitleLine));
+    ContentTop += 6;
+
+    int left = marginItem;
+    for( int index = 0; index < Config.MainMenuWidgetWeatherDays; index++ ) {
+        std::string icon;
+        cString iconFilename = cString::sprintf("%s/widgets/weather/weather.%d.icon", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        std::ifstream file(*iconFilename, std::ifstream::in);
+        if( file.is_open() ) {
+            std::getline(file, icon);
+            file.close();
+        } else
+           continue;
+
+        std::string summary;
+        cString summaryFilename = cString::sprintf("%s/widgets/weather/weather.%d.summary", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        std::ifstream file2(*summaryFilename, std::ifstream::in);
+        if( file2.is_open() ) {
+            std::getline(file2, summary);
+            file2.close();
+        } else
+           continue;
+
+        std::string tempMax;
+        cString tempMaxFilename = cString::sprintf("%s/widgets/weather/weather.%d.tempMax", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        std::ifstream file3(*tempMaxFilename, std::ifstream::in);
+        if( file3.is_open() ) {
+            std::getline(file3, tempMax);
+            file3.close();
+        } else
+           continue;
+
+        std::string tempMin;
+        cString tempMinFilename = cString::sprintf("%s/widgets/weather/weather.%d.tempMin", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        std::ifstream file4(*tempMinFilename, std::ifstream::in);
+        if( file4.is_open() ) {
+            std::getline(file4, tempMin);
+            file4.close();
+        } else
+           continue;
+
+        std::string prec;
+        double p = 0.0;
+        cString precString = "0%";
+        cString precFilename = cString::sprintf("%s/widgets/weather/weather.%d.precipitation", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        std::ifstream file5(*precFilename, std::ifstream::in);
+        if( file5.is_open() ) {
+            std::getline(file5, prec);
+            std::replace( prec.begin(), prec.end(), '.', ',');
+            file5.close();
+            p = atof(prec.c_str()) * 100.0;
+            p = roundUp(p, 10);
+            precString = cString::sprintf("%.0f%%", p);
+            dsyslog("WEATHER: %s %f %s", prec.c_str(), p, *precString);
+        } else
+           continue;
+
+        std::string precType;
+        cString precTypeFilename = cString::sprintf("%s/widgets/weather/weather.%d.precipitationType", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        std::ifstream file6(*precTypeFilename, std::ifstream::in);
+        if( file6.is_open() ) {
+            std::getline(file6, precType);
+            file6.close();
+        } else
+           continue;
+
+        cString weekDayName = "";
+        time_t t;
+        time(&t);
+        struct tm* tm = localtime(&t);
+        tm->tm_mday += index;
+        time_t t2 = mktime(tm);
+        weekDayName = WeekDayName(t2);
+
+        if( Config.MainMenuWidgetWeatherType == 0 ) { // short
+            if( left + fontHeight*2 + font->Width("XXX") + font->Width("XXXX") + marginItem*6 > wWidth )
+                break;
+            if( index > 0 ) {
+                contentWidget.AddText("|", false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
+                left += font->Width("|") + marginItem*2;
+            }
+
+            cString weatherIcon = cString::sprintf("widgets/%s", icon.c_str());
+            cImage *img = imgLoader.LoadIcon(*weatherIcon, fontHeight, fontHeight - marginItem*2);
+            if( img ) {
+                contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
+                left += fontHeight + marginItem;
+            }
+            contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
+            contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
+            left += font->Width("XXX") + marginItem;
+
+            img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
+            if( img ) {
+                contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
+                left += fontHeight - marginItem;
+            }
+            contentWidget.AddText(*precString, false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
+            left += font->Width(*precString) + marginItem*2;
+        } else { // long
+            if( ContentTop + marginItem > menuPixmap->ViewPort().Height() )
+                break;
+
+            left = marginItem;
+
+            cString dayname = cString::sprintf("%s ", *weekDayName);
+            contentWidget.AddText(*dayname, false, cRect(left, ContentTop, wWidth - marginItem*2, fontHeight), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font, wWidth - marginItem*2);
+            left += font->Width("XXXX") + marginItem;
+
+            cString weatherIcon = cString::sprintf("widgets/%s", icon.c_str());
+            cImage *img = imgLoader.LoadIcon(*weatherIcon, fontHeight, fontHeight - marginItem*2);
+            if( img ) {
+                contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
+                left += fontHeight + marginItem;
+            }
+            contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
+            contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
+            left += font->Width("XXX") + marginItem;
+
+            img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
+            if( img ) {
+                contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
+                left += fontHeight - marginItem;
+            }
+            contentWidget.AddText(*precString, false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
+            left += font->Width("XXXX") + marginItem;
+
+            contentWidget.AddText(summary.c_str(), true, cRect(left, ContentTop, wWidth - left, fontHeight), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, wWidth - left, fontHeight);
+
+            ContentTop += fontHeight;
+        }
+
+    }
     return contentWidget.ContentHeight(false);
 }
 

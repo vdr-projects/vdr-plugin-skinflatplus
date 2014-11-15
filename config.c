@@ -79,33 +79,38 @@ cFlatConfig::cFlatConfig(void) {
     MainMenuItemScale = 0.5;
 
     MainMenuWidgetDVBDevicesShow = true;
-    MainMenuWidgetDVBDevicesPosition = 1;
+    MainMenuWidgetDVBDevicesPosition = 2;
 
     MainMenuWidgetActiveTimerShow = true;
-    MainMenuWidgetActiveTimerPosition = 2;
+    MainMenuWidgetActiveTimerPosition = 3;
     MainMenuWidgetActiveTimerMaxCount = 2;
     MainMenuWidgetActiveTimerHideEmpty = false;
 
     MainMenuWidgetLastRecShow = false;
-    MainMenuWidgetLastRecPosition = 3;
+    MainMenuWidgetLastRecPosition = 4;
     MainMenuWidgetLastRecMaxCount = 3;
 
     MainMenuWidgetTimerConflictsShow = false;
-    MainMenuWidgetTimerConflictsPosition = 4;
+    MainMenuWidgetTimerConflictsPosition = 5;
     MainMenuWidgetTimerConflictsHideEmpty = false;
 
     MainMenuWidgetSystemInfoShow = true;
-    MainMenuWidgetSystemInfoPosition = 5;
+    MainMenuWidgetSystemInfoPosition = 6;
 
     MainMenuWidgetSystemUpdatesShow = true;
-    MainMenuWidgetSystemUpdatesPosition = 6;
+    MainMenuWidgetSystemUpdatesPosition = 7;
     MainMenuWidgetSystemUpdatesHideIfZero = 0;
 
     MainMenuWidgetTemperaturesShow = true;
-    MainMenuWidgetTemperaturesPosition = 7;
+    MainMenuWidgetTemperaturesPosition = 8;
 
     MainMenuWidgetCommandShow = true;
-    MainMenuWidgetCommandPosition = 8;
+    MainMenuWidgetCommandPosition = 9;
+
+    MainMenuWidgetWeatherShow = true;
+    MainMenuWidgetWeatherPosition = 1;
+    MainMenuWidgetWeatherDays = 5;
+    MainMenuWidgetWeatherType = 0;
 
     TopBarFontClockScale = 0.01;
     TopBarHideClockText = 0;
@@ -327,6 +332,10 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuWidgetTemperaturesPosition") == 0)   MainMenuWidgetTemperaturesPosition = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetCommandShow") == 0)            MainMenuWidgetCommandShow = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetCommandPosition") == 0)        MainMenuWidgetCommandPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetWeatherShow") == 0)            MainMenuWidgetWeatherShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetWeatherPosition") == 0)        MainMenuWidgetWeatherPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetWeatherDays") == 0)            MainMenuWidgetWeatherDays = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetWeatherType") == 0)            MainMenuWidgetWeatherType = atoi(Value);
 
     else return false;
 
@@ -605,6 +614,16 @@ bool pairCompareTimeStringDesc(const std::pair<time_t, std::string>&i, const std
 
 bool pairCompareIntString(const std::pair<int, std::string>&i, const std::pair<int, std::string>&j) {
     return i.first > j.first;
+}
+
+int roundUp(int numToRound, int multiple)
+{
+    if(multiple == 0)
+        return numToRound;
+    int remainder = numToRound % multiple;
+    if (remainder == 0)
+        return numToRound;
+    return numToRound + multiple - remainder;
 }
 
 void cFlatConfig::DecorDescriptions(cStringList &Decors) {

@@ -12,6 +12,7 @@
 bool stringCompare( const std::string &left, const std::string &right );
 bool pairCompareTimeStringDesc(const std::pair<time_t, std::string>&i, const std::pair<time_t, std::string>&j);
 bool pairCompareIntString(const std::pair<int, std::string>&i, const std::pair<int, std::string>&j);
+int roundUp(int numToRound, int multiple);
 
 class cFlatConfig
 {
@@ -278,6 +279,11 @@ class cFlatConfig
 
         int MainMenuWidgetCommandShow;
         int MainMenuWidgetCommandPosition;
+
+        int MainMenuWidgetWeatherShow;
+        int MainMenuWidgetWeatherPosition;
+        int MainMenuWidgetWeatherType;
+        int MainMenuWidgetWeatherDays;
 
         // TVScraper
         int TVScraperChanInfoShowPoster;

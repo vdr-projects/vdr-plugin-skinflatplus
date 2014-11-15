@@ -14,6 +14,7 @@ cStringList ScrollerTypes;
 cStringList ScrollBarTypes;
 cStringList DiskUsageFree;
 cStringList ChannelTimeLefts;
+cStringList WeatherTypes;
 
 int ConfigFileSelection;
 
@@ -111,6 +112,9 @@ void cFlatSetup::Setup(void) {
     ChannelTimeLefts.Append( strdup( tr("past")) );
     ChannelTimeLefts.Append( strdup( tr("remaining")) );
 
+    WeatherTypes.Clear();
+    WeatherTypes.Append( strdup( tr("short")) );
+    WeatherTypes.Append( strdup( tr("long")) );
 
     Add(new cOsdItem(tr("General settings"), osUnknown, true));
     Add(new cOsdItem(tr("Channelinfo settings"), osUnknown, true));
@@ -300,6 +304,10 @@ void cFlatSetup::Store(void) {
     SetupStore("MainMenuWidgetTemperaturesPosition", Config.MainMenuWidgetTemperaturesPosition);
     SetupStore("MainMenuWidgetCommandShow", Config.MainMenuWidgetCommandShow);
     SetupStore("MainMenuWidgetCommandPosition", Config.MainMenuWidgetCommandPosition);
+    SetupStore("MainMenuWidgetWeatherShow", Config.MainMenuWidgetWeatherShow);
+    SetupStore("MainMenuWidgetWeatherPosition", Config.MainMenuWidgetWeatherPosition);
+    SetupStore("MainMenuWidgetWeatherDays", Config.MainMenuWidgetWeatherDays);
+    SetupStore("MainMenuWidgetWeatherType", Config.MainMenuWidgetWeatherType);
 
     Config.Init();
 }
@@ -469,6 +477,10 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuWidgetTemperaturesPosition") == 0)   SetupConfig->MainMenuWidgetTemperaturesPosition = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetCommandShow") == 0)            SetupConfig->MainMenuWidgetCommandShow = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetCommandPosition") == 0)        SetupConfig->MainMenuWidgetCommandPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetWeatherShow") == 0)            SetupConfig->MainMenuWidgetWeatherShow = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetWeatherPosition") == 0)        SetupConfig->MainMenuWidgetWeatherPosition = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetWeatherDays") == 0)            SetupConfig->MainMenuWidgetWeatherDays = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetWeatherType") == 0)            SetupConfig->MainMenuWidgetWeatherType = atoi(Value);
     else return false;
 
     return true;
@@ -620,6 +632,10 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("MainMenuWidgetTemperaturesPosition", SetupConfig->MainMenuWidgetTemperaturesPosition, *Filename);
     Config.Store("MainMenuWidgetCommandShow", SetupConfig->MainMenuWidgetCommandShow, *Filename);
     Config.Store("MainMenuWidgetCommandPosition", SetupConfig->MainMenuWidgetCommandPosition, *Filename);
+    Config.Store("MainMenuWidgetWeatherShow", SetupConfig->MainMenuWidgetWeatherShow, *Filename);
+    Config.Store("MainMenuWidgetWeatherPosition", SetupConfig->MainMenuWidgetWeatherPosition, *Filename);
+    Config.Store("MainMenuWidgetWeatherDays", SetupConfig->MainMenuWidgetWeatherDays, *Filename);
+    Config.Store("MainMenuWidgetWeatherType", SetupConfig->MainMenuWidgetWeatherType, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -1205,6 +1221,14 @@ void cFlatSetupMMWidget::Setup(void) {
     if( SetupConfig->MainMenuWidgetsEnable ) {
         Add(new cMenuEditPrcItem(tr("Main menu item scale"), &SetupConfig->MainMenuItemScale, 0.3, 0.7, 0));
 
+        Add(new cOsdItem("Widget DVB weather", osUnknown, false));
+        Add(new cMenuEditBoolItem(tr("Widget DVB weather: enable"), &SetupConfig->MainMenuWidgetWeatherShow));
+        if( SetupConfig->MainMenuWidgetWeatherShow ) {
+            Add(new cMenuEditIntItem(tr("Widget DVB weather: position"), &SetupConfig->MainMenuWidgetWeatherPosition));
+            Add(new cMenuEditIntItem(tr("Widget DVB weather: show days"), &SetupConfig->MainMenuWidgetWeatherDays));
+            Add(new cMenuEditStraItem(tr("Widget DVB weather: type"), &SetupConfig->MainMenuWidgetWeatherType, WeatherTypes.Size(), &WeatherTypes[0]));
+        }
+
         Add(new cOsdItem("Widget DVB devices", osUnknown, false));
         Add(new cMenuEditBoolItem(tr("Widget DVB devices: enable"), &SetupConfig->MainMenuWidgetDVBDevicesShow));
         if( SetupConfig->MainMenuWidgetDVBDevicesShow ) {
@@ -1280,14 +1304,15 @@ eOSState cFlatSetupMMWidget::ProcessKey(eKeys Key) {
     if( Key == kLeft || Key == kRight ) {
         const char* ItemText = Get(Current())->Text();
         if( strstr(ItemText, tr("Enable main menu widgets")) != NULL ||
-            strstr(ItemText, tr("Enable widget: DVB devices")) != NULL ||
-            strstr(ItemText, tr("Enable widget: active timer")) != NULL ||
-            strstr(ItemText, tr("Enable widget: last recordings")) != NULL ||
-            strstr(ItemText, tr("Enable widget: timer conflicts")) != NULL ||
-            strstr(ItemText, tr("Enable widget: system information")) != NULL ||
-            strstr(ItemText, tr("Enable widget: system updates")) != NULL ||
-            strstr(ItemText, tr("Enable widget: temperatures")) != NULL ||
-            strstr(ItemText, tr("Enable widget: custom commands")) != NULL
+            strstr(ItemText, tr("Widget DVB weather: enable")) != NULL ||
+            strstr(ItemText, tr("Widget DVB devices: enable")) != NULL ||
+            strstr(ItemText, tr("Widget active timer: enable")) != NULL ||
+            strstr(ItemText, tr("Widget last recordings: enable")) != NULL ||
+            strstr(ItemText, tr("Widget timer conflicts: enable")) != NULL ||
+            strstr(ItemText, tr("Widget system information: enable")) != NULL ||
+            strstr(ItemText, tr("Widget system updates: enable")) != NULL ||
+            strstr(ItemText, tr("Widget temperatures: enable")) != NULL ||
+            strstr(ItemText, tr("Widget custom commands: enable")) != NULL
         ) {
             ItemLastSel = Current();
             Setup();

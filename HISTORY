@@ -4,6 +4,7 @@ VDR Plugin 'skinflatplus' Revision History
 2014-MM-DD: Version 0.5.0
 - [add] main menu widgets
     - there are several widgets that can be displayed in the main menu
+        - Widget weather
         - Widget dvb devices
         - Widget active timer
         - Widget timer conflicts
@@ -20,6 +21,8 @@ VDR Plugin 'skinflatplus' Revision History
     - add more default themes: DeepOrange, DeepPurple, Indigo, Red, Teal
 - [update] icons
     - update many icons with android material design icons
+- [update] MV-Themes
+    - see MV_Themes.HISTORY
 
 2014-10-29: Version 0.4.3
 - [add] option to draw the menu background over the entire height

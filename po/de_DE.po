@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.3\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-11-09 14:53+0100\n"
+"POT-Creation-Date: 2014-11-15 15:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -246,6 +246,9 @@ msgstr ""
 msgid "no output available"
 msgstr ""
 
+msgid "Weather"
+msgstr ""
+
 msgid "Audio Tracks"
 msgstr "Audio Spuren"
 
@@ -377,6 +380,12 @@ msgstr "vergangen"
 
 msgid "remaining"
 msgstr "verbleibend"
+
+msgid "short"
+msgstr ""
+
+msgid "long"
+msgstr ""
 
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
@@ -738,6 +747,18 @@ msgstr ""
 msgid "Main menu item scale"
 msgstr ""
 
+msgid "Widget DVB weather: enable"
+msgstr ""
+
+msgid "Widget DVB weather: position"
+msgstr ""
+
+msgid "Widget DVB weather: show days"
+msgstr ""
+
+msgid "Widget DVB weather: type"
+msgstr ""
+
 msgid "Widget DVB devices: enable"
 msgstr ""
 
@@ -799,28 +820,4 @@ msgid "Widget custom commands: enable"
 msgstr ""
 
 msgid "Widget custom commands: position"
-msgstr ""
-
-msgid "Enable widget: DVB devices"
-msgstr ""
-
-msgid "Enable widget: active timer"
-msgstr ""
-
-msgid "Enable widget: last recordings"
-msgstr ""
-
-msgid "Enable widget: timer conflicts"
-msgstr ""
-
-msgid "Enable widget: system information"
-msgstr ""
-
-msgid "Enable widget: system updates"
-msgstr ""
-
-msgid "Enable widget: temperatures"
-msgstr ""
-
-msgid "Enable widget: custom commands"
 msgstr ""
