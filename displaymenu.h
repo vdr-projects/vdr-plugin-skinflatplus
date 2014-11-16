@@ -3,6 +3,7 @@
 #include "baserender.h"
 #include "complexcontent.h"
 #include <vdr/menu.h>
+#include <vdr/tools.h>
 #include <list>
 #include <ctype.h>
 #include <iostream>

@@ -24,6 +24,8 @@ struct sDecorBorder {
     int From;
 };
 
+template<class T> inline T myMax(T a, T b) { return a >= b ? a : b; }
+
 class cFlatBaseRender
 {
     protected:

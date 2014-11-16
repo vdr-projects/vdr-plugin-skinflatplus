@@ -4019,9 +4019,8 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
         strDevice << i << ": " << *(device->DeviceType()) << " - ";
 
         if( i == deviceLiveTV ) {
-            strDevice << tr("LiveTV") << "(";
-            const cChannel *channel = device->GetCurrentlyTunedTransponder();
-            //const cSource *source = (channel) ? Sources.Get(channel->Source()) : NULL;
+            strDevice << tr("LiveTV") << " (";
+            const cChannel *channel = Channels.GetByNumber(device->CurrentChannel());
             cString chanName;
             if (channel && channel->Number() > 0) {
                 chanName = channel->Name();
@@ -4032,9 +4031,8 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
             strDevice << ")";
         }
         else if( recDevices[i] ) {
-            strDevice << tr("recording") << "(";
-            const cChannel *channel = device->GetCurrentlyTunedTransponder();
-            //const cSource *source = (channel) ? Sources.Get(channel->Source()) : NULL;
+            strDevice << tr("recording") << " (";
+            const cChannel *channel = Channels.GetByNumber(device->CurrentChannel());
             cString chanName;
             if (channel && channel->Number() > 0) {
                 chanName = channel->Name();
@@ -4044,13 +4042,13 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
             strDevice << *chanName;
             strDevice << ")";
         } else {
-            const cChannel *channel = device->GetCurrentlyTunedTransponder();
+            const cChannel *channel = Channels.GetByNumber(device->CurrentChannel());
             if( channel ) {
                 cString chanName = channel->Name();
                 if( !strcmp(*chanName, "") )
                     strDevice << tr("not used");
                 else
-                    strDevice << tr("Unknown") << "(" << *chanName << ")";
+                    strDevice << tr("Unknown") << " (" << *chanName << ")";
             } else
                 strDevice << tr("not used");
         }
@@ -4783,7 +4781,8 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
             }
             contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
             contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
-            left += fontTempSml->Width("XXXXX") + marginItem;
+
+            left += myMax(fontTempSml->Width(tempMax.c_str()), fontTempSml->Width(tempMin.c_str()) ) + marginItem;
 
             img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
             if( img ) {
