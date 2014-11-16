@@ -1,37 +1,19 @@
 <?php
 
-/*
- * USER CONFIG
- */
-$city = "Berlin";
-$country = "DE";
-$locationSkin = "Berlin"; // location shown in skin
-$units = 'si';  // Can be set to 'us', 'si', 'ca', 'uk' or 'auto' (see forecast.io API); default is auto
-$degree_sign = "°C";
-$lang = 'de'; // Can be set to 'en', 'de', 'pl', 'es', 'fr', 'it', 'tet' or 'x-pig-latin' (see forecast.io API); default is 'en'
-// We have only 1000 api calls per day, so please only do one update per day!
-// Or request an own key for free at forecast.io
-$api_key = '137f2d85a1f1db5762e5e073103541d2';
+$ini_array = parse_ini_file("./update_weather.config");
 
-/*
- * DO NOT CHANGE ANYTHING FROM HERE
- */
+$latitude  = $ini_array['Latitude'];
+$longitude = $ini_array['Longitude'];
+$locationSkin = $ini_array['LocationSkin'];
+$units = $ini_array['Units'];
+$degree_sign = $ini_array['DegreeSign'];
+$lang = $ini_array['Lang'];
+$api_key = $ini_array['ApiKey'];
+
 include('lib/forecast.io.php');
 
 // delete old files
 array_map('unlink', glob("weather.*"));
-
-// get lat & long from google maps
-$MAPSURL = "http://maps.googleapis.com/maps/api/geocode/json?address=".$city.",".$country."&sensor=false";
-$json = file_get_contents($MAPSURL);
-$data = json_decode($json, true);
-
-if( !isset($data['results'][0]) ) {
-    echo "no latitude and longitude find for: ".$city.",".$country." !\n";
-    exit;
-}
-$latitude  = $data['results'][0]['geometry']['location']['lat'];
-$longitude = $data['results'][0]['geometry']['location']['lng'];
 
 // forecast query
 $forecast = new ForecastIO($api_key);

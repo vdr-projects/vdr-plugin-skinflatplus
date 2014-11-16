@@ -1221,12 +1221,12 @@ void cFlatSetupMMWidget::Setup(void) {
     if( SetupConfig->MainMenuWidgetsEnable ) {
         Add(new cMenuEditPrcItem(tr("Main menu item scale"), &SetupConfig->MainMenuItemScale, 0.3, 0.7, 0));
 
-        Add(new cOsdItem("Widget DVB weather", osUnknown, false));
-        Add(new cMenuEditBoolItem(tr("Widget DVB weather: enable"), &SetupConfig->MainMenuWidgetWeatherShow));
+        Add(new cOsdItem("Widget weather", osUnknown, false));
+        Add(new cMenuEditBoolItem(tr("Widget weather: enable"), &SetupConfig->MainMenuWidgetWeatherShow));
         if( SetupConfig->MainMenuWidgetWeatherShow ) {
-            Add(new cMenuEditIntItem(tr("Widget DVB weather: position"), &SetupConfig->MainMenuWidgetWeatherPosition));
-            Add(new cMenuEditIntItem(tr("Widget DVB weather: show days"), &SetupConfig->MainMenuWidgetWeatherDays));
-            Add(new cMenuEditStraItem(tr("Widget DVB weather: type"), &SetupConfig->MainMenuWidgetWeatherType, WeatherTypes.Size(), &WeatherTypes[0]));
+            Add(new cMenuEditIntItem(tr("Widget weather: position"), &SetupConfig->MainMenuWidgetWeatherPosition));
+            Add(new cMenuEditIntItem(tr("Widget weather: show days"), &SetupConfig->MainMenuWidgetWeatherDays));
+            Add(new cMenuEditStraItem(tr("Widget weather: type"), &SetupConfig->MainMenuWidgetWeatherType, WeatherTypes.Size(), &WeatherTypes[0]));
         }
 
         Add(new cOsdItem("Widget DVB devices", osUnknown, false));
@@ -1304,7 +1304,7 @@ eOSState cFlatSetupMMWidget::ProcessKey(eKeys Key) {
     if( Key == kLeft || Key == kRight ) {
         const char* ItemText = Get(Current())->Text();
         if( strstr(ItemText, tr("Enable main menu widgets")) != NULL ||
-            strstr(ItemText, tr("Widget DVB weather: enable")) != NULL ||
+            strstr(ItemText, tr("Widget weather: enable")) != NULL ||
             strstr(ItemText, tr("Widget DVB devices: enable")) != NULL ||
             strstr(ItemText, tr("Widget active timer: enable")) != NULL ||
             strstr(ItemText, tr("Widget last recordings: enable")) != NULL ||

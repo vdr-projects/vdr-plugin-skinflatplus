@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.3\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-11-15 15:41+0100\n"
+"POT-Creation-Date: 2014-11-16 12:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -204,6 +204,9 @@ msgstr ""
 msgid "VDR CPU Usage"
 msgstr ""
 
+msgid "VDR MEM Usage"
+msgstr ""
+
 msgid "Temp CPU"
 msgstr ""
 
@@ -211,6 +214,9 @@ msgid "Temp GPU"
 msgstr ""
 
 msgid "Temp PC-Case"
+msgstr ""
+
+msgid "Temp MB"
 msgstr ""
 
 msgid "Updates"
@@ -235,6 +241,9 @@ msgid "CPU"
 msgstr ""
 
 msgid "PC-Case"
+msgstr ""
+
+msgid "MB"
 msgstr ""
 
 msgid "GPU"
@@ -747,16 +756,16 @@ msgstr ""
 msgid "Main menu item scale"
 msgstr ""
 
-msgid "Widget DVB weather: enable"
+msgid "Widget weather: enable"
 msgstr ""
 
-msgid "Widget DVB weather: position"
+msgid "Widget weather: position"
 msgstr ""
 
-msgid "Widget DVB weather: show days"
+msgid "Widget weather: show days"
 msgstr ""
 
-msgid "Widget DVB weather: type"
+msgid "Widget weather: type"
 msgstr ""
 
 msgid "Widget DVB devices: enable"

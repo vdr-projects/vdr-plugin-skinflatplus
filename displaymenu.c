@@ -55,23 +55,23 @@ cFlatDisplayMenu::cFlatDisplayMenu(void) {
     menuWidth = osdWidth;
     menuTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuItemSize;
     menuPixmap = osd->CreatePixmap(1, cRect(0, menuTop, menuWidth, scrollBarHeight ));
-    dsyslog("skinflatplus: menuPixmap left: %d top: %d width: %d height: %d", 0, menuTop, menuWidth, scrollBarHeight );
+    //dsyslog("skinflatplus: menuPixmap left: %d top: %d width: %d height: %d", 0, menuTop, menuWidth, scrollBarHeight );
 
     menuIconsBGPixmap = osd->CreatePixmap(2, cRect(0, menuTop, menuWidth, scrollBarHeight ));
-    dsyslog("skinflatplus: menuIconsBGPixmap left: %d top: %d width: %d height: %d", 0, menuTop, menuWidth, scrollBarHeight );
+    //dsyslog("skinflatplus: menuIconsBGPixmap left: %d top: %d width: %d height: %d", 0, menuTop, menuWidth, scrollBarHeight );
     menuIconsPixmap = osd->CreatePixmap(3, cRect(0, menuTop, menuWidth, scrollBarHeight ));
-    dsyslog("skinflatplus: menuIconsPixmap left: %d top: %d width: %d height: %d", 0, menuTop, menuWidth, scrollBarHeight );
+    //dsyslog("skinflatplus: menuIconsPixmap left: %d top: %d width: %d height: %d", 0, menuTop, menuWidth, scrollBarHeight );
 
     chLeft = Config.decorBorderMenuContentHeadSize;
     chTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentHeadSize;
     chWidth = menuWidth - Config.decorBorderMenuContentHeadSize*2;
     chHeight = fontHeight + fontSmlHeight*2 + marginItem*2;
     contentHeadPixmap = osd->CreatePixmap(1, cRect(chLeft, chTop, chWidth, chHeight));
-    dsyslog("skinflatplus: contentHeadPixmap left: %d top: %d width: %d height: %d", chLeft, chTop, chWidth, chHeight );
+    //dsyslog("skinflatplus: contentHeadPixmap left: %d top: %d width: %d height: %d", chLeft, chTop, chWidth, chHeight );
     contentHeadIconsPixmap = osd->CreatePixmap(2, cRect(chLeft, chTop, chWidth, chHeight));
 
     scrollbarPixmap = osd->CreatePixmap(2, cRect(0, scrollBarTop, menuWidth, scrollBarHeight + buttonsHeight + Config.decorBorderButtonSize*2));
-    dsyslog("skinflatplus: scrollbarPixmap left: %d top: %d width: %d height: %d", 0, scrollBarTop, menuWidth, scrollBarHeight + buttonsHeight + Config.decorBorderButtonSize*2 );
+    //dsyslog("skinflatplus: scrollbarPixmap left: %d top: %d width: %d height: %d", 0, scrollBarTop, menuWidth, scrollBarHeight + buttonsHeight + Config.decorBorderButtonSize*2 );
 
     menuPixmap->Fill(clrTransparent);
     menuIconsPixmap->Fill(clrTransparent);
@@ -2945,7 +2945,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     chWidth = menuWidth - Config.decorBorderMenuContentHeadSize*2;
     chHeight = fontHeight + fontSmlHeight*2 + marginItem*2;
     contentHeadPixmap = osd->CreatePixmap(1, cRect(chLeft, chTop, chWidth, chHeight));
-    dsyslog("skinflatplus: contentHeadPixmap left: %d top: %d width: %d height: %d", chLeft, chTop, chWidth, chHeight );
+    //dsyslog("skinflatplus: contentHeadPixmap left: %d top: %d width: %d height: %d", chLeft, chTop, chWidth, chHeight );
 
     contentHeadIconsPixmap->Fill(clrTransparent);
 
@@ -4230,7 +4230,6 @@ int cFlatDisplayMenu::DrawMainMenuWidgetSystemInformation(int wLeft, int wWidth,
     cReadDir d(configsPath);
     struct dirent *e;
     while ((e = d.Next()) != NULL) {
-        dsyslog("FILE: %s", e->d_name);
         std::string fname = e->d_name;
         std::size_t found = fname.find("_");
         if( found != std::string::npos ) {
@@ -4380,6 +4379,18 @@ int cFlatDisplayMenu::DrawMainMenuWidgetSystemInformation(int wLeft, int wWidth,
                                 ContentLeft = marginItem;
                                 ContentTop += fontSmlHeight;
                             }
+                        } else if( ! item.compare("vdr_mem_usage") ) {
+                            cString str = cString::sprintf("%s: %s", tr("VDR MEM Usage"), item_content.c_str());
+                            contentWidget.AddText(*str, false, cRect(ContentLeft, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+                                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+                            if( Column == 1 ) {
+                                Column = 2;
+                                ContentLeft = wWidth / 2;
+                            } else {
+                                Column = 1;
+                                ContentLeft = marginItem;
+                                ContentTop += fontSmlHeight;
+                            }
                         } else if( ! item.compare("cpu") ) {
                             cString str = cString::sprintf("%s: %s", tr("Temp CPU"), item_content.c_str());
                             contentWidget.AddText(*str, false, cRect(ContentLeft, ContentTop, wWidth - marginItem*2, fontSmlHeight),
@@ -4406,6 +4417,18 @@ int cFlatDisplayMenu::DrawMainMenuWidgetSystemInformation(int wLeft, int wWidth,
                             }
                         } else if( ! item.compare("pccase") ) {
                             cString str = cString::sprintf("%s: %s", tr("Temp PC-Case"), item_content.c_str());
+                            contentWidget.AddText(*str, false, cRect(ContentLeft, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+                                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+                            if( Column == 1 ) {
+                                Column = 2;
+                                ContentLeft = wWidth / 2;
+                            } else {
+                                Column = 1;
+                                ContentLeft = marginItem;
+                                ContentTop += fontSmlHeight;
+                            }
+                        } else if( ! item.compare("motherboard") ) {
+                            cString str = cString::sprintf("%s: %s", tr("Temp MB"), item_content.c_str());
                             contentWidget.AddText(*str, false, cRect(ContentLeft, ContentTop, wWidth - marginItem*2, fontSmlHeight),
                                 Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
                             if( Column == 1 ) {
@@ -4521,12 +4544,15 @@ int cFlatDisplayMenu::DrawMainMenuWidgetTemperaturs(int wLeft, int wWidth, int C
     int r = system(*execFile);
     r += 0; // prevent Warning for unused variable
 
-    std::string tempCPU, tempCase, tempGPU;
+    int countTemps = 0;
+
+    std::string tempCPU, tempCase, tempMB, tempGPU;
     cString itemFilename = cString::sprintf("%s/widgets/temperatures/cpu", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
     std::ifstream file(*itemFilename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, tempCPU);
         file.close();
+        countTemps++;
     } else {
         tempCPU = "-1";
     }
@@ -4537,33 +4563,61 @@ int cFlatDisplayMenu::DrawMainMenuWidgetTemperaturs(int wLeft, int wWidth, int C
         std::string cont;
         std::getline(file2, tempCase);
         file2.close();
+        countTemps++;
     } else {
         tempCase = "-1";
     }
 
-    itemFilename = cString::sprintf("%s/widgets/temperatures/gpu", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    itemFilename = cString::sprintf("%s/widgets/temperatures/motherboard", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
     std::ifstream file3(*itemFilename, std::ifstream::in);
     if( file3.is_open() ) {
         std::string cont;
-        std::getline(file3, tempGPU);
+        std::getline(file3, tempMB);
         file3.close();
+        countTemps++;
+    } else {
+        tempMB = "-1";
+    }
+    itemFilename = cString::sprintf("%s/widgets/temperatures/gpu", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    std::ifstream file4(*itemFilename, std::ifstream::in);
+    if( file4.is_open() ) {
+        std::string cont;
+        std::getline(file4, tempGPU);
+        file4.close();
+        countTemps++;
     } else {
         tempGPU = "-1";
     }
 
-    if( !strcmp(tempCPU.c_str(), "-1") && !strcmp(tempCase.c_str(), "-1") && !strcmp(tempGPU.c_str(), "-1") ) {
+    if( !strcmp(tempCPU.c_str(), "-1") && !strcmp(tempCase.c_str(), "-1") && !strcmp(tempMB.c_str(), "-1") && !strcmp(tempGPU.c_str(), "-1") ) {
         contentWidget.AddText(tr("Temperatures not available please check the widget"), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
             Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
     } else {
-        cString str = cString::sprintf("%s: %s", tr("CPU"), tempCPU.c_str());
-        contentWidget.AddText(*str, false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
-            Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
-        str = cString::sprintf("%s: %s", tr("PC-Case"), tempCase.c_str());
-        contentWidget.AddText(*str, false, cRect(wWidth/3 + marginItem, ContentTop, wWidth/3 - marginItem*2, fontSmlHeight),
-            Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
-        str = cString::sprintf("%s: %s", tr("GPU"), tempGPU.c_str());
-        contentWidget.AddText(*str, false, cRect(wWidth/3*2 + marginItem, ContentTop, wWidth/3*2 - marginItem*2, fontSmlHeight),
-            Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+        int Left = marginItem;
+        int addLeft = wWidth / (countTemps);
+        if( strcmp(tempCPU.c_str(), "-1") ) {
+            cString str = cString::sprintf("%s: %s", tr("CPU"), tempCPU.c_str());
+            contentWidget.AddText(*str, false, cRect(Left, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+            Left += addLeft;
+        }
+        if( strcmp(tempCase.c_str(), "-1") ) {
+            cString str = cString::sprintf("%s: %s", tr("PC-Case"), tempCase.c_str());
+            contentWidget.AddText(*str, false, cRect(Left, ContentTop, wWidth/3 - marginItem*2, fontSmlHeight),
+                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+            Left += addLeft;
+        }
+        if( strcmp(tempMB.c_str(), "-1") ) {
+            cString str = cString::sprintf("%s: %s", tr("MB"), tempMB.c_str());
+            contentWidget.AddText(*str, false, cRect(Left, ContentTop, wWidth/3*2 - marginItem*2, fontSmlHeight),
+                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+            Left += addLeft;
+        }
+        if( strcmp(tempGPU.c_str(), "-1") ) {
+            cString str = cString::sprintf("%s: %s", tr("GPU"), tempGPU.c_str());
+            contentWidget.AddText(*str, false, cRect(Left, ContentTop, wWidth/3*2 - marginItem*2, fontSmlHeight),
+                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+       }
     }
 
     return contentWidget.ContentHeight(false);
@@ -4692,7 +4746,6 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
             p = atof(prec.c_str()) * 100.0;
             p = roundUp(p, 10);
             precString = cString::sprintf("%.0f%%", p);
-            dsyslog("WEATHER: %s %f %s", prec.c_str(), p, *precString);
         } else
            continue;
 
@@ -4714,7 +4767,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
         weekDayName = WeekDayName(t2);
 
         if( Config.MainMenuWidgetWeatherType == 0 ) { // short
-            if( left + fontHeight*2 + font->Width("XXX") + font->Width("XXXX") + marginItem*6 > wWidth )
+            if( left + fontHeight*2 + fontTempSml->Width("XXXXX") + fontTempSml->Width("XXXX") + marginItem*6 > wWidth )
                 break;
             if( index > 0 ) {
                 contentWidget.AddText("|", false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
@@ -4729,15 +4782,15 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
             }
             contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
             contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
-            left += font->Width("XXX") + marginItem;
+            left += fontTempSml->Width("XXXXX") + marginItem;
 
             img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
             if( img ) {
                 contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
                 left += fontHeight - marginItem;
             }
-            contentWidget.AddText(*precString, false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
-            left += font->Width(*precString) + marginItem*2;
+            contentWidget.AddText(*precString, false, cRect(left, ContentTop + (fontHeight/2 - fontTempSml->Height()/2), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
+            left += fontTempSml->Width(*precString) + marginItem*2;
         } else { // long
             if( ContentTop + marginItem > menuPixmap->ViewPort().Height() )
                 break;
@@ -4756,17 +4809,17 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
             }
             contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
             contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
-            left += font->Width("XXX") + marginItem;
+            left += fontTempSml->Width("XXXXX") + marginItem;
 
             img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
             if( img ) {
                 contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
                 left += fontHeight - marginItem;
             }
-            contentWidget.AddText(*precString, false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
-            left += font->Width("XXXX") + marginItem;
+            contentWidget.AddText(*precString, false, cRect(left, ContentTop + (fontHeight/2 - fontTempSml->Height()/2), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
+            left += fontTempSml->Width("XXXX") + marginItem;
 
-            contentWidget.AddText(summary.c_str(), true, cRect(left, ContentTop, wWidth - left, fontHeight), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, wWidth - left, fontHeight);
+            contentWidget.AddText(summary.c_str(), false, cRect(left, ContentTop + (fontHeight/2 - fontTempSml->Height()/2), wWidth - left, fontHeight), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, wWidth - left);
 
             ContentTop += fontHeight;
         }
