@@ -31,6 +31,9 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
     iconsPixmap->Fill(clrTransparent);
 
     fontSecs = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize * Config.TimeSecsScale * 100.0);
+
+    if( Config.PlaybackWeatherShow )
+        DrawWidgetWeather();
 }
 
 cFlatDisplayReplay::~cFlatDisplayReplay() {

@@ -97,6 +97,10 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) : m_Receiver(NULL) {
             cDevice::ActualDevice()->AttachReceiver(m_Receiver);
         }
     }
+
+    if( Config.ChannelWeatherShow )
+        DrawWidgetWeather();
+
     DecorBorderDraw(Config.decorBorderChannelSize, Config.decorBorderChannelSize+channelHeight - height,
         channelWidth, heightTop + heightBottom + Config.decorProgressChannelSize+marginItem*2,
         Config.decorBorderChannelSize, Config.decorBorderChannelType, Config.decorBorderChannelFg, Config.decorBorderChannelBg);

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.3\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-11-16 12:23+0100\n"
+"POT-Creation-Date: 2014-11-16 14:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgid "clock"
 msgstr "Uhr"
 
 msgid "Genre"
-msgstr ""
+msgstr "Kategorie"
 
 msgid "FSK"
 msgstr ""
@@ -136,43 +136,43 @@ msgid "Recording information"
 msgstr "Aufnahme Informationen"
 
 msgid "DVB Devices"
-msgstr ""
+msgstr "DVB Geräte"
 
 msgid "LiveTV"
 msgstr ""
 
 msgid "Unknown"
-msgstr ""
+msgstr "Unbekannt"
 
 msgid "recording"
-msgstr ""
+msgstr "Nimmt auf"
 
 msgid "not used"
-msgstr ""
+msgstr "Nicht verwendet"
 
 msgid "Active Timer"
-msgstr ""
+msgstr "Aktive Timer"
 
 msgid "no active timer"
-msgstr ""
+msgstr "Keine aktiven Timer"
 
 msgid "Last Recordings"
-msgstr ""
+msgstr "Letzte Aufnahmen"
 
 msgid "Timer Conflicts"
-msgstr ""
+msgstr "Timerkonflikte"
 
 msgid "no timer conflicts"
-msgstr ""
+msgstr "Keine Timerkonflikte"
 
 msgid "timer conflicts"
-msgstr ""
+msgstr "timerkonflikte"
 
 msgid "System Information"
-msgstr ""
+msgstr "Systeminformation"
 
 msgid "no information available please check the script"
-msgstr ""
+msgstr "Keine Informationen verfügbar; Bitte Skript prüfen"
 
 msgid "System Version"
 msgstr ""
@@ -181,67 +181,67 @@ msgid "Kernel Version"
 msgstr ""
 
 msgid "Uptime"
-msgstr ""
+msgstr "Läuft"
 
 msgid "Load"
-msgstr ""
+msgstr "Last"
 
 msgid "Processes"
-msgstr ""
+msgstr "Prozesse"
 
 msgid "Memory Usage"
-msgstr ""
+msgstr "Speicherbelegung"
 
 msgid "Swap Usage"
-msgstr ""
+msgstr "Swap-Nutzung"
 
 msgid "Root Usage"
-msgstr ""
+msgstr "Root-Nutzung"
 
 msgid "Video Usage"
-msgstr ""
+msgstr "Video-Nutzung"
 
 msgid "VDR CPU Usage"
-msgstr ""
+msgstr "VDR CPU-Nutzung"
 
 msgid "VDR MEM Usage"
-msgstr ""
+msgstr "VDR Speichernutzung"
 
 msgid "Temp CPU"
-msgstr ""
+msgstr "CPU-Temperatur"
 
 msgid "Temp GPU"
-msgstr ""
+msgstr "GPU-Temperatur"
 
 msgid "Temp PC-Case"
-msgstr ""
+msgstr "Gehäuse-Temperatur"
 
 msgid "Temp MB"
-msgstr ""
+msgstr "MB-Temperatur"
 
 msgid "Updates"
-msgstr ""
+msgstr "Aktualisierungen"
 
 msgid "Security Updates"
-msgstr ""
+msgstr "Sicherheitsupdates"
 
 msgid "System Updates"
-msgstr ""
+msgstr "Systemupdates"
 
 msgid "Updatestatus not available please check the widget"
-msgstr ""
+msgstr "Updatestatus nicht vorhanden; Bitte Widget prüfen"
 
 msgid "Temperatures"
-msgstr ""
+msgstr "Temperaturen"
 
 msgid "Temperatures not available please check the widget"
-msgstr ""
+msgstr "Temperaturen nicht vorhanden; Bitte Widget prüfen"
 
 msgid "CPU"
 msgstr ""
 
 msgid "PC-Case"
-msgstr ""
+msgstr "Gehäuse"
 
 msgid "MB"
 msgstr ""
@@ -250,13 +250,13 @@ msgid "GPU"
 msgstr ""
 
 msgid "no title available"
-msgstr ""
+msgstr "Kein Titel vorhanden"
 
 msgid "no output available"
-msgstr ""
+msgstr "Keine Ausgabe vorhanden"
 
 msgid "Weather"
-msgstr ""
+msgstr "Wetter"
 
 msgid "Audio Tracks"
 msgstr "Audio Spuren"
@@ -391,10 +391,10 @@ msgid "remaining"
 msgstr "verbleibend"
 
 msgid "short"
-msgstr ""
+msgstr "kurz"
 
 msgid "long"
-msgstr ""
+msgstr "lang"
 
 msgid "General settings"
 msgstr "Allgemeine Einstellungen"
@@ -412,7 +412,7 @@ msgid "Volume settings"
 msgstr "Lautstärke Einstellungen"
 
 msgid "Tracks settings"
-msgstr "Audiospur Einstellungen"
+msgstr "Tonspur Einstellungen"
 
 msgid "TVScraper / scraper2vdr settings"
 msgstr "TVScraper / scraper2vdr Einstellungen"
@@ -421,7 +421,7 @@ msgid "TVScraper / scraper2vdr not installed"
 msgstr "TVScraper / scraper2vdr nicht installiert"
 
 msgid "Main menu widgets settings"
-msgstr ""
+msgstr "Hauptmenü: Widget Einstellungen"
 
 msgid "configfile"
 msgstr "Konfigdatei"
@@ -542,6 +542,9 @@ msgstr "Zeige Kanalinfo Logos"
 
 msgid "Show signal quality"
 msgstr "Zeige Signalqualität"
+
+msgid "Show weather widget"
+msgstr "Zeige Wetter Widget"
 
 msgid "Colors for signal quality"
 msgstr "Farben für Signalqualität"
@@ -721,16 +724,16 @@ msgid "Volume progress size"
 msgstr "Lautstärke Fortschritt Größe"
 
 msgid "Tracks border by decor-file?"
-msgstr "Audiospur Rand aus Dekordatei?"
+msgstr "Tonspur Rand aus Dekordatei?"
 
 msgid "Tracks border type"
-msgstr "Audiospur Rand Typ"
+msgstr "Tonspur Rand Typ"
 
 msgid "Tracks border size"
-msgstr "Audiospur Rand Größe"
+msgstr "Tonspur Rand Größe"
 
 msgid "TVScraper settings"
-msgstr ""
+msgstr "TVScraper: Einstellungen"
 
 msgid "Channelinfo show poster?"
 msgstr "Kanalinfo zeige Poster?"
@@ -751,82 +754,82 @@ msgid "recording info show actors?"
 msgstr "Aufnahmeinfo zeige Schauspieler?"
 
 msgid "Enable main menu widgets"
-msgstr ""
+msgstr "Hauptmenü Widgets anzeigen"
 
 msgid "Main menu item scale"
-msgstr ""
+msgstr "Hauptmenü Widgets: Breite (%)"
 
 msgid "Widget weather: enable"
-msgstr ""
+msgstr "Wetter-Widget anzeigen"
 
 msgid "Widget weather: position"
-msgstr ""
+msgstr "Wetter-Widget: Position"
 
 msgid "Widget weather: show days"
-msgstr ""
+msgstr "Wetter-Widget: Zeige Tage"
 
 msgid "Widget weather: type"
-msgstr ""
+msgstr "Wetter-Widget: Typ"
 
 msgid "Widget DVB devices: enable"
-msgstr ""
+msgstr "DVB Geräte-Widget: Anzeigen"
 
 msgid "Widget DVB devices: position"
-msgstr ""
+msgstr "DVB Geräte-Widget: Position"
 
 msgid "Widget active timer: enable"
-msgstr ""
+msgstr "Aktive Timer-Widget: Anzeigen"
 
 msgid "Widget active timer: position"
-msgstr ""
+msgstr "Aktive Timer-Widget: Position"
 
 msgid "Widget active timer: max show"
-msgstr ""
+msgstr "Aktive Timer-Widget: Zeige max."
 
 msgid "Widget active timer: hide if empty"
-msgstr ""
+msgstr "Aktive Timer-Widget: Verstecken wenn Leer"
 
 msgid "Widget last recordings: enable"
-msgstr ""
+msgstr "Letzte Aufnahmen-Widget: Anzeigen"
 
 msgid "Widget last recordings: position"
-msgstr ""
+msgstr "Letzte Aufnahmen-Widget: Position"
 
 msgid "Widget last recordings: max show"
-msgstr ""
+msgstr "Letzte Aufnahmen-Widget: Zeige max."
 
 msgid "Widget timer conflicts: enable"
-msgstr ""
+msgstr "Timerkonflikte-Widget: Anzeigen"
 
 msgid "Widget timer conflicts: position"
-msgstr ""
+msgstr "Timerkonflikte-Widget: Position"
 
 msgid "Widget timer conflicts: hide if empty"
-msgstr ""
+msgstr "Timerkonflikte-Widget: Verstecken wenn Leer"
 
 msgid "Widget system information: enable"
-msgstr ""
+msgstr "Systeminformation-Widget: Anzeigen"
 
 msgid "Widget system information: position"
-msgstr ""
+msgstr "Systeminformation-Widget: Position"
 
 msgid "Widget system updates: enable"
-msgstr ""
+msgstr "Systemupdates-Widget: Anzeigen"
 
 msgid "Widget system updates: position"
-msgstr ""
+msgstr "Systemupdates-Widget: Position"
 
 msgid "Widget system updates: hide if empty"
-msgstr ""
+msgstr "Systemupdates-Widget: Verstecken wenn Leer"
 
 msgid "Widget temperatures: enable"
-msgstr ""
+msgstr "Temperaturen-Widget: Anzeigen"
 
 msgid "Widget temperatures: position"
-msgstr ""
+msgstr "Temperaturen-Widget: Position"
 
 msgid "Widget custom commands: enable"
-msgstr ""
+msgstr "Eigene Befehle-Widget: Anzeigen"
 
 msgid "Widget custom commands: position"
-msgstr ""
+msgstr "Eigene Befehle-Widget: Position"

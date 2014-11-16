@@ -18,6 +18,17 @@ array_map('unlink', glob("weather.*"));
 // forecast query
 $forecast = new ForecastIO($api_key);
 
+$condition = $forecast->getCurrentConditions($latitude, $longitude, $units, $lang);
+if( !$handle = fopen("weather.0.temp", "w") ) {
+    print "can't create file!\n";
+    continue;
+}
+$temp = round($condition->getTemperature(), 1);
+fwrite($handle, $temp);
+fwrite($handle, $degree_sign);
+fclose($handle);
+
+
 // get daily conditions for next 7 days
 $conditions_week = $forecast->getForecastWeek($latitude, $longitude, $units, $lang);
 
@@ -40,17 +51,6 @@ foreach($conditions_week as $conditions) {
     fwrite($handle, $conditions->getSummary());
     fclose($handle);
 
-/*    
-    if( !$handle = fopen("weather.".$index.".temp", "w") ) {
-        print "can't create file!\n";
-        continue;
-    }
-    // we only have min & max so we must calc
-    $temp = round(($conditions->getMinTemperature() + $conditions->getMaxTemperature()) / 2.0, 1);
-    fwrite($handle, $temp);
-    fwrite($handle, $degree_sign);
-    fclose($handle);
- */
     if( !$handle = fopen("weather.".$index.".tempMin", "w") ) {
         print "can't create file!\n";
         continue;

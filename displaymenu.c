@@ -3879,6 +3879,7 @@ const char* cFlatDisplayMenu::GetGenreIcon(uchar genre) {
 void cFlatDisplayMenu::DrawMainMenuWidgets(void) {
     int wLeft = osdWidth * Config.MainMenuItemScale + marginItem + Config.decorBorderMenuContentSize;
     int wTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentSize;
+
     int wWidth = osdWidth - wLeft - Config.decorBorderMenuContentSize;
     int wHeight = menuPixmap->ViewPort().Height() - marginItem*2;
     int ContentTop = 0;
@@ -3961,7 +3962,7 @@ void cFlatDisplayMenu::DrawMainMenuWidgets(void) {
     contentWidget.Draw();
 
     DecorBorderDraw(wLeft, wTop, wWidth, contentWidget.ContentHeight(false), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
-        Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
+        Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg, BorderMMWidget);
 }
 
 int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int ContentTop) {
@@ -4828,38 +4829,6 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
     return contentWidget.ContentHeight(false);
 }
 
-/*
-int cFlatDisplayMenu::DrawMainMenuWidgetTimerConflicts(int wLeft, int wTop, int wWidth) {
-    int wHeight = fontHeight + 6 + (Config.MainMenuWidgetLastRecMaxCount * fontSmlHeight) + Config.decorBorderMenuContentSize*2;
-    int ContentTop = marginItem;
-
-    contentWidgetTimerConflicts.Clear();
-    contentWidgetTimerConflicts.SetOsd(osd);
-    contentWidgetTimerConflicts.SetPosition(cRect(wLeft, wTop, wWidth, wHeight));
-    contentWidgetTimerConflicts.SetBGColor(Theme.Color(clrMenuRecBg));
-    contentWidgetTimerConflicts.SetScrollingActive(false);
-
-    contentWidgetTimerConflicts.AddText(tr("Last Recordings"), false, cRect(marginItem*10, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
-    ContentTop += fontHeight;
-    contentWidgetTimerConflicts.AddRect(cRect(0, ContentTop, wWidth, 3), Theme.Color(clrMenuEventTitleLine));
-    ContentTop += 6;
-
-    if( wTop + contentWidgetTimerConflicts.ContentHeight(false) + fontSmlHeight > menuPixmap->ViewPort().Height() )
-        return 0;
-
-    contentWidgetTimerConflicts.AddText(strRec.str().c_str(), true, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
-        Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
-    ContentTop += fontSmlHeight;
-
-    contentWidgetTimerConflicts.CreatePixmaps(false);
-    contentWidgetTimerConflicts.Draw();
-
-    DecorBorderDraw(wLeft, wTop, wWidth, contentWidgetTimerConflicts.ContentHeight(false), Config.decorBorderMenuContentSize, Config.decorBorderMenuContentType,
-        Config.decorBorderMenuContentFg, Config.decorBorderMenuContentBg);
-
-    return contentWidgetTimerConflicts.ContentHeight(false);
-}
-*/
 void cFlatDisplayMenu::PreLoadImages(void) {
     // menu icons
     cString Path = cString::sprintf("%s%s/menuIcons", *Config.iconPath, Setup.OSDTheme);

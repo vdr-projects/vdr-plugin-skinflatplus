@@ -205,6 +205,10 @@ class cFlatConfig
         int ChannelBitrateShow;
         int ChannelBitrateShowCalcInterval; // hidden config
         int ChannelTimeLeft;
+
+        int ChannelWeatherShow;
+        int PlaybackWeatherShow;
+
         int RecordingResolutionAspectShow;
         int RecordingFormatShow;
         int RecordingSimpleAspectFormat;

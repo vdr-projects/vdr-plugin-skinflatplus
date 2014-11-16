@@ -14,6 +14,7 @@ VDR Plugin 'skinflatplus' Revision History
         - Widget temperatures
         - Widget custom command
     - Please see the example scripts and README-files
+- [add] Weather Widget in channelinfo and replayinfo
 - [update] default themes
     - background transparency slightly reduced
     - use color palette of android material design

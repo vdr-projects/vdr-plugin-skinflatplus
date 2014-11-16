@@ -8,7 +8,7 @@ LANG=de_DE.UTF-8
 
 # there can be 4 files, cpu, gpu, pccase, motherboard
 
-rm -f ./cpu ./pccase ./gpu
+rm -f ./cpu ./pccase ./gpu ./motherboard
 
 # intel core-i cpu temp
 sensors -A coretemp-isa-0000 | grep "Core 0" | awk '{print $3}' | tr -d "+" > ./cpu

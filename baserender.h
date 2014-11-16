@@ -4,6 +4,7 @@
 #include <list>
 #include "flat.h"
 #include "textscroller.h"
+#include "complexcontent.h"
 
 enum eBorder {
     BorderMenuItem,
@@ -13,7 +14,8 @@ enum eBorder {
     BorderButton,
     BorderContent,
     BorderTVSPoster,
-    BorderSetRecording
+    BorderSetRecording,
+    BorderMMWidget
 };
 
 struct sDecorBorder {
@@ -103,6 +105,8 @@ class cFlatBaseRender
         cTextWrapper contentWrapperPoster;
         const cEvent *contentEvent;
 
+        cComplexContent weatherWidget;
+
         cPixmap *decorPixmap;
         std::list<sDecorBorder> Borders; // for clear specific Borders (clear only MenuItems and not TopBar)
 
@@ -172,4 +176,6 @@ class cFlatBaseRender
         void DecorBorderClearByFrom(int From);
 
         int GetFontAscender(const char *Name, int CharHeight, int CharWidth = 0);
+
+        void DrawWidgetWeather(void);
 };

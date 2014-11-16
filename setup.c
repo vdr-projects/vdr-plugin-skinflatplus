@@ -308,6 +308,8 @@ void cFlatSetup::Store(void) {
     SetupStore("MainMenuWidgetWeatherPosition", Config.MainMenuWidgetWeatherPosition);
     SetupStore("MainMenuWidgetWeatherDays", Config.MainMenuWidgetWeatherDays);
     SetupStore("MainMenuWidgetWeatherType", Config.MainMenuWidgetWeatherType);
+    SetupStore("ChannelWeatherShow", Config.ChannelWeatherShow);
+    SetupStore("PlaybackWeatherShow", Config.PlaybackWeatherShow);
 
     Config.Init();
 }
@@ -481,6 +483,8 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuWidgetWeatherPosition") == 0)        SetupConfig->MainMenuWidgetWeatherPosition = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetWeatherDays") == 0)            SetupConfig->MainMenuWidgetWeatherDays = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetWeatherType") == 0)            SetupConfig->MainMenuWidgetWeatherType = atoi(Value);
+    else if (strcmp(Name, "ChannelWeatherShow") == 0)                   SetupConfig->ChannelWeatherShow = atoi(Value);
+    else if (strcmp(Name, "PlaybackWeatherShow") == 0)                  SetupConfig->PlaybackWeatherShow = atoi(Value);
     else return false;
 
     return true;
@@ -636,6 +640,8 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("MainMenuWidgetWeatherPosition", SetupConfig->MainMenuWidgetWeatherPosition, *Filename);
     Config.Store("MainMenuWidgetWeatherDays", SetupConfig->MainMenuWidgetWeatherDays, *Filename);
     Config.Store("MainMenuWidgetWeatherType", SetupConfig->MainMenuWidgetWeatherType, *Filename);
+    Config.Store("ChannelWeatherShow", SetupConfig->ChannelWeatherShow, *Filename);
+    Config.Store("PlaybackWeatherShow", SetupConfig->PlaybackWeatherShow, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -807,6 +813,7 @@ void cFlatSetupChannelInfo::Setup(void) {
 
     Add(new cMenuEditBoolItem(tr("Show Channelinfo icons"), &SetupConfig->ChannelIconsShow));
     Add(new cMenuEditBoolItem(tr("Show signal quality"), &SetupConfig->SignalQualityShow));
+    Add(new cMenuEditBoolItem(tr("Show weather widget"), &SetupConfig->ChannelWeatherShow));
     Add(new cMenuEditBoolItem(tr("Colors for signal quality"), &SetupConfig->SignalQualityUseColors));
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->ChannelResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->ChannelFormatShow));
@@ -1016,6 +1023,7 @@ void cFlatSetupReplay::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->RecordingFormatShow));
     Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->RecordingSimpleAspectFormat));
     Add(new cMenuEditPrcItem(tr("Time seconds font scale"), &SetupConfig->TimeSecsScale, 0.003, 0.01, 1));
+    Add(new cMenuEditBoolItem(tr("Show weather widget"), &SetupConfig->PlaybackWeatherShow));
 
     if( SetupConfig->decorBorderReplayByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Replay border type"), Bordertypes[SetupConfig->decorBorderReplayTypeTheme]);
