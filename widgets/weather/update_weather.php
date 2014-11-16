@@ -8,6 +8,7 @@ $locationSkin = $ini_array['LocationSkin'];
 $units = $ini_array['Units'];
 $degree_sign = $ini_array['DegreeSign'];
 $lang = $ini_array['Lang'];
+$convertPoint = $ini_array['ConvertPoint2Comma'];
 $api_key = $ini_array['ApiKey'];
 
 include('lib/forecast.io.php');
@@ -24,6 +25,8 @@ if( !$handle = fopen("weather.0.temp", "w") ) {
     continue;
 }
 $temp = round($condition->getTemperature(), 1);
+if( $convertPoint == 1 )
+    $temp = str_replace(".", ",", $temp);
 fwrite($handle, $temp);
 fwrite($handle, $degree_sign);
 fclose($handle);
@@ -57,6 +60,8 @@ foreach($conditions_week as $conditions) {
     }
     // we only have min & max so we must calc
     $temp = round($conditions->getMinTemperature(), 1);
+    if( $convertPoint == 1 )
+        $temp = str_replace(".", ",", $temp);
     fwrite($handle, $temp);
     fwrite($handle, $degree_sign);
     fclose($handle);
@@ -66,6 +71,8 @@ foreach($conditions_week as $conditions) {
         continue;
     }
     // we only have min & max so we must calc
+    if( $convertPoint == 1 )
+        $temp = str_replace(".", ",", $temp);
     $temp = round($conditions->getMaxTemperature(), 1);
     fwrite($handle, $temp);
     fwrite($handle, $degree_sign);

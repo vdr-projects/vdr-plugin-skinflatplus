@@ -1486,7 +1486,7 @@ int cFlatBaseRender::GetFontAscender(const char *Name, int CharHeight, int CharW
 void cFlatBaseRender::DrawWidgetWeather(void) {
     cFont *fontTempSml = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize/2.0 );
 
-    std::string tempToday = "";
+    std::string tempToday = "", tempTodaySign = "";
     std::string iconToday, iconTomorrow;
     std::string tempMaxToday, tempMaxTomorrow;
     std::string tempMinToday, tempMinTomorrow;
@@ -1500,49 +1500,61 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
     if( file.is_open() ) {
         std::getline(file, tempToday);
         file.close();
-    }
+        std::size_t found = tempToday.find("°");
+        if( found != std::string::npos) {
+            tempTodaySign = tempToday.substr(found);
+            tempToday = tempToday.substr(0, found);
+        }
+    } else
+        return;
 
     filename = cString::sprintf("%s/widgets/weather/weather.0.icon", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
     file.open(*filename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, iconToday);
         file.close();
-    }
+    } else
+        return;
 
     filename = cString::sprintf("%s/widgets/weather/weather.1.icon", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
     file.open(*filename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, iconTomorrow);
         file.close();
-    }
+    } else
+        return;
 
     filename = cString::sprintf("%s/widgets/weather/weather.0.tempMax", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
     file.open(*filename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, tempMaxToday);
         file.close();
-    }
+    } else
+        return;
 
     filename = cString::sprintf("%s/widgets/weather/weather.1.tempMax", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
     file.open(*filename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, tempMaxTomorrow);
         file.close();
-    }
+    } else
+        return;
 
     filename = cString::sprintf("%s/widgets/weather/weather.0.tempMin", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
     file.open(*filename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, tempMinToday);
         file.close();
-    }
+    } else
+        return;
 
     filename = cString::sprintf("%s/widgets/weather/weather.1.tempMin", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
     file.open(*filename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, tempMinTomorrow);
         file.close();
-    }
+    } else
+        return;
 
     double p = 0.0;
     filename = cString::sprintf("%s/widgets/weather/weather.0.precipitation", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
@@ -1573,7 +1585,7 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
     int widthTempTomorrow = max(fontTempSml->Width(tempMaxTomorrow.c_str()), fontTempSml->Width(tempMinTomorrow.c_str()) );
 
     int wTop = topBarHeight + Config.decorBorderTopBarSize*2 + 20 + Config.decorBorderChannelEPGSize;
-    int wWidth = marginItem + font->Width(tempToday.c_str()) + marginItem*2 + fontHeight + marginItem \
+    int wWidth = marginItem + font->Width(tempToday.c_str()) + fontTempSml->Width(tempTodaySign.c_str()) + marginItem*2 + fontHeight + marginItem \
         + widthTempToday + marginItem + fontHeight - marginItem*2 \
         + fontTempSml->Width(precToday.c_str()) + marginItem*4 + fontHeight + marginItem \
         + widthTempTomorrow + marginItem + fontHeight - marginItem*2 \
@@ -1583,11 +1595,18 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
     weatherWidget.Clear();
     weatherWidget.SetOsd(osd);
     weatherWidget.SetPosition(cRect(wLeft, wTop, wWidth, fontHeight));
-    weatherWidget.SetBGColor(Config.decorBorderChannelBg);
+    weatherWidget.SetBGColor(Theme.Color(clrItemCurrentBg));
     weatherWidget.SetScrollingActive(false);
 
-    weatherWidget.AddText(tempToday.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Config.decorBorderChannelBg, font);
-    left += font->Width(tempToday.c_str()) + marginItem*2;
+    weatherWidget.AddText(tempToday.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), font);
+    left += font->Width(tempToday.c_str());
+
+    int fontAscender = GetFontAscender(Setup.FontOsd, Setup.FontOsdSize);
+    int fontAscender2 = GetFontAscender(Setup.FontOsd, Setup.FontOsdSize / 2.0);
+    int t = (fontHeight - fontAscender) - (fontTempSml->Height() - fontAscender2);
+
+    weatherWidget.AddText(tempTodaySign.c_str(), false, cRect(left, t, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), fontTempSml);
+    left += fontTempSml->Width(tempTodaySign.c_str()) + marginItem*2;
 
     cString weatherIcon = cString::sprintf("widgets/%s", iconToday.c_str());
     cImage *img = imgLoader.LoadIcon(*weatherIcon, fontHeight, fontHeight - marginItem*2);
@@ -1595,8 +1614,8 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
         weatherWidget.AddImage(img, cRect(left, 0 + marginItem, fontHeight, fontHeight));
         left += fontHeight + marginItem;
     }
-    weatherWidget.AddText(tempMaxToday.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Config.decorBorderChannelBg, fontTempSml);
-    weatherWidget.AddText(tempMinToday.c_str(), false, cRect(left, 0 + fontTempSml->Height(), 0, 0), Theme.Color(clrChannelFontEpg), Config.decorBorderChannelBg, fontTempSml);
+    weatherWidget.AddText(tempMaxToday.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), fontTempSml);
+    weatherWidget.AddText(tempMinToday.c_str(), false, cRect(left, 0 + fontTempSml->Height(), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), fontTempSml);
     left += widthTempToday + marginItem;
 
     img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
@@ -1604,7 +1623,7 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
         weatherWidget.AddImage(img, cRect(left, 0 + marginItem, fontHeight, fontHeight));
         left += fontHeight - marginItem*2;
     }
-    weatherWidget.AddText(precToday.c_str(), false, cRect(left, 0 + (fontHeight/2 - fontTempSml->Height()/2), 0, 0), Theme.Color(clrChannelFontEpg), Config.decorBorderChannelBg, fontTempSml);
+    weatherWidget.AddText(precToday.c_str(), false, cRect(left, 0 + (fontHeight/2 - fontTempSml->Height()/2), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), fontTempSml);
     left += fontTempSml->Width(precToday.c_str()) + marginItem*4;
 
     weatherWidget.AddRect(cRect(left - marginItem*2, 0, wWidth - left + marginItem*2, fontHeight), Theme.Color(clrChannelBg));
