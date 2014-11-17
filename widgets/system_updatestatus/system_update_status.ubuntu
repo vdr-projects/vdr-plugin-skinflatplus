@@ -1,62 +1,17 @@
 #!/bin/bash
 
-# this script must be call from cron
-# please add a cron entry for this script
-# skin flatPlus only read the file "update_status"
+APTCHECK=/usr/lib/update-notifier/apt-check
 
+rm -f updates security_updates
 
-rm -f ./update_status
-
-# lent code from apticron, thank you!
-
-# Set $DIRCACHE
-eval `/usr/bin/apt-config shell DIRCACHE Dir::Cache`
-
-NOTIFY_HOLDS="0"
-NOTIFY_NEW="1"
-
-# get the list of packages which are pending an upgrade
-PKGNAMES=`/usr/bin/apt-get -q -y --ignore-hold --allow-unauthenticated -s dist-upgrade | \
-          /bin/grep ^Inst | /usr/bin/cut -d\  -f2 | /usr/bin/sort`
-
-# creating the future last_run file
-TMPFILE="$(mktemp -t apticron.XXXXXXXXXX)"
-for p in $PKGNAMES; do
-    echo $p >> $TMPFILE
-done
-
-# workaround to handle apt-get installing packages hold by aptitude. See #137771.
-APTITUDE_HOLDS=`grep "^State: 2" -B 2 /var/lib/aptitude/pkgstates 2>/dev/null |grep "^Package: .*$" |cut -d" " -f 2`
-DSELECT_HOLDS=`dpkg --get-selections |grep "hold$" |cut -f1`
-
-if [ "$NOTIFY_HOLDS" = "0" ]; then
-    # packages hold by aptitude don't go to the upgrading candidates list
-    for p in $APTITUDE_HOLDS; do
-        PKGNAMES=`echo $PKGNAMES |sed "s/\(^\| \)$p\( \|$\)/ /g;s/^ //g"`
-    done
-    # packages hold by dselect don't go to the upgrading candidates list
-    for p in $DSELECT_HOLDS; do
-        PKGNAMES=`echo $PKGNAMES |sed "s/\(^\| \)$p\( \|$\)/ /g;s/^ //g"`
-    done
+if [ ! -f ${APTCHECK} ]
+then
+    exit
 fi
 
-if [ "$NOTIFY_NEW" = "0" ]; then
-    # new packages don't go to the upgrading candidates list (see #531002)
-    for p in $PKGNAMES; do
-            if [ -z "`dpkg -s $p 2>/dev/null| grep '^Status: install ok installed'`" ] ; then
-                PKGNAMES=`echo $PKGNAMES |sed "s/\(^\| \)$p\( \|$\)/ /g;s/^ //g"`
-        fi
-    done
-fi
+RET=$(${APTCHECK} 2>&1)
 
-
-PKGPATH="/${DIRCACHE}archives/"
-for PKG in $PKGNAMES ; do
-    VER=`LC_ALL=C /usr/bin/apt-cache policy $PKG | /bin/grep Candidate: | /usr/bin/cut -f 4 -d \ `
-    VERFILE=`echo "$VER" | /bin/sed -e "s/:/%3a/g"`
-    if ls ${PKGPATH}${PKG}_${VERFILE}_*.deb >& /dev/null ; then
-        DEBS="$DEBS ${PKGPATH}${PKG}_${VERFILE}_*.deb"
-    fi
-    echo $PKG $VER >> ./update_status
-done
-
+# updates
+echo $RET | cut -d";" -f1 > updates
+# security updates
+echo $RET | cut -d";" -f2 > security_updates

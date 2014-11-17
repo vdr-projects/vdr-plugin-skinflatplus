@@ -6,4 +6,8 @@ For example call the command from cron.daily.
 
 You need php5 with command line support for this widget. For example in Ubuntu you need the package "php5-cli".
 
-Please configur your location and others in update_weather.config. Use php-script "GetLatLangFromCity.php" to get latitude & longitude from your location.
+Please move update_weather.config to update_weather.config.sample
+
+mv update_weather.config.sample update_weather.config
+
+Configure your location and others in update_weather.config. Use php-script "GetLatLangFromCity.php" to get latitude & longitude from your location.

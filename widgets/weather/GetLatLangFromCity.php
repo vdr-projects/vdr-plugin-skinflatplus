@@ -18,8 +18,8 @@ if( !isset($data['results'][0]) ) {
 $latitude  = $data['results'][0]['geometry']['location']['lat'];
 $longitude = $data['results'][0]['geometry']['location']['lng'];
 
-echo "latitude:  ".$latitude."\n";
-echo "longitude: ".$longitude."\n";
+echo "Latitude =  ".$latitude."\n";
+echo "Longitude = ".$longitude."\n";
 echo "put these values in update_weather.config\n";
 
 ?>

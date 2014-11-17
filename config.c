@@ -114,6 +114,7 @@ cFlatConfig::cFlatConfig(void) {
 
     ChannelWeatherShow = 1;
     PlaybackWeatherShow = 1;
+    WeatherFontSize = 0.05;
 
     TopBarFontClockScale = 0.01;
     TopBarHideClockText = 0;
@@ -341,6 +342,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuWidgetWeatherType") == 0)            MainMenuWidgetWeatherType = atoi(Value);
     else if (strcmp(Name, "ChannelWeatherShow") == 0)                   ChannelWeatherShow = atoi(Value);
     else if (strcmp(Name, "PlaybackWeatherShow") == 0)                  PlaybackWeatherShow = atoi(Value);
+    else if (strcmp(Name, "WeatherFontSize") == 0)                      WeatherFontSize = atod(Value);
 
     else return false;
 

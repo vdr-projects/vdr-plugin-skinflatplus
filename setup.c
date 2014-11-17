@@ -310,6 +310,7 @@ void cFlatSetup::Store(void) {
     SetupStore("MainMenuWidgetWeatherType", Config.MainMenuWidgetWeatherType);
     SetupStore("ChannelWeatherShow", Config.ChannelWeatherShow);
     SetupStore("PlaybackWeatherShow", Config.PlaybackWeatherShow);
+    SetupStore("WeatherFontSize", dtoa(Config.WeatherFontSize));
 
     Config.Init();
 }
@@ -485,6 +486,7 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuWidgetWeatherType") == 0)            SetupConfig->MainMenuWidgetWeatherType = atoi(Value);
     else if (strcmp(Name, "ChannelWeatherShow") == 0)                   SetupConfig->ChannelWeatherShow = atoi(Value);
     else if (strcmp(Name, "PlaybackWeatherShow") == 0)                  SetupConfig->PlaybackWeatherShow = atoi(Value);
+    else if (strcmp(Name, "WeatherFontSize") == 0)                      SetupConfig->WeatherFontSize = atod(Value);
     else return false;
 
     return true;
@@ -642,6 +644,7 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("MainMenuWidgetWeatherType", SetupConfig->MainMenuWidgetWeatherType, *Filename);
     Config.Store("ChannelWeatherShow", SetupConfig->ChannelWeatherShow, *Filename);
     Config.Store("PlaybackWeatherShow", SetupConfig->PlaybackWeatherShow, *Filename);
+    Config.Store("WeatherFontSize", dtoa(Config.WeatherFontSize), *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -814,6 +817,7 @@ void cFlatSetupChannelInfo::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show Channelinfo icons"), &SetupConfig->ChannelIconsShow));
     Add(new cMenuEditBoolItem(tr("Show signal quality"), &SetupConfig->SignalQualityShow));
     Add(new cMenuEditBoolItem(tr("Show weather widget"), &SetupConfig->ChannelWeatherShow));
+    Add(new cMenuEditPrcItem(tr("Weather widget font size"), &SetupConfig->WeatherFontSize, 0.01, 0.2, 1));
     Add(new cMenuEditBoolItem(tr("Colors for signal quality"), &SetupConfig->SignalQualityUseColors));
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->ChannelResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->ChannelFormatShow));

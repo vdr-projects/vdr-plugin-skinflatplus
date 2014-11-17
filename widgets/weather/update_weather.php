@@ -71,9 +71,9 @@ foreach($conditions_week as $conditions) {
         continue;
     }
     // we only have min & max so we must calc
+    $temp = round($conditions->getMaxTemperature(), 1);
     if( $convertPoint == 1 )
         $temp = str_replace(".", ",", $temp);
-    $temp = round($conditions->getMaxTemperature(), 1);
     fwrite($handle, $temp);
     fwrite($handle, $degree_sign);
     fclose($handle);

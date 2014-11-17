@@ -1484,7 +1484,10 @@ int cFlatBaseRender::GetFontAscender(const char *Name, int CharHeight, int CharW
 }
 
 void cFlatBaseRender::DrawWidgetWeather(void) {
-    cFont *fontTempSml = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize/2.0 );
+    int fs = int(round(cOsd::OsdHeight() * Config.WeatherFontSize));
+    cFont *weatherFont = cFont::CreateFont(Setup.FontOsd, fs);
+    cFont *weatherFontSml = cFont::CreateFont(Setup.FontOsd, fs/2.0 );
+    cFont *weatherFontSign = cFont::CreateFont(Setup.FontOsd, fs/2.5 );
 
     std::string tempToday = "", tempTodaySign = "";
     std::string iconToday, iconTomorrow;
@@ -1581,70 +1584,70 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
 
     int left = marginItem;
 
-    int widthTempToday = max(fontTempSml->Width(tempMaxToday.c_str()), fontTempSml->Width(tempMinToday.c_str()) );
-    int widthTempTomorrow = max(fontTempSml->Width(tempMaxTomorrow.c_str()), fontTempSml->Width(tempMinTomorrow.c_str()) );
+    int widthTempToday = max(weatherFontSml->Width(tempMaxToday.c_str()), weatherFontSml->Width(tempMinToday.c_str()) );
+    int widthTempTomorrow = max(weatherFontSml->Width(tempMaxTomorrow.c_str()), weatherFontSml->Width(tempMinTomorrow.c_str()) );
 
     int wTop = topBarHeight + Config.decorBorderTopBarSize*2 + 20 + Config.decorBorderChannelEPGSize;
-    int wWidth = marginItem + font->Width(tempToday.c_str()) + fontTempSml->Width(tempTodaySign.c_str()) + marginItem*2 + fontHeight + marginItem \
-        + widthTempToday + marginItem + fontHeight - marginItem*2 \
-        + fontTempSml->Width(precToday.c_str()) + marginItem*4 + fontHeight + marginItem \
-        + widthTempTomorrow + marginItem + fontHeight - marginItem*2 \
-        + fontTempSml->Width(precTomorrow.c_str()) + marginItem*2;
+    int wWidth = marginItem + weatherFont->Width(tempToday.c_str()) + weatherFontSign->Width(tempTodaySign.c_str()) + marginItem*2 + weatherFont->Height() + marginItem \
+        + widthTempToday + marginItem + weatherFont->Height() - marginItem*2 \
+        + weatherFontSml->Width(precToday.c_str()) + marginItem*4 + weatherFont->Height() + marginItem \
+        + widthTempTomorrow + marginItem + weatherFont->Height() - marginItem*2 \
+        + weatherFontSml->Width(precTomorrow.c_str()) + marginItem*2;
     int wLeft = osdWidth - wWidth - 20;
 
     weatherWidget.Clear();
     weatherWidget.SetOsd(osd);
-    weatherWidget.SetPosition(cRect(wLeft, wTop, wWidth, fontHeight));
+    weatherWidget.SetPosition(cRect(wLeft, wTop, wWidth, weatherFont->Height()));
     weatherWidget.SetBGColor(Theme.Color(clrItemCurrentBg));
     weatherWidget.SetScrollingActive(false);
 
-    weatherWidget.AddText(tempToday.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), font);
-    left += font->Width(tempToday.c_str());
+    weatherWidget.AddText(tempToday.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), weatherFont);
+    left += weatherFont->Width(tempToday.c_str());
 
-    int fontAscender = GetFontAscender(Setup.FontOsd, Setup.FontOsdSize);
-    int fontAscender2 = GetFontAscender(Setup.FontOsd, Setup.FontOsdSize / 2.0);
-    int t = (fontHeight - fontAscender) - (fontTempSml->Height() - fontAscender2);
+    int fontAscender = GetFontAscender(Setup.FontOsd, fs);
+    int fontAscender2 = GetFontAscender(Setup.FontOsd, fs / 2.5);
+    int t = (weatherFont->Height() - fontAscender) - (weatherFontSign->Height() - fontAscender2);
 
-    weatherWidget.AddText(tempTodaySign.c_str(), false, cRect(left, t, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), fontTempSml);
-    left += fontTempSml->Width(tempTodaySign.c_str()) + marginItem*2;
+    weatherWidget.AddText(tempTodaySign.c_str(), false, cRect(left, t, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), weatherFontSign);
+    left += weatherFontSign->Width(tempTodaySign.c_str()) + marginItem*2;
 
     cString weatherIcon = cString::sprintf("widgets/%s", iconToday.c_str());
-    cImage *img = imgLoader.LoadIcon(*weatherIcon, fontHeight, fontHeight - marginItem*2);
+    cImage *img = imgLoader.LoadIcon(*weatherIcon, weatherFont->Height(), weatherFont->Height() - marginItem*2);
     if( img ) {
-        weatherWidget.AddImage(img, cRect(left, 0 + marginItem, fontHeight, fontHeight));
-        left += fontHeight + marginItem;
+        weatherWidget.AddImage(img, cRect(left, 0 + marginItem, weatherFont->Height(), weatherFont->Height()));
+        left += weatherFont->Height() + marginItem;
     }
-    weatherWidget.AddText(tempMaxToday.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), fontTempSml);
-    weatherWidget.AddText(tempMinToday.c_str(), false, cRect(left, 0 + fontTempSml->Height(), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), fontTempSml);
+    weatherWidget.AddText(tempMaxToday.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), weatherFontSml);
+    weatherWidget.AddText(tempMinToday.c_str(), false, cRect(left, 0 + weatherFontSml->Height(), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), weatherFontSml);
     left += widthTempToday + marginItem;
 
-    img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
+    img = imgLoader.LoadIcon("widgets/umbrella", weatherFont->Height(), weatherFont->Height() - marginItem*2);
     if( img ) {
-        weatherWidget.AddImage(img, cRect(left, 0 + marginItem, fontHeight, fontHeight));
-        left += fontHeight - marginItem*2;
+        weatherWidget.AddImage(img, cRect(left, 0 + marginItem, weatherFont->Height(), weatherFont->Height()));
+        left += weatherFont->Height() - marginItem*2;
     }
-    weatherWidget.AddText(precToday.c_str(), false, cRect(left, 0 + (fontHeight/2 - fontTempSml->Height()/2), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), fontTempSml);
-    left += fontTempSml->Width(precToday.c_str()) + marginItem*4;
+    weatherWidget.AddText(precToday.c_str(), false, cRect(left, 0 + (weatherFont->Height()/2 - weatherFontSml->Height()/2), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), weatherFontSml);
+    left += weatherFontSml->Width(precToday.c_str()) + marginItem*4;
 
-    weatherWidget.AddRect(cRect(left - marginItem*2, 0, wWidth - left + marginItem*2, fontHeight), Theme.Color(clrChannelBg));
+    weatherWidget.AddRect(cRect(left - marginItem*2, 0, wWidth - left + marginItem*2, weatherFont->Height()), Theme.Color(clrChannelBg));
 
     weatherIcon = cString::sprintf("widgets/%s", iconTomorrow.c_str());
-    img = imgLoader.LoadIcon(*weatherIcon, fontHeight, fontHeight - marginItem*2);
+    img = imgLoader.LoadIcon(*weatherIcon, weatherFont->Height(), weatherFont->Height() - marginItem*2);
     if( img ) {
-        weatherWidget.AddImage(img, cRect(left, 0 + marginItem, fontHeight, fontHeight));
-        left += fontHeight + marginItem;
+        weatherWidget.AddImage(img, cRect(left, 0 + marginItem, weatherFont->Height(), weatherFont->Height()));
+        left += weatherFont->Height() + marginItem;
     }
-    weatherWidget.AddText(tempMaxTomorrow.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontTempSml);
-    weatherWidget.AddText(tempMinTomorrow.c_str(), false, cRect(left, 0 + fontTempSml->Height(), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontTempSml);
+    weatherWidget.AddText(tempMaxTomorrow.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), weatherFontSml);
+    weatherWidget.AddText(tempMinTomorrow.c_str(), false, cRect(left, 0 + weatherFontSml->Height(), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), weatherFontSml);
     left += widthTempTomorrow + marginItem;
 
-    img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
+    img = imgLoader.LoadIcon("widgets/umbrella", weatherFont->Height(), weatherFont->Height() - marginItem*2);
     if( img ) {
-        weatherWidget.AddImage(img, cRect(left, 0 + marginItem, fontHeight, fontHeight));
-        left += fontHeight - marginItem*2;
+        weatherWidget.AddImage(img, cRect(left, 0 + marginItem, weatherFont->Height(), weatherFont->Height()));
+        left += weatherFont->Height() - marginItem*2;
     }
-    weatherWidget.AddText(precTomorrow.c_str(), false, cRect(left, 0 + (fontHeight/2 - fontTempSml->Height()/2), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontTempSml);
-    left += fontTempSml->Width(precTomorrow.c_str());
+    weatherWidget.AddText(precTomorrow.c_str(), false, cRect(left, 0 + (weatherFont->Height()/2 - weatherFontSml->Height()/2), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), weatherFontSml);
+    left += weatherFontSml->Width(precTomorrow.c_str());
 
     //weatherWidget.AddRect(cRect(left, 0, wWidth - left, fontHeight), clrTransparent);
 

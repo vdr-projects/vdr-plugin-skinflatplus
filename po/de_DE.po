@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.3\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-11-16 14:15+0100\n"
+"POT-Creation-Date: 2014-11-17 19:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -545,6 +545,9 @@ msgstr "Zeige Signalqualität"
 
 msgid "Show weather widget"
 msgstr "Zeige Wetter Widget"
+
+msgid "Weather widget font size"
+msgstr "Wetter Widget Schriftgröße"
 
 msgid "Colors for signal quality"
 msgstr "Farben für Signalqualität"

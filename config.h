@@ -208,6 +208,7 @@ class cFlatConfig
 
         int ChannelWeatherShow;
         int PlaybackWeatherShow;
+        double WeatherFontSize;
 
         int RecordingResolutionAspectShow;
         int RecordingFormatShow;
