@@ -1,6 +1,7 @@
 #pragma once
 
 #include "baserender.h"
+#include "services/scraper2vdr.h"
 
 class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay {
     private:
@@ -10,6 +11,7 @@ class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay {
         cPixmap *labelPixmap;
         cPixmap *labelJump;
         cPixmap *iconsPixmap;
+        cPixmap *chanEpgImagesPixmap;
 
         cFont *fontSecs;
         const cRecording *recording;

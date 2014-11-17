@@ -213,6 +213,7 @@ void cFlatDisplayMenu::Clear(void) {
     contentHeadIconsPixmap->Fill(clrTransparent);
     DecorBorderClearByFrom(BorderMenuItem);
     DecorBorderClearByFrom(BorderContent);
+    DecorBorderClearByFrom(BorderMMWidget);
     DecorBorderClearAll();
     isScrolling = false;
 

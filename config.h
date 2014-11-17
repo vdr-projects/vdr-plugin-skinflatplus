@@ -294,6 +294,9 @@ class cFlatConfig
         int TVScraperChanInfoShowPoster;
         double TVScraperChanInfoPosterSize;
 
+        int TVScraperReplayInfoShowPoster;
+        double TVScraperReplayInfoPosterSize;
+
         int TVScraperEPGInfoShowPoster;
         int TVScraperRecInfoShowPoster;
 

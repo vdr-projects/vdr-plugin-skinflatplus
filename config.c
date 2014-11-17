@@ -122,6 +122,9 @@ cFlatConfig::cFlatConfig(void) {
     TVScraperChanInfoShowPoster = 1;
     TVScraperChanInfoPosterSize = 0.01;
 
+    TVScraperReplayInfoShowPoster = 1;
+    TVScraperReplayInfoPosterSize = 0.01;
+
     TVScraperEPGInfoShowPoster = 1;
     TVScraperRecInfoShowPoster = 1;
 
@@ -343,6 +346,8 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "ChannelWeatherShow") == 0)                   ChannelWeatherShow = atoi(Value);
     else if (strcmp(Name, "PlaybackWeatherShow") == 0)                  PlaybackWeatherShow = atoi(Value);
     else if (strcmp(Name, "WeatherFontSize") == 0)                      WeatherFontSize = atod(Value);
+    else if (strcmp(Name, "TVScraperReplayInfoShowPoster") == 0)        TVScraperReplayInfoShowPoster = atoi(Value);
+    else if (strcmp(Name, "TVScraperReplayInfoPosterSize") == 0)        TVScraperReplayInfoPosterSize = atod(Value);
 
     else return false;
 

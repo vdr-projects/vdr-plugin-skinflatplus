@@ -13,6 +13,14 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
 
     screenWidth = lastScreenWidth = -1;
 
+    int TVSLeft = 20 + Config.decorBorderChannelEPGSize;
+    int TVSTop = topBarHeight + Config.decorBorderTopBarSize*2 + 20 + Config.decorBorderChannelEPGSize;
+    int TVSWidth = osdWidth - 40 - Config.decorBorderChannelEPGSize*2;
+    int TVSHeight = osdHeight - topBarHeight - labelHeight - 40 - Config.decorBorderChannelEPGSize*2;
+
+    chanEpgImagesPixmap = osd->CreatePixmap(2, cRect(TVSLeft, TVSTop, TVSWidth, TVSHeight));
+    chanEpgImagesPixmap->Fill( clrTransparent );
+
     labelPixmap = osd->CreatePixmap(1, cRect(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorBorderReplaySize,
         osdWidth - Config.decorBorderReplaySize*2, labelHeight));
     iconsPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorBorderReplaySize,
@@ -40,9 +48,14 @@ cFlatDisplayReplay::~cFlatDisplayReplay() {
     if( fontSecs != NULL )
         delete fontSecs;
 
-    osd->DestroyPixmap(labelPixmap);
-    osd->DestroyPixmap(labelJump);
-    osd->DestroyPixmap(iconsPixmap);
+    if( labelPixmap )
+        osd->DestroyPixmap(labelPixmap);
+    if( labelJump )
+        osd->DestroyPixmap(labelJump);
+    if( iconsPixmap )
+        osd->DestroyPixmap(iconsPixmap);
+    if( chanEpgImagesPixmap )
+        osd->DestroyPixmap(chanEpgImagesPixmap);
 }
 
 void cFlatDisplayReplay::SetRecording(const cRecording *Recording) {
@@ -240,6 +253,60 @@ void cFlatDisplayReplay::UpdateInfo(void) {
             }
         }
         delete index;
+
+        std::string mediaPath;
+        int mediaWidth = 0;
+        int mediaHeight = 0;
+        // TVScraper
+        // first try scraper2vdr
+        static cPlugin *pScraper = cPluginManager::GetPlugin("scraper2vdr");
+        if( !pScraper ) // if it doesn't exit, try tvscraper
+            pScraper = cPluginManager::GetPlugin("tvscraper");
+        if( Config.TVScraperReplayInfoShowPoster && pScraper ) {
+            ScraperGetEventType call;
+            call.recording = recording;
+            int seriesId = 0;
+            int episodeId = 0;
+            int movieId = 0;
+
+            if (pScraper->Service("GetEventType", &call)) {
+                seriesId = call.seriesId;
+                episodeId = call.episodeId;
+                movieId = call.movieId;
+            }
+            if( seriesId > 0 ) {
+                cSeries series;
+                series.seriesId = seriesId;
+                series.episodeId = episodeId;
+                if (pScraper->Service("GetSeries", &series)) {
+                    if( series.banners.size() > 0 )
+                        mediaPath = series.banners[0].path;
+                    mediaWidth = series.banners[0].width * Config.TVScraperReplayInfoPosterSize*100;
+                    mediaHeight = series.banners[0].height * Config.TVScraperReplayInfoPosterSize*100;
+                }
+            } else if (movieId > 0) {
+                cMovie movie;
+                movie.movieId = movieId;
+                if (pScraper->Service("GetMovie", &movie)) {
+                    mediaPath = movie.poster.path;
+                    mediaWidth = movie.poster.width * 0.5 * Config.TVScraperReplayInfoPosterSize*100;
+                    mediaHeight = movie.poster.height * 0.5 * Config.TVScraperReplayInfoPosterSize*100;
+                }
+            }
+        }
+
+        chanEpgImagesPixmap->Fill(clrTransparent);
+        DecorBorderClearByFrom(BorderTVSPoster);
+        if( mediaPath.length() > 0 ) {
+            cImage *img = imgLoader.LoadFile(mediaPath.c_str(), mediaWidth, mediaHeight);
+            if( img ) {
+                chanEpgImagesPixmap->DrawImage(cPoint(0, 0), *img);
+
+                DecorBorderDraw(20 + Config.decorBorderChannelEPGSize, topBarHeight + Config.decorBorderTopBarSize*2 + 20 + Config.decorBorderChannelEPGSize, img->Width(), img->Height(),
+                    Config.decorBorderChannelEPGSize, Config.decorBorderChannelEPGType, Config.decorBorderChannelEPGFg, Config.decorBorderChannelEPGBg, BorderTVSPoster);
+            }
+        }
+
     }
 
     if( iscutted ) {

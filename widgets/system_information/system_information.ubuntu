@@ -65,26 +65,51 @@ if [ $SHOW_KERNEL_VERSION = 1 ]; then
 fi
 
 if [ $SHOW_UPTIME = 1 ]; then
-    uptime | grep -ohe 'up .*' | sed 's/,//g' | awk '{ printf $2" "$3 }' > ./${UPTIME_POS}_uptime
+  UPTIME=($(cat /proc/uptime))  # UpTime in Array
+  UPTIME[0]=${UPTIME[0]%.*}     # .* entfernen (UpTime in Sekunden)
+  TAGE=$((UPTIME[0] / 86400)) ; STD=$((UPTIME[0] % 86400 / 3600))
+  MIN=$((UPTIME[0] % 3600 / 60)) ; SEK=$((UPTIME[0] % 60))
+  if [ $TAGE -ge 1 ] ; then
+    echo "${TAGE}T ${STD}S ${MIN}M" > ./${UPTIME_POS}_uptime
+  else
+    [ $STD -ge 1 ] && echo -n "${STD} Std. " > ./${UPTIME_POS}_uptime
+    echo "${MIN} Min." >> ./${UPTIME_POS}_uptime
+  fi
 fi
 
 if [ $SHOW_LOAD = 1 ]; then
-    cat /proc/loadavg | awk '{print $1}' > ./${LOAD_POS}_load
+  LOADAVG=($(cat /proc/loadavg))   # Zeile in Array
+  echo "${LOADAVG[0]//./,}" > ./${LOAD_POS}_load
 fi
 
 if [ $SHOW_PROCESSES = 1 ]; then
-    ps aux | wc -l > ./${PROCESSES_POS}_processes
+  PROCS=($(ls -d /proc/[0-9]*/))
+  echo "${#PROCS[@]}" > ./${PROCESSES_POS}_processes
 fi
 
 if [ $SHOW_MEM_USAGE = 1 ]; then
-    free -m | awk '/Mem:/ { total=$2 } /buffers\/cache/ { used=$3 } END { printf("%3.1f%%", used/total*100)}' > ./${MEM_USAGE_POS}_mem_usage
+  mapfile -t < <(free -m)    # Ausgabe von free in Array (Vier Zeilen)
+  MEM=(${MAPFILE[1]})        # 2. Zeile
+  BUF=(${MAPFILE[2]})        # 3. Zeile
+  MEM_USAGE=$((${BUF[2]} * 1000 / ${MEM[1]}))
+  [ $MEM_USAGE -lt 10 ] && MEM_USAGE="0${MEM_USAGE}"
+  MEM_DEC=${MEM_USAGE: -1}
+  echo "${MEM_USAGE:0: -1},${MEM_DEC}%" > ./${MEM_USAGE_POS}_mem_usage
 fi
 
 if [ $SHOW_SWAP_USAGE = 1 ]; then
-    SWAP=`free -m | awk '/Swap/ {print($2)}'`
-    if [ $SWAP -gt 0 ]; then
-        free -m | awk '/Swap/ { printf("%3.1f%%", $3/$2*100) }' > ./${SWAP_USAGE_POS}_swap_usage
+  mapfile -t < <(free -m)    # Ausgabe von free in Array (Vier Zeilen)
+  SWAP=(${MAPFILE[3]})       # 4. Zeile
+  if [ ${SWAP[1]} -gt 0 ]; then # Swap Total
+    if [ ${SWAP[2]} -gt 0 ]; then # Swap Used
+      SWP=$((${SWAP[2]} * 1000 / ${SWAP[1]}))
+      [ $SWP -lt 10 ] && SWP="0${SWP}"
+      SWP_DEC=${SWP: -1} ; SWP=${SWP:0: -1},${SWP_DEC}
+      echo "${SWP}%" > ./${SWAP_USAGE_POS}_swap_usage
+    else
+      echo "0,0%" > ./${SWAP_USAGE_POS}_swap_usage
     fi
+  fi
 fi
 
 if [ $SHOW_ROOT_USAGE = 1 ]; then
@@ -96,19 +121,21 @@ if [ $SHOW_VIDEO_USAGE = 1 ] && [ -d ${VIDEO_MOUNT} ]; then
 fi
 
 if [ $SHOW_VDR_CPU_USAGE = 1 ]; then
-    vdr_pid=`pidof vdr`
-    if [ $? = 0 ]; then
-        VALUE=`ps -p ${vdr_pid} -o %cpu | awk 'NR==2{print $0}' | tr -d ' '`
-        echo "${VALUE}%" > ./${VDR_CPU_USAGE_POS}_vdr_cpu_usage
-    fi
+  vdr_pid=$(pidof vdr)
+  if [ $? = 0 ]; then
+    mapfile -t < <(ps -p ${vdr_pid} -o %cpu) # Ausgabe von ps in Array (Zwei Zeilen)
+    CPU_USAGE=${MAPFILE[1]/./,}              # 24.2 -> 24,2
+    echo "${CPU_USAGE}%" > ./${VDR_CPU_USAGE_POS}_vdr_cpu_usage
+  fi
 fi
 
 if [ $SHOW_VDR_MEM_USAGE = 1 ]; then
-    vdr_pid=`pidof vdr`
-    if [ $? = 0 ]; then
-        VALUE=`ps -p ${vdr_pid} -o %mem | awk 'NR==2{print $0}' | tr -d ' '`
-        echo "${VALUE}%" > ./${VDR_MEM_USAGE_POS}_vdr_mem_usage
-    fi
+  vdr_pid=$(pidof vdr)
+  if [ $? = 0 ]; then
+    mapfile -t < <(ps -p ${vdr_pid} -o %mem) # Ausgabe von ps in Array (Zwei Zeilen)
+    VDR_MEM_USAGE=${MAPFILE[1]/./,}          # 24.2 -> 24,2
+    echo "${VDR_MEM_USAGE}%" > ./${VDR_MEM_USAGE_POS}_vdr_mem_usage
+  fi
 fi
 
 if [ $SHOW_TEMPERATURES = 1 ]; then

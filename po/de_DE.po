@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.3\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-11-17 19:12+0100\n"
+"POT-Creation-Date: 2014-11-17 20:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -743,6 +743,12 @@ msgstr "Kanalinfo zeige Poster?"
 
 msgid "Channelinfo poster size"
 msgstr "Kanalinfo Poster Größe"
+
+msgid "Replayinfo show poster?"
+msgstr ""
+
+msgid "Replayinfo poster size"
+msgstr ""
 
 msgid "EPG info show poster?"
 msgstr "EPG-Info zeige Poster?"
