@@ -80,6 +80,8 @@ cFlatConfig::cFlatConfig(void) {
 
     MainMenuWidgetDVBDevicesShow = true;
     MainMenuWidgetDVBDevicesPosition = 2;
+    MainMenuWidgetDVBDevicesDiscardUnknown = true;
+    MainMenuWidgetDVBDevicesDiscardNotUsed = false;
 
     MainMenuWidgetActiveTimerShow = true;
     MainMenuWidgetActiveTimerPosition = 3;
@@ -348,6 +350,8 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "WeatherFontSize") == 0)                      WeatherFontSize = atod(Value);
     else if (strcmp(Name, "TVScraperReplayInfoShowPoster") == 0)        TVScraperReplayInfoShowPoster = atoi(Value);
     else if (strcmp(Name, "TVScraperReplayInfoPosterSize") == 0)        TVScraperReplayInfoPosterSize = atod(Value);
+    else if (strcmp(Name, "MainMenuWidgetDVBDevicesDiscardUnknown") == 0)  MainMenuWidgetDVBDevicesDiscardUnknown = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetDVBDevicesDiscardNotUsed") == 0)  MainMenuWidgetDVBDevicesDiscardNotUsed = atoi(Value);
 
     else return false;
 

@@ -4048,10 +4048,16 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
                 cString chanName = channel->Name();
                 if( !strcmp(*chanName, "") )
                     strDevice << tr("not used");
-                else
+                else {
+                    if( Config.MainMenuWidgetDVBDevicesDiscardUnknown )
+                        continue;
                     strDevice << tr("Unknown") << " (" << *chanName << ")";
-            } else
+                }
+            } else {
+                if( Config.MainMenuWidgetDVBDevicesDiscardNotUsed )
+                    continue;
                 strDevice << tr("not used");
+            }
         }
 
         contentWidget.AddText(strDevice.str().c_str(), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),

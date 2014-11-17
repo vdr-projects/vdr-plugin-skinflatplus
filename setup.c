@@ -313,6 +313,8 @@ void cFlatSetup::Store(void) {
     SetupStore("WeatherFontSize", dtoa(Config.WeatherFontSize));
     SetupStore("TVScraperReplayInfoShowPoster", Config.TVScraperReplayInfoShowPoster);
     SetupStore("TVScraperReplayInfoPosterSize", dtoa(Config.TVScraperReplayInfoPosterSize));
+    SetupStore("MainMenuWidgetDVBDevicesDiscardUnknown", Config.MainMenuWidgetDVBDevicesDiscardUnknown);
+    SetupStore("MainMenuWidgetDVBDevicesDiscardNotUsed", Config.MainMenuWidgetDVBDevicesDiscardNotUsed);
 
     Config.Init();
 }
@@ -491,6 +493,8 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "WeatherFontSize") == 0)                      SetupConfig->WeatherFontSize = atod(Value);
     else if (strcmp(Name, "TVScraperReplayInfoShowPoster") == 0)        SetupConfig->TVScraperReplayInfoShowPoster = atoi(Value);
     else if (strcmp(Name, "TVScraperReplayInfoPosterSize") == 0)        SetupConfig->TVScraperReplayInfoPosterSize = atod(Value);
+    else if (strcmp(Name, "MainMenuWidgetDVBDevicesDiscardUnknown") == 0) SetupConfig->MainMenuWidgetDVBDevicesDiscardUnknown = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetDVBDevicesDiscardNotUsed") == 0) SetupConfig->MainMenuWidgetDVBDevicesDiscardNotUsed = atoi(Value);
     else return false;
 
     return true;
@@ -651,6 +655,8 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("WeatherFontSize", dtoa(Config.WeatherFontSize), *Filename);
     Config.Store("TVScraperReplayInfoShowPoster", SetupConfig->TVScraperReplayInfoShowPoster, *Filename);
     Config.Store("TVScraperReplayInfoPosterSize", dtoa(Config.TVScraperReplayInfoPosterSize), *Filename);
+    Config.Store("MainMenuWidgetDVBDevicesDiscardUnknown", SetupConfig->MainMenuWidgetDVBDevicesDiscardUnknown, *Filename);
+    Config.Store("MainMenuWidgetDVBDevicesDiscardNotUsed", SetupConfig->MainMenuWidgetDVBDevicesDiscardNotUsed, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -1253,6 +1259,8 @@ void cFlatSetupMMWidget::Setup(void) {
         Add(new cMenuEditBoolItem(tr("Widget DVB devices: enable"), &SetupConfig->MainMenuWidgetDVBDevicesShow));
         if( SetupConfig->MainMenuWidgetDVBDevicesShow ) {
             Add(new cMenuEditIntItem(tr("Widget DVB devices: position"), &SetupConfig->MainMenuWidgetDVBDevicesPosition));
+            Add(new cMenuEditBoolItem(tr("Widget DVB devices: don't show unknown"), &SetupConfig->MainMenuWidgetDVBDevicesDiscardUnknown));
+            Add(new cMenuEditBoolItem(tr("Widget DVB devices: don't show not used"), &SetupConfig->MainMenuWidgetDVBDevicesDiscardNotUsed));
         }
 
         Add(new cOsdItem("Widget active timer", osUnknown, false));

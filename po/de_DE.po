@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.3\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-11-17 20:05+0100\n"
+"POT-Creation-Date: 2014-11-17 20:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -785,6 +785,12 @@ msgstr "DVB Geräte-Widget: Anzeigen"
 
 msgid "Widget DVB devices: position"
 msgstr "DVB Geräte-Widget: Position"
+
+msgid "Widget DVB devices: don't show unknown"
+msgstr "DVB Geräte-Widget: unbekannt ausblenden"
+
+msgid "Widget DVB devices: don't show not used"
+msgstr "DVB Geräte-Widget: Nicht verw. ausblenden"
 
 msgid "Widget active timer: enable"
 msgstr "Aktive Timer-Widget: Anzeigen"
