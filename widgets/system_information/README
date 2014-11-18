@@ -1,7 +1,7 @@
 This widget provides several information about the current system state.
 
 You must manually create a link to the corresponding script, for example:
-ln -s system_information.ubuntu system
+ln -s system_information.ubuntu system_information
 
 The command "system_information" will be executed every time the widget is drawn, so please keep it short and fast.
 The command "system_information" must provide several files with the infos.

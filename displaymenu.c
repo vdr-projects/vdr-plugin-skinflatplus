@@ -4019,9 +4019,9 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
 
         strDevice << i << ": " << *(device->DeviceType()) << " - ";
 
+        const cChannel *channel = device->GetCurrentlyTunedTransponder();
         if( i == deviceLiveTV ) {
             strDevice << tr("LiveTV") << " (";
-            const cChannel *channel = Channels.GetByNumber(device->CurrentChannel());
             cString chanName;
             if (channel && channel->Number() > 0) {
                 chanName = channel->Name();
@@ -4033,7 +4033,6 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
         }
         else if( recDevices[i] ) {
             strDevice << tr("recording") << " (";
-            const cChannel *channel = Channels.GetByNumber(device->CurrentChannel());
             cString chanName;
             if (channel && channel->Number() > 0) {
                 chanName = channel->Name();
@@ -4043,7 +4042,6 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
             strDevice << *chanName;
             strDevice << ")";
         } else {
-            const cChannel *channel = Channels.GetByNumber(device->CurrentChannel());
             if( channel ) {
                 cString chanName = channel->Name();
                 if( !strcmp(*chanName, "") )
@@ -4691,7 +4689,17 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
     } else {
         Location = tr("Unknown");
     }
-    cString Title = cString::sprintf("%s - %s", tr("Weather"), Location.c_str());
+
+    std::string tempToday = "";
+    cString filename;
+    filename = cString::sprintf("%s/widgets/weather/weather.0.temp", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    file.open(*filename, std::ifstream::in);
+    if( file.is_open() ) {
+        std::getline(file, tempToday);
+        file.close();
+    }
+
+    cString Title = cString::sprintf("%s - %s %s", tr("Weather"), Location.c_str(), tempToday.c_str() );
 
     cImage *img = imgLoader.LoadIcon("widgets/weather", fontHeight, fontHeight - marginItem*2);
     if( img ) {
@@ -4816,7 +4824,8 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
             }
             contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
             contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
-            left += fontTempSml->Width("XXXXX") + marginItem;
+
+            left += fontTempSml->Width("XXXXXX") + marginItem;
 
             img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
             if( img ) {
@@ -4824,7 +4833,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
                 left += fontHeight - marginItem;
             }
             contentWidget.AddText(*precString, false, cRect(left, ContentTop + (fontHeight/2 - fontTempSml->Height()/2), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
-            left += fontTempSml->Width("XXXX") + marginItem;
+            left += fontTempSml->Width("XXXXX") + marginItem;
 
             contentWidget.AddText(summary.c_str(), false, cRect(left, ContentTop + (fontHeight/2 - fontTempSml->Height()/2), wWidth - left, fontHeight), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, wWidth - left);
 
