@@ -9,8 +9,8 @@
 #include "femonreceiver.h"
 
 cFemonReceiver::cFemonReceiver(const cChannel *Channel, int ATrack, int DTrack)
-    : cReceiver(Channel),
-    cThread("femon receiver"),
+    : cReceiver(Channel, MINPRIORITY+5),
+    cThread("flatPlus receiver"),
     m_Mutex(),
     m_Sleep(),
     m_Active(false),
