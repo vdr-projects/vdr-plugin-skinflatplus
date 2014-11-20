@@ -1247,7 +1247,7 @@ void cFlatSetupMMWidget::Setup(void) {
     if( SetupConfig->MainMenuWidgetsEnable ) {
         Add(new cMenuEditPrcItem(tr("Main menu item scale"), &SetupConfig->MainMenuItemScale, 0.3, 0.7, 0));
 
-        Add(new cOsdItem("Widget weather", osUnknown, false));
+        Add(new cOsdItem(tr("Widget weather"), osUnknown, false));
         Add(new cMenuEditBoolItem(tr("Widget weather: enable"), &SetupConfig->MainMenuWidgetWeatherShow));
         if( SetupConfig->MainMenuWidgetWeatherShow ) {
             Add(new cMenuEditIntItem(tr("Widget weather: position"), &SetupConfig->MainMenuWidgetWeatherPosition));
@@ -1255,7 +1255,7 @@ void cFlatSetupMMWidget::Setup(void) {
             Add(new cMenuEditStraItem(tr("Widget weather: type"), &SetupConfig->MainMenuWidgetWeatherType, WeatherTypes.Size(), &WeatherTypes[0]));
         }
 
-        Add(new cOsdItem("Widget DVB devices", osUnknown, false));
+        Add(new cOsdItem(tr("Widget DVB devices"), osUnknown, false));
         Add(new cMenuEditBoolItem(tr("Widget DVB devices: enable"), &SetupConfig->MainMenuWidgetDVBDevicesShow));
         if( SetupConfig->MainMenuWidgetDVBDevicesShow ) {
             Add(new cMenuEditIntItem(tr("Widget DVB devices: position"), &SetupConfig->MainMenuWidgetDVBDevicesPosition));
@@ -1263,7 +1263,7 @@ void cFlatSetupMMWidget::Setup(void) {
             Add(new cMenuEditBoolItem(tr("Widget DVB devices: don't show not used"), &SetupConfig->MainMenuWidgetDVBDevicesDiscardNotUsed));
         }
 
-        Add(new cOsdItem("Widget active timer", osUnknown, false));
+        Add(new cOsdItem(tr("Widget active timer"), osUnknown, false));
         Add(new cMenuEditBoolItem(tr("Widget active timer: enable"), &SetupConfig->MainMenuWidgetActiveTimerShow));
         if( SetupConfig->MainMenuWidgetActiveTimerShow ) {
             Add(new cMenuEditIntItem(tr("Widget active timer: position"), &SetupConfig->MainMenuWidgetActiveTimerPosition));
@@ -1271,40 +1271,40 @@ void cFlatSetupMMWidget::Setup(void) {
             Add(new cMenuEditBoolItem(tr("Widget active timer: hide if empty"), &SetupConfig->MainMenuWidgetActiveTimerHideEmpty));
         }
 
-        Add(new cOsdItem("Widget last recordings", osUnknown, false));
+        Add(new cOsdItem(tr("Widget last recordings"), osUnknown, false));
         Add(new cMenuEditBoolItem(tr("Widget last recordings: enable"), &SetupConfig->MainMenuWidgetLastRecShow));
         if( SetupConfig->MainMenuWidgetLastRecShow ) {
             Add(new cMenuEditIntItem(tr("Widget last recordings: position"), &SetupConfig->MainMenuWidgetLastRecPosition));
             Add(new cMenuEditIntItem(tr("Widget last recordings: max show"), &SetupConfig->MainMenuWidgetLastRecMaxCount));
         }
 
-        Add(new cOsdItem("Widget timer conflicts", osUnknown, false));
+        Add(new cOsdItem(tr("Widget timer conflicts"), osUnknown, false));
         Add(new cMenuEditBoolItem(tr("Widget timer conflicts: enable"), &SetupConfig->MainMenuWidgetTimerConflictsShow));
         if( SetupConfig->MainMenuWidgetTimerConflictsShow ) {
             Add(new cMenuEditIntItem(tr("Widget timer conflicts: position"), &SetupConfig->MainMenuWidgetTimerConflictsPosition));
             Add(new cMenuEditBoolItem(tr("Widget timer conflicts: hide if empty"), &SetupConfig->MainMenuWidgetTimerConflictsHideEmpty));
         }
 
-        Add(new cOsdItem("Widget system information", osUnknown, false));
+        Add(new cOsdItem(tr("Widget system information"), osUnknown, false));
         Add(new cMenuEditBoolItem(tr("Widget system information: enable"), &SetupConfig->MainMenuWidgetSystemInfoShow));
         if( SetupConfig->MainMenuWidgetSystemInfoShow ) {
             Add(new cMenuEditIntItem(tr("Widget system information: position"), &SetupConfig->MainMenuWidgetSystemInfoPosition));
         }
 
-        Add(new cOsdItem("Widget system updates", osUnknown, false));
+        Add(new cOsdItem(tr("Widget system updates"), osUnknown, false));
         Add(new cMenuEditBoolItem(tr("Widget system updates: enable"), &SetupConfig->MainMenuWidgetSystemUpdatesShow));
         if( SetupConfig->MainMenuWidgetSystemUpdatesShow ) {
             Add(new cMenuEditIntItem(tr("Widget system updates: position"), &SetupConfig->MainMenuWidgetSystemUpdatesPosition));
             Add(new cMenuEditBoolItem(tr("Widget system updates: hide if empty"), &SetupConfig->MainMenuWidgetSystemUpdatesHideIfZero));
         }
 
-        Add(new cOsdItem("Widget temperatures", osUnknown, false));
+        Add(new cOsdItem(tr("Widget temperatures"), osUnknown, false));
         Add(new cMenuEditBoolItem(tr("Widget temperatures: enable"), &SetupConfig->MainMenuWidgetTemperaturesShow));
         if( SetupConfig->MainMenuWidgetTemperaturesShow ) {
             Add(new cMenuEditIntItem(tr("Widget temperatures: position"), &SetupConfig->MainMenuWidgetTemperaturesPosition));
         }
 
-        Add(new cOsdItem("Widget custom commands", osUnknown, false));
+        Add(new cOsdItem(tr("Widget custom commands"), osUnknown, false));
         Add(new cMenuEditBoolItem(tr("Widget custom commands: enable"), &SetupConfig->MainMenuWidgetCommandShow));
         if( SetupConfig->MainMenuWidgetCommandShow ) {
             Add(new cMenuEditIntItem(tr("Widget custom commands: position"), &SetupConfig->MainMenuWidgetCommandPosition));

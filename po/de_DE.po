@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.3\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-11-20 17:18+0100\n"
+"POT-Creation-Date: 2014-11-20 17:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -768,6 +768,9 @@ msgstr "Hauptmenü-Widgets anzeigen"
 msgid "Main menu item scale"
 msgstr "Hauptmenü Widgets: Breite (%)"
 
+msgid "Widget weather"
+msgstr "Wetter-Widget"
+
 msgid "Widget weather: enable"
 msgstr "Wetter-Widget anzeigen"
 
@@ -779,6 +782,9 @@ msgstr "Wetter-Widget: Zeige Tage"
 
 msgid "Widget weather: type"
 msgstr "Wetter-Widget: Typ"
+
+msgid "Widget DVB devices"
+msgstr "DVB Geräte-Widget"
 
 msgid "Widget DVB devices: enable"
 msgstr "DVB Geräte-Widget: Anzeigen"
@@ -792,6 +798,9 @@ msgstr "DVB Geräte-Widget: Unbekannt ausblenden"
 msgid "Widget DVB devices: don't show not used"
 msgstr "DVB Geräte-Widget: Nicht verw. ausblenden"
 
+msgid "Widget active timer"
+msgstr "Aktive Timer-Widget"
+
 msgid "Widget active timer: enable"
 msgstr "Aktive Timer-Widget: Anzeigen"
 
@@ -804,6 +813,9 @@ msgstr "Aktive Timer-Widget: Zeige max."
 msgid "Widget active timer: hide if empty"
 msgstr "Aktive Timer-Widget: Verstecken wenn Leer"
 
+msgid "Widget last recordings"
+msgstr "Letzte Aufnahmen-Widget"
+
 msgid "Widget last recordings: enable"
 msgstr "Letzte Aufnahmen-Widget: Anzeigen"
 
@@ -812,6 +824,9 @@ msgstr "Letzte Aufnahmen-Widget: Position"
 
 msgid "Widget last recordings: max show"
 msgstr "Letzte Aufnahmen-Widget: Zeige max."
+
+msgid "Widget timer conflicts"
+msgstr "Timerkonflikte-Widget"
 
 msgid "Widget timer conflicts: enable"
 msgstr "Timerkonflikte-Widget: Anzeigen"
@@ -822,11 +837,17 @@ msgstr "Timerkonflikte-Widget: Position"
 msgid "Widget timer conflicts: hide if empty"
 msgstr "Timerkonflikte-Widget: Verstecken wenn Leer"
 
+msgid "Widget system information"
+msgstr "Systeminformation-Widget"
+
 msgid "Widget system information: enable"
 msgstr "Systeminformation-Widget: Anzeigen"
 
 msgid "Widget system information: position"
 msgstr "Systeminformation-Widget: Position"
+
+msgid "Widget system updates"
+msgstr "Systemupdates-Widget"
 
 msgid "Widget system updates: enable"
 msgstr "Systemupdates-Widget: Anzeigen"
@@ -837,11 +858,17 @@ msgstr "Systemupdates-Widget: Position"
 msgid "Widget system updates: hide if empty"
 msgstr "Systemupdates-Widget: Verstecken wenn Leer"
 
+msgid "Widget temperatures"
+msgstr "Temperaturen-Widget"
+
 msgid "Widget temperatures: enable"
 msgstr "Temperaturen-Widget: Anzeigen"
 
 msgid "Widget temperatures: position"
 msgstr "Temperaturen-Widget: Position"
+
+msgid "Widget custom commands"
+msgstr "Eigene Befehle-Widget"
 
 msgid "Widget custom commands: enable"
 msgstr "Eigene Befehle-Widget: Anzeigen"
