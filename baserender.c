@@ -1617,8 +1617,8 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
         weatherWidget.AddImage(img, cRect(left, 0 + marginItem, weatherFont->Height(), weatherFont->Height()));
         left += weatherFont->Height() + marginItem;
     }
-    weatherWidget.AddText(tempMaxToday.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), weatherFontSml);
-    weatherWidget.AddText(tempMinToday.c_str(), false, cRect(left, 0 + weatherFontSml->Height(), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), weatherFontSml);
+    weatherWidget.AddText(tempMaxToday.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), weatherFontSml, widthTempToday, weatherFontSml->Height(), taRight);
+    weatherWidget.AddText(tempMinToday.c_str(), false, cRect(left, 0 + weatherFontSml->Height(), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrItemCurrentBg), weatherFontSml, widthTempToday, weatherFontSml->Height(), taRight);
     left += widthTempToday + marginItem;
 
     img = imgLoader.LoadIcon("widgets/umbrella", weatherFont->Height(), weatherFont->Height() - marginItem*2);
@@ -1637,8 +1637,8 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
         weatherWidget.AddImage(img, cRect(left, 0 + marginItem, weatherFont->Height(), weatherFont->Height()));
         left += weatherFont->Height() + marginItem;
     }
-    weatherWidget.AddText(tempMaxTomorrow.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), weatherFontSml);
-    weatherWidget.AddText(tempMinTomorrow.c_str(), false, cRect(left, 0 + weatherFontSml->Height(), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), weatherFontSml);
+    weatherWidget.AddText(tempMaxTomorrow.c_str(), false, cRect(left, 0, 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), weatherFontSml, widthTempTomorrow, weatherFontSml->Height(), taRight);
+    weatherWidget.AddText(tempMinTomorrow.c_str(), false, cRect(left, 0 + weatherFontSml->Height(), 0, 0), Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), weatherFontSml, widthTempTomorrow, weatherFontSml->Height(), taRight);
     left += widthTempTomorrow + marginItem;
 
     img = imgLoader.LoadIcon("widgets/umbrella", weatherFont->Height(), weatherFont->Height() - marginItem*2);

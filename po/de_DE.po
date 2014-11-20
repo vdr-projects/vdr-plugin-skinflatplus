@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.3\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-11-17 20:22+0100\n"
+"POT-Creation-Date: 2014-11-20 17:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -240,11 +240,11 @@ msgstr "Temperaturen nicht vorhanden; Bitte Widget prüfen"
 msgid "CPU"
 msgstr ""
 
-msgid "MB"
-msgstr ""
-
 msgid "PC-Case"
 msgstr "Gehäuse"
+
+msgid "MB"
+msgstr ""
 
 msgid "GPU"
 msgstr ""

@@ -4794,10 +4794,11 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
                 contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
                 left += fontHeight + marginItem;
             }
-            contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
-            contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
+            int wtemp = myMax(fontTempSml->Width(tempMax.c_str()), fontTempSml->Width(tempMin.c_str()) );
+            contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, wtemp, fontTempSml->Height(), taRight);
+            contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, wtemp, fontTempSml->Height(), taRight);
 
-            left += myMax(fontTempSml->Width(tempMax.c_str()), fontTempSml->Width(tempMin.c_str()) ) + marginItem;
+            left += wtemp + marginItem;
 
             img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
             if( img ) {
@@ -4822,8 +4823,8 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
                 contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
                 left += fontHeight + marginItem;
             }
-            contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
-            contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
+            contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("XXXXX"), fontTempSml->Height(), taRight);
+            contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("XXXXX"), fontTempSml->Height(), taRight);
 
             left += fontTempSml->Width("XXXXXX") + marginItem;
 
@@ -4832,7 +4833,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
                 contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
                 left += fontHeight - marginItem;
             }
-            contentWidget.AddText(*precString, false, cRect(left, ContentTop + (fontHeight/2 - fontTempSml->Height()/2), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml);
+            contentWidget.AddText(*precString, false, cRect(left, ContentTop + (fontHeight/2 - fontTempSml->Height()/2), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("XXXX"), fontTempSml->Height(), taRight);
             left += fontTempSml->Width("XXXXX") + marginItem;
 
             contentWidget.AddText(summary.c_str(), false, cRect(left, ContentTop + (fontHeight/2 - fontTempSml->Height()/2), wWidth - left, fontHeight), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, wWidth - left);
