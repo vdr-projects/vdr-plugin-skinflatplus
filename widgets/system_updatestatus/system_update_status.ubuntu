@@ -1,8 +1,11 @@
 #!/bin/bash
 
+OUTPUTFLDR="/tmp/skinflatplus/widgets/system_updatestatus"
+mkdir -p ${OUTPUTFLDR}
+
 APTCHECK=/usr/lib/update-notifier/apt-check
 
-rm -f updates security_updates
+rm -f ${OUTPUTFLDR}/updates ${OUTPUTFLDR}/security_updates
 
 if [ ! -f ${APTCHECK} ]
 then
@@ -12,6 +15,6 @@ fi
 RET=$(${APTCHECK} 2>&1)
 
 # updates
-echo $RET | cut -d";" -f1 > updates
+echo $RET | cut -d";" -f1 > ${OUTPUTFLDR}/updates
 # security updates
-echo $RET | cut -d";" -f2 > security_updates
+echo $RET | cut -d";" -f2 > ${OUTPUTFLDR}/security_updates

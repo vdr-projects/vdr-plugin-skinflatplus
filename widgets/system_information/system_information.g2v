@@ -3,6 +3,13 @@
 # this script will be executed when the widget will be drawn
 # so make it short and fast
 
+OUTPUTFLDR="/tmp/skinflatplus/widgets/system_information"
+mkdir -p ${OUTPUTFLDR}
+
+OUTPUTFLDRTEMP="/tmp/skinflatplus/widgets/temperatures"
+OUTPUTFLDRSUPD="/tmp/skinflatplus/widgets/system_updatestatus"
+
+
 # enable/disable items
 SHOW_SYS_VERSION=1
 SHOW_KERNEL_VERSION=0
@@ -56,7 +63,7 @@ LANG=en_EN
 REL_FILE="/etc/g2v-release"
 
 # delete all files
-rm -f [0-99]*
+rm -f ${OUTPUTFLDR}/[0-99]*
 
 if [ $SHOW_SYS_VERSION = 1 ]; then
   if [ -e $REL_FILE ] ; then
@@ -64,12 +71,12 @@ if [ $SHOW_SYS_VERSION = 1 ]; then
       [[ ${REPLY} =~ PRETTY_NAME ]] && declare "${REPLY}" # locale Variable
       [[ ${REPLY} =~ VERSION ]] && declare "${REPLY}"     # locale Variable
     done < $REL_FILE
-    [ -n "$PRETTY_NAME" ] && echo "${PRETTY_NAME//\"/} ${VERSION//\"/}" > ./${SYS_VERSION_POS}_sys_version
+    [ -n "$PRETTY_NAME" ] && echo "${PRETTY_NAME//\"/} ${VERSION//\"/}" > ${OUTPUTFLDR}/${SYS_VERSION_POS}_sys_version
   fi
 fi
 
 if [ $SHOW_KERNEL_VERSION = 1 ]; then
-    uname -r > ./${KERNEL_VERSION_POS}_kernel_version
+    uname -r > ${OUTPUTFLDR}/${KERNEL_VERSION_POS}_kernel_version
 fi
 
 if [ $SHOW_UPTIME = 1 ]; then
@@ -78,21 +85,21 @@ if [ $SHOW_UPTIME = 1 ]; then
   TAGE=$((UPTIME[0] / 86400)) ; STD=$((UPTIME[0] % 86400 / 3600))
   MIN=$((UPTIME[0] % 3600 / 60)) ; SEK=$((UPTIME[0] % 60))
   if [ $TAGE -ge 1 ] ; then
-    echo "${TAGE}T ${STD}S ${MIN}M" > ./${UPTIME_POS}_uptime
+    echo "${TAGE}T ${STD}S ${MIN}M" > ${OUTPUTFLDR}/${UPTIME_POS}_uptime
   else
-    [ $STD -ge 1 ] && echo -n "${STD} Std. " > ./${UPTIME_POS}_uptime
-    echo "${MIN} Min." >> ./${UPTIME_POS}_uptime
+    [ $STD -ge 1 ] && echo -n "${STD} Std. " > ${OUTPUTFLDR}/${UPTIME_POS}_uptime
+    echo "${MIN} Min." >> ${OUTPUTFLDR}/${UPTIME_POS}_uptime
   fi
 fi
 
 if [ $SHOW_LOAD = 1 ]; then
   LOADAVG=($(cat /proc/loadavg))   # Zeile in Array
-  echo "${LOADAVG[0]//./,}" > ./${LOAD_POS}_load
+  echo "${LOADAVG[0]//./,}" > ${OUTPUTFLDR}/${LOAD_POS}_load
 fi
 
 if [ $SHOW_PROCESSES = 1 ]; then
   PROCS=($(ls -d /proc/[0-9]*/))
-  echo "${#PROCS[@]}" > ./${PROCESSES_POS}_processes
+  echo "${#PROCS[@]}" > ${OUTPUTFLDR}/${PROCESSES_POS}_processes
 fi
 
 if [ $SHOW_MEM_USAGE = 1 ]; then
@@ -102,7 +109,7 @@ if [ $SHOW_MEM_USAGE = 1 ]; then
   MEM_USAGE=$((${BUF[2]} * 1000 / ${MEM[1]}))
   [ $MEM_USAGE -lt 10 ] && MEM_USAGE="0${MEM_USAGE}"
   MEM_DEC=${MEM_USAGE: -1}
-  echo "${MEM_USAGE:0: -1},${MEM_DEC}%" > ./${MEM_USAGE_POS}_mem_usage
+  echo "${MEM_USAGE:0: -1},${MEM_DEC}%" > ${OUTPUTFLDR}/${MEM_USAGE_POS}_mem_usage
 fi
 
 if [ $SHOW_SWAP_USAGE = 1 ]; then
@@ -113,9 +120,9 @@ if [ $SHOW_SWAP_USAGE = 1 ]; then
       SWP=$((${SWAP[2]} * 1000 / ${SWAP[1]}))
       [ $SWP -lt 10 ] && SWP="0${SWP}"
       SWP_DEC=${SWP: -1} ; SWP=${SWP:0: -1},${SWP_DEC}
-      echo "${SWP}%" > ./${SWAP_USAGE_POS}_swap_usage
+      echo "${SWP}%" > ${OUTPUTFLDR}/${SWAP_USAGE_POS}_swap_usage
     else
-      echo "0,0%" > ./${SWAP_USAGE_POS}_swap_usage
+      echo "0,0%" > ${OUTPUTFLDR}/${SWAP_USAGE_POS}_swap_usage
     fi
   fi
 fi
@@ -124,14 +131,14 @@ if [ $SHOW_ROOT_USAGE = 1 ]; then
   mapfile -t < <(df -Ph /)    # Ausgabe von df in Array (Zwei Zeilen)
   ROOTUSAGE=(${MAPFILE[1]})   # 2. Zeile in Array
   # Beispiel 2. Zeile: tmpfs  128M  30M  99M  23%  /root
-  echo "${ROOTUSAGE[4]}" > ./${ROOT_USAGE_POS}_root_usage
+  echo "${ROOTUSAGE[4]}" > ${OUTPUTFLDR}/${ROOT_USAGE_POS}_root_usage
 fi
 
 if [ $SHOW_VIDEO_USAGE = 1 ] && [ -d ${VIDEO_MOUNT} ]; then
   mapfile -t < <(df -Ph ${VIDEO_MOUNT})    # Ausgabe von df in Array (Zwei Zeilen)
   VIDEOUSAGE=(${MAPFILE[1]})               # 2. Zeile in Array
   # Beispiel 2. Zeile: tmpfs  128M  30M  99M  23%  /root
-  echo "${VIDEOUSAGE[4]}" > ./${VIDEO_USAGE_POS}_video_usage
+  echo "${VIDEOUSAGE[4]}" > ${OUTPUTFLDR}/${VIDEO_USAGE_POS}_video_usage
 fi
 
 if [ $SHOW_VDR_CPU_USAGE = 1 ]; then
@@ -139,7 +146,7 @@ if [ $SHOW_VDR_CPU_USAGE = 1 ]; then
   if [ $? = 0 ]; then
     mapfile -t < <(ps -p ${vdr_pid} -o %cpu) # Ausgabe von ps in Array (Zwei Zeilen)
     CPU_USAGE=${MAPFILE[1]/./,}              # 24.2 -> 24,2
-    echo "${CPU_USAGE}%" > ./${VDR_CPU_USAGE_POS}_vdr_cpu_usage
+    echo "${CPU_USAGE}%" > ${OUTPUTFLDR}/${VDR_CPU_USAGE_POS}_vdr_cpu_usage
   fi
 fi
 
@@ -148,28 +155,28 @@ if [ $SHOW_VDR_MEM_USAGE = 1 ]; then
   if [ $? = 0 ]; then
     mapfile -t < <(ps -p ${vdr_pid} -o %mem) # Ausgabe von ps in Array (Zwei Zeilen)
     VDR_MEM_USAGE=${MAPFILE[1]/./,}          # 24.2 -> 24,2
-    echo "${VDR_MEM_USAGE}%" > ./${VDR_MEM_USAGE_POS}_vdr_mem_usage
+    echo "${VDR_MEM_USAGE}%" > ${OUTPUTFLDR}/${VDR_MEM_USAGE_POS}_vdr_mem_usage
   fi
 fi
 
 if [ $SHOW_TEMPERATURES = 1 ]; then
     ./../temperatures/temperatures
-    if [ -f ./cpu ]; then
-        mv ./cpu ${TEMP_CPU_POS}_cpu
+    if [ -f ${OUTPUTFLDRTEMP}/cpu ]; then
+        cp ${OUTPUTFLDRTEMP}/cpu ${OUTPUTFLDR}/${TEMP_CPU_POS}_cpu
     fi
-    if [ -f ./pccase ]; then
-        mv ./pccase ${TEMP_PCCASE_POS}_pccase
+    if [ -f ${OUTPUTFLDRTEMP}/pccase ]; then
+        cp ${OUTPUTFLDRTEMP}/pccase ${OUTPUTFLDR}/${TEMP_PCCASE_POS}_pccase
     fi
-    if [ -f ./gpu ]; then
-        mv ./gpu ${TEMP_GPU_POS}_gpu
+    if [ -f ${OUTPUTFLDRTEMP}/gpu ]; then
+        cp ${OUTPUTFLDRTEMP}/gpu ${OUTPUTFLDR}/${TEMP_GPU_POS}_gpu
     fi
 fi
 
 if [ $SHOW_SYSUPDATES = 1 ]; then
-    if [ -f ./../system_updatestatus/updates ]; then
-        cp ./../system_updatestatus/updates ${SYSUPD_POS}_updates
+    if [ -f ${OUTPUTFLDRSUPD}/updates ]; then
+        cp ${OUTPUTFLDRSUPD}/updates ${OUTPUTFLDR}/${SYSUPD_POS}_updates
     fi
-    if [ -f ./../system_updatestatus/security_updates ]; then
-        cp ./../system_updatestatus/security_updates ${SYSSECUPD_POS}_security_updates
+    if [ -f ${OUTPUTFLDRSUPD}/security_updates ]; then
+        cp ${OUTPUTFLDRSUPD}/security_updates ${OUTPUTFLDR}/${SYSSECUPD_POS}_security_updates
     fi
 fi

@@ -28,7 +28,6 @@ VDRLOGO = vdrlogo_default
 #DEFINES += -DDEBUGIMAGELOADTIME
 #DEFINES += -DDEBUGEPGTIME
 
-
 ### The version number of this plugin (taken from the main source file):
 
 VERSION = $(shell grep 'static const char \*VERSION *=' $(PLUGIN).c | awk '{ print $$6 }' | sed -e 's/[";]//g')
@@ -69,6 +68,7 @@ SOFILE = libvdr-$(PLUGIN).so
 INCLUDES += $(shell pkg-config --cflags Magick++ freetype2 fontconfig)
 
 DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' -DVDRLOGO=\"$(VDRLOGO)\"
+DEFINES += -DWIDGETFOLDER='"$(DESTDIR)$(LIBDIR)/$(PLUGIN)/widgets"'
 
 LIBS += $(shell pkg-config --libs Magick++)
 
@@ -146,8 +146,8 @@ install-configs:
 	cp configs/* $(DESTDIR)$(VDRCONFDIR)/plugins/$(PLUGIN)/configs
 
 install-widgets:
-	mkdir -p $(DESTDIR)$(VDRCONFDIR)/plugins/$(PLUGIN)/widgets
-	cp -r widgets/* $(DESTDIR)$(VDRCONFDIR)/plugins/$(PLUGIN)/widgets
+	mkdir -p $(DESTDIR)$(LIBDIR)/$(PLUGIN)/widgets
+	cp -r widgets/* $(DESTDIR)$(LIBDIR)/$(PLUGIN)/widgets
 
 install: install-lib install-i18n install-themes install-icons install-decors install-configs install-widgets
 

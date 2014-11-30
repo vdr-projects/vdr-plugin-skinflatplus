@@ -4224,11 +4224,12 @@ int cFlatDisplayMenu::DrawMainMenuWidgetSystemInformation(int wLeft, int wWidth,
     contentWidget.AddRect(cRect(0, ContentTop, wWidth, 3), Theme.Color(clrMenuEventTitleLine));
     ContentTop += 6;
 
-    cString execFile = cString::sprintf("cd \"%s/widgets/system_information\"; \"%s/widgets/system_information/system_information\"", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), cPlugin::ConfigDirectory(PLUGIN_NAME_I18N));
+    cString execFile = cString::sprintf("cd \"%s/system_information\"; \"%s/system_information/system_information\"", WIDGETFOLDER, WIDGETFOLDER);
     int r = system(*execFile);
     r += 0; // prevent Warning for unused variable
 
-    cString configsPath = cString::sprintf("%s/widgets/system_information/", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N));
+    cString configsPath = cString::sprintf("%s/system_information/", WIDGETOUTPUTPATH);
+
     std::vector<std::string> files;
 
     cReadDir d(configsPath);
@@ -4261,7 +4262,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetSystemInformation(int wLeft, int wWidth,
                 std::string num = fname.substr(0, found);
                 if( atoi( num.c_str() ) > 0 ) {
                     std::string item = fname.substr(found + 1, fname.length() - found);
-                    cString itemFilename = cString::sprintf("%s/widgets/system_information/%s", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), fname.c_str() );
+                    cString itemFilename = cString::sprintf("%s/system_information/%s", WIDGETOUTPUTPATH, fname.c_str() );
                     std::ifstream file(*itemFilename, std::ifstream::in);
                     if( file.is_open() ) {
                         std::string item_content;
@@ -4492,7 +4493,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetSystemUpdates(int wLeft, int wWidth, int
     ContentTop += 6;
 
     int updates = 0, securityUpdates = 0;
-    cString itemFilename = cString::sprintf("%s/widgets/system_updatestatus/updates", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    cString itemFilename = cString::sprintf("%s/system_updatestatus/updates", WIDGETOUTPUTPATH );
     std::ifstream file(*itemFilename, std::ifstream::in);
     if( file.is_open() ) {
         std::string cont;
@@ -4503,7 +4504,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetSystemUpdates(int wLeft, int wWidth, int
         updates = -1;
     }
 
-    itemFilename = cString::sprintf("%s/widgets/system_updatestatus/security_updates", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    itemFilename = cString::sprintf("%s/system_updatestatus/security_updates", WIDGETOUTPUTPATH );
     std::ifstream file2(*itemFilename, std::ifstream::in);
     if( file2.is_open() ) {
         std::string cont;
@@ -4544,14 +4545,14 @@ int cFlatDisplayMenu::DrawMainMenuWidgetTemperaturs(int wLeft, int wWidth, int C
     contentWidget.AddRect(cRect(0, ContentTop, wWidth, 3), Theme.Color(clrMenuEventTitleLine));
     ContentTop += 6;
 
-    cString execFile = cString::sprintf("cd \"%s/widgets/temperatures\"; \"%s/widgets/temperatures/temperatures\"", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), cPlugin::ConfigDirectory(PLUGIN_NAME_I18N));
+    cString execFile = cString::sprintf("cd \"%s/temperatures\"; \"%s/temperatures/temperatures\"", WIDGETFOLDER, WIDGETFOLDER);
     int r = system(*execFile);
     r += 0; // prevent Warning for unused variable
 
     int countTemps = 0;
 
     std::string tempCPU, tempCase, tempMB, tempGPU;
-    cString itemFilename = cString::sprintf("%s/widgets/temperatures/cpu", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    cString itemFilename = cString::sprintf("%s/temperatures/cpu", WIDGETOUTPUTPATH );
     std::ifstream file(*itemFilename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, tempCPU);
@@ -4561,7 +4562,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetTemperaturs(int wLeft, int wWidth, int C
         tempCPU = "-1";
     }
 
-    itemFilename = cString::sprintf("%s/widgets/temperatures/pccase", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    itemFilename = cString::sprintf("%s/temperatures/pccase", WIDGETOUTPUTPATH );
     std::ifstream file2(*itemFilename, std::ifstream::in);
     if( file2.is_open() ) {
         std::string cont;
@@ -4572,7 +4573,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetTemperaturs(int wLeft, int wWidth, int C
         tempCase = "-1";
     }
 
-    itemFilename = cString::sprintf("%s/widgets/temperatures/motherboard", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    itemFilename = cString::sprintf("%s/temperatures/motherboard", WIDGETOUTPUTPATH );
     std::ifstream file3(*itemFilename, std::ifstream::in);
     if( file3.is_open() ) {
         std::string cont;
@@ -4582,7 +4583,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetTemperaturs(int wLeft, int wWidth, int C
     } else {
         tempMB = "-1";
     }
-    itemFilename = cString::sprintf("%s/widgets/temperatures/gpu", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    itemFilename = cString::sprintf("%s/temperatures/gpu", WIDGETOUTPUTPATH );
     std::ifstream file4(*itemFilename, std::ifstream::in);
     if( file4.is_open() ) {
         std::string cont;
@@ -4631,12 +4632,12 @@ int cFlatDisplayMenu::DrawMainMenuWidgetCommand(int wLeft, int wWidth, int Conte
     if( ContentTop + fontHeight + 6 + fontSmlHeight > menuPixmap->ViewPort().Height() )
         return -1;
 
-    cString execFile = cString::sprintf("cd \"%s/widgets/command_output\"; \"%s/widgets/command_output/command\"", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), cPlugin::ConfigDirectory(PLUGIN_NAME_I18N));
+    cString execFile = cString::sprintf("cd \"%s/command_output\"; \"%s/command_output/command\"", WIDGETFOLDER, WIDGETFOLDER);
     int r = system(*execFile);
     r += 0; // prevent Warning for unused variable
 
     std::string Title;
-    cString itemFilename = cString::sprintf("%s/widgets/command_output/title", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    cString itemFilename = cString::sprintf("%s/command_output/title", WIDGETOUTPUTPATH );
     std::ifstream file(*itemFilename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, Title);
@@ -4655,7 +4656,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetCommand(int wLeft, int wWidth, int Conte
     ContentTop += 6;
 
     std::string Output;
-    itemFilename = cString::sprintf("%s/widgets/command_output/output", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    itemFilename = cString::sprintf("%s/command_output/output", WIDGETOUTPUTPATH );
     std::ifstream file2(*itemFilename, std::ifstream::in);
     if( file2.is_open() ) {
         for (; std::getline(file2, Output); ) {
@@ -4681,7 +4682,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
     cFont *fontTempSml = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize/2.0 );
 
     std::string Location;
-    cString locationFilename = cString::sprintf("%s/widgets/weather/weather.location", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    cString locationFilename = cString::sprintf("%s/weather/weather.location", WIDGETOUTPUTPATH );
     std::ifstream file(*locationFilename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, Location);
@@ -4692,7 +4693,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
 
     std::string tempToday = "";
     cString filename;
-    filename = cString::sprintf("%s/widgets/weather/weather.0.temp", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N) );
+    filename = cString::sprintf("%s/weather/weather.0.temp", WIDGETOUTPUTPATH );
     file.open(*filename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, tempToday);
@@ -4713,7 +4714,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
     int left = marginItem;
     for( int index = 0; index < Config.MainMenuWidgetWeatherDays; index++ ) {
         std::string icon;
-        cString iconFilename = cString::sprintf("%s/widgets/weather/weather.%d.icon", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        cString iconFilename = cString::sprintf("%s/weather/weather.%d.icon", WIDGETOUTPUTPATH, index );
         std::ifstream file(*iconFilename, std::ifstream::in);
         if( file.is_open() ) {
             std::getline(file, icon);
@@ -4722,7 +4723,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
            continue;
 
         std::string summary;
-        cString summaryFilename = cString::sprintf("%s/widgets/weather/weather.%d.summary", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        cString summaryFilename = cString::sprintf("%s/weather/weather.%d.summary", WIDGETOUTPUTPATH, index );
         std::ifstream file2(*summaryFilename, std::ifstream::in);
         if( file2.is_open() ) {
             std::getline(file2, summary);
@@ -4731,7 +4732,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
            continue;
 
         std::string tempMax;
-        cString tempMaxFilename = cString::sprintf("%s/widgets/weather/weather.%d.tempMax", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        cString tempMaxFilename = cString::sprintf("%s/weather/weather.%d.tempMax", WIDGETOUTPUTPATH, index );
         std::ifstream file3(*tempMaxFilename, std::ifstream::in);
         if( file3.is_open() ) {
             std::getline(file3, tempMax);
@@ -4740,7 +4741,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
            continue;
 
         std::string tempMin;
-        cString tempMinFilename = cString::sprintf("%s/widgets/weather/weather.%d.tempMin", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        cString tempMinFilename = cString::sprintf("%s/weather/weather.%d.tempMin", WIDGETOUTPUTPATH, index );
         std::ifstream file4(*tempMinFilename, std::ifstream::in);
         if( file4.is_open() ) {
             std::getline(file4, tempMin);
@@ -4751,7 +4752,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
         std::string prec;
         double p = 0.0;
         cString precString = "0%";
-        cString precFilename = cString::sprintf("%s/widgets/weather/weather.%d.precipitation", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        cString precFilename = cString::sprintf("%s/weather/weather.%d.precipitation", WIDGETOUTPUTPATH, index );
         std::ifstream file5(*precFilename, std::ifstream::in);
         if( file5.is_open() ) {
             std::getline(file5, prec);
@@ -4764,7 +4765,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
            continue;
 
         std::string precType;
-        cString precTypeFilename = cString::sprintf("%s/widgets/weather/weather.%d.precipitationType", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N), index );
+        cString precTypeFilename = cString::sprintf("%s/weather/weather.%d.precipitationType", WIDGETOUTPUTPATH, index );
         std::ifstream file6(*precTypeFilename, std::ifstream::in);
         if( file6.is_open() ) {
             std::getline(file6, precType);

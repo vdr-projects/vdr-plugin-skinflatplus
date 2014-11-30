@@ -8,6 +8,8 @@
 
 #define PLUGINCONFIGPATH (cPlugin::ConfigDirectory(PLUGIN_NAME_I18N))
 #define PLUGINRESOURCEPATH (cPlugin::ResourceDirectory(PLUGIN_NAME_I18N))
+#define WIDGETOUTPUTPATH "/tmp/skinflatplus/widgets"
+
 
 bool stringCompare( const std::string &left, const std::string &right );
 bool pairCompareTimeStringDesc(const std::pair<time_t, std::string>&i, const std::pair<time_t, std::string>&j);

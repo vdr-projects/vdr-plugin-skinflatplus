@@ -11,16 +11,20 @@ $lang = $ini_array['Lang'];
 $convertPoint = $ini_array['ConvertPoint2Comma'];
 $api_key = $ini_array['ApiKey'];
 
+$OUTPUTFLDRTEMP = "/tmp/skinflatplus/widgets/weather";
+if( !file_exists($OUTPUTFLDRTEMP) )
+    mkdir($OUTPUTFLDRTEMP, 0775, true);
+
 include('lib/forecast.io.php');
 
 // delete old files
-array_map('unlink', glob("weather.*"));
+array_map('unlink', glob($OUTPUTFLDRTEMP."/weather.*"));
 
 // forecast query
 $forecast = new ForecastIO($api_key);
 
 $condition = $forecast->getCurrentConditions($latitude, $longitude, $units, $lang);
-if( !$handle = fopen("weather.0.temp", "w") ) {
+if( !$handle = fopen($OUTPUTFLDRTEMP."/weather.0.temp", "w") ) {
     print "can't create file!\n";
     continue;
 }
@@ -35,7 +39,7 @@ fclose($handle);
 // get daily conditions for next 7 days
 $conditions_week = $forecast->getForecastWeek($latitude, $longitude, $units, $lang);
 
-if( !$handle = fopen("weather.location", "w") ) {
+if( !$handle = fopen($OUTPUTFLDRTEMP."/weather.location", "w") ) {
     print "can't create file!\n";
 } else {
     fwrite($handle, $locationSkin);
@@ -47,14 +51,14 @@ $index = -1;
 foreach($conditions_week as $conditions) {
     $index++;
 
-    if( !$handle = fopen("weather.".$index.".summary", "w") ) {
+    if( !$handle = fopen($OUTPUTFLDRTEMP."/weather.".$index.".summary", "w") ) {
         print "can't create file!\n";
         continue;
     }
     fwrite($handle, $conditions->getSummary());
     fclose($handle);
 
-    if( !$handle = fopen("weather.".$index.".tempMin", "w") ) {
+    if( !$handle = fopen($OUTPUTFLDRTEMP."/weather.".$index.".tempMin", "w") ) {
         print "can't create file!\n";
         continue;
     }
@@ -66,7 +70,7 @@ foreach($conditions_week as $conditions) {
     fwrite($handle, $degree_sign);
     fclose($handle);
 
-    if( !$handle = fopen("weather.".$index.".tempMax", "w") ) {
+    if( !$handle = fopen($OUTPUTFLDRTEMP."/weather.".$index.".tempMax", "w") ) {
         print "can't create file!\n";
         continue;
     }
@@ -79,14 +83,14 @@ foreach($conditions_week as $conditions) {
     fclose($handle);
 
 
-    if( !$handle = fopen("weather.".$index.".precipitation", "w") ) {
+    if( !$handle = fopen($OUTPUTFLDRTEMP."/weather.".$index.".precipitation", "w") ) {
         print "can't create file!\n";
         continue;
     }
     fwrite($handle, $conditions->getPrecipitationProbability());
     fclose($handle);
 
-    if( !$handle = fopen("weather.".$index.".precipitationType", "w") ) {
+    if( !$handle = fopen($OUTPUTFLDRTEMP."/weather.".$index.".precipitationType", "w") ) {
         print "can't create file!\n";
         continue;
     }
@@ -96,7 +100,7 @@ foreach($conditions_week as $conditions) {
         fwrite($handle, "none");
     fclose($handle);
 
-    if( !$handle = fopen("weather.".$index.".icon", "w") ) {
+    if( !$handle = fopen($OUTPUTFLDRTEMP."/weather.".$index.".icon", "w") ) {
         print "can't create file!\n";
         continue;
     }
