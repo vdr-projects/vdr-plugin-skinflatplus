@@ -21,6 +21,7 @@ class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay {
         double screenAspect;
 
         bool ProgressShown;
+        bool modeOnly;
         void UpdateInfo(void);
         void ResolutionAspectDraw(void);
     public:

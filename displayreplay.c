@@ -6,6 +6,8 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
     current = "";
     total = "";
 
+    modeOnly = ModeOnly;
+
     ProgressShown = false;
     CreateFullOsd();
     TopBarCreate();
@@ -31,7 +33,7 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
         Config.decorProgressReplayFg, Config.decorProgressReplayBarFg, Config.decorProgressReplayBg, Config.decorProgressReplayType);
 
     labelJump = osd->CreatePixmap(1, cRect(Config.decorBorderReplaySize,
-        osdHeight - labelHeight - Config.decorProgressReplaySize - marginItem*3 - fontHeight - Config.decorBorderReplaySize*2,
+        osdHeight - labelHeight - Config.decorProgressReplaySize*2 - marginItem*3 - fontHeight - Config.decorBorderReplaySize*2,
         osdWidth - Config.decorBorderReplaySize*2, fontHeight));
 
     labelPixmap->Fill(Theme.Color(clrReplayBg));
@@ -59,6 +61,8 @@ cFlatDisplayReplay::~cFlatDisplayReplay() {
 }
 
 void cFlatDisplayReplay::SetRecording(const cRecording *Recording) {
+    if( modeOnly )
+        return;
     const cRecordingInfo *recInfo = Recording->Info();
     recording = Recording;
 
@@ -78,9 +82,15 @@ void cFlatDisplayReplay::SetTitle(const char *Title) {
 }
 
 void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
+    int left = 0;
     if( Setup.ShowReplayMode ) {
-        int left = osdWidth - Config.decorBorderReplaySize*2 - (fontHeight * 4 + marginItem * 3);
+        left = osdWidth - Config.decorBorderReplaySize*2 - (fontHeight * 4 + marginItem * 3);
         left /= 2;
+
+        if( modeOnly )
+            labelPixmap->Fill(clrTransparent);
+        else
+            labelPixmap->Fill(Theme.Color(clrReplayBg));
 
         iconsPixmap->Fill(clrTransparent);
         labelPixmap->DrawRectangle(cRect( left - font->Width("33") - marginItem, 0, fontHeight*4 + marginItem*6 + font->Width("33")*2, fontHeight), Theme.Color(clrReplayBg) );
@@ -134,34 +144,49 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
 
     }
 
-    if( ProgressShown )
+    if( ProgressShown ) {
         DecorBorderDraw(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorProgressReplaySize - Config.decorBorderReplaySize - marginItem,
             osdWidth - Config.decorBorderReplaySize*2, labelHeight + Config.decorProgressReplaySize + marginItem,
             Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg);
-    else
-        DecorBorderDraw(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorBorderReplaySize,
-            osdWidth - Config.decorBorderReplaySize*2, labelHeight,
-            Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg);
+    } else {
+        if( modeOnly ) {
+            DecorBorderDraw(left - font->Width("33") - marginItem + Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorBorderReplaySize,
+                fontHeight*4 + marginItem*6 + font->Width("33")*2, fontHeight,
+                Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg);
+        } else {
+            DecorBorderDraw(Config.decorBorderReplaySize, osdHeight - labelHeight - Config.decorBorderReplaySize,
+                osdWidth - Config.decorBorderReplaySize*2, labelHeight,
+                Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg);
+        }
+    }
 
     ResolutionAspectDraw();
 }
 
 void cFlatDisplayReplay::SetProgress(int Current, int Total) {
+    if( modeOnly )
+        return;
     ProgressShown = true;
     ProgressBarDrawMarks(Current, Total, marks, Theme.Color(clrReplayMarkFg), Theme.Color(clrReplayMarkCurrentFg));
 }
 
 void cFlatDisplayReplay::SetCurrent(const char *Current) {
+    if( modeOnly )
+        return;
     current = Current;
     UpdateInfo();
 }
 
 void cFlatDisplayReplay::SetTotal(const char *Total) {
+    if( modeOnly )
+        return;
     total = Total;
     UpdateInfo();
 }
 
 void cFlatDisplayReplay::UpdateInfo(void) {
+    if( modeOnly )
+        return;
     cString cutted;
     bool iscutted = false;
 
@@ -403,12 +428,14 @@ void cFlatDisplayReplay::SetJump(const char *Jump) {
     labelJump->DrawText(cPoint(left, 0), Jump, Theme.Color(clrReplayFont), Theme.Color(clrReplayBg), font, font->Width(Jump), fontHeight, taCenter);
 
     DecorBorderDraw(left + Config.decorBorderReplaySize,
-    osdHeight - labelHeight - Config.decorProgressReplaySize - marginItem*3 - fontHeight - Config.decorBorderReplaySize*2,
+    osdHeight - labelHeight - Config.decorProgressReplaySize*2 - marginItem*3 - fontHeight - Config.decorBorderReplaySize*2,
         font->Width(Jump), fontHeight,
         Config.decorBorderReplaySize, Config.decorBorderReplayType, Config.decorBorderReplayFg, Config.decorBorderReplayBg, BorderRecordJump);
 }
 
 void cFlatDisplayReplay::ResolutionAspectDraw(void) {
+    if( modeOnly )
+        return;
     int left = osdWidth - Config.decorBorderReplaySize*2;
     int imageTop = 0;
     cImage *img = NULL;

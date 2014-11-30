@@ -27,6 +27,7 @@ VDR Plugin 'skinflatplus' Revision History
     - update many icons with android material design icons
 - [update] MV-Themes
     - see MV_Themes.HISTORY
+- [update] Display replay, in mode only only show small version
 
 2014-10-29: Version 0.4.3
 - [add] option to draw the menu background over the entire height
