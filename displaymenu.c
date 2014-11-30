@@ -4237,7 +4237,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetSystemInformation(int wLeft, int wWidth,
     contentWidget.AddRect(cRect(0, ContentTop, wWidth, 3), Theme.Color(clrMenuEventTitleLine));
     ContentTop += 6;
 
-    cString execFile = cString::sprintf("cd \"%s/system_information\"; \"%s/system_information/system_information\"", WIDGETFOLDER, WIDGETFOLDER);
+    cString execFile = cString::sprintf("\"%s/system_information/system_information\"", WIDGETFOLDER);
     int r = system(*execFile);
     r += 0; // prevent Warning for unused variable
 
@@ -4645,7 +4645,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetCommand(int wLeft, int wWidth, int Conte
     if( ContentTop + fontHeight + 6 + fontSmlHeight > menuPixmap->ViewPort().Height() )
         return -1;
 
-    cString execFile = cString::sprintf("cd \"%s/command_output\"; \"%s/command_output/command\"", WIDGETFOLDER, WIDGETFOLDER);
+    cString execFile = cString::sprintf("\"%s/command_output/command\"", WIDGETFOLDER);
     int r = system(*execFile);
     r += 0; // prevent Warning for unused variable
 
