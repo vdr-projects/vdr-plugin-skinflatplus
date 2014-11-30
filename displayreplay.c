@@ -89,8 +89,6 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
 
         if( modeOnly )
             labelPixmap->Fill(clrTransparent);
-        else
-            labelPixmap->Fill(Theme.Color(clrReplayBg));
 
         iconsPixmap->Fill(clrTransparent);
         labelPixmap->DrawRectangle(cRect( left - font->Width("33") - marginItem, 0, fontHeight*4 + marginItem*6 + font->Width("33")*2, fontHeight), Theme.Color(clrReplayBg) );
