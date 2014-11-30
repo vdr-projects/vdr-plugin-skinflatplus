@@ -4017,7 +4017,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
         actualNumDevices++;
         std::stringstream strDevice;
 
-        strDevice << i << ": " << *(device->DeviceType()) << " - ";
+        cString channelName;
 
         const cChannel *channel = device->GetCurrentlyTunedTransponder();
         if( i == deviceLiveTV ) {
@@ -4057,9 +4057,22 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
                 strDevice << tr("not used");
             }
         }
+        channelName = strDevice.str().c_str();
+        cString str = cString::sprintf("%d", i);
+        int left = marginItem;
+        contentWidget.AddText(*str, false, cRect(left, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+            Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, fontSml->Width("XX"), fontSmlHeight, taRight);
 
-        contentWidget.AddText(strDevice.str().c_str(), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+        left += fontSml->Width("XXX");
+        str = *(device->DeviceType());
+        contentWidget.AddText(*str, false, cRect(left, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+            Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, fontSml->Width("XXXXXXX"), fontSmlHeight, taLeft);
+
+        left += fontSml->Width("XXXXXXXX");
+        str = *channelName;
+        contentWidget.AddText(*str, false, cRect(left, ContentTop, wWidth - marginItem*2, fontSmlHeight),
             Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
+
         ContentTop += fontSmlHeight;
     }
 
