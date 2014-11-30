@@ -7,6 +7,7 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
     total = "";
 
     modeOnly = ModeOnly;
+    dimmActive = false;
 
     ProgressShown = false;
     CreateFullOsd();
@@ -36,9 +37,12 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
         osdHeight - labelHeight - Config.decorProgressReplaySize*2 - marginItem*3 - fontHeight - Config.decorBorderReplaySize*2,
         osdWidth - Config.decorBorderReplaySize*2, fontHeight));
 
+    dimmPixmap = osd->CreatePixmap(8, cRect(0, 0, osdWidth, osdHeight));
+
     labelPixmap->Fill(Theme.Color(clrReplayBg));
     labelJump->Fill(clrTransparent);
     iconsPixmap->Fill(clrTransparent);
+    dimmPixmap->Fill(clrTransparent);
 
     fontSecs = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize * Config.TimeSecsScale * 100.0);
 
@@ -58,6 +62,8 @@ cFlatDisplayReplay::~cFlatDisplayReplay() {
         osd->DestroyPixmap(iconsPixmap);
     if( chanEpgImagesPixmap )
         osd->DestroyPixmap(chanEpgImagesPixmap);
+    if( dimmPixmap )
+        osd->DestroyPixmap(dimmPixmap);
 }
 
 void cFlatDisplayReplay::SetRecording(const cRecording *Recording) {
@@ -81,8 +87,35 @@ void cFlatDisplayReplay::SetTitle(const char *Title) {
     TopBarSetMenuIcon("extraIcons/Playing");
 }
 
+void cFlatDisplayReplay::Action(void) {
+    time_t curTime;
+    while( Running() ) {
+        time(&curTime);
+        if( (curTime - dimmStartTime) > Config.RecordingDimmOnPauseDelay ) {
+            dimmActive = true;
+            dimmPixmap->Fill(ArgbToColor(Config.RecordingDimmOnPauseOpaque, 0, 0, 0));
+            Flush();
+            Cancel(-1);
+            return;
+        }
+        cCondWait::SleepMs(100);
+    }
+}
+
 void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
     int left = 0;
+    if( Play == false && Config.RecordingDimmOnPause ) {
+        time(&dimmStartTime);
+        Start();
+    } else if( Play == true && Config.RecordingDimmOnPause ) {
+        Cancel(-1);
+        while( Active() )
+            cCondWait::SleepMs(10);
+        if( dimmActive ) {
+            dimmPixmap->Fill(clrTransparent);
+            Flush();
+        }
+    }
     if( Setup.ShowReplayMode ) {
         left = osdWidth - Config.decorBorderReplaySize*2 - (fontHeight * 4 + marginItem * 3);
         left /= 2;

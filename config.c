@@ -33,6 +33,10 @@ cFlatConfig::cFlatConfig(void) {
     RecordingSimpleAspectFormat = true;
     TimeSecsScale = 1.0;
 
+    RecordingDimmOnPause = true;
+    RecordingDimmOnPauseDelay = 20;
+    RecordingDimmOnPauseOpaque = 240;
+
     RecordingAdditionalInfoShow = true;
     EpgAdditionalInfoShow = true;
     EpgRerunsShow = true;
@@ -352,6 +356,9 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "TVScraperReplayInfoPosterSize") == 0)        TVScraperReplayInfoPosterSize = atod(Value);
     else if (strcmp(Name, "MainMenuWidgetDVBDevicesDiscardUnknown") == 0)  MainMenuWidgetDVBDevicesDiscardUnknown = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetDVBDevicesDiscardNotUsed") == 0)  MainMenuWidgetDVBDevicesDiscardNotUsed = atoi(Value);
+    else if (strcmp(Name, "RecordingDimmOnPause") == 0)                 RecordingDimmOnPause = atoi(Value);
+    else if (strcmp(Name, "RecordingDimmOnPauseDelay") == 0)            RecordingDimmOnPauseDelay = atoi(Value);
+    else if (strcmp(Name, "RecordingDimmOnPauseOpaque") == 0)           RecordingDimmOnPauseOpaque = atoi(Value);
 
     else return false;
 

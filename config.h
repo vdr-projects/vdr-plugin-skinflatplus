@@ -218,6 +218,10 @@ class cFlatConfig
         int RecordingAdditionalInfoShow;
         double TimeSecsScale;
 
+        int RecordingDimmOnPause;
+        int RecordingDimmOnPauseDelay;
+        int RecordingDimmOnPauseOpaque;
+
         int EpgRerunsShow;
         int EpgAdditionalInfoShow;
         int TopBarRecordingShow;

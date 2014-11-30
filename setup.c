@@ -315,6 +315,9 @@ void cFlatSetup::Store(void) {
     SetupStore("TVScraperReplayInfoPosterSize", dtoa(Config.TVScraperReplayInfoPosterSize));
     SetupStore("MainMenuWidgetDVBDevicesDiscardUnknown", Config.MainMenuWidgetDVBDevicesDiscardUnknown);
     SetupStore("MainMenuWidgetDVBDevicesDiscardNotUsed", Config.MainMenuWidgetDVBDevicesDiscardNotUsed);
+    SetupStore("RecordingDimmOnPause", Config.RecordingDimmOnPause);
+    SetupStore("RecordingDimmOnPauseDelay", Config.RecordingDimmOnPauseDelay);
+    SetupStore("RecordingDimmOnPauseOpaque", Config.RecordingDimmOnPauseOpaque);
 
     Config.Init();
 }
@@ -495,6 +498,9 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "TVScraperReplayInfoPosterSize") == 0)        SetupConfig->TVScraperReplayInfoPosterSize = atod(Value);
     else if (strcmp(Name, "MainMenuWidgetDVBDevicesDiscardUnknown") == 0) SetupConfig->MainMenuWidgetDVBDevicesDiscardUnknown = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetDVBDevicesDiscardNotUsed") == 0) SetupConfig->MainMenuWidgetDVBDevicesDiscardNotUsed = atoi(Value);
+    else if (strcmp(Name, "RecordingDimmOnPause") == 0)                 SetupConfig->RecordingDimmOnPause = atoi(Value);
+    else if (strcmp(Name, "RecordingDimmOnPauseDelay") == 0)            SetupConfig->RecordingDimmOnPauseDelay = atoi(Value);
+    else if (strcmp(Name, "RecordingDimmOnPauseOpaque") == 0)           SetupConfig->RecordingDimmOnPauseOpaque = atoi(Value);
     else return false;
 
     return true;
@@ -657,6 +663,9 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("TVScraperReplayInfoPosterSize", dtoa(Config.TVScraperReplayInfoPosterSize), *Filename);
     Config.Store("MainMenuWidgetDVBDevicesDiscardUnknown", SetupConfig->MainMenuWidgetDVBDevicesDiscardUnknown, *Filename);
     Config.Store("MainMenuWidgetDVBDevicesDiscardNotUsed", SetupConfig->MainMenuWidgetDVBDevicesDiscardNotUsed, *Filename);
+    Config.Store("RecordingDimmOnPause", SetupConfig->RecordingDimmOnPause, *Filename);
+    Config.Store("RecordingDimmOnPauseDelay", SetupConfig->RecordingDimmOnPauseDelay, *Filename);
+    Config.Store("RecordingDimmOnPauseOpaque", SetupConfig->RecordingDimmOnPauseOpaque, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -1040,6 +1049,16 @@ void cFlatSetupReplay::Setup(void) {
     Add(new cMenuEditPrcItem(tr("Time seconds font scale"), &SetupConfig->TimeSecsScale, 0.003, 0.01, 1));
     Add(new cMenuEditBoolItem(tr("Show weather widget"), &SetupConfig->PlaybackWeatherShow));
 
+    Add(new cMenuEditBoolItem(tr("Dimm on pause?"), &SetupConfig->RecordingDimmOnPause));
+    if( SetupConfig->RecordingDimmOnPause ) {
+        Add(new cMenuEditIntItem(tr("Dimm on pause delay"), &SetupConfig->RecordingDimmOnPauseDelay));
+        Add(new cMenuEditIntItem(tr("Dimm on pause opaque"), &SetupConfig->RecordingDimmOnPauseOpaque));
+    } else {
+        cString type = cString::sprintf("%s:\t%d", tr("Dimm on pause delay"), SetupConfig->RecordingDimmOnPauseDelay);
+        Add(new cOsdItem(type, osUnknown, false));
+        cString size = cString::sprintf("%s:\t%d", tr("Dimm on pause opaque"), SetupConfig->RecordingDimmOnPauseOpaque);
+        Add(new cOsdItem(size, osUnknown, false));
+    }
     Add(new cMenuEditBoolItem(tr("Replay border by decor-file?"), &SetupConfig->decorBorderReplayByTheme));
     if( SetupConfig->decorBorderReplayByTheme ) {
         cString type = cString::sprintf("%s:\t%s", tr("Replay border type"), Bordertypes[SetupConfig->decorBorderReplayTypeTheme]);
@@ -1080,7 +1099,8 @@ eOSState cFlatSetupReplay::ProcessKey(eKeys Key) {
     if( Key == kLeft || Key == kRight ) {
         const char* ItemText = Get(Current())->Text();
         if( strstr(ItemText, tr("Replay border by decor-file?")) != NULL ||
-            strstr(ItemText, tr("Replay progress by decor-file?")) != NULL
+            strstr(ItemText, tr("Replay progress by decor-file?")) != NULL ||
+            strstr(ItemText, tr("Dimm on pause?")) != NULL
         ) {
             ItemLastSel = Current();
             Setup();

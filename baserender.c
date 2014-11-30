@@ -1325,7 +1325,6 @@ tColor cFlatBaseRender::SetAlpha(tColor Color, double am)
     return ArgbToColor(A, R, G, B);
 }
 
-
 void cFlatBaseRender::DecorDrawGlowRectHor(cPixmap *pixmap, int Left, int Top, int Width, int Height, tColor ColorBg) {
     double Alpha;
     if( Height < 0 ) {

@@ -3,7 +3,7 @@
 #include "baserender.h"
 #include "services/scraper2vdr.h"
 
-class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay {
+class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay, public cThread {
     private:
         cString current, total;
 
@@ -12,6 +12,7 @@ class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay {
         cPixmap *labelJump;
         cPixmap *iconsPixmap;
         cPixmap *chanEpgImagesPixmap;
+        cPixmap *dimmPixmap;
 
         cFont *fontSecs;
         const cRecording *recording;
@@ -20,10 +21,16 @@ class cFlatDisplayReplay : public cFlatBaseRender, public cSkinDisplayReplay {
         int screenHeight;
         double screenAspect;
 
+        // dimm on pause
+        bool dimmActive;
+        time_t dimmStartTime;
+
         bool ProgressShown;
         bool modeOnly;
         void UpdateInfo(void);
         void ResolutionAspectDraw(void);
+
+        virtual void Action(void);
     public:
         cFlatDisplayReplay(bool ModeOnly);
         virtual ~cFlatDisplayReplay();

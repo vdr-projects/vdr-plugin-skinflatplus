@@ -22,8 +22,8 @@ SHOW_VIDEO_USAGE=1
 SHOW_VDR_CPU_USAGE=1
 SHOW_VDR_MEM_USAGE=1
 
-SHOW_TEMPERATURES=1
-SHOW_SYSUPDATES=1
+SHOW_TEMPERATURES=0
+SHOW_SYSUPDATES=0
 
 # Position of items
 # sys_version & kernel_version are drawn in one line
@@ -58,6 +58,10 @@ VIDEO_MOUNT="/media/video"
 
 # force english output for filters
 LANG=en_EN
+
+# Get own Path
+SELF="$(readlink -m /proc/$$/fd/255)" # $0
+MY_DIR="$(dirname $SELF)"             # Path
 
 # delete all files
 rm -f ${OUTPUTFLDR}/[0-99]*
@@ -145,7 +149,8 @@ if [ $SHOW_VDR_MEM_USAGE = 1 ]; then
 fi
 
 if [ $SHOW_TEMPERATURES = 1 ]; then
-    ./../temperatures/temperatures
+    TEMPERATURES_DIR="$(readlink -m $MY_DIR/../temperatures)"
+    bash $TEMPERATURES_DIR/temperatures
     if [ -f ${OUTPUTFLDRTEMP}/cpu ]; then
         cp ${OUTPUTFLDRTEMP}/cpu ${OUTPUTFLDR}/${TEMP_CPU_POS}_cpu
     fi

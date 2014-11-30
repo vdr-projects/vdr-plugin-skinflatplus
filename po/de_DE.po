@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.4.3\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-11-30 14:44+0100\n"
+"POT-Creation-Date: 2014-11-30 16:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -692,6 +692,15 @@ msgstr "Menüitem: Fortschritt Größe"
 
 msgid "Time seconds font scale"
 msgstr "Uhrzeit: Sekunden Skalierung"
+
+msgid "Dimm on pause?"
+msgstr "Dimmen bei Pause?"
+
+msgid "Dimm on pause delay"
+msgstr "Dimmen bei Pause Verzögerung"
+
+msgid "Dimm on pause opaque"
+msgstr "Dimmen bei Pause Undurchsichtigkeit"
 
 msgid "Replay border by decor-file?"
 msgstr "Wiedergabe: Rand aus Dekordatei?"
