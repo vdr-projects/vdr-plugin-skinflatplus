@@ -37,7 +37,7 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
         osdHeight - labelHeight - Config.decorProgressReplaySize*2 - marginItem*3 - fontHeight - Config.decorBorderReplaySize*2,
         osdWidth - Config.decorBorderReplaySize*2, fontHeight));
 
-    dimmPixmap = osd->CreatePixmap(8, cRect(0, 0, osdWidth, osdHeight));
+    dimmPixmap = osd->CreatePixmap(MAXPIXMAPLAYERS-1, cRect(0, 0, osdWidth, osdHeight));
 
     labelPixmap->Fill(Theme.Color(clrReplayBg));
     labelJump->Fill(clrTransparent);
@@ -93,8 +93,10 @@ void cFlatDisplayReplay::Action(void) {
         time(&curTime);
         if( (curTime - dimmStartTime) > Config.RecordingDimmOnPauseDelay ) {
             dimmActive = true;
-            dimmPixmap->Fill(ArgbToColor(Config.RecordingDimmOnPauseOpaque, 0, 0, 0));
-            Flush();
+            for(int alpha = 0; alpha <= Config.RecordingDimmOnPauseOpaque; alpha+=2) {
+                dimmPixmap->Fill(ArgbToColor(alpha, 0, 0, 0));
+                Flush();
+            }
             Cancel(-1);
             return;
         }
