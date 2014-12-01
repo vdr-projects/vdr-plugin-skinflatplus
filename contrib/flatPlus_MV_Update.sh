@@ -3,17 +3,17 @@
 # flatPlus_MV_Update.sh
 # Skript zum Updaten der MV-Themen
 
-#set -x
-
 # Ordner und Dateien
-ICONS="icons" ; THEMES="themes" ; DECORS="decors" ; CONFIGS="configs"
+ICONS="icons" ; THEMES="themes" ; DECORS="decors" ; CONFIGS="configs" ; PREVIEWS="previews"
 INFO=MV_Themes.INFO ; HIST=MV_Themes.HISTORY
 
 # Ordner für Direktupdate (Im aktuellem Filesystem); Beispiel für Gen2VDR
 THEMEDIR="/etc/vdr/themes"
-ICONDIR="/etc/vdr/plugins/skinflatplus/icons"
-DECORDIR="/etc/vdr/plugins/skinflatplus/decors"
-CONFIGSDIR="/etc/vdr/plugins/skinflatplus/configs"
+PLUGINDIR="/etc/vdr/plugins/skinflatplus"
+ICONDIR="${PLUGINDIR}/icons"
+DECORDIR="${PLUGINDIR}/decors"
+CONFIGSDIR="${PLUGINDIR}/configs"
+PREVIEWDIR="${PLUGINDIR}/previews"
 
 timedout_read() {
   timeout=$1 ; varname=$2 ; old_tty_settings=`stty -g`
@@ -51,8 +51,8 @@ fi
 # MV_Themes Löschen!
 if [ -z "$SILENTUPDATE" ] ; then
   echo "-------------------------------"
-  echo "MV_Themen löschen? (J/n)"
   [ -n "$DIRECTUPDATE" ] && echo "ACHTUNG: Dateien in /etc werden gelöscht!"
+  echo "MV_Themen löschen? (J/n)"
   timedout_read 5 TASTE
   if [ "$TASTE" = "n" -o "$TASTE" = "N" ] ; then
     echo "Skript abgebrochen. Es wurde nichts gelöscht!"
@@ -64,12 +64,15 @@ if [ -n "$DIRECTUPDATE" ] ; then # Löschen im Dateisystem (/etc)
   [ -d $ICONDIR ] && rm -rf $ICONDIR/MV*
   [ -d $THEMEDIR ] && rm -f $THEMEDIR/flatPlus-MV*
   [ -d $DECORDIR ] && rm -f $DECORDIR/*MV*
+  [ -d $CONFIGSDIR ] && rm -f $CONFIGSDIR/*MV*
+  [ -d $PREVIEWDIR ] && rm -f $PREVIEWDIR/*MV*
 else                             # Löschen im Source-Dir von skinflatPlus
   rm -rf ../$ICONS/MV*
   rm -f ../$THEMES/flatPlus-MV*
   rm -f ../$DECORS/*MV*
-  rm -f ../$INFO
-  rm -f ../$HIST
+  rm -f ../$INFO ../$HIST
+  rm -f ../$CONFIGSDIR/*MV*
+  rm -f ../$PREVIEWDIR/*MV*
 fi
 
 echo "MV-Themen wurden entfernt."
@@ -82,7 +85,8 @@ if [ -z "$SILENTUPDATE" ] ; then
   [ "$TASTE" = "n" -o "$TASTE" = "N" ] && exit
 fi
 
-cd ..
+cd ..        # In das Source-Verzeichnis von SkinFlatPlus
+
 # Download
 [ -n "$DIRECTUPDATE" ] && cd /tmp
 wget https://dl.dropboxusercontent.com/u/1490505/VDR/skinflatplus/MV_Themes.tar.xz
@@ -94,6 +98,7 @@ if [ -n "$DIRECTUPDATE" ] ; then
   cp -f ${DECORS}/*MV* $DECORDIR
   cp -rf ${ICONS}/MV* $ICONDIR
   cp -f ${CONFIGS}/*MV* $CONFIGSDIR
+  cp -f ${PREVIEWDIR}/*MV* $PREVIEWDIR
 fi
 
 echo "-------------------------------"
