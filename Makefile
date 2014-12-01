@@ -68,7 +68,7 @@ SOFILE = libvdr-$(PLUGIN).so
 INCLUDES += $(shell pkg-config --cflags Magick++ freetype2 fontconfig)
 
 DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' -DVDRLOGO=\"$(VDRLOGO)\"
-DEFINES += -DWIDGETFOLDER='"$(DESTDIR)$(LIBDIR)/$(PLUGIN)/widgets"'
+DEFINES += -DWIDGETFOLDER='"$(LIBDIR)/$(PLUGIN)/widgets"'
 
 LIBS += $(shell pkg-config --libs Magick++)
 
