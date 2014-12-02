@@ -15,22 +15,24 @@ VDR Plugin 'skinflatplus' Revision History
         - Widget system updates
         - Widget temperatures
         - Widget custom command
-    - Please see the example scripts and README-files
-- [add] Weather widget in channelinfo and replayinfo
+    - please see the example scripts and README-files
+- [add] weather widget in channelinfo and replayinfo
 - [add] option Weather widget font size
 - [add] poster/banner image in replay info
+- [add] dimm on pause feature
+    you can set a timeout and the opaque value. If You press pause while replaying the display will be dimmed after the timeout
 - [update] default themes
     - background transparency slightly reduced
     - use color palette of android material design
     - default accent color is "Light Blue"
     - add more default themes: DeepOrange, DeepPurple, Indigo, Red, Teal
-- [add] dimm on pause feature
-    you can set a timeout and the opaque value. If You press pause while replaying the display will be dimmed after the timeout
 - [update] icons
     - update many icons with android material design icons
 - [update] MV-Themes
     - see MV_Themes.HISTORY
-- [update] Display replay, in mode only only show small version
+- [update] display replay, in mode only only show small version
+- [update] remove fonts from contrib folder
+    they waste to much space, if you need them, grab it from previous version
 
 2014-10-29: Version 0.4.3
 - [add] option to draw the menu background over the entire height
