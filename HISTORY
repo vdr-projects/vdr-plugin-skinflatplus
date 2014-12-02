@@ -33,6 +33,9 @@ VDR Plugin 'skinflatplus' Revision History
 - [update] display replay, in mode only only show small version
 - [update] remove fonts from contrib folder
     they waste to much space, if you need them, grab it from previous version
+- [update] Makefile
+    rename VDRLOGO to SKINFLATPLUS_VDRLOGO
+    new variable SKINFLATPLUS_WIDGETDIR for specify the path to the widgets
 
 2014-10-29: Version 0.4.3
 - [add] option to draw the menu background over the entire height

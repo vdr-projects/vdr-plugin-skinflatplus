@@ -23,7 +23,7 @@ PLUGIN = skinflatplus
 #   vdrlogo_xubuntu
 #   vdrlogo_xubuntu2
 #   vdrlogo_yavdr
-VDRLOGO = vdrlogo_default
+SKINFLATPLUS_VDRLOGO = vdrlogo_default
 
 #DEFINES += -DDEBUGIMAGELOADTIME
 #DEFINES += -DDEBUGEPGTIME
@@ -42,6 +42,7 @@ PLGCFG  = $(call PKGCFG,plgcfg)
 VDRCONFDIR = $(call PKGCFG,configdir)
 PLGRESDIR = $(call PKGCFG,resdir)/plugins/$(PLUGIN)
 TMPDIR ?= /tmp
+SKINFLATPLUS_WIDGETDIR ?= $(LIBDIR)/$(PLUGIN)/widgets
 
 ### The compiler options:
 export CFLAGS   = $(call PKGCFG,cflags)
@@ -67,8 +68,8 @@ SOFILE = libvdr-$(PLUGIN).so
 
 INCLUDES += $(shell pkg-config --cflags Magick++ freetype2 fontconfig)
 
-DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' -DVDRLOGO=\"$(VDRLOGO)\"
-DEFINES += -DWIDGETFOLDER='"$(LIBDIR)/$(PLUGIN)/widgets"'
+DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' -DVDRLOGO=\"$(SKINFLATPLUS_VDRLOGO)\"
+DEFINES += -DWIDGETFOLDER='"$(SKINFLATPLUS_WIDGETDIR)"'
 
 LIBS += $(shell pkg-config --libs Magick++)
 
@@ -146,8 +147,8 @@ install-configs:
 	cp configs/* $(DESTDIR)$(VDRCONFDIR)/plugins/$(PLUGIN)/configs
 
 install-widgets:
-	mkdir -p $(DESTDIR)$(LIBDIR)/$(PLUGIN)/widgets
-	cp -r widgets/* $(DESTDIR)$(LIBDIR)/$(PLUGIN)/widgets
+	mkdir -p $(DESTDIR)$(SKINFLATPLUS_WIDGETDIR)
+	cp -r widgets/* $(DESTDIR)$(SKINFLATPLUS_WIDGETDIR)
 
 install: install-lib install-i18n install-themes install-icons install-decors install-configs install-widgets
 
