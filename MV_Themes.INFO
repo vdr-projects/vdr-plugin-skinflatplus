@@ -1,4 +1,4 @@
-flatPlus-MV_Themen erstellt am 01.12.2014 15:36
+flatPlus-MV_Themen erstellt am 02.12.2014 08:52
 Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
 
 => Installationshimnweise am Ende der Datei! <=
@@ -40,35 +40,36 @@ Insgesamt 32 Icon-Ordner erstellt
 Installationshinweise:
  - Alle *.theme aus dem Ordner themes nach <vdrconfigdir>/themes kopieren.
  - Alle *.decor aus dem Ordner decors nach <vdrconfigdir>/plugins/skinflatplus/decors kopieren.
+ - Alle MV* aus dem Ordner configs nach <vdrconfigdir>/plugins/skinflatplus/configs kopieren.
  - Alle MV* Ordner aus dem Ordner icons nach <vdrconfigdir>/plugins/skinflatplus/icons kopieren.
 
 Optional (Pfade evtl. Anpassen!):
- - Schrift(en) aus dem Ordner contrib nach /usr/share/fonts kopieren.
-   Die Schriften enthalten auch die VDR-Symbole.
+ - Schrift(en) aus dem Archiv https://db.tt/QCyK0I8s entpacken und nach
+   /usr/share/fonts kopieren. Die Schriften enthalten auch die VDR-Symbole.
 
 Empfohlene Einstellungen (setup.conf) im skin-flatplus-Plugin:
 Laden mit "Menue - Einstellungen - Plugins - SkinFlatPlus - Allgemeine Einstellungen:"
 "OK druecken um die Konfigdatei zu laden: MV_default - OK"
 
 Empfohlene Einstellungen (setup.conf) im VDR (Menue - Einstellungen - OSD):
-FontFix = Nimbus Mono L:Bold
-FontFixSize = 30
-FontFixSizeP = 0.028000
-FontOsd = VDRPT Sans:Regular
-FontOsdSize = 42
-FontOsdSizeP = 0.039000
-FontSml = PT Sans:Regular
-FontSmlSize = 33
-FontSmlSizeP = 0.031000
+FontFix = Courier:Bold
+FontFixSize = 33
+FontFixSizeP = 0.031000
+FontOsd = Droid Sans:Regular
+FontOsdSize = 44
+FontOsdSizeP = 0.041000
+FontSml = Droid Sans:Regular
+FontSmlSize = 35
+FontSmlSizeP = 0.032000
 OSDAspect = 1.000000
 OSDHeight = 1080
 OSDHeightP = 1.000000
 OSDLanguage = de_DE
 OSDLeft = 0
 OSDLeftP = 0.000000
-OSDMessageTime = 5
+OSDMessageTime = 6
 OSDSkin = flatPlus
-OSDTheme = MVDeepBlue
+OSDTheme = MVIndigo
 OSDTop = 0
 OSDTopP = 0.000000
 OSDWidth = 1920
