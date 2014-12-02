@@ -4060,10 +4060,17 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
         channelName = strDevice.str().c_str();
         cString str = cString::sprintf("%d", i);
         int left = marginItem;
-        contentWidget.AddText(*str, false, cRect(left, ContentTop, wWidth - marginItem*2, fontSmlHeight),
-            Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, fontSml->Width("XX"), fontSmlHeight, taRight);
+        if( numDevices <= 9 ) {
+            contentWidget.AddText(*str, false, cRect(left, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml);
 
-        left += fontSml->Width("XXX");
+            left += fontSml->Width("XX");
+        } else {
+            contentWidget.AddText(*str, false, cRect(left, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+                Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, fontSml->Width("XX"), fontSmlHeight, taRight);
+
+            left += fontSml->Width("XXX");
+        }
         str = *(device->DeviceType());
         contentWidget.AddText(*str, false, cRect(left, ContentTop, wWidth - marginItem*2, fontSmlHeight),
             Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, fontSml->Width("XXXXXXX"), fontSmlHeight, taLeft);
