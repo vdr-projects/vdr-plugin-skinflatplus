@@ -93,7 +93,7 @@ void cFlatDisplayReplay::Action(void) {
         time(&curTime);
         if( (curTime - dimmStartTime) > Config.RecordingDimmOnPauseDelay ) {
             dimmActive = true;
-            for(int alpha = 0; alpha <= Config.RecordingDimmOnPauseOpaque; alpha+=2) {
+            for(int alpha = 0; (alpha <= Config.RecordingDimmOnPauseOpaque) && Running(); alpha+=2) {
                 dimmPixmap->Fill(ArgbToColor(alpha, 0, 0, 0));
                 Flush();
             }
