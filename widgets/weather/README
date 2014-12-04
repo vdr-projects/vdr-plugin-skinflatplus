@@ -8,6 +8,6 @@ You need php5 with command line support for this widget. For example in Ubuntu y
 
 Please move update_weather.config to update_weather.config.sample
 
-mv update_weather.config.sample update_weather.config
+cp update_weather.config.sample update_weather.config
 
 Configure your location and others in update_weather.config. Use php-script "GetLatLangFromCity.php" to get latitude & longitude from your location.

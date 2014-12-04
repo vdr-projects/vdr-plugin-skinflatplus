@@ -20,6 +20,8 @@ $longitude = $data['results'][0]['geometry']['location']['lng'];
 
 echo "Latitude =  ".$latitude."\n";
 echo "Longitude = ".$longitude."\n";
+echo "LocationSkin = ".$city."\n";
+
 echo "put these values in update_weather.config\n";
 
 ?>
