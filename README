@@ -60,34 +60,32 @@ Versteckte Einstellungen sind Einstellungen die in der VDR setup.conf konfigurie
 
 Widgets
 _______________________________
-h1. Widgets
-
 Seit Version 0.5.0 gibt es die Widgets.
 Es gibt interne und externe Widgets. Die internen Widgets funktionieren out-of-the-box, da Sie innerhalb des VDR implementiert sind.
 Externe Widgets sind externe Programme/Scripte, hier sind (teilweise) manuelle Anpassungen notwendig damit diese laufen.
 
 Die Widgets werden auf der rechten Seite des Hauptmenüs angezeigt. In der Höhe ist nur begrenzt Platz, deshalb kann es passieren das nicht alle Widgets angezeigt werden können (da einfach kein Platz mehr ist). Hier muss du selbst entscheiden welches Widget auf welcher Position angezeigt werden soll.
 
-h2. Interne Widgets
+* Interne Widgets
 
-h3. DVB Geräte
+** DVB Geräte
 
 Zeigt die DVB Geräte an, wer dieses benutzt und auf welchem Kanel das Gerät gerade ist. Über die Plugineinstellungen kann konfiguriert werden ob "unbekannte" und/oder "nicht benutzte" Geräte ausgeblendet werden sollen.
 Leider ist es derzeit nicht möglich 100% herauszufinden wer das Gerät derzeit nutzt. Z.B. gibt es Fälle wie den EPG-Scan welcher nicht erkannt wird.
 
-h3. Aktive Timer
+** Aktive Timer
 
 Zeit die aktiven Timer an. Über die Plugineinstellungen kann die max. Anzahl der Timer konfiguriert werden welche angezeigt wird. Weiter kann konfiguriert werden, dass das Widget ausgeblendet wird, wenn keine aktiven Timer existieren.
 
-h3. Timer Konflikte
+** Timer Konflikte
 
 Zeigt die Anzahl der Timer-Konflikte an. Es ist in Plannung das auch die eigentlichen Konflikte und nicht nur die Anzahl angezeigt wird. Es kann wieder konfiguriert werden das das Widget ausgeblendet wird wenn keine Timer Konflikte vorhanden sind.
 
-h3. Letzte Aufnahmen
+** Letzte Aufnahmen
 
 Zeigt die letzten Aufnahmen nach Datum sortiert an. Über die Plugineinstellungen kann die max. Anzahl der Elemente konfiguriert werden.
 
-h2. Externe Widgets
+* Externe Widgets
 
 Externe Scripte werden (wenn nicht anders konfiguriert) in das LIBDIR installiert. Normalerweise sollte dies folgender Pfad sein.
 <pre>
@@ -99,7 +97,7 @@ Alle Ausgaben der Scripte sind unter
 /tmp/skinflatplus/widgets/
 </pre>
 
-h3. Wetter-Widget
+** Wetter-Widget
 
 Zeigt das aktuelle Wetter und eine Vorschau an. Die Ansicht der Vorschau kann konfiguriert werden. Es existiert eine Lang- und eine Kurzansicht. Bei der langen Ansicht gibt es pro Tag eine Zeile bei der kurzen Ansicht wird alles in einer Zeile dargestellt. Die Anzahl der Tage kann über die Plugineinstellungen konfiguriert werden, wobei max. 7 Tage möglich sind.
 Dieses Widget benötigt php5, unter Ubuntu ist z.B. das Paket php5-cli notwendig.
@@ -124,7 +122,7 @@ Für die Wetterdaten wird forecast.io verwendet. Hier sind 1000 Abfragen am Tag f
 
 Für die Kanalinfo gibt es eine kleine Version des Wetter Widgets. hier wird Heute + Morgen angezeigt.
 
-h3. System-Informationen
+** System-Informationen
 
 Mit diesem Widget können verschiedenene Systeminformationen angezeigt werden.
 Dieses Script wird bei jedem Aufruf des Menü erneut ausgeführt. Daher sollte das Script kurz und schnell sein.
@@ -136,7 +134,7 @@ ln -s system_information.ubuntu system_information
 
 In dem Script ist auch die Konfiguration enthalten. Hier kann festgelegt werden welche Informationen ausgegeben werden sollen und in welcher Position diese sein sollen.
 
-h3. Temperaturen
+** Temperaturen
 
 Mit diesem Widget können die Temperaturen des System angezeigt werden.
 Dieses Script wird bei jedem Aufruf des Menü erneut ausgeführt. Daher sollte das Script kurz und schnell sein.
@@ -148,7 +146,7 @@ ln -s temperatures.default temperatures
 
 Das default Script nutzt lm-sensors um die Temeperaturen zu ermitteln. Du musst sicherstellen das du lm-sensors installiert und auch richtig konfiguriert hast. Weiterhin wird die GPU-Temperatur mittels nvidia-settings ermittelt. Dies funktioniert natürlich nur mit Nvidia Grafikkarten.
 
-h3. System-Updatestatus
+** System-Updatestatus
 
 Mit diesem Widget können die Updates des System angezeigt werden. Dabei wird die Anzahl der Updates und der Sicherheitsupdates angezeigt.
 Das Script (system_update_status) wird nicht vom Skin aufgerufen. Dies muss extern über cron oder ähnliches erfolgen. Z.B. über folgende Zeile in der /etc/crontab
@@ -157,7 +155,7 @@ Das Script (system_update_status) wird nicht vom Skin aufgerufen. Dies muss exte
 7 */12   * * *   root    /usr/local/lib/vdr/skinflatplus/widgets/system_updatestatus/system_updatestatus
 </pre>
 
-h3. Benutzerdefinierte Ausgabe
+** Benutzerdefinierte Ausgabe
 
 Mit diesem Widget können eigene Befehle ausgeführt und angezeigt werden.
 Wenn es in dem Ordner das Script "command" gibt, wird dieses bei jedem Aufruf des Menüs ausgeführt.
