@@ -2037,8 +2037,8 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
 
             Top += fontHeight;
             buffer = cString::sprintf("  %d", Total);
-            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, fontSml, fontSml->Width("  999"), fontSmlHeight, taRight);
-            Left += fontSml->Width("  999 ");
+            menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, fontSml, fontSml->Width("  9999"), fontSmlHeight, taRight);
+            Left += fontSml->Width("  9999 ");
 
             if( imgRecNewSml )
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *imgRecNewSml );
