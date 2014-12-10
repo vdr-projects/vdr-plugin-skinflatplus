@@ -4096,46 +4096,79 @@ int cFlatDisplayMenu::DrawMainMenuWidgetActiveTimers(int wLeft, int wWidth, int 
     if( img ) {
         contentWidget.AddImage(img, cRect(marginItem, ContentTop + marginItem, fontHeight, fontHeight));
     }
-    contentWidget.AddText(tr("Active Timer"), false, cRect(marginItem*2 + fontHeight, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
+    contentWidget.AddText(tr("Timer"), false, cRect(marginItem*2 + fontHeight, ContentTop, 0, 0), Theme.Color(clrMenuEventFontTitle), Theme.Color(clrMenuEventBg), font);
     ContentTop += fontHeight;
     contentWidget.AddRect(cRect(0, ContentTop, wWidth, 3), Theme.Color(clrMenuEventTitleLine));
     ContentTop += 6;
 
     // look for timers
-    time_t t;
-    time(&t);
-    int index = 0, numRec = 0;
-    for(cTimer *ti = Timers.First(); ti && index < Config.MainMenuWidgetActiveTimerMaxCount; ti = Timers.Next(ti), index++) {
-        if( ti->Matches(t) && ti->HasFlags(tfRecording) ) {
+    int numRec = 0, numActive = 0;
+    for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti) ) {
+        if( ti->HasFlags(tfRecording) && Config.MainMenuWidgetActiveTimerShowRecording )
             numRec++;
-        }
+        if( ti->HasFlags(tfActive) && Config.MainMenuWidgetActiveTimerShowActive )
+            numActive++;
+
+        if( numRec + numActive >= Config.MainMenuWidgetActiveTimerMaxCount )
+            break;
     }
-    if( numRec == 0 && Config.MainMenuWidgetActiveTimerHideEmpty )
+    if( (numRec == 0 && numActive == 0) && Config.MainMenuWidgetActiveTimerHideEmpty )
         return 0;
-    else if( numRec == 0 ) {
-        contentWidget.AddText(tr("no active timer"), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+    else if( numRec == 0 && numActive == 0 ) {
+        contentWidget.AddText(tr("no active/recording timer"), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
             Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
     } else {
-        index = 0;
-        for(cTimer *ti = Timers.First(); ti && index < Config.MainMenuWidgetActiveTimerMaxCount; ti = Timers.Next(ti), index++) {
-            if( ti->Matches(t) && ti->HasFlags(tfActive) ) {
-                if( ContentTop + marginItem > menuPixmap->ViewPort().Height() )
-                    continue;
+        int count = -1;
+        // first recording timer
+        if( Config.MainMenuWidgetActiveTimerShowRecording ) {
+            for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
+                if( ti->HasFlags(tfRecording) ) {
+                    count++;
+                    if( ContentTop + marginItem > menuPixmap->ViewPort().Height() )
+                        break;
+                    if( count >= Config.MainMenuWidgetActiveTimerMaxCount )
+                        break;
+                    const cChannel *Channel = ti->Channel();
+                    //const cEvent *Event = Timer->Event();
+                    std::stringstream strTimer;
+                    strTimer << count+1 << ": ";
+                    if( Channel )
+                        strTimer << Channel->Name() << " - ";
+                    else
+                        strTimer << tr("Unknown") << " - ";
+                    strTimer << ti->File();
 
-                const cChannel *Channel = ti->Channel();
-                //const cEvent *Event = Timer->Event();
-                std::stringstream strTimer;
-                strTimer << index+1 << ": ";
-                if( Channel )
-                    strTimer << Channel->Name() << " - ";
-                else
-                    strTimer << tr("Unknown") << " - ";
-                strTimer << ti->File();
+                    contentWidget.AddText(strTimer.str().c_str(), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+                        Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
 
-                contentWidget.AddText(strTimer.str().c_str(), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
-                    Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+                    ContentTop += fontSmlHeight;
+                }
+            }
+        }
+        if( Config.MainMenuWidgetActiveTimerShowActive ) {
+            for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
+                if( ti->HasFlags(tfActive) && !ti->HasFlags(tfRecording) ) {
+                    count++;
+                    if( ContentTop + marginItem > menuPixmap->ViewPort().Height() )
+                        break;
+                    if( count >= Config.MainMenuWidgetActiveTimerMaxCount )
+                        break;
 
-                ContentTop += fontSmlHeight;
+                    const cChannel *Channel = ti->Channel();
+                    //const cEvent *Event = Timer->Event();
+                    std::stringstream strTimer;
+                    strTimer << count+1 << ": ";
+                    if( Channel )
+                        strTimer << Channel->Name() << " - ";
+                    else
+                        strTimer << tr("Unknown") << " - ";
+                    strTimer << ti->File();
+
+                    contentWidget.AddText(strTimer.str().c_str(), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+                        Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+
+                    ContentTop += fontSmlHeight;
+                }
             }
         }
     }

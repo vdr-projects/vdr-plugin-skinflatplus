@@ -91,6 +91,8 @@ cFlatConfig::cFlatConfig(void) {
     MainMenuWidgetActiveTimerPosition = 3;
     MainMenuWidgetActiveTimerMaxCount = 2;
     MainMenuWidgetActiveTimerHideEmpty = false;
+    MainMenuWidgetActiveTimerShowActive = true;
+    MainMenuWidgetActiveTimerShowRecording = true;
 
     MainMenuWidgetLastRecShow = false;
     MainMenuWidgetLastRecPosition = 4;
@@ -359,6 +361,8 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "RecordingDimmOnPause") == 0)                 RecordingDimmOnPause = atoi(Value);
     else if (strcmp(Name, "RecordingDimmOnPauseDelay") == 0)            RecordingDimmOnPauseDelay = atoi(Value);
     else if (strcmp(Name, "RecordingDimmOnPauseOpaque") == 0)           RecordingDimmOnPauseOpaque = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShowActive") == 0)  MainMenuWidgetActiveTimerShowActive = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRecording") == 0) MainMenuWidgetActiveTimerShowRecording = atoi(Value);
 
     else return false;
 

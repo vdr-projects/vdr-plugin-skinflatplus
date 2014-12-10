@@ -318,6 +318,8 @@ void cFlatSetup::Store(void) {
     SetupStore("RecordingDimmOnPause", Config.RecordingDimmOnPause);
     SetupStore("RecordingDimmOnPauseDelay", Config.RecordingDimmOnPauseDelay);
     SetupStore("RecordingDimmOnPauseOpaque", Config.RecordingDimmOnPauseOpaque);
+    SetupStore("MainMenuWidgetActiveTimerShowActive", Config.MainMenuWidgetActiveTimerShowActive);
+    SetupStore("MainMenuWidgetActiveTimerShowRecording", Config.MainMenuWidgetActiveTimerShowRecording);
 
     Config.Init();
 }
@@ -501,6 +503,8 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "RecordingDimmOnPause") == 0)                 SetupConfig->RecordingDimmOnPause = atoi(Value);
     else if (strcmp(Name, "RecordingDimmOnPauseDelay") == 0)            SetupConfig->RecordingDimmOnPauseDelay = atoi(Value);
     else if (strcmp(Name, "RecordingDimmOnPauseOpaque") == 0)           SetupConfig->RecordingDimmOnPauseOpaque = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShowActive") == 0)  SetupConfig->MainMenuWidgetActiveTimerShowActive = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRecording") == 0) SetupConfig->MainMenuWidgetActiveTimerShowRecording = atoi(Value);
     else return false;
 
     return true;
@@ -666,6 +670,8 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("RecordingDimmOnPause", SetupConfig->RecordingDimmOnPause, *Filename);
     Config.Store("RecordingDimmOnPauseDelay", SetupConfig->RecordingDimmOnPauseDelay, *Filename);
     Config.Store("RecordingDimmOnPauseOpaque", SetupConfig->RecordingDimmOnPauseOpaque, *Filename);
+    Config.Store("MainMenuWidgetActiveTimerShowActive", SetupConfig->MainMenuWidgetActiveTimerShowActive, *Filename);
+    Config.Store("MainMenuWidgetActiveTimerShowRecording", SetupConfig->MainMenuWidgetActiveTimerShowRecording, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -1283,12 +1289,14 @@ void cFlatSetupMMWidget::Setup(void) {
             Add(new cMenuEditBoolItem(tr("Widget DVB devices: don't show not used"), &SetupConfig->MainMenuWidgetDVBDevicesDiscardNotUsed));
         }
 
-        Add(new cOsdItem(tr("Widget active timer"), osUnknown, false));
-        Add(new cMenuEditBoolItem(tr("Widget active timer: enable"), &SetupConfig->MainMenuWidgetActiveTimerShow));
+        Add(new cOsdItem(tr("Widget timer"), osUnknown, false));
+        Add(new cMenuEditBoolItem(tr("Widget timer: enable"), &SetupConfig->MainMenuWidgetActiveTimerShow));
         if( SetupConfig->MainMenuWidgetActiveTimerShow ) {
-            Add(new cMenuEditIntItem(tr("Widget active timer: position"), &SetupConfig->MainMenuWidgetActiveTimerPosition));
-            Add(new cMenuEditIntItem(tr("Widget active timer: max show"), &SetupConfig->MainMenuWidgetActiveTimerMaxCount));
-            Add(new cMenuEditBoolItem(tr("Widget active timer: hide if empty"), &SetupConfig->MainMenuWidgetActiveTimerHideEmpty));
+            Add(new cMenuEditIntItem(tr("Widget timer: position"), &SetupConfig->MainMenuWidgetActiveTimerPosition));
+            Add(new cMenuEditBoolItem(tr("Widget timer: show recording timer"), &SetupConfig->MainMenuWidgetActiveTimerShowRecording));
+            Add(new cMenuEditBoolItem(tr("Widget timer: show active timer"), &SetupConfig->MainMenuWidgetActiveTimerShowActive));
+            Add(new cMenuEditIntItem(tr("Widget timer: max show"), &SetupConfig->MainMenuWidgetActiveTimerMaxCount));
+            Add(new cMenuEditBoolItem(tr("Widget timer: hide if empty"), &SetupConfig->MainMenuWidgetActiveTimerHideEmpty));
         }
 
         Add(new cOsdItem(tr("Widget last recordings"), osUnknown, false));
@@ -1354,7 +1362,7 @@ eOSState cFlatSetupMMWidget::ProcessKey(eKeys Key) {
         if( strstr(ItemText, tr("Enable main menu widgets")) != NULL ||
             strstr(ItemText, tr("Widget weather: enable")) != NULL ||
             strstr(ItemText, tr("Widget DVB devices: enable")) != NULL ||
-            strstr(ItemText, tr("Widget active timer: enable")) != NULL ||
+            strstr(ItemText, tr("Widget timer: enable")) != NULL ||
             strstr(ItemText, tr("Widget last recordings: enable")) != NULL ||
             strstr(ItemText, tr("Widget timer conflicts: enable")) != NULL ||
             strstr(ItemText, tr("Widget system information: enable")) != NULL ||
