@@ -4106,7 +4106,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetActiveTimers(int wLeft, int wWidth, int 
     time(&t);
     int index = 0, numRec = 0;
     for(cTimer *ti = Timers.First(); ti && index < Config.MainMenuWidgetActiveTimerMaxCount; ti = Timers.Next(ti), index++) {
-        if( ti->Matches(t) && ti->HasFlags(tfActive) ) {
+        if( ti->Matches(t) && ti->HasFlags(tfRecording) ) {
             numRec++;
         }
     }

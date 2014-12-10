@@ -1,6 +1,9 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
+2014-XX-XX: Version 0.5.1
+- [fix] topbar number recordings
+
 2014-12-04: Version 0.5.0
 - [fix] femon receiver - do not get data from previous channel
 - [fix] display replay jump text position

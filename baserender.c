@@ -383,7 +383,7 @@ void cFlatBaseRender::TopBarUpdate(void) {
         if( Config.TopBarRecordingShow ) {
             // look for timers
             for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
-                if( ti->Matches(t) ) {
+                if( ti->HasFlags(tfRecording) ) {
                     numRec++;
                 }
             }
