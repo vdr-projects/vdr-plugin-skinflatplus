@@ -128,7 +128,7 @@ void cFlatDisplayMenu::SetMenuCategory(eMenuCategory MenuCategory) {
             itemRecordingHeight = fontHeight + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
         else if( Config.MenuRecordingView == 2 || Config.MenuRecordingView == 3 )
             itemRecordingHeight = fontHeight + fontSmlHeight + marginItem + Config.MenuItemPadding + Config.decorBorderMenuItemSize*2;
-    } else if( menuCategory == mcMain ) {
+    } else if( menuCategory == mcMain && Config.MainMenuWidgetsEnable ) {
         DrawMainMenuWidgets();
     }
 }
