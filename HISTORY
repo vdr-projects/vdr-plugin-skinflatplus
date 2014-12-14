@@ -6,6 +6,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] recording menu, total count size
 - [fix] timer widget
 - [fix] only draw widgets if enabled
+- [fix] stop dimm on pause when jump between marks
 - [update] timer widget
     new options to select which timer to show (recording, active)
 

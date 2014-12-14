@@ -197,6 +197,11 @@ void cFlatDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
 }
 
 void cFlatDisplayReplay::SetProgress(int Current, int Total) {
+    if( dimmActive ) {
+        dimmPixmap->Fill(clrTransparent);
+        Flush();
+    }
+
     if( modeOnly )
         return;
     ProgressShown = true;
