@@ -239,7 +239,7 @@ void cFlatDisplayChannel::ChannelIconsDraw(const cChannel *Channel, bool Resolut
                     asp = "43";
                 else if( screenAspect == 16.0/9.0 )
                     asp = "169";
-                else if( screenAspect == 20.0/11.0 )
+                else if( screenAspect == 20.0/11.0 || screenAspect == 15.0/11.0 )
                     asp = "169w";
                 else if( screenAspect == 2.21 )
                     asp = "221";

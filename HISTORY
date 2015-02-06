@@ -11,6 +11,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] subtitles does not use title
 - [update] timer widget
     new options to select which timer to show (recording, active)
+- [update] add 15:11 aspect in displaychannel and replay
 
 2014-12-04: Version 0.5.0
 - [fix] femon receiver - do not get data from previous channel
