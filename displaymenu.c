@@ -4835,7 +4835,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
         weekDayName = WeekDayName(t2);
 
         if( Config.MainMenuWidgetWeatherType == 0 ) { // short
-            if( left + fontHeight*2 + fontTempSml->Width("XXXXX") + fontTempSml->Width("XXXX") + marginItem*6 > wWidth )
+            if( left + fontHeight*2 + fontTempSml->Width("-99,9°C") + fontTempSml->Width("XXXX") + marginItem*6 > wWidth )
                 break;
             if( index > 0 ) {
                 contentWidget.AddText("|", false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
@@ -4877,10 +4877,10 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
                 contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
                 left += fontHeight + marginItem;
             }
-            contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("XXXXX"), fontTempSml->Height(), taRight);
-            contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("XXXXX"), fontTempSml->Height(), taRight);
+            contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("-99,9°C"), fontTempSml->Height(), taRight);
+            contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("-99,9°C"), fontTempSml->Height(), taRight);
 
-            left += fontTempSml->Width("XXXXXX") + marginItem;
+            left += fontTempSml->Width("-99,9°C ") + marginItem;
 
             img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
             if( img ) {
