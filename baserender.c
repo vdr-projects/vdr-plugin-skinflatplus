@@ -212,59 +212,65 @@ void cFlatBaseRender::TopBarEnableDiskUsage(void) {
     double AllMinutes = FreeMinutes / (double)((100 - DiskUsage) / 100.0);
     double OccupiedGB = AllGB - FreeGB;
     int OccupiedMinutes = AllMinutes - FreeMinutes;
+    int ChartDiskUsage = DiskUsage;
+    cString iconName("chart1");
 
     cString extra1;
     cString extra2;
-    // show in free mode
-    if( Config.DiskUsageFree == 1 ) {
-        if( Config.DiskUsageShort == false ) {
-            extra1 = cString::sprintf("%s: %d%% %s", tr("Disk"), 100 - DiskUsage, tr("free") );
+
+    if( Config.DiskUsageFree == 1 ) {              // Show in free mode
+        ChartDiskUsage = 100 - DiskUsage;          // DiskFreePrecent
+        if( Config.DiskUsageShort == false ) {     // Long format
+            extra1 = cString::sprintf("%s: %d%% %s", tr("Disk"), ChartDiskUsage, tr("free") );
             extra2 = cString::sprintf("%.1f GB ~ %02d:%02d", FreeGB, FreeMinutes / 60, FreeMinutes % 60);
-        } else {
-            extra1 = cString::sprintf("%d%% %s", 100 - DiskUsage, tr("free") );
+        } else {                                   // Short format
+            extra1 = cString::sprintf("%d%% %s", ChartDiskUsage, tr("free") );
             extra2 = cString::sprintf("~ %02d:%02d", FreeMinutes / 60, FreeMinutes % 60);
         }
-    } else {
-        if( Config.DiskUsageShort == false ) {
+        switch(ChartDiskUsage) {                        // Show free space
+          case 0 ... 3:    iconName = "chart0b"; break; // Symbol free < 4% (chart1b in red)
+          case 4 ... 7:    iconName = "chart1b"; break; // 6,25
+          case 8 ... 13:   iconName = "chart2b"; break; // 12,5
+          case 14 ... 19:  iconName = "chart3b"; break; // 18,75
+          case 20 ... 25:  iconName = "chart4b"; break; // 25
+          case 26 ... 32:  iconName = "chart5b"; break; // 31,25
+          case 33 ... 38:  iconName = "chart6b"; break; // 37,5
+          case 39 ... 44:  iconName = "chart7b"; break; // 43,75
+          case 45 ... 50:  iconName = "chart8b"; break; // 50
+          case 51 ... 57:  iconName = "chart9b"; break; // 56,25
+          case 58 ... 63:  iconName = "chart10b"; break; // 62,5
+          case 64 ... 69:  iconName = "chart11b"; break; // 68,75
+          case 70 ... 75:  iconName = "chart12b"; break; // 75
+          case 76 ... 82:  iconName = "chart13b"; break; // 81,25
+          case 83 ... 88:  iconName = "chart14b"; break; // 87,5
+          case 89 ... 100: iconName = "chart15b"; break; // 93,75+
+        }
+    } else {                                       // Show in occupied mode
+        if( Config.DiskUsageShort == false ) {     // Long format
             extra1 = cString::sprintf("%s: %d%% %s", tr("Disk"), DiskUsage, tr("occupied") );
             extra2 = cString::sprintf("%.1f GB ~ %02d:%02d", OccupiedGB, OccupiedMinutes / 60, OccupiedMinutes % 60);
-        } else {
-            extra1 = cString::sprintf("%d%% %s", 100 - DiskUsage, tr("occupied") );
+        } else {                                   // Short format
+            extra1 = cString::sprintf("%d%% %s", DiskUsage, tr("occupied") );
             extra2 = cString::sprintf("~ %02d:%02d", OccupiedMinutes / 60, OccupiedMinutes % 60);
         }
-    }
-
-    int ChartDiskUsage = DiskUsage;
-    cString iconName("chart1");
-    if( Config.DiskUsageFree == 1 ) {
-        ChartDiskUsage = 100 - DiskUsage;
-
-        iconName = "chart1b";
-        if( ChartDiskUsage > 14 )
-            iconName = "chart2b";
-        if( ChartDiskUsage > 28 )
-            iconName = "chart3b";
-        if( ChartDiskUsage > 42 )
-            iconName = "chart4b";
-        if( ChartDiskUsage > 56 )
-            iconName = "chart5b";
-        if( ChartDiskUsage > 70 )
-            iconName = "chart6b";
-        if( ChartDiskUsage > 84 )
-            iconName = "chart7b";
-    } else {
-        if( ChartDiskUsage > 14 )
-            iconName = "chart2";
-        if( ChartDiskUsage > 28 )
-            iconName = "chart3";
-        if( ChartDiskUsage > 42 )
-            iconName = "chart4";
-        if( ChartDiskUsage > 56 )
-            iconName = "chart5";
-        if( ChartDiskUsage > 70 )
-            iconName = "chart6";
-        if( ChartDiskUsage > 84 )
-            iconName = "chart7";
+        switch(ChartDiskUsage) {                       // show used space
+          case 0 ... 7:    iconName = "chart1"; break; // 6,25
+          case 8 ... 13:   iconName = "chart2"; break; // 12,5
+          case 14 ... 19:  iconName = "chart3"; break; // 18,75
+          case 20 ... 25:  iconName = "chart4"; break; // 25
+          case 26 ... 32:  iconName = "chart5"; break; // 31,25
+          case 33 ... 38:  iconName = "chart6"; break; // 37,5
+          case 39 ... 44:  iconName = "chart7"; break; // 43,75
+          case 45 ... 50:  iconName = "chart8"; break; // 50
+          case 51 ... 57:  iconName = "chart9"; break; // 56,25
+          case 58 ... 63:  iconName = "chart10"; break; // 62,5
+          case 64 ... 69:  iconName = "chart11"; break; // 68,75
+          case 70 ... 75:  iconName = "chart12"; break; // 75
+          case 76 ... 82:  iconName = "chart13"; break; // 81,25
+          case 83 ... 88:  iconName = "chart14"; break; // 87,5
+          case 89 ... 95:  iconName = "chart15"; break; // 93,75 (95)
+          case 96 ... 100: iconName = "chart16"; break; // symbol usage > 96% (chart15 in red)
+        }
     }
     TopBarSetTitleExtra(extra1, extra2);
     TopBarSetExtraIcon(iconName);
