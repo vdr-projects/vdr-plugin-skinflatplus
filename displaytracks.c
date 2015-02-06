@@ -14,17 +14,17 @@ cFlatDisplayTracks::cFlatDisplayTracks(const char *Title, int NumTracks, const c
         ac3Width = img_ac3->Width();
     if( img_stereo )
         stereoWidth = img_stereo->Width();
-        
+
     int imgWidthMax = max(ac3Width, stereoWidth);
     itemHeight = fontHeight + Config.MenuItemPadding + Config.decorBorderTrackSize*2;
     currentIndex = -1;
-    maxItemWidth = font->Width(Title) + marginItem*2;
+    maxItemWidth = font->Width(Title) + marginItem*4;
     for (int i = 0; i < NumTracks; i++)
         maxItemWidth = max(maxItemWidth, font->Width(Tracks[i]) + marginItem*2);
-    
-    int headerWidth = font->Width(tr("Audio Tracks")) + font->Width(" ") + imgWidthMax;
+
+    int headerWidth = font->Width(Title) + font->Width(" ") + imgWidthMax;
     maxItemWidth = max(maxItemWidth, headerWidth);
-    
+
     itemsHeight = (NumTracks+1) * itemHeight;
     int left = osdWidth - maxItemWidth;
     left /= 2;
@@ -36,8 +36,8 @@ cFlatDisplayTracks::cFlatDisplayTracks(const char *Title, int NumTracks, const c
     tracksLogoPixmap = osd->CreatePixmap(1, cRect(left, osdHeight - itemsHeight - marginItem, maxItemWidth, itemsHeight));
     tracksLogoPixmap->Fill(clrTransparent);
 
-    SetItem(tr("Audio Tracks"), -1, false);
-    
+    SetItem(Title, -1, false);
+
     for (int i = 0; i < NumTracks; i++)
         SetItem(Tracks[i], i, false);
 }
@@ -72,7 +72,7 @@ void cFlatDisplayTracks::SetItem(const char *Text, int Index, bool Current) {
 
     int left = osdWidth - maxItemWidth;
     left /= 2;
-    
+
     int top = osdHeight - itemsHeight - marginItem + y;
 
     if( Current )
@@ -84,7 +84,7 @@ void cFlatDisplayTracks::SetItem(const char *Text, int Index, bool Current) {
     else
         DecorBorderDraw(left, top, maxItemWidth, fontHeight,
             Config.decorBorderTrackSize, Config.decorBorderTrackType, Config.decorBorderTrackFg, Config.decorBorderTrackBg);
-    
+
 }
 
 void cFlatDisplayTracks::SetTrack(int Index, const char * const *Tracks) {

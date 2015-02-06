@@ -8,6 +8,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] only draw widgets if enabled
 - [fix] stop dimm on pause when jump between marks
 - [fix] weather widget update_weather.php - config file path
+- [fix] subtitles does not use title
 - [update] timer widget
     new options to select which timer to show (recording, active)
 

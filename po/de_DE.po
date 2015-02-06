@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-12-10 19:02+0100\n"
+"POT-Creation-Date: 2015-02-06 17:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -257,9 +257,6 @@ msgstr "Keine Ausgabe vorhanden"
 
 msgid "Weather"
 msgstr "Wetter"
-
-msgid "Audio Tracks"
-msgstr "Tonspuren"
 
 msgid "Volume"
 msgstr "Lautstärke"
@@ -890,3 +887,6 @@ msgstr "Eigene Befehle-Widget: Anzeigen"
 
 msgid "Widget custom commands: position"
 msgstr "Eigene Befehle-Widget: Position"
+
+#~ msgid "Audio Tracks"
+#~ msgstr "Tonspuren"
