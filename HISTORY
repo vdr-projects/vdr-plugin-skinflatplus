@@ -13,6 +13,7 @@ VDR Plugin 'skinflatplus' Revision History
     new options to select which timer to show (recording, active)
 - [update] add 15:11 aspect in displaychannel and replay
 - [update] disk usage icons with 16 sections instead of 8
+- [update] widgets: system_information.g2v, temperatures.g2v, temperatures.default
 
 2014-12-04: Version 0.5.0
 - [fix] femon receiver - do not get data from previous channel

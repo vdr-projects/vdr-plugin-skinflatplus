@@ -68,8 +68,9 @@ rm -f ${OUTPUTFLDR}/[0-99]*
 if [ $SHOW_SYS_VERSION = 1 ]; then
   if [ -e $REL_FILE ] ; then
     while IFS= read -r; do
-      [[ ${REPLY} =~ PRETTY_NAME ]] && declare "${REPLY}" # locale Variable
-      [[ ${REPLY} =~ VERSION ]] && declare "${REPLY}"     # locale Variable
+      [[ ${REPLY} =~ PRETTY_NAME ]] && PRETTY_NAME=${REPLY/PRETTY_NAME=/} # locale Variable
+      [[ ${REPLY} =~ VERSION ]] && VERSION=${REPLY/VERSION=/}             # locale Variable
+      [ -n "$VERSION" -a -n "$PRETTY_NAME" ] && break
     done < $REL_FILE
     [ -n "$PRETTY_NAME" ] && echo "${PRETTY_NAME//\"/} ${VERSION//\"/}" > ${OUTPUTFLDR}/${SYS_VERSION_POS}_sys_version
   fi
@@ -80,7 +81,7 @@ if [ $SHOW_KERNEL_VERSION = 1 ]; then
 fi
 
 if [ $SHOW_UPTIME = 1 ]; then
-  UPTIME=($(cat /proc/uptime))  # UpTime in Array
+  UPTIME=($(</proc/uptime))     # UpTime in Array
   UPTIME[0]=${UPTIME[0]%.*}     # .* entfernen (UpTime in Sekunden)
   TAGE=$((UPTIME[0] / 86400)) ; STD=$((UPTIME[0] % 86400 / 3600))
   MIN=$((UPTIME[0] % 3600 / 60)) ; SEK=$((UPTIME[0] % 60))
@@ -88,13 +89,14 @@ if [ $SHOW_UPTIME = 1 ]; then
     echo "${TAGE}T ${STD}S ${MIN}M" > ${OUTPUTFLDR}/${UPTIME_POS}_uptime
   else
     [ $STD -ge 1 ] && echo -n "${STD} Std. " > ${OUTPUTFLDR}/${UPTIME_POS}_uptime
-    echo "${MIN} Min." >> ${OUTPUTFLDR}/${UPTIME_POS}_uptime
+    [ $MIN -ge 1 ] && echo "${MIN} Min." >> ${OUTPUTFLDR}/${UPTIME_POS}_uptime
   fi
+  [ ${UPTIME[0]} -le 59 ] && echo "${SEK} Sekunden" > ${OUTPUTFLDR}/${UPTIME_POS}_uptime
 fi
 
 if [ $SHOW_LOAD = 1 ]; then
-  LOADAVG=($(cat /proc/loadavg))   # Zeile in Array
-  echo "${LOADAVG[0]//./,}" > ${OUTPUTFLDR}/${LOAD_POS}_load
+  LOADAVG=($(</proc/loadavg))   # Zeile in Array
+  echo "${LOADAVG[0]//./,} (1M) ${LOADAVG[1]//./,} (5M)" > ${OUTPUTFLDR}/${LOAD_POS}_load
 fi
 
 if [ $SHOW_PROCESSES = 1 ]; then
@@ -102,28 +104,29 @@ if [ $SHOW_PROCESSES = 1 ]; then
   echo "${#PROCS[@]}" > ${OUTPUTFLDR}/${PROCESSES_POS}_processes
 fi
 
+if [ $SHOW_MEM_USAGE = 1 -o $SHOW_SWAP_USAGE = 1 ] ; then
+  mapfile -t </proc/meminfo    # Ausgabe in Array
+  MEMTOTAL=(${MAPFILE[0]}) ; MEMAVAIL=(${MAPFILE[2]})
+  SWAPTOTAL=(${MAPFILE[14]}) ; SWAPFREE=(${MAPFILE[15]})
+fi
+
 if [ $SHOW_MEM_USAGE = 1 ]; then
-  mapfile -t < <(free -m)    # Ausgabe von free in Array (Vier Zeilen)
-  MEM=(${MAPFILE[1]})        # 2. Zeile
-  BUF=(${MAPFILE[2]})        # 3. Zeile
-  MEM_USAGE=$((${BUF[2]} * 1000 / ${MEM[1]}))
-  [ $MEM_USAGE -lt 10 ] && MEM_USAGE="0${MEM_USAGE}"
-  MEM_DEC=${MEM_USAGE: -1}
-  echo "${MEM_USAGE:0: -1},${MEM_DEC}%" > ${OUTPUTFLDR}/${MEM_USAGE_POS}_mem_usage
+  MEMUSED=$((${MEMTOTAL[1]} - ${MEMAVAIL[1]}))
+  MU=$(($MEMUSED * 1000 / ${MEMTOTAL[1]}))
+  [ $MU -lt 10 ] && MU=0$MU
+  MU_DEC=${MU: -1} ; MEM_USAGE=${MU:0: -1},${MU_DEC}
+  echo "${MEM_USAGE}%" > ${OUTPUTFLDR}/${MEM_USAGE_POS}_mem_usage
 fi
 
 if [ $SHOW_SWAP_USAGE = 1 ]; then
-  mapfile -t < <(free -m)    # Ausgabe von free in Array (Vier Zeilen)
-  SWAP=(${MAPFILE[3]})       # 4. Zeile
-  if [ ${SWAP[1]} -gt 0 ]; then # Swap Total
-    if [ ${SWAP[2]} -gt 0 ]; then # Swap Used
-      SWP=$((${SWAP[2]} * 1000 / ${SWAP[1]}))
-      [ $SWP -lt 10 ] && SWP="0${SWP}"
-      SWP_DEC=${SWP: -1} ; SWP=${SWP:0: -1},${SWP_DEC}
-      echo "${SWP}%" > ${OUTPUTFLDR}/${SWAP_USAGE_POS}_swap_usage
-    else
-      echo "0,0%" > ${OUTPUTFLDR}/${SWAP_USAGE_POS}_swap_usage
-    fi
+  if [ ${SWAPTOTAL[1]} -eq ${SWAPFREE[1]} ] ; then
+    echo "0,0%" > ${OUTPUTFLDR}/${SWAP_USAGE_POS}_swap_usage
+  else
+    SWPUSED=$((${SWAPTOTAL[1]} - ${SWAPFREE[1]}))
+    SU=$(($SWPUSED * 1000 / ${SWAPFREE[1]}))
+    [ $SU -lt 10 ] && SU=0$SU
+    SU_DEC=${SU: -1} ; SWAP_USAGE=${SU:0: -1},${SU_DEC}
+    echo "${SWAP_USAGE}%" > ${OUTPUTFLDR}/${SWAP_USAGE_POS}_swap_usage
   fi
 fi
 
@@ -146,7 +149,7 @@ if [ $SHOW_VDR_CPU_USAGE = 1 ]; then
   if [ $? = 0 ]; then
     mapfile -t < <(ps -p ${vdr_pid} -o %cpu) # Ausgabe von ps in Array (Zwei Zeilen)
     CPU_USAGE=${MAPFILE[1]/./,}              # 24.2 -> 24,2
-    echo "${CPU_USAGE}%" > ${OUTPUTFLDR}/${VDR_CPU_USAGE_POS}_vdr_cpu_usage
+    echo "${CPU_USAGE//[[:space:]]/}%" > ${OUTPUTFLDR}/${VDR_CPU_USAGE_POS}_vdr_cpu_usage
   fi
 fi
 
@@ -155,7 +158,7 @@ if [ $SHOW_VDR_MEM_USAGE = 1 ]; then
   if [ $? = 0 ]; then
     mapfile -t < <(ps -p ${vdr_pid} -o %mem) # Ausgabe von ps in Array (Zwei Zeilen)
     VDR_MEM_USAGE=${MAPFILE[1]/./,}          # 24.2 -> 24,2
-    echo "${VDR_MEM_USAGE}%" > ${OUTPUTFLDR}/${VDR_MEM_USAGE_POS}_vdr_mem_usage
+    echo "${VDR_MEM_USAGE//[[:space:]]/}%" > ${OUTPUTFLDR}/${VDR_MEM_USAGE_POS}_vdr_mem_usage
   fi
 fi
 

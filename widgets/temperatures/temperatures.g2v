@@ -33,5 +33,8 @@ echo "${MBTEMP[2]%.*}°C" > ${OUTPUTFLDR}/motherboard        # 36°C
 
 # nvidia gpu temp
 # nvidia-settings must be run as the user of the x server
-GPU=$(nvidia-settings -c :0 -t -query GPUCoreTemp | head -n 1)
+#GPU=$(nvidia-settings -c :0 -t -query GPUCoreTemp | head -n 1)   # slow
+#GPU=$(nvidia-smi -q -d TEMPERATURE | grep -Pow "[[:digit:]]+(?=\sC)" | head -n1) # faster
+GPU="$(/opt/bin/nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader)"    # fastest
 echo "${GPU}°C" > ${OUTPUTFLDR}/gpu
+
