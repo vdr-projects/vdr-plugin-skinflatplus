@@ -613,7 +613,9 @@ void cFlatBaseRender::MessageSet(eMessageType Type, const char *Text) {
     int textWidth = font->Width(Text);
     int maxWidth = osdWidth - Config.decorBorderMessageSize*2 - fontHeight - marginItem*3 - 10;
 
-    if( Config.MenuItemParseTilde ) {
+    if( (textWidth > maxWidth) && Config.ScrollerEnable ) {
+        messageScroller.AddScroller(Text, cRect(Config.decorBorderMessageSize + fontHeight + marginItem*3 + 10, osdHeight - Config.MessageOffset - messageHeight - Config.decorBorderMessageSize, maxWidth, fontHeight), Theme.Color(clrMessageFont), clrTransparent, font, Theme.Color(clrMenuItemExtraTextFont));
+    } else if( Config.MenuItemParseTilde ) {
         std::string tilde = Text;
         size_t found = tilde.find(" ~ ");
         size_t found2 = tilde.find("~");
