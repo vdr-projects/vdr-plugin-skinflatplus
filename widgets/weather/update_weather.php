@@ -1,8 +1,9 @@
 <?php
 
-$ini_array = parse_ini_file("./update_weather.config");
+$config = dirname(__FILE__)."/update_weather.config";
+$ini_array = parse_ini_file($config);
 
-$latitude  = $ini_array['Latitude'];
+$latitude = $ini_array['Latitude'];
 $longitude = $ini_array['Longitude'];
 $locationSkin = $ini_array['LocationSkin'];
 $units = $ini_array['Units'];
