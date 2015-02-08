@@ -1425,6 +1425,9 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     if( Config.MenuEventView == 0 )
         return false;
 
+    if( Config.MenuEventViewAllwaysWithDate )
+        WithDate = true;
+
     cImage *img = NULL;
     cString buffer;
     int y = Index * itemEventHeight;

@@ -61,6 +61,8 @@ cFlatConfig::cFlatConfig(void) {
     MenuEventView = 1;
     MenuRecordingView = 1;
 
+    MenuEventViewAllwaysWithDate = 1;
+
     MenuRecordingShowCount = 1;
     MenuTimerShowCount = 1;
     MenuChannelShowCount = 1;
@@ -363,6 +365,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "RecordingDimmOnPauseOpaque") == 0)           RecordingDimmOnPauseOpaque = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowActive") == 0)  MainMenuWidgetActiveTimerShowActive = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRecording") == 0) MainMenuWidgetActiveTimerShowRecording = atoi(Value);
+    else if (strcmp(Name, "MenuEventViewAllwaysWithDate") == 0)         MenuEventViewAllwaysWithDate = atoi(Value);
 
     else return false;
 

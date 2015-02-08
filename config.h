@@ -236,6 +236,7 @@ class cFlatConfig
         int MenuEventView;
         int MenuRecordingView;
         int MenuFullOsd;
+        int MenuEventViewAllwaysWithDate;
 
         int MenuRecordingShowCount;
         int MenuTimerShowCount;

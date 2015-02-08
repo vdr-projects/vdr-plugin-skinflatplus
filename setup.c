@@ -320,6 +320,7 @@ void cFlatSetup::Store(void) {
     SetupStore("RecordingDimmOnPauseOpaque", Config.RecordingDimmOnPauseOpaque);
     SetupStore("MainMenuWidgetActiveTimerShowActive", Config.MainMenuWidgetActiveTimerShowActive);
     SetupStore("MainMenuWidgetActiveTimerShowRecording", Config.MainMenuWidgetActiveTimerShowRecording);
+    SetupStore("MenuEventViewAllwaysWithDate", Config.MenuEventViewAllwaysWithDate);
 
     Config.Init();
 }
@@ -505,6 +506,7 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "RecordingDimmOnPauseOpaque") == 0)           SetupConfig->RecordingDimmOnPauseOpaque = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowActive") == 0)  SetupConfig->MainMenuWidgetActiveTimerShowActive = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRecording") == 0) SetupConfig->MainMenuWidgetActiveTimerShowRecording = atoi(Value);
+    else if (strcmp(Name, "MenuEventViewAllwaysWithDate") == 0)         SetupConfig->MenuEventViewAllwaysWithDate = atoi(Value);
     else return false;
 
     return true;
@@ -672,6 +674,7 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("RecordingDimmOnPauseOpaque", SetupConfig->RecordingDimmOnPauseOpaque, *Filename);
     Config.Store("MainMenuWidgetActiveTimerShowActive", SetupConfig->MainMenuWidgetActiveTimerShowActive, *Filename);
     Config.Store("MainMenuWidgetActiveTimerShowRecording", SetupConfig->MainMenuWidgetActiveTimerShowRecording, *Filename);
+    Config.Store("MenuEventViewAllwaysWithDate", SetupConfig->MenuEventViewAllwaysWithDate, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -951,6 +954,7 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditStraItem(tr("Menu channel view"), &SetupConfig->MenuChannelView, MenuChannelViews.Size(), &MenuChannelViews[0]));
     Add(new cMenuEditStraItem(tr("Menu timer view"), &SetupConfig->MenuTimerView, MenuTimerViews.Size(), &MenuTimerViews[0]));
     Add(new cMenuEditStraItem(tr("Menu event view"), &SetupConfig->MenuEventView, MenuEventViews.Size(), &MenuEventViews[0]));
+    Add(new cMenuEditBoolItem(tr("Menu event view allways with date"), &SetupConfig->MenuEventViewAllwaysWithDate));
     Add(new cMenuEditStraItem(tr("Menu recording view"), &SetupConfig->MenuRecordingView, MenuRecordingViews.Size(), &MenuRecordingViews[0]));
 
     Add(new cMenuEditBoolItem(tr("Scrollbar by decor-file?"), &SetupConfig->decorScrollBarByTheme));

@@ -18,6 +18,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] support for message text with parse tilde and extra text color
 - [add] provide support for new SetMenuSortMode function, to show sort in menus
 - [add] recording menu, progressbar icon to show how much seen from the recording
+- [add] option to allways show date in schedule menu
 
 2014-12-04: Version 0.5.0
 - [fix] femon receiver - do not get data from previous channel
