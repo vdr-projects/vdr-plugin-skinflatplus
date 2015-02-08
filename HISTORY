@@ -16,6 +16,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [update] widgets: system_information.g2v, temperatures.g2v, temperatures.default
 - [update] widgets: weather text size of temperature in long view
 - [add] support for message text with parse tilde and extra text color
+- [add] provide support for new SetMenuSortMode function, to show sort in menus
 
 2014-12-04: Version 0.5.0
 - [fix] femon receiver - do not get data from previous channel

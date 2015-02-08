@@ -122,6 +122,8 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         virtual bool SetItemChannel(const cChannel *Channel, int Index, bool Current, bool Selectable, bool WithProvider);
         virtual bool SetItemRecording(const cRecording *Recording, int Index, bool Current, bool Selectable, int Level, int Total, int New);
 
+        virtual void SetMenuSortMode(eMenuSortMode MenuSortMode);
+
         virtual void SetScrollbar(int Total, int Offset);
         virtual void SetEvent(const cEvent *Event);
         virtual void SetRecording(const cRecording *Recording);

@@ -224,6 +224,8 @@ void cFlatDisplayMenu::Clear(void) {
 
     contentWidget.Clear();
 
+    TopBarClearMenuIconRight();
+
     ShowRecording = ShowEvent = ShowText = false;
 }
 
@@ -301,10 +303,12 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
                     }
                     TopBarSetTitle(*newTitle);
                 }
+                /*
                 if( RecordingsSortMode == rsmName )
                     TopBarSetMenuIconRight("menuIcons/RecsSortName");
                 else if( RecordingsSortMode == rsmTime )
                     TopBarSetMenuIconRight("menuIcons/RecsSortDate");
+                */
                 icon = "menuIcons/Recordings";
                 break;
             case mcSetup:
@@ -3610,6 +3614,36 @@ int cFlatDisplayMenu::GetTextAreaWidth(void) const {
 const cFont *cFlatDisplayMenu::GetTextAreaFont(bool FixedFont) const {
     const cFont *rfont = FixedFont ? fontFixed : font;
     return rfont;
+}
+
+void cFlatDisplayMenu::SetMenuSortMode(eMenuSortMode MenuSortMode) {
+
+    cString sortIcon;
+    switch( MenuSortMode ) {
+        case msmUnknown:
+            sortIcon = "SortUnknown";
+            // do not set search icon if it is unknown
+            return;
+            break;
+        case msmNumber:
+            sortIcon = "SortNumber";
+            break;
+        case msmName:
+            sortIcon = "SortName";
+            break;
+        case msmTime:
+            sortIcon = "SortDate";
+            break;
+        case msmProvider:
+            sortIcon = "SortProvider";
+            break;
+        default:
+            sortIcon = "SortUnknown";
+            // do not set search icon if it is unknown
+            return;
+    }
+
+    TopBarSetMenuIconRight(sortIcon);
 }
 
 void cFlatDisplayMenu::Flush(void) {

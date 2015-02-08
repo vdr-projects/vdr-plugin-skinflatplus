@@ -147,8 +147,6 @@ void cFlatBaseRender::TopBarSetTitle(cString title) {
     tobBarTitleExtra2 = "";
     topBarExtraIcon = "";
     topBarMenuIcon = "";
-    topBarMenuIconRight = "";
-    topBarMenuIconRightSet = false;
     topBarUpdateTitle = true;
     topBarExtraIconSet = false;
     topBarMenuIconSet = false;
@@ -193,6 +191,11 @@ void cFlatBaseRender::TopBarSetMenuIconRight(cString icon) {
     topBarMenuIconRight = icon;
     topBarMenuIconRightSet = true;
     topBarUpdateTitle = true;
+}
+
+void cFlatBaseRender::TopBarClearMenuIconRight(void) {
+    topBarMenuIconRight = "";
+    topBarMenuIconRightSet = false;
 }
 
 void cFlatBaseRender::TopBarSetMenuLogo(cString icon) {
