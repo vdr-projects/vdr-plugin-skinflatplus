@@ -17,6 +17,8 @@ extern class cFlatConfig Config;
 extern class cImageCache imgCache;
 extern bool firstDisplay;
 
+extern time_t remoteTimersLastRefresh;
+
 class cFlatDisplayMenu;
 extern cTheme Theme;
 

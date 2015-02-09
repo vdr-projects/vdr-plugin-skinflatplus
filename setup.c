@@ -321,6 +321,9 @@ void cFlatSetup::Store(void) {
     SetupStore("MainMenuWidgetActiveTimerShowActive", Config.MainMenuWidgetActiveTimerShowActive);
     SetupStore("MainMenuWidgetActiveTimerShowRecording", Config.MainMenuWidgetActiveTimerShowRecording);
     SetupStore("MenuEventViewAllwaysWithDate", Config.MenuEventViewAllwaysWithDate);
+    SetupStore("MainMenuWidgetActiveTimerShowRemoteActive", Config.MainMenuWidgetActiveTimerShowRemoteActive);
+    SetupStore("MainMenuWidgetActiveTimerShowRemoteRecording", Config.MainMenuWidgetActiveTimerShowRemoteRecording);
+    SetupStore("MainMenuWidgetActiveTimerShowRemoteRefreshTime", Config.MainMenuWidgetActiveTimerShowRemoteRefreshTime);
 
     Config.Init();
 }
@@ -507,6 +510,9 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowActive") == 0)  SetupConfig->MainMenuWidgetActiveTimerShowActive = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRecording") == 0) SetupConfig->MainMenuWidgetActiveTimerShowRecording = atoi(Value);
     else if (strcmp(Name, "MenuEventViewAllwaysWithDate") == 0)         SetupConfig->MenuEventViewAllwaysWithDate = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteActive") == 0)         SetupConfig->MainMenuWidgetActiveTimerShowRemoteActive = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRecording") == 0)         SetupConfig->MainMenuWidgetActiveTimerShowRemoteRecording = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRefreshTime") == 0)         SetupConfig->MainMenuWidgetActiveTimerShowRemoteRefreshTime = atoi(Value);
     else return false;
 
     return true;
@@ -675,6 +681,9 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("MainMenuWidgetActiveTimerShowActive", SetupConfig->MainMenuWidgetActiveTimerShowActive, *Filename);
     Config.Store("MainMenuWidgetActiveTimerShowRecording", SetupConfig->MainMenuWidgetActiveTimerShowRecording, *Filename);
     Config.Store("MenuEventViewAllwaysWithDate", SetupConfig->MenuEventViewAllwaysWithDate, *Filename);
+    Config.Store("MainMenuWidgetActiveTimerShowRemoteActive", SetupConfig->MainMenuWidgetActiveTimerShowRemoteActive, *Filename);
+    Config.Store("MainMenuWidgetActiveTimerShowRemoteRecording", SetupConfig->MainMenuWidgetActiveTimerShowRemoteRecording, *Filename);
+    Config.Store("MainMenuWidgetActiveTimerShowRemoteRefreshTime", SetupConfig->MainMenuWidgetActiveTimerShowRemoteRefreshTime, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -1299,6 +1308,8 @@ void cFlatSetupMMWidget::Setup(void) {
             Add(new cMenuEditIntItem(tr("Widget timer: position"), &SetupConfig->MainMenuWidgetActiveTimerPosition));
             Add(new cMenuEditBoolItem(tr("Widget timer: show recording timer"), &SetupConfig->MainMenuWidgetActiveTimerShowRecording));
             Add(new cMenuEditBoolItem(tr("Widget timer: show active timer"), &SetupConfig->MainMenuWidgetActiveTimerShowActive));
+            Add(new cMenuEditBoolItem(tr("Widget timer: show remote recording timer"), &SetupConfig->MainMenuWidgetActiveTimerShowRemoteRecording));
+            Add(new cMenuEditBoolItem(tr("Widget timer: show remote active timer"), &SetupConfig->MainMenuWidgetActiveTimerShowRemoteActive));
             Add(new cMenuEditIntItem(tr("Widget timer: max show"), &SetupConfig->MainMenuWidgetActiveTimerMaxCount));
             Add(new cMenuEditBoolItem(tr("Widget timer: hide if empty"), &SetupConfig->MainMenuWidgetActiveTimerHideEmpty));
         }

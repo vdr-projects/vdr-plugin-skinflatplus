@@ -19,6 +19,11 @@ VDR Plugin 'skinflatplus' Revision History
 - [add] provide support for new SetMenuSortMode function, to show sort in menus
 - [add] recording menu, progressbar icon to show how much seen from the recording
 - [add] option to allways show date in schedule menu
+- [add] timer widget
+    remote timer support. If you have remote timers installed and activate it in setup you'll get local timer with 'L' and remote timer with 'R'.
+    Remote timers will be refreshed every 30 minutes. Every refresh cost several seconds when opening main menu.
+    You can adjust the time with the hidden setting 'MainMenuWidgetActiveTimerShowRemoteRefreshTime' in setup.conf
+
 
 2014-12-04: Version 0.5.0
 - [fix] femon receiver - do not get data from previous channel

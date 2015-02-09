@@ -95,6 +95,10 @@ cFlatConfig::cFlatConfig(void) {
     MainMenuWidgetActiveTimerHideEmpty = false;
     MainMenuWidgetActiveTimerShowActive = true;
     MainMenuWidgetActiveTimerShowRecording = true;
+    MainMenuWidgetActiveTimerShowRemoteActive = false;
+    MainMenuWidgetActiveTimerShowRemoteRecording = false;
+
+    MainMenuWidgetActiveTimerShowRemoteRefreshTime = 60 * 30; // every 30 minutes
 
     MainMenuWidgetLastRecShow = false;
     MainMenuWidgetLastRecPosition = 4;
@@ -366,7 +370,9 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowActive") == 0)  MainMenuWidgetActiveTimerShowActive = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRecording") == 0) MainMenuWidgetActiveTimerShowRecording = atoi(Value);
     else if (strcmp(Name, "MenuEventViewAllwaysWithDate") == 0)         MenuEventViewAllwaysWithDate = atoi(Value);
-
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteActive") == 0)         MainMenuWidgetActiveTimerShowRemoteActive = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRecording") == 0)         MainMenuWidgetActiveTimerShowRemoteRecording = atoi(Value);
+    else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRefreshTime") == 0)         MainMenuWidgetActiveTimerShowRemoteRefreshTime = atoi(Value);
     else return false;
 
     return true;

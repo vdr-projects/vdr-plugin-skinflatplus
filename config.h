@@ -273,6 +273,9 @@ class cFlatConfig
         int MainMenuWidgetActiveTimerMaxCount;
         int MainMenuWidgetActiveTimerShowActive;
         int MainMenuWidgetActiveTimerShowRecording;
+        int MainMenuWidgetActiveTimerShowRemoteActive;
+        int MainMenuWidgetActiveTimerShowRemoteRecording;
+        int MainMenuWidgetActiveTimerShowRemoteRefreshTime; // in seconds
         int MainMenuWidgetActiveTimerHideEmpty;
 
         int MainMenuWidgetLastRecShow;

@@ -101,7 +101,6 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         int DrawMainMenuWidgetTemperaturs(int wLeft, int wWidth, int ContentTop);
         int DrawMainMenuWidgetCommand(int wLeft, int wWidth, int ContentTop);
         int DrawMainMenuWidgetWeather(int wLeft, int wWidth, int ContentTop);
-
     public:
         cFlatDisplayMenu(void);
         virtual ~cFlatDisplayMenu();

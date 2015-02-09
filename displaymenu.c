@@ -1,6 +1,7 @@
 #include "displaymenu.h"
 #include "services/scraper2vdr.h"
 #include "services/epgsearch.h"
+#include "services/remotetimers.h"
 #include <utility>
 #include <fstream>
 #include <iostream>
@@ -4222,74 +4223,153 @@ int cFlatDisplayMenu::DrawMainMenuWidgetActiveTimers(int wLeft, int wWidth, int 
     contentWidget.AddRect(cRect(0, ContentTop, wWidth, 3), Theme.Color(clrMenuEventTitleLine));
     ContentTop += 6;
 
+    //check if remotetimers plugin is available
+    static cPlugin* pRemoteTimers = cPluginManager::GetPlugin("remotetimers");
+    cSchedulesLock SchedulesLock;
+    const cSchedules *Schedules = cSchedules::Schedules(SchedulesLock);
+
+    time_t now;
+    time(&now);
+    if( (Config.MainMenuWidgetActiveTimerShowRemoteActive || Config.MainMenuWidgetActiveTimerShowRemoteRecording) && pRemoteTimers && (now - remoteTimersLastRefresh) > Config.MainMenuWidgetActiveTimerShowRemoteRefreshTime ) {
+        remoteTimersLastRefresh = now;
+        cString errorMsg;
+        pRemoteTimers->Service("RemoteTimers::RefreshTimers-v1.0", &errorMsg);
+    }
+
     // look for timers
-    int numRec = 0, numActive = 0;
+    cVector<const cTimer *> timerRec;
+    cVector<const cTimer *> timerActive;
+    cVector<const cTimer *> timerRemoteRec;
+    cVector<const cTimer *> timerRemoteActive;
+
     for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti) ) {
         if( ti->HasFlags(tfRecording) && Config.MainMenuWidgetActiveTimerShowRecording )
-            numRec++;
-        if( ti->HasFlags(tfActive) && Config.MainMenuWidgetActiveTimerShowActive )
-            numActive++;
+            timerRec.Append(ti);
+        if( ti->HasFlags(tfActive) && !ti->HasFlags(tfRecording) && Config.MainMenuWidgetActiveTimerShowActive )
+            timerActive.Append(ti);
 
-        if( numRec + numActive >= Config.MainMenuWidgetActiveTimerMaxCount )
+        if( timerRec.Size() + timerActive.Size() >= Config.MainMenuWidgetActiveTimerMaxCount )
             break;
     }
-    if( (numRec == 0 && numActive == 0) && Config.MainMenuWidgetActiveTimerHideEmpty )
+    if( (Config.MainMenuWidgetActiveTimerShowRemoteActive || Config.MainMenuWidgetActiveTimerShowRemoteRecording) && pRemoteTimers &&
+        timerRec.Size() + timerActive.Size() < Config.MainMenuWidgetActiveTimerMaxCount ) {
+        cTimer* remoteTimer = NULL;
+        while( pRemoteTimers->Service("RemoteTimers::ForEach-v1.0", &remoteTimer) && remoteTimer != NULL ) {
+            remoteTimer->SetEventFromSchedule(Schedules); // make sure the event is current
+            if( remoteTimer->HasFlags(tfRecording) && Config.MainMenuWidgetActiveTimerShowRemoteRecording )
+                timerRemoteRec.Append(remoteTimer);
+            if( remoteTimer->HasFlags(tfActive) && !remoteTimer->HasFlags(tfRecording) && Config.MainMenuWidgetActiveTimerShowRemoteActive )
+                timerRemoteActive.Append(remoteTimer);
+        }
+    }
+
+    if( (timerRec.Size() == 0 && timerActive.Size() == 0 && timerRemoteRec.Size() == 0 && timerRemoteActive.Size() == 0) && Config.MainMenuWidgetActiveTimerHideEmpty )
         return 0;
-    else if( numRec == 0 && numActive == 0 ) {
+    else if( timerRec.Size() == 0 && timerActive.Size() == 0 && timerRemoteRec.Size() == 0 && timerRemoteActive.Size() == 0 ) {
         contentWidget.AddText(tr("no active/recording timer"), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
             Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
     } else {
         int count = -1;
+        int remotecount = -1;
         // first recording timer
         if( Config.MainMenuWidgetActiveTimerShowRecording ) {
-            for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
-                if( ti->HasFlags(tfRecording) ) {
-                    count++;
-                    if( ContentTop + marginItem > menuPixmap->ViewPort().Height() )
-                        break;
-                    if( count >= Config.MainMenuWidgetActiveTimerMaxCount )
-                        break;
-                    const cChannel *Channel = ti->Channel();
-                    //const cEvent *Event = Timer->Event();
-                    std::stringstream strTimer;
-                    strTimer << count+1 << ": ";
-                    if( Channel )
-                        strTimer << Channel->Name() << " - ";
-                    else
-                        strTimer << tr("Unknown") << " - ";
-                    strTimer << ti->File();
+            for(int i = 0; i < timerRec.Size(); i++) {
+                count++;
+                if( ContentTop + marginItem > menuPixmap->ViewPort().Height() )
+                    break;
+                if( count >= Config.MainMenuWidgetActiveTimerMaxCount )
+                    break;
+                const cChannel *Channel = (timerRec[i])->Channel();
+                //const cEvent *Event = Timer->Event();
+                std::stringstream strTimer;
+                if( (Config.MainMenuWidgetActiveTimerShowRemoteActive || Config.MainMenuWidgetActiveTimerShowRemoteRecording) && pRemoteTimers &&
+                    (timerRemoteRec.Size() > 0 || timerRemoteActive.Size() > 0) )
+                    strTimer << "L";
+                strTimer << count+1 << ": ";
+                if( Channel )
+                    strTimer << Channel->Name() << " - ";
+                else
+                    strTimer << tr("Unknown") << " - ";
+                strTimer << (timerRec[i])->File();
 
-                    contentWidget.AddText(strTimer.str().c_str(), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
-                        Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+                contentWidget.AddText(strTimer.str().c_str(), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+                    Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
 
-                    ContentTop += fontSmlHeight;
-                }
+                ContentTop += fontSmlHeight;
             }
         }
         if( Config.MainMenuWidgetActiveTimerShowActive ) {
-            for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
-                if( ti->HasFlags(tfActive) && !ti->HasFlags(tfRecording) ) {
-                    count++;
-                    if( ContentTop + marginItem > menuPixmap->ViewPort().Height() )
-                        break;
-                    if( count >= Config.MainMenuWidgetActiveTimerMaxCount )
-                        break;
+            for(int i = 0; i < timerActive.Size(); i++) {
+                count++;
+                if( ContentTop + marginItem > menuPixmap->ViewPort().Height() )
+                    break;
+                if( count >= Config.MainMenuWidgetActiveTimerMaxCount )
+                    break;
 
-                    const cChannel *Channel = ti->Channel();
-                    //const cEvent *Event = Timer->Event();
-                    std::stringstream strTimer;
-                    strTimer << count+1 << ": ";
-                    if( Channel )
-                        strTimer << Channel->Name() << " - ";
-                    else
-                        strTimer << tr("Unknown") << " - ";
-                    strTimer << ti->File();
+                const cChannel *Channel = (timerActive[i])->Channel();
+                //const cEvent *Event = Timer->Event();
+                std::stringstream strTimer;
+                if( (Config.MainMenuWidgetActiveTimerShowRemoteActive || Config.MainMenuWidgetActiveTimerShowRemoteRecording) && pRemoteTimers &&
+                    (timerRemoteRec.Size() > 0 || timerRemoteActive.Size() > 0) )
+                    strTimer << "L";
+                strTimer << count+1 << ": ";
+                if( Channel )
+                    strTimer << Channel->Name() << " - ";
+                else
+                    strTimer << tr("Unknown") << " - ";
+                strTimer << (timerActive[i])->File();
 
-                    contentWidget.AddText(strTimer.str().c_str(), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
-                        Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+                contentWidget.AddText(strTimer.str().c_str(), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+                    Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
 
-                    ContentTop += fontSmlHeight;
-                }
+                ContentTop += fontSmlHeight;
+            }
+        }
+        if( Config.MainMenuWidgetActiveTimerShowRemoteRecording ) {
+            for(int i = 0; i < timerRemoteRec.Size(); i++) {
+                remotecount++;
+                if( ContentTop + marginItem > menuPixmap->ViewPort().Height() )
+                    break;
+                if( count + remotecount >= Config.MainMenuWidgetActiveTimerMaxCount )
+                    break;
+                const cChannel *Channel = (timerRemoteRec[i])->Channel();
+                //const cEvent *Event = Timer->Event();
+                std::stringstream strTimer;
+                strTimer << "R" << remotecount+1 << ": ";
+                if( Channel )
+                    strTimer << Channel->Name() << " - ";
+                else
+                    strTimer << tr("Unknown") << " - ";
+                strTimer << (timerRemoteRec[i])->File();
+
+                contentWidget.AddText(strTimer.str().c_str(), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+                    Theme.Color(clrTopBarRecordingActiveFg), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+
+                ContentTop += fontSmlHeight;
+            }
+        }
+        if( Config.MainMenuWidgetActiveTimerShowRemoteActive ) {
+            for(int i = 0; i < timerRemoteActive.Size(); i++) {
+                remotecount++;
+                if( ContentTop + marginItem > menuPixmap->ViewPort().Height() )
+                    break;
+                if( count + remotecount >= Config.MainMenuWidgetActiveTimerMaxCount )
+                    break;
+
+                const cChannel *Channel = (timerRemoteActive[i])->Channel();
+                //const cEvent *Event = Timer->Event();
+                std::stringstream strTimer;
+                strTimer << "R" << remotecount+1 << ": ";
+                if( Channel )
+                    strTimer << Channel->Name() << " - ";
+                else
+                    strTimer << tr("Unknown") << " - ";
+                strTimer << (timerRemoteActive[i])->File();
+
+                contentWidget.AddText(strTimer.str().c_str(), false, cRect(marginItem, ContentTop, wWidth - marginItem*2, fontSmlHeight),
+                    Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontSml, wWidth - marginItem*2);
+
+                ContentTop += fontSmlHeight;
             }
         }
     }
