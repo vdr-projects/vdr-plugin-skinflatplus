@@ -1963,9 +1963,15 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
                 else if( FrameSeen < 0.98 )
                     SeenIcon = "recording_seen_9";
                 else
-                    SeenIcon = ""; // Do not show seenicon if recording is full seen
+                    SeenIcon = "recording_seen_10";
 
-                cImage *imgSeen = imgLoader.LoadIcon(SeenIcon, fontHeight, fontHeight);
+                cImage *imgSeen = NULL;
+                if( Current ) {
+                    cString SeenIconCur = cString::sprintf("%s_cur", *SeenIcon);
+                    imgSeen = imgLoader.LoadIcon(SeenIconCur, fontHeight, fontHeight);
+                }
+                if( imgSeen == NULL )
+                    imgSeen = imgLoader.LoadIcon(SeenIcon, fontHeight, fontHeight);
                 if( imgSeen != NULL )
                     menuIconsPixmap->DrawImage( cPoint(Left, Top), *imgSeen );
             }
@@ -2085,9 +2091,15 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
                 else if( FrameSeen < 0.98 )
                     SeenIcon = "recording_seen_9";
                 else
-                    SeenIcon = ""; // Do not show seenicon if recording is full seen
+                    SeenIcon = "recording_seen_10";
 
-                cImage *imgSeen = imgLoader.LoadIcon(SeenIcon, fontHeight, fontHeight);
+                cImage *imgSeen = NULL;
+                if( Current ) {
+                    cString SeenIconCur = cString::sprintf("%s_cur", *SeenIcon);
+                    imgSeen = imgLoader.LoadIcon(SeenIconCur, fontHeight, fontHeight);
+                }
+                if( imgSeen == NULL )
+                    imgSeen = imgLoader.LoadIcon(SeenIcon, fontHeight, fontHeight);
                 if( imgSeen != NULL )
                     menuIconsPixmap->DrawImage( cPoint(Left, Top), *imgSeen );
             }
