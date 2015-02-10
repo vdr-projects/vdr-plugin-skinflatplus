@@ -88,8 +88,12 @@ if [ $SHOW_UPTIME = 1 ]; then
   if [ $TAGE -ge 1 ] ; then
     echo "${TAGE}T ${STD}S ${MIN}M" > ${OUTPUTFLDR}/${UPTIME_POS}_uptime
   else
-    [ $STD -ge 1 ] && echo -n "${STD} Std. " > ${OUTPUTFLDR}/${UPTIME_POS}_uptime
-    [ $MIN -ge 1 ] && echo "${MIN} Min." >> ${OUTPUTFLDR}/${UPTIME_POS}_uptime
+    if [ $STD -ge 1 ] ; then
+      [ $MIN -ge 1 ] && echo "${STD} Std. ${MIN} Min." > ${OUTPUTFLDR}/${UPTIME_POS}_uptime
+      [ $MIN -lt 1 ] && echo "${STD} Stunde(n)" > ${OUTPUTFLDR}/${UPTIME_POS}_uptime
+    else
+      [ $MIN -ge 1 ] && echo "${MIN} Minute(n)" > ${OUTPUTFLDR}/${UPTIME_POS}_uptime
+    fi
   fi
   [ ${UPTIME[0]} -le 59 ] && echo "${SEK} Sekunden" > ${OUTPUTFLDR}/${UPTIME_POS}_uptime
 fi
