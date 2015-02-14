@@ -251,6 +251,7 @@ class cFlatConfig
         int MenuItemRecordingShowFolderDate;    // 0 = disable, 1 = newest recording date, 2 = oldest recording date
         int MenuItemParseTilde;
         int ShortRecordingCount;
+        int MainMenuWidgetActiveTimerShowRemoteRefreshTime; // in seconds
         /* hidden configs (only in setup.conf, no osd menu) */
 
         // Text Scroller
@@ -275,7 +276,6 @@ class cFlatConfig
         int MainMenuWidgetActiveTimerShowRecording;
         int MainMenuWidgetActiveTimerShowRemoteActive;
         int MainMenuWidgetActiveTimerShowRemoteRecording;
-        int MainMenuWidgetActiveTimerShowRemoteRefreshTime; // in seconds
         int MainMenuWidgetActiveTimerHideEmpty;
 
         int MainMenuWidgetLastRecShow;
