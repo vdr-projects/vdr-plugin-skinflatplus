@@ -11,6 +11,16 @@
 #include <iomanip>
 using namespace std;
 
+#if APIVERSNUM < 20107
+    enum eMenuSortMode {
+        msmUnknown = 0,
+        msmNumber,
+        msmName,
+        msmTime,
+        msmProvider
+    };
+#endif
+
 class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
     private:
         cPixmap *menuPixmap;
