@@ -4000,7 +4000,7 @@ const char* cFlatDisplayMenu::GetGenreIcon(uchar genre) {
 }
 
 void cFlatDisplayMenu::DrawMainMenuWidgets(void) {
-    int wLeft = osdWidth * Config.MainMenuItemScale + marginItem + Config.decorBorderMenuContentSize;
+    int wLeft = osdWidth * Config.MainMenuItemScale + marginItem + Config.decorBorderMenuContentSize + Config.decorBorderMenuItemSize;
     int wTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentSize;
 
     int wWidth = osdWidth - wLeft - Config.decorBorderMenuContentSize;
