@@ -520,9 +520,17 @@ void cFlatDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool S
                 DrawProgressBarFromText(rec, recBG, s, ColorFg, ColorBarFg, ColorBg);
             } else {
                 if( (menuCategory == mcMain || menuCategory == mcSetup) && Config.MenuItemIconsShow) {
-                    cString cIcon = GetIconName( MainMenuText(s) );
                     cImageLoader imgLoader;
-                    cImage *img = imgLoader.LoadIcon(*cIcon, fontHeight - marginItem*2, fontHeight - marginItem*2);
+                    cString cIcon = GetIconName( MainMenuText(s) );
+                    cString cIconCur;
+                    cImage *img = NULL;
+                    if( Current ) {
+                        cIconCur = cString::sprintf("%s_cur", *cIcon);
+                        img = imgLoader.LoadIcon(*cIconCur, fontHeight - marginItem*2, fontHeight - marginItem*2);
+                    }
+                    if( img == NULL )
+                        img = imgLoader.LoadIcon(*cIcon, fontHeight - marginItem*2, fontHeight - marginItem*2);
+
                     if( img ) {
                         menuIconsPixmap->DrawImage(cPoint(xt + Config.decorBorderMenuItemSize + marginItem, y + marginItem), *img);
                     } else {
@@ -806,7 +814,11 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
         bool isRadioChannel = ((!Channel->Vpid())&&(Channel->Apid(0))) ? true : false;
 
         if( isRadioChannel ) {
-            img = imgLoader.LoadIcon("radio", imageBGWidth - 10, imageBGHeight - 10);
+            if( Current)
+                img = imgLoader.LoadIcon("radio_cur", imageBGWidth - 10, imageBGHeight - 10);
+            if( img == NULL )
+                img = imgLoader.LoadIcon("radio", imageBGWidth - 10, imageBGHeight - 10);
+
             if( img ) {
                 imageTop = Top + (imageBGHeight - img->Height()) / 2;
                 imageLeft = Left + (imageBGWidth - img->Width()) / 2;
@@ -822,7 +834,10 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
                 Left += imageBGWidth + marginItem * 2;
             }
         } else {
-            img = imgLoader.LoadIcon("tv", imageBGWidth - 10, imageBGHeight - 10);
+            if( Current)
+                img = imgLoader.LoadIcon("tv_cur", imageBGWidth - 10, imageBGHeight - 10);
+            if( img == NULL )
+                img = imgLoader.LoadIcon("tv", imageBGWidth - 10, imageBGHeight - 10);
             if( img ) {
                 imageTop = Top + (imageBGHeight - img->Height()) / 2;
                 imageLeft = Left + (imageBGWidth - img->Width()) / 2;
@@ -1216,7 +1231,11 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
 
     cString TimerIconName("");
     if (!(Timer->HasFlags(tfActive))) {
-        TimerIconName = "timerInactive";
+        if( Current )
+            TimerIconName = "timerInactive_cur";
+        else
+            TimerIconName = "timerInactive";
+
         ColorFg = Theme.Color( clrMenuTimerItemDisabledFont );
     } else if (Timer->Recording()) {
         TimerIconName = "timerRecording";
@@ -1262,7 +1281,11 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
         bool isRadioChannel = ((!Channel->Vpid())&&(Channel->Apid(0))) ? true : false;
 
         if( isRadioChannel ) {
-            img = imgLoader.LoadIcon("radio", imageBGWidth - 10, imageBGHeight - 10);
+            if( Current )
+                img = imgLoader.LoadIcon("radio_cur", imageBGWidth - 10, imageBGHeight - 10);
+            if( img == NULL )
+                img = imgLoader.LoadIcon("radio", imageBGWidth - 10, imageBGHeight - 10);
+
             if( img ) {
                 imageTop = Top + (imageBGHeight - img->Height()) / 2;
                 imageLeft = Left + (imageBGWidth - img->Width()) / 2;
@@ -1276,7 +1299,11 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
                 menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
             }
         } else {
-            img = imgLoader.LoadIcon("tv", imageBGWidth - 10, imageBGHeight - 10);
+            if( Current )
+                img = imgLoader.LoadIcon("tv_cur", imageBGWidth - 10, imageBGHeight - 10);
+            if( img == NULL )
+                img = imgLoader.LoadIcon("tv", imageBGWidth - 10, imageBGHeight - 10);
+
             if( img ) {
                 imageTop = Top + (imageBGHeight - img->Height()) / 2;
                 imageLeft = Left + (imageBGWidth - img->Width()) / 2;
@@ -1480,7 +1507,9 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
     }
 
     if( Channel ) {
-        ItemEventLastChannelName = Channel->Name();
+        if( Current ) {
+            ItemEventLastChannelName = Channel->Name();
+        }
         cString ws = cString::sprintf("%d", Channels.MaxNumber());
         w = font->Width(ws);
         if( !Channel->GroupSep() ) {
@@ -1511,7 +1540,11 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
             bool isRadioChannel = ((!Channel->Vpid())&&(Channel->Apid(0))) ? true : false;
 
             if( isRadioChannel ) {
-                img = imgLoader.LoadIcon("radio", imageBGWidth - 10, imageBGHeight - 10);
+                if( Current )
+                    img = imgLoader.LoadIcon("radio_cur", imageBGWidth - 10, imageBGHeight - 10);
+                if( img == NULL )
+                    img = imgLoader.LoadIcon("radio", imageBGWidth - 10, imageBGHeight - 10);
+
                 if( img ) {
                     imageTop = Top + (imageBGHeight - img->Height()) / 2;
                     imageLeft = Left + (imageBGWidth - img->Width()) / 2;
@@ -1525,7 +1558,11 @@ bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current
                     menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
                 }
             } else {
-                img = imgLoader.LoadIcon("tv", imageBGWidth - 10, imageBGHeight - 10);
+                if( Current )
+                    img = imgLoader.LoadIcon("tv_cur", imageBGWidth - 10, imageBGHeight - 10);
+                if( img == NULL )
+                    img = imgLoader.LoadIcon("tv", imageBGWidth - 10, imageBGHeight - 10);
+
                 if( img ) {
                     imageTop = Top + (imageBGHeight - img->Height()) / 2;
                     imageLeft = Left + (imageBGWidth - img->Width()) / 2;
@@ -1917,7 +1954,10 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             marginItem * 3 + font->Width("99.99.99  99:99  99:99 ");
 
         if( Total == 0 ) {
-            img = imgLoader.LoadIcon("recording", fontHeight, fontHeight);
+            if( Current )
+                img = imgLoader.LoadIcon("recording_cur", fontHeight, fontHeight);
+            if( img == NULL )
+                img = imgLoader.LoadIcon("recording", fontHeight, fontHeight);
             if( img ) {
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
                 Left += fontHeight + marginItem;
@@ -1992,7 +2032,10 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
                 menuPixmap->DrawText(cPoint(Left, Top), RecName, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
             }
         } else if( Total > 0 ) {
-            img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
+            if( Current )
+                img = imgLoader.LoadIcon("folder_cur", fontHeight, fontHeight);
+            if( img == NULL )
+                img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
             if( img ) {
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
                 Left += img->Width() + marginItem;
@@ -2020,7 +2063,10 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             }
             LeftWidth += font->Width(RecName) + marginItem*2;
         } else if( Total == -1 ) {
-            img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
+            if( Current )
+                img = imgLoader.LoadIcon("folder_cur", fontHeight, fontHeight);
+            if( img == NULL )
+                img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
             if( img ) {
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
                 Left += img->Width() + marginItem;
@@ -2034,7 +2080,10 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
         }
     } else {
         if( Total == 0 ) {
-            img = imgLoader.LoadIcon("recording", fontHeight, fontHeight);
+            if( Current )
+                img = imgLoader.LoadIcon("recording_cur", fontHeight, fontHeight);
+            if( img == NULL )
+                img = imgLoader.LoadIcon("recording", fontHeight, fontHeight);
             if( img ) {
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
                 Left += fontHeight + marginItem;
@@ -2115,7 +2164,10 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             Left += imgRecCut->Width() + marginItem;
 
         } else if( Total > 0 ) {
-            img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
+            if( Current )
+                img = imgLoader.LoadIcon("folder_cur", fontHeight, fontHeight);
+            if( img == NULL )
+                img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
             if( img ) {
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
                 Left += img->Width() + marginItem;
@@ -2144,7 +2196,10 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
                 menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorExtraTextFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
             }
         } else if( Total == -1 ) {
-            img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
+            if( Current )
+                img = imgLoader.LoadIcon("folder_cur", fontHeight, fontHeight);
+            if( img == NULL )
+                img = imgLoader.LoadIcon("folder", fontHeight, fontHeight);
             if( img ) {
                 menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
                 Left += img->Width() + marginItem;

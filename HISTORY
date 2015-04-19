@@ -3,7 +3,7 @@ VDR Plugin 'skinflatplus' Revision History
 2015-MM-DD: Version 0.5.2
 - [fix] eMenuSortMode in displaymenu.h for compile with VDR < 2.2.0
 - [fix] position of widgets in main menu (add menu item border size)
-
+- [fix] wrong epg logo in epgsearch eventsview
 
 2015-02-14: Version 0.5.1
 - [fix] topbar number recordings
