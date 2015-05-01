@@ -1247,8 +1247,8 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
     if( img ) {
         imageTop = Top + (fontHeight - img->Height()) / 2;
         menuIconsPixmap->DrawImage( cPoint(imageLeft, imageTop), *img );
-        Left += imageHeight + marginItem * 2;
     }
+    Left += imageHeight + marginItem * 2;
 
     cString ws = cString::sprintf("%d", Channels.MaxNumber());
     int w = font->Width(ws);
