@@ -28,10 +28,10 @@ msgid "clock"
 msgstr "Uhr"
 
 msgid "System"
-msgstr ""
+msgstr "System"
 
 msgid "from"
-msgstr ""
+msgstr "von"
 
 msgid "Genre"
 msgstr "Kategorie"
