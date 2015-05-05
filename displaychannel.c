@@ -26,6 +26,8 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) : m_Receiver(NULL) {
     LastSignalStrength = -1;
     LastSignalQuality = -1;
 
+    SignalStrengthRight = BitrateRight = 0;
+
     CreateFullOsd();
     if ( !osd )
         return;
@@ -544,24 +546,74 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
         cRect(progressLeft, progressTop, progressWidth, Config.decorProgressSignalSize), SignalQuality, 100,
         Config.decorProgressSignalFg, Config.decorProgressSignalBarFg, Config.decorProgressSignalBg, Config.decorProgressSignalType, false, Config.SignalQualityUseColors);
 
+    SignalStrengthRight = progressLeft + progressWidth;
+
     delete SignalFont;
+}
+
+// you need oscam min rev 10653
+// you need dvbapi min commit 85da7b2
+void cFlatDisplayChannel::DvbapiInfoDraw(void) {
+    dsyslog("DvbapiInfoDraw");
+    int ChannelSid = CurChannel->Sid();
+
+    static cPlugin *pDVBApi = cPluginManager::GetPlugin("dvbapi");
+    if (!pDVBApi)
+        return;
+    sDVBAPIEcmInfo ecmInfo;
+    ecmInfo.ecmtime = -1;
+    ecmInfo.hops = -1;
+
+    /*
+    ecmInfo.cardsystem = "nagravision";
+    ecmInfo.reader = "kd";
+    ecmInfo.ecmtime = 200;
+    */
+
+    dsyslog("ChannelSid: %d Channel: %s", ChannelSid, CurChannel->Name());
+
+    ecmInfo.sid = ChannelSid;
+    if (!pDVBApi->Service("GetEcmInfo", &ecmInfo)) {
+        return;
+    }
+    dsyslog("caid: %d", ecmInfo.caid);
+    dsyslog("cardsystem: %s", *ecmInfo.cardsystem);
+    dsyslog("reader: %s", *ecmInfo.reader);
+    dsyslog("from: %s", *ecmInfo.from);
+    dsyslog("protocol: %s", *ecmInfo.protocol);
+
+    if (ecmInfo.hops < 0 || ecmInfo.ecmtime <= 0)
+        return;
+    int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
+    top += max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem;
+    int left = BitrateRight + marginItem * 2;
+    if (BitrateRight == 0 )
+        left = SignalStrengthRight + marginItem * 2;
+
+    cFont *dvbapiInfoFont = cFont::CreateFont(Setup.FontOsd, (Config.decorProgressSignalSize*2));
+    cString dvbapiInfoText;
+    dvbapiInfoText = cString::sprintf("DVBAPI - %s %s %s %s (%d)", tr("System"), *ecmInfo.cardsystem, tr("from"), *ecmInfo.reader, ecmInfo.ecmtime);
+
+    chanInfoBottomPixmap->DrawText(cPoint(left, top), dvbapiInfoText, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), dvbapiInfoFont, dvbapiInfoFont->Width(dvbapiInfoText) * 2);
+
 }
 
 void cFlatDisplayChannel::BitrateDraw(void) {
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
     top += max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem;
-    int left = marginItem * 2;
+    int left = SignalStrengthRight + marginItem * 4;
     cFont *SignalFont = cFont::CreateFont(Setup.FontOsd, Config.decorProgressSignalSize);
     cFont *BitrateFont = cFont::CreateFont(Setup.FontOsd, (Config.decorProgressSignalSize*2));
 
+/*
     if( Config.SignalQualityShow ) {
         int signalWidth = channelWidth / 2;
-        int progressLeft = left + SignalFont->Width("STR") + SignalFont->Width(" ") + marginItem;
+        int progressLeft = bottomLeft + SignalFont->Width("STR") + SignalFont->Width(" ") + marginItem;
         int progressWidth = signalWidth / 2 - progressLeft - marginItem;
 
         left = progressLeft + progressWidth + marginItem * 4;
     }
-
+*/
     cString bitrateText;
     if( bitrateAudio > 0.0 || bitrateDolby == 0.0 )
         bitrateText = cString::sprintf("Video: %.2f Mbit/s | Audio: %.2f kbit/s", bitrateVideo / 1000000.0, bitrateAudio / 1000.0 );
@@ -569,6 +621,8 @@ void cFlatDisplayChannel::BitrateDraw(void) {
         bitrateText = cString::sprintf("Video: %.2f Mbit/s | Dolby: %.2f kbit/s", bitrateVideo / 1000000.0, bitrateDolby / 1000.0 );
 
     chanInfoBottomPixmap->DrawText(cPoint(left, top), bitrateText, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), BitrateFont, BitrateFont->Width(bitrateText) * 2);
+
+    BitrateRight = left + BitrateFont->Width(bitrateText) + marginItem;
 
     delete SignalFont;
     delete BitrateFont;
@@ -671,6 +725,9 @@ void cFlatDisplayChannel::Flush(void) {
 
         BitrateDraw();
     }
+
+    if( Config.ChannelDvbapiInfoShow )
+        DvbapiInfoDraw();
 
     TopBarUpdate();
     osd->Flush();

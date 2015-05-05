@@ -27,6 +27,7 @@ cFlatConfig::cFlatConfig(void) {
     ChannelBitrateShow = false;
     ChannelBitrateShowCalcInterval = 20;
     ChannelTimeLeft = 0;
+    ChannelDvbapiInfoShow = 1;
 
     RecordingResolutionAspectShow = true;
     RecordingFormatShow = true;
@@ -373,6 +374,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteActive") == 0)         MainMenuWidgetActiveTimerShowRemoteActive = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRecording") == 0)         MainMenuWidgetActiveTimerShowRemoteRecording = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRefreshTime") == 0)         MainMenuWidgetActiveTimerShowRemoteRefreshTime = atoi(Value);
+    else if (strcmp(Name, "ChannelDvbapiInfoShow") == 0)                ChannelDvbapiInfoShow = atoi(Value);
     else return false;
 
     return true;

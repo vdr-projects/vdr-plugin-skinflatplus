@@ -4,6 +4,7 @@
 #include "baserender.h"
 #include "flat.h"
 #include "services/scraper2vdr.h"
+#include "services/dvbapi.h"
 #include "femonreceiver.h"
 
 class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel, public cStatus {
@@ -29,6 +30,7 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel, 
         int heightBottom, heightImageLogo;
 
         int LastSignalStrength, LastSignalQuality;
+        int SignalStrengthRight, BitrateRight;
 
         // femon
         cFemonReceiver *m_Receiver;
@@ -47,6 +49,7 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel, 
         void SignalQualityDraw(void);
         void BitrateDraw(void);
         void ChannelIconsDraw(const cChannel *Channel, bool Resolution);
+        void DvbapiInfoDraw(void);
 
     public:
         cFlatDisplayChannel(bool WithInfo);

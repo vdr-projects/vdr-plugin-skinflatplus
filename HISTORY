@@ -5,6 +5,8 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] position of widgets in main menu (add menu item border size)
 - [fix] wrong epg logo in epgsearch eventsview
 - [update] disk usage icons with 32 sections instead of 16, thanks to MegaV0lt
+- [add] displaychannel - dvbapi info
+    you need oscam min rev 10653 and dvbapi min commit 85da7b2
 
 2015-02-14: Version 0.5.1
 - [fix] topbar number recordings

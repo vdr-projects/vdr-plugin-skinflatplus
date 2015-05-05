@@ -207,6 +207,7 @@ class cFlatConfig
         int ChannelBitrateShow;
         int ChannelBitrateShowCalcInterval; // hidden config
         int ChannelTimeLeft;
+        int ChannelDvbapiInfoShow;
 
         int ChannelWeatherShow;
         int PlaybackWeatherShow;

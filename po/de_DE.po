@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.5.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2015-02-09 20:09+0100\n"
+"POT-Creation-Date: 2015-05-05 19:09+0200\n"
 "PO-Revision-Date: 2015-02-09 20:09+0100\n"
 "Last-Translator: Martin Schirrmacher\n"
 "Language-Team: Martin Schirrmacher\n"
@@ -26,6 +26,12 @@ msgstr "belegt"
 
 msgid "clock"
 msgstr "Uhr"
+
+msgid "System"
+msgstr ""
+
+msgid "from"
+msgstr ""
 
 msgid "Genre"
 msgstr "Kategorie"
@@ -560,6 +566,12 @@ msgstr "Zeige Video/Audio Bitrate"
 
 msgid "Simple aspect & format"
 msgstr "Auflösung & Bildformat Einfache Anzeige"
+
+msgid "dvbapi plugin not installed"
+msgstr ""
+
+msgid "Show dvbapi informations"
+msgstr ""
 
 msgid "program past/remaining time format"
 msgstr "Programm vergangen/verbleibend Format"

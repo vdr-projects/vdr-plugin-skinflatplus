@@ -324,6 +324,7 @@ void cFlatSetup::Store(void) {
     SetupStore("MainMenuWidgetActiveTimerShowRemoteActive", Config.MainMenuWidgetActiveTimerShowRemoteActive);
     SetupStore("MainMenuWidgetActiveTimerShowRemoteRecording", Config.MainMenuWidgetActiveTimerShowRemoteRecording);
     SetupStore("MainMenuWidgetActiveTimerShowRemoteRefreshTime", Config.MainMenuWidgetActiveTimerShowRemoteRefreshTime);
+    SetupStore("ChannelDvbapiInfoShow", Config.ChannelDvbapiInfoShow);
 
     Config.Init();
 }
@@ -513,6 +514,7 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteActive") == 0)         SetupConfig->MainMenuWidgetActiveTimerShowRemoteActive = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRecording") == 0)         SetupConfig->MainMenuWidgetActiveTimerShowRemoteRecording = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRefreshTime") == 0)         SetupConfig->MainMenuWidgetActiveTimerShowRemoteRefreshTime = atoi(Value);
+    else if (strcmp(Name, "ChannelDvbapiInfoShow") == 0)         SetupConfig->ChannelDvbapiInfoShow = atoi(Value);
     else return false;
 
     return true;
@@ -684,6 +686,7 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("MainMenuWidgetActiveTimerShowRemoteActive", SetupConfig->MainMenuWidgetActiveTimerShowRemoteActive, *Filename);
     Config.Store("MainMenuWidgetActiveTimerShowRemoteRecording", SetupConfig->MainMenuWidgetActiveTimerShowRemoteRecording, *Filename);
     Config.Store("MainMenuWidgetActiveTimerShowRemoteRefreshTime", SetupConfig->MainMenuWidgetActiveTimerShowRemoteRefreshTime, *Filename);
+    Config.Store("ChannelDvbapiInfoShow", SetupConfig->ChannelDvbapiInfoShow, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -862,6 +865,12 @@ void cFlatSetupChannelInfo::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->ChannelFormatShow));
     Add(new cMenuEditBoolItem(tr("Show video/audio bitrate"), &SetupConfig->ChannelBitrateShow));
     Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->ChannelSimpleAspectFormat));
+    static cPlugin *pDVBApi = cPluginManager::GetPlugin("dvbapi");
+    if (!pDVBApi) {
+        Add(new cOsdItem(tr("dvbapi plugin not installed"), osUnknown, false));
+    } else {
+        Add(new cMenuEditBoolItem(tr("Show dvbapi informations"), &SetupConfig->ChannelDvbapiInfoShow));
+    }
     Add(new cMenuEditStraItem(tr("program past/remaining time format"), &SetupConfig->ChannelTimeLeft, ChannelTimeLefts.Size(), &ChannelTimeLefts[0]));
 
     Add(new cMenuEditBoolItem(tr("Channelinfo border by decor-file?"), &SetupConfig->decorBorderChannelByTheme));
