@@ -113,3 +113,12 @@ HISTORY
  [09.12.2014] - Diskanzeige - Symbole neu verlinkt (16 statt 8 Abschnitte)
  [08.02.2015] - Symbole fuer "Aufnahme gesehen" ab VDR 2.1.8 in Skinfarbe
  [10.02.2015] - Symbol fuer "Aufnahme komplett (100%) gesehen" hinzugefuegt
+ [25.04.2015] - Diskanzeige - Symbole neu verlinkt (32 statt 16 Abschnitte)
+ [26.04.2015] - Symbol 'timerInactive_cur.png' in Skinfarbe (HG)
+ [01.05.2015] - Symbole 'radio_cur.png', 'tv_cur.png' und 'recording_cur.png'
+                ergaenzt
+ [02.05.2015] - Normale Themen (Nicht Invertiert) mit hellen Symbolen (MenuIcons und PluginIcons)
+ [03.05.2015] - Invertierte Symbole 'text_arrowturn_cur.png', 'text_new_cur.png', 'text_vps_cur.png'
+                und 'text_timer_full_cur.png' in angepasster Hintergrundfarbe
+              - Bei invertierten Themen Farbe fuer 'ExtraTextCurrentFont' heller
+ [05.05.2015] - Fortschrittsbalken im EPG bei invertierten Themen in Hintergrundfarbe
