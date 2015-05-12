@@ -564,11 +564,11 @@ void cFlatDisplayChannel::DvbapiInfoDraw(void) {
     ecmInfo.ecmtime = -1;
     ecmInfo.hops = -1;
 
-    /*
+/*
     ecmInfo.cardsystem = "nagravision";
     ecmInfo.reader = "kd";
     ecmInfo.ecmtime = 200;
-    */
+*/
 
     dsyslog("ChannelSid: %d Channel: %s", ChannelSid, CurChannel->Name());
 
@@ -584,26 +584,48 @@ void cFlatDisplayChannel::DvbapiInfoDraw(void) {
 
     if (ecmInfo.hops < 0 || ecmInfo.ecmtime <= 0)
         return;
+
+    if (ecmInfo.ecmtime > 9999 )
+        return;
+
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
-    top += max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem;
+    top += max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem*2;
     int left = BitrateRight + marginItem * 2;
     if (BitrateRight == 0 )
         left = SignalStrengthRight + marginItem * 2;
 
-    cFont *dvbapiInfoFont = cFont::CreateFont(Setup.FontOsd, (Config.decorProgressSignalSize*2));
+    cFont *dvbapiInfoFont = cFont::CreateFont(Setup.FontOsd, (Config.decorProgressSignalSize*2) + marginItem);
     cString dvbapiInfoText;
-    dvbapiInfoText = cString::sprintf("DVBAPI - %s %s %s %s (%d)", tr("System"), *ecmInfo.cardsystem, tr("from"), *ecmInfo.reader, ecmInfo.ecmtime);
 
+    dvbapiInfoText = cString::sprintf("DVBAPI: ");
     chanInfoBottomPixmap->DrawText(cPoint(left, top), dvbapiInfoText, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), dvbapiInfoFont, dvbapiInfoFont->Width(dvbapiInfoText) * 2);
+    left += dvbapiInfoFont->Width(dvbapiInfoText) + marginItem;
 
+    cImage *img = NULL;
+    cString iconName = cString::sprintf("crypt_%s", *ecmInfo.cardsystem);
+    img = imgLoader.LoadIcon(*iconName, 999, dvbapiInfoFont->Height());
+    if( img ) {
+        chanIconsPixmap->DrawImage(cPoint(left, top), *img);
+        left += img->Width() + marginItem;
+    } else {
+        iconName = "crypt_unknown";
+        img = imgLoader.LoadIcon(*iconName, 999, dvbapiInfoFont->Height());
+        if( img ) {
+            chanIconsPixmap->DrawImage(cPoint(left, top), *img);
+            left += img->Width() + marginItem;
+        }
+    }
+
+    dvbapiInfoText = cString::sprintf(" %s (%d ms)", *ecmInfo.reader, ecmInfo.ecmtime);
+    chanInfoBottomPixmap->DrawText(cPoint(left, top), dvbapiInfoText, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), dvbapiInfoFont, dvbapiInfoFont->Width(dvbapiInfoText) * 2);
 }
 
 void cFlatDisplayChannel::BitrateDraw(void) {
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
-    top += max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem;
+    top += max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem*2;
     int left = SignalStrengthRight + marginItem * 4;
     cFont *SignalFont = cFont::CreateFont(Setup.FontOsd, Config.decorProgressSignalSize);
-    cFont *BitrateFont = cFont::CreateFont(Setup.FontOsd, (Config.decorProgressSignalSize*2));
+    cFont *BitrateFont = cFont::CreateFont(Setup.FontOsd, (Config.decorProgressSignalSize*2) + marginItem);
 
 /*
     if( Config.SignalQualityShow ) {
