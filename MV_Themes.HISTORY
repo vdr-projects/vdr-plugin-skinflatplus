@@ -122,3 +122,7 @@ HISTORY
                 und 'text_timer_full_cur.png' in angepasster Hintergrundfarbe
               - Bei invertierten Themen Farbe fuer 'ExtraTextCurrentFont' heller
  [05.05.2015] - Fortschrittsbalken im EPG bei invertierten Themen in Hintergrundfarbe
+ [20.08.2015] - FIX: 'LNB.png' war immer invertiert
+ [13.10.2015] - Alle '*.png'-Dateien mit 'optipng' optimiert
+ [16.10.2015] - Konfiguration 'MV_default' aktualisiert
+              - Empfohlene Einstellungen VDR OSD aktualisiert

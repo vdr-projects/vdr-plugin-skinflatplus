@@ -1,4 +1,4 @@
-flatPlus-MV_Themen erstellt am 05.05.2015 12:27
+flatPlus-MV_Themen erstellt am 16.10.2015 08:04
 Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
 
 => Installationshimnweise am Ende der Datei! <=
@@ -34,7 +34,7 @@ Thema: Rauchglas, Farbe: 825A2C, Hintergrund: 200F02
 Thema: White, Farbe: FFFFFF Schriftfarbe: A5A5A5
 Thema: XMAS, Farbe: CC1111, Hintergrund: 114511 
 Thema: Zitrone, Farbe: EEEE0F, Hintergrund: 88881A Schriftfarbe: FFFFAA
-31 Themen erstellt. 8 davon mit Hintergrund.
+31 Themen erstellt. Davon 8 mit Hintergrund und 3 mit invertierter Auswahl
 Insgesamt 32 Icon-Ordner erstellt
 
 Installationshinweise:
@@ -52,7 +52,7 @@ Laden mit "Menue - Einstellungen - Plugins - SkinFlatPlus - Allgemeine Einstellu
 "OK druecken um die Konfigdatei zu laden: MV_default - OK"
 
 Empfohlene Einstellungen (setup.conf) im VDR (Menue - Einstellungen - OSD):
-FontFix = Courier:Bold
+FontFix = Nimbus Mono L:Bold
 FontFixSize = 33
 FontFixSizeP = 0.031000
 FontOsd = Droid Sans:Regular
@@ -69,7 +69,7 @@ OSDLeft = 0
 OSDLeftP = 0.000000
 OSDMessageTime = 6
 OSDSkin = flatPlus
-OSDTheme = MVIndigo
+OSDTheme = MVGrapefruit
 OSDTop = 0
 OSDTopP = 0.000000
 OSDWidth = 1920

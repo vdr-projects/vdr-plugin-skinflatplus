@@ -562,10 +562,10 @@ msgid "Simple aspect & format"
 msgstr "Auflösung & Bildformat Einfache Anzeige"
 
 msgid "dvbapi plugin not installed"
-msgstr ""
+msgstr "Plugin dvbapi ist nicht installiert"
 
 msgid "Show dvbapi informations"
-msgstr ""
+msgstr "Zeige dvbapi Informationen"
 
 msgid "program past/remaining time format"
 msgstr "Programm vergangen/verbleibend Format"
@@ -808,7 +808,7 @@ msgid "Widget DVB devices: position"
 msgstr "DVB Geräte-Widget: Position"
 
 msgid "Widget DVB devices: don't show unknown"
-msgstr "DVB Geräte-Widget: Unbekannt ausblenden"
+msgstr "DVB Geräte-Widget: Unbekannte ausblenden"
 
 msgid "Widget DVB devices: don't show not used"
 msgstr "DVB Geräte-Widget: Nicht verw. ausblenden"
@@ -823,16 +823,16 @@ msgid "Widget timer: position"
 msgstr "Timer-Widget: Position"
 
 msgid "Widget timer: show recording timer"
-msgstr "Timer-Widget: zeige aufnehmende Timer"
+msgstr "Timer-Widget: Zeige aufnehmende Timer"
 
 msgid "Widget timer: show active timer"
-msgstr "Timer-Widget: zeige aktive Timer"
+msgstr "Timer-Widget: Zeige aktive Timer"
 
 msgid "Widget timer: show remote recording timer"
-msgstr "Timer-Widget: zeige Remote aufnehmende Timer"
+msgstr "Timer-Widget: Zeige Remote aufnehmende Timer"
 
 msgid "Widget timer: show remote active timer"
-msgstr "Timer-Widget: zeige Remote aktive Timer"
+msgstr "Timer-Widget: Zeige Remote aktive Timer"
 
 msgid "Widget timer: max show"
 msgstr "Timer-Widget: Zeige max."

@@ -43,8 +43,11 @@ Installation wie bei allen VDR Plugins.
 
 Für die Kanallogos empfehle ich die Logos von Copperhead: http://creimer.net/channellogos/
 Ich nutze "nopacity-logos-white"
+Alternativ können auch die Logos von 3PO genutzt werden:
+https://github.com/3PO/Senderlogos
+
 Die Logos müssen im folgenden Ordner zur Verfügung gestellt werden:
-    <vdrconfigdir>/plugins/skinflat/logos/
+    <vdrconfigdir>/plugins/skinflatplus/logos/
 
 Der Skin muss im Menü unter Einstellungen -> OSD ausgewählt werden.
 
