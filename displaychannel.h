@@ -5,7 +5,6 @@
 #include "flat.h"
 #include "services/scraper2vdr.h"
 #include "services/dvbapi.h"
-#include "femonreceiver.h"
 
 class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel, public cStatus {
     private:
@@ -32,10 +31,6 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel, 
         int LastSignalStrength, LastSignalQuality;
         int SignalStrengthRight, BitrateRight;
 
-        // femon
-        cFemonReceiver *m_Receiver;
-        double bitrateVideo, bitrateAudio, bitrateDolby;
-
         // TVScraper
         int TVSLeft, TVSTop, TVSWidth, TVSHeight;
 
@@ -47,7 +42,6 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel, 
         bool isGroup;
 
         void SignalQualityDraw(void);
-        void BitrateDraw(void);
         void ChannelIconsDraw(const cChannel *Channel, bool Resolution);
         void DvbapiInfoDraw(void);
 
@@ -60,7 +54,4 @@ class cFlatDisplayChannel : public cFlatBaseRender, public cSkinDisplayChannel, 
         virtual void Flush(void);
 
         void PreLoadImages(void);
-    protected:
-        virtual void ChannelSwitch(const cDevice *device, int channelNumber, bool liveView);
-        virtual void SetAudioTrack(int Index, const char * const *Tracks);
 };

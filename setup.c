@@ -273,8 +273,6 @@ void cFlatSetup::Store(void) {
     SetupStore("DiskUsageFree", Config.DiskUsageFree);
     SetupStore("TopBarFontClockScale", dtoa(Config.TopBarFontClockScale));
     SetupStore("TimeSecsScale", dtoa(Config.TimeSecsScale));
-    SetupStore("ChannelBitrateShow", Config.ChannelBitrateShow);
-    SetupStore("ChannelBitrateShowCalcInterval", Config.ChannelBitrateShowCalcInterval);
     SetupStore("TopBarHideClockText", Config.TopBarHideClockText);
     SetupStore("ChannelTimeLeft", Config.ChannelTimeLeft);
     SetupStore("MenuFullOsd", Config.MenuFullOsd);
@@ -461,10 +459,8 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "ScrollerType") == 0)                         SetupConfig->ScrollerType = atoi(Value);
     else if (strcmp(Name, "DiskUsageShort") == 0)                       SetupConfig->DiskUsageShort = atoi(Value);
     else if (strcmp(Name, "DiskUsageFree") == 0)                        SetupConfig->DiskUsageFree = atoi(Value);
-    else if (strcmp(Name, "ChannelBitrateShow") == 0)                   SetupConfig->ChannelBitrateShow = atoi(Value);
     else if (strcmp(Name, "TopBarFontClockScale") == 0)                 SetupConfig->TopBarFontClockScale = atod(Value);
     else if (strcmp(Name, "TimeSecsScale") == 0)                        SetupConfig->TimeSecsScale = atod(Value);
-    else if (strcmp(Name, "ChannelBitrateShowCalcInterval") == 0)       SetupConfig->ChannelBitrateShowCalcInterval = atoi(Value);
     else if (strcmp(Name, "TopBarHideClockText") == 0)                  SetupConfig->TopBarHideClockText = atoi(Value);
     else if (strcmp(Name, "ChannelTimeLeft") == 0)                      SetupConfig->ChannelTimeLeft = atoi(Value);
     else if (strcmp(Name, "MenuFullOsd") == 0)                          SetupConfig->MenuFullOsd = atoi(Value);
@@ -634,8 +630,6 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("DiskUsageFree", SetupConfig->DiskUsageFree, *Filename);
     Config.Store("TopBarFontClockScale", dtoa(Config.TopBarFontClockScale), *Filename);
     Config.Store("TimeSecsScale", dtoa(Config.TimeSecsScale), *Filename);
-    Config.Store("ChannelBitrateShow", SetupConfig->ChannelBitrateShow, *Filename);
-    Config.Store("ChannelBitrateShowCalcInterval", SetupConfig->ChannelBitrateShowCalcInterval, *Filename);
     Config.Store("TopBarHideClockText", SetupConfig->TopBarHideClockText, *Filename);
     Config.Store("ChannelTimeLeft", SetupConfig->ChannelTimeLeft, *Filename);
     Config.Store("MenuFullOsd", SetupConfig->MenuFullOsd, *Filename);
@@ -863,7 +857,6 @@ void cFlatSetupChannelInfo::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Colors for signal quality"), &SetupConfig->SignalQualityUseColors));
     Add(new cMenuEditBoolItem(tr("Show resolution & aspect"), &SetupConfig->ChannelResolutionAspectShow));
     Add(new cMenuEditBoolItem(tr("Show format (hd/sd)"), &SetupConfig->ChannelFormatShow));
-    Add(new cMenuEditBoolItem(tr("Show video/audio bitrate"), &SetupConfig->ChannelBitrateShow));
     Add(new cMenuEditBoolItem(tr("Simple aspect & format"), &SetupConfig->ChannelSimpleAspectFormat));
     static cPlugin *pDVBApi = cPluginManager::GetPlugin("dvbapi");
     if (!pDVBApi) {

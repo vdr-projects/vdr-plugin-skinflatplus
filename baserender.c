@@ -423,7 +423,12 @@ void cFlatBaseRender::TopBarUpdate(void) {
         int numRec = 0;
         if( Config.TopBarRecordingShow ) {
             // look for timers
-            for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
+            #if VDRVERSNUM >= 20301
+                LOCK_TIMERS_READ;
+                for(const cTimer *ti = Timers->First(); ti; ti = Timers->Next(ti)) {
+            #else
+                for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
+            #endif
                 if( ti->HasFlags(tfRecording) ) {
                     numRec++;
                 }

@@ -4,6 +4,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] eMenuSortMode in displaymenu.h for compile with VDR < 2.2.0
 - [fix] position of widgets in main menu (add menu item border size)
 - [fix] wrong epg logo in epgsearch eventsview
+- [fix] remove show bitrate of audio and video in displaychannel
 - [update] default themes
     inverted style, selected item fore color is now back color
 - [update] disk usage icons with 32 sections instead of 16, thanks to MegaV0lt
@@ -11,6 +12,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [update] README, fix logo folder, add 3PO logo pack
 - [update] translation (thanks to MegaV0lt)
 - [update] MV-Themes
+- [add] support for vdr-2.3.1
 - [add] displaychannel - dvbapi info
     you need oscam min rev 10653 and dvbapi min commit 85da7b2
 - [add] add italian translation (thanks to fiveten_59)

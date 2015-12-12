@@ -1,7 +1,7 @@
 #include "displaychannel.h"
 #include "flat.h"
 
-cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) : m_Receiver(NULL) {
+cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     if (firstDisplay) {
         firstDisplay = false;
         doOutput = false;
@@ -89,18 +89,6 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) : m_Receiver(NULL) {
     scrollers.SetScrollDelay( Config.ScrollerDelay );
     scrollers.SetScrollType( Config.ScrollerType );
 
-    bitrateVideo = bitrateAudio = bitrateDolby = 0.0;
-    m_Receiver = NULL;
-    /*
-    if( Config.ChannelBitrateShow ) {
-        const cChannel *channel = Channels.GetByNumber(cDevice::CurrentChannel());
-        eTrackType track = cDevice::PrimaryDevice()->GetCurrentAudioTrack();
-        if( channel ) {
-            m_Receiver = new cFemonReceiver(channel, IS_AUDIO_TRACK(track) ? int(track - ttAudioFirst) : 0, IS_DOLBY_TRACK(track) ? int(track - ttDolbyFirst) : 0);
-            cDevice::ActualDevice()->AttachReceiver(m_Receiver);
-        }
-    }
-    */
     if( Config.ChannelWeatherShow )
         DrawWidgetWeather();
 
@@ -111,10 +99,6 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) : m_Receiver(NULL) {
 
 cFlatDisplayChannel::~cFlatDisplayChannel() {
 
-    if (m_Receiver != NULL ) {
-        m_Receiver->Deactivate();
-        delete m_Receiver;
-    }
     if( !doOutput )
         return;
     if (osd) {
@@ -620,92 +604,6 @@ void cFlatDisplayChannel::DvbapiInfoDraw(void) {
     chanInfoBottomPixmap->DrawText(cPoint(left, top), dvbapiInfoText, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), dvbapiInfoFont, dvbapiInfoFont->Width(dvbapiInfoText) * 2);
 }
 
-void cFlatDisplayChannel::BitrateDraw(void) {
-    int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
-    top += max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem*2;
-    int left = SignalStrengthRight + marginItem * 4;
-    cFont *SignalFont = cFont::CreateFont(Setup.FontOsd, Config.decorProgressSignalSize);
-    cFont *BitrateFont = cFont::CreateFont(Setup.FontOsd, (Config.decorProgressSignalSize*2) + marginItem);
-
-/*
-    if( Config.SignalQualityShow ) {
-        int signalWidth = channelWidth / 2;
-        int progressLeft = bottomLeft + SignalFont->Width("STR") + SignalFont->Width(" ") + marginItem;
-        int progressWidth = signalWidth / 2 - progressLeft - marginItem;
-
-        left = progressLeft + progressWidth + marginItem * 4;
-    }
-*/
-    cString bitrateText;
-    if( bitrateAudio > 0.0 || bitrateDolby == 0.0 )
-        bitrateText = cString::sprintf("Video: %.2f Mbit/s | Audio: %.2f kbit/s", bitrateVideo / 1000000.0, bitrateAudio / 1000.0 );
-    else
-        bitrateText = cString::sprintf("Video: %.2f Mbit/s | Dolby: %.2f kbit/s", bitrateVideo / 1000000.0, bitrateDolby / 1000.0 );
-
-    chanInfoBottomPixmap->DrawText(cPoint(left, top), bitrateText, Theme.Color(clrChannelSignalFont), Theme.Color(clrChannelBg), BitrateFont, BitrateFont->Width(bitrateText) * 2);
-
-    BitrateRight = left + BitrateFont->Width(bitrateText) + marginItem;
-
-    delete SignalFont;
-    delete BitrateFont;
-}
-
-// Indicates a channel switch on the given DVB device.
-// If ChannelNumber is 0, this is before the channel is being switched,
-// otherwise ChannelNumber is the number of the channel that has been switched to.
-// LiveView tells whether this channel switch is for live viewing.
-void cFlatDisplayChannel::ChannelSwitch(const cDevice * device, int channelNumber, bool liveView)
-{
-    if( liveView == false) // ChannelSwitch from EPG-Scan, streamdev or other?
-        return;
-    if( channelNumber == 0 ) { // before the channel is being switched -> remove receiver
-        if (m_Receiver) {
-            //dsyslog("ChannelSwitch: Receiver REMOVE");
-            m_Receiver->Deactivate();
-            DELETENULL(m_Receiver);
-        }
-        return;
-    }
-
-    // at this point we finally switch to a new channel on liveView
-    bitrateVideo = bitrateAudio = bitrateDolby = 0.0;
-    eTrackType track = cDevice::PrimaryDevice()->GetCurrentAudioTrack();
-    const cChannel *channel = Channels.GetByNumber(cDevice::CurrentChannel());
-
-    if( channel && Config.ChannelBitrateShow && doOutput ) {
-        if ( m_Receiver ) { // this should not be happen!!!
-            //dsyslog("ChannelSwitch: Receiver is still Active -> remove it!");
-            m_Receiver->Deactivate();
-            DELETENULL(m_Receiver);
-        }
-        //dsyslog("ChannelSwitch: Receiver ATTACH %d - %s", cDevice::PrimaryDevice()->DeviceNumber(), channel->Name());
-
-        m_Receiver = new cFemonReceiver(channel, IS_AUDIO_TRACK(track) ? int(track - ttAudioFirst) : 0, IS_DOLBY_TRACK(track) ? int(track - ttDolbyFirst) : 0);
-        cDevice::ActualDevice()->AttachReceiver(m_Receiver);
-    }
-}
-
-void cFlatDisplayChannel::SetAudioTrack(int Index, const char * const *Tracks)
-{
-    bitrateVideo = bitrateAudio = bitrateDolby = 0.0;
-    eTrackType track = cDevice::PrimaryDevice()->GetCurrentAudioTrack();
-    if( m_Receiver ) {
-        dsyslog("SetAudioTrack: Receiver remove");
-        m_Receiver->Deactivate();
-        DELETENULL(m_Receiver);
-    }
-
-    if( !Config.ChannelBitrateShow )
-        return;
-
-    const cChannel *channel = Channels.GetByNumber(cDevice::CurrentChannel());
-    if( channel && doOutput ) {
-        dsyslog("SetAudioTrack: Receiver attach - %s", channel->Name());
-        m_Receiver = new cFemonReceiver(channel, IS_AUDIO_TRACK(track) ? int(track - ttAudioFirst) : 0, IS_DOLBY_TRACK(track) ? int(track - ttDolbyFirst) : 0);
-        cDevice::ActualDevice()->AttachReceiver(m_Receiver);
-    }
-}
-
 void cFlatDisplayChannel::Flush(void) {
     if( !doOutput )
         return;
@@ -728,24 +626,6 @@ void cFlatDisplayChannel::Flush(void) {
             lastScreenWidth = screenWidth;
             ChannelIconsDraw(CurChannel, true);
         }
-    }
-
-    if( Config.ChannelBitrateShow && doOutput && !m_Receiver ) {
-        const cChannel *channel = Channels.GetByNumber(cDevice::CurrentChannel());
-        eTrackType track = cDevice::PrimaryDevice()->GetCurrentAudioTrack();
-        if( channel ) {
-            //dsyslog("ChannelSwitch: Receiver ATTACH %d - %s FLUSH", cDevice::PrimaryDevice()->DeviceNumber(), channel->Name());
-            m_Receiver = new cFemonReceiver(channel, IS_AUDIO_TRACK(track) ? int(track - ttAudioFirst) : 0, IS_DOLBY_TRACK(track) ? int(track - ttDolbyFirst) : 0);
-            cDevice::ActualDevice()->AttachReceiver(m_Receiver);
-        }
-    }
-
-    if( Config.ChannelBitrateShow && m_Receiver ) {
-        bitrateVideo = m_Receiver->VideoBitrate();
-        bitrateAudio = m_Receiver->AudioBitrate();
-        bitrateDolby = m_Receiver->AC3Bitrate();
-
-        BitrateDraw();
     }
 
     if( Config.ChannelDvbapiInfoShow )
@@ -772,8 +652,12 @@ void cFlatDisplayChannel::PreLoadImages(void) {
     int index = 0;
     height = ((fontHeight*2) + (fontSmlHeight*2) + marginItem) - marginItem*2;
     cImage *img = NULL;
-    for(cChannel *Channel = Channels.First(); Channel && index < LOGO_PRE_CACHE; Channel = Channels.Next(Channel) )
-    {
+#if VDRVERSNUM >= 20301
+    LOCK_CHANNELS_READ;
+    for(const cChannel *Channel = Channels->First(); Channel && index < LOGO_PRE_CACHE; Channel = Channels->Next(Channel) ) {
+#else
+    for(cChannel *Channel = Channels.First(); Channel && index < LOGO_PRE_CACHE; Channel = Channels.Next(Channel) ) {
+#endif
         img = imgLoader.LoadLogo(Channel->Name(), imageBGWidth - 4, imageBGHeight - 4);
         if( img )
             index++;

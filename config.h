@@ -204,8 +204,6 @@ class cFlatConfig
         int ChannelResolutionAspectShow;
         int ChannelFormatShow;
         int ChannelSimpleAspectFormat;
-        int ChannelBitrateShow;
-        int ChannelBitrateShowCalcInterval; // hidden config
         int ChannelTimeLeft;
         int ChannelDvbapiInfoShow;
 

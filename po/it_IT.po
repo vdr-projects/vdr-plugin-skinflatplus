@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.5.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2015-05-12 13:16+0200\n"
+"POT-Creation-Date: 2015-12-12 15:10+0100\n"
 "PO-Revision-Date: 2015-02-09 20:09+0100\n"
 "Last-Translator: fiveten_59\n"
 "Language-Team: Italian\n"
@@ -555,14 +555,11 @@ msgstr "Mostra risoluzione & aspetto"
 msgid "Show format (hd/sd)"
 msgstr "Mostra formato (HD/SD)"
 
-msgid "Show video/audio bitrate"
-msgstr "Mostra Video/Audio Bitrate"
-
 msgid "Simple aspect & format"
 msgstr "Aspetto & formato semplice"
 
-msgid "dvbapi plugin non installed"
-msgstr "dvbapi plugin non installato"
+msgid "dvbapi plugin not installed"
+msgstr ""
 
 msgid "Show dvbapi informations"
 msgstr "Mostra informazioni dvbapi"
@@ -902,3 +899,9 @@ msgstr "Uso comandi dei widget: abilita"
 
 msgid "Widget custom commands: position"
 msgstr "Uso comandi dei widget: posizione"
+
+#~ msgid "Show video/audio bitrate"
+#~ msgstr "Mostra Video/Audio Bitrate"
+
+#~ msgid "dvbapi plugin non installed"
+#~ msgstr "dvbapi plugin non installato"
