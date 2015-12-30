@@ -4369,8 +4369,8 @@ int cFlatDisplayMenu::DrawMainMenuWidgetActiveTimers(int wLeft, int wWidth, int 
 #if VDRVERSNUM >= 20301
     LOCK_SCHEDULES_READ;
 #else
-    cSchedulesLock schedulesLock;
-    const cSchedules *schedules = cSchedules::Schedules(schedulesLock);
+    cSchedulesLock SchedulesLock;
+    const cSchedules *Schedules = cSchedules::Schedules(SchedulesLock);
 #endif
 
     time_t now;
