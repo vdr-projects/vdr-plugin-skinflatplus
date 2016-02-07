@@ -125,6 +125,8 @@ cFlatConfig::cFlatConfig(void) {
     MainMenuWidgetWeatherDays = 5;
     MainMenuWidgetWeatherType = 0;
 
+    MenuItemRecordingSeenTreshold = 0.98 / 100.0;
+
     ChannelWeatherShow = 1;
     PlaybackWeatherShow = 1;
     WeatherFontSize = 0.05;
@@ -371,6 +373,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRecording") == 0)         MainMenuWidgetActiveTimerShowRemoteRecording = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRefreshTime") == 0)         MainMenuWidgetActiveTimerShowRemoteRefreshTime = atoi(Value);
     else if (strcmp(Name, "ChannelDvbapiInfoShow") == 0)                ChannelDvbapiInfoShow = atoi(Value);
+    else if (strcmp(Name, "MenuItemRecordingSeenTreshold") == 0)        MenuItemRecordingSeenTreshold = atod(Value);
     else return false;
 
     return true;

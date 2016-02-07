@@ -323,6 +323,7 @@ void cFlatSetup::Store(void) {
     SetupStore("MainMenuWidgetActiveTimerShowRemoteRecording", Config.MainMenuWidgetActiveTimerShowRemoteRecording);
     SetupStore("MainMenuWidgetActiveTimerShowRemoteRefreshTime", Config.MainMenuWidgetActiveTimerShowRemoteRefreshTime);
     SetupStore("ChannelDvbapiInfoShow", Config.ChannelDvbapiInfoShow);
+    SetupStore("MenuItemRecordingSeenTreshold", dtoa(Config.MenuItemRecordingSeenTreshold));
 
     Config.Init();
 }
@@ -511,6 +512,7 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRecording") == 0)         SetupConfig->MainMenuWidgetActiveTimerShowRemoteRecording = atoi(Value);
     else if (strcmp(Name, "MainMenuWidgetActiveTimerShowRemoteRefreshTime") == 0)         SetupConfig->MainMenuWidgetActiveTimerShowRemoteRefreshTime = atoi(Value);
     else if (strcmp(Name, "ChannelDvbapiInfoShow") == 0)         SetupConfig->ChannelDvbapiInfoShow = atoi(Value);
+    else if (strcmp(Name, "MenuItemRecordingSeenTreshold") == 0)        SetupConfig->MenuItemRecordingSeenTreshold = atod(Value);
     else return false;
 
     return true;
@@ -681,6 +683,7 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("MainMenuWidgetActiveTimerShowRemoteRecording", SetupConfig->MainMenuWidgetActiveTimerShowRemoteRecording, *Filename);
     Config.Store("MainMenuWidgetActiveTimerShowRemoteRefreshTime", SetupConfig->MainMenuWidgetActiveTimerShowRemoteRefreshTime, *Filename);
     Config.Store("ChannelDvbapiInfoShow", SetupConfig->ChannelDvbapiInfoShow, *Filename);
+    Config.Store("MenuItemRecordingSeenTreshold", dtoa(Config.MenuItemRecordingSeenTreshold), *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -959,6 +962,8 @@ void cFlatSetupMenu::Setup(void) {
     Add(new cMenuEditBoolItem(tr("Menu draw background over the entire height"), &SetupConfig->MenuFullOsd));
 
     Add(new cMenuEditBoolItem(tr("Recording menu show recording count in title"), &SetupConfig->MenuRecordingShowCount));
+    Add(new cMenuEditPrcItem(tr("Recording menu seen treshold"), &SetupConfig->MenuItemRecordingSeenTreshold, 0.008, 0.01, 2));
+
     Add(new cMenuEditBoolItem(tr("Timer menu show timer count in title"), &SetupConfig->MenuTimerShowCount));
     Add(new cMenuEditBoolItem(tr("Channel menu show channel count in title"), &SetupConfig->MenuChannelShowCount));
 

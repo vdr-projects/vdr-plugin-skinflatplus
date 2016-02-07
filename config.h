@@ -241,6 +241,8 @@ class cFlatConfig
         int MenuTimerShowCount;
         int MenuChannelShowCount;
 
+        double MenuItemRecordingSeenTreshold;
+
         // 0 = vertikal
         // 1 = horizontal
         int MessageColorPosition;

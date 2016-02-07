@@ -2038,6 +2038,9 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
                 double FrameSeen = (double)FrameResume / (double)FrameTotal;
                 cString SeenIcon;
 
+                double seenTreshold = Config.MenuItemRecordingSeenTreshold * 100.0;
+                //dsyslog("Config.MenuItemRecordingSeenTreshold: %.2f\n", seenTreshold );
+
                 if( FrameSeen < 0.1 )
                     SeenIcon = "recording_seen_0";
                 else if( FrameSeen < 0.2 )
@@ -2059,6 +2062,9 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
                 else if( FrameSeen < 0.98 )
                     SeenIcon = "recording_seen_9";
                 else
+                    SeenIcon = "recording_seen_10";
+
+                if( FrameSeen >= seenTreshold )
                     SeenIcon = "recording_seen_10";
 
                 cImage *imgSeen = NULL;
