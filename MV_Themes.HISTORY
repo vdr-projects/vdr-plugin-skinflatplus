@@ -126,3 +126,5 @@ HISTORY
  [13.10.2015] - Alle '*.png'-Dateien mit 'optipng' optimiert
  [16.10.2015] - Konfiguration 'MV_default' aktualisiert
               - Empfohlene Einstellungen VDR OSD aktualisiert
+ [09.04.2016] - PluginIcon 'mpv.png' hinzugefuegt
+ [22.04.2016] - PluginIcon 'plex.png' hinzugefuegt

@@ -6,6 +6,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] wrong epg logo in epgsearch eventsview
 - [fix] remove show bitrate of audio and video in displaychannel
 - [fix] rename plugin-icon yaepghg to yaepghd
+- [fix] uninitialized pointer in displayrecoding (crash in plex-plugin and others) (thanks chriszero)
 - [update] default themes
     inverted style, selected item fore color is now back color
 - [update] disk usage icons with 32 sections instead of 16, thanks to MegaV0lt
@@ -18,6 +19,7 @@ VDR Plugin 'skinflatplus' Revision History
     you need oscam min rev 10653 and dvbapi min commit 85da7b2
 - [add] add italian translation (thanks to fiveten_59)
 - [add] option MenuItemRecordingSeenTreshold to set the treshold when a recording will be marked as seen
+- [add] plex-plugin icon (thanks MegaV0lt)
 
 
 2015-02-14: Version 0.5.1

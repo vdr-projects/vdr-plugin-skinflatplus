@@ -5,6 +5,7 @@ cFlatDisplayReplay::cFlatDisplayReplay(bool ModeOnly) {
     labelHeight = fontHeight + fontSmlHeight;
     current = "";
     total = "";
+    recording = NULL;
 
     modeOnly = ModeOnly;
     dimmActive = false;
