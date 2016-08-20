@@ -294,7 +294,7 @@ void cFlatDisplayMenu::SetTitle(const char *Title) {
 #else
                         for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
 #endif
-                            std::string RecFolder2 = GetRecordingName(Rec, LastItemRecordingLevel-1, true);
+                            std::string RecFolder2 = GetRecordingName(Rec, LastItemRecordingLevel-1, true).c_str();
                             if( RecFolder == RecFolder2 ) {
                                 recCount++;
                                 if( Rec->IsNew() )
@@ -1904,10 +1904,10 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
 #endif
 
     cString buffer;
-    cString RecName = GetRecordingName(Recording, Level, Total == 0);
+    cString RecName = GetRecordingName(Recording, Level, Total == 0).c_str();
 
     if( Level > 0 ) {
-        RecFolder = GetRecordingName(Recording, Level-1, true);
+        RecFolder = GetRecordingName(Recording, Level-1, true).c_str();
     } else {
         RecFolder = "";
     }
@@ -1922,7 +1922,7 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
 #else
             for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
 #endif
-                std::string RecFolder2 = GetRecordingName(Rec, LastItemRecordingLevel-1, true);
+                std::string RecFolder2 = GetRecordingName(Rec, LastItemRecordingLevel-1, true).c_str();
                 if( RecFolder == RecFolder2 ) {
                     recCount++;
                     if( Rec->IsNew() )
@@ -3938,7 +3938,7 @@ void cFlatDisplayMenu::ItemBorderClear(void) {
 }
 
 time_t cFlatDisplayMenu::GetLastRecTimeFromFolder(const cRecording *Recording, int Level) {
-    std::string RecFolder = GetRecordingName(Recording, Level, true);
+    std::string RecFolder = GetRecordingName(Recording, Level, true).c_str();
     time_t RecStart = Recording->Start();
 
 #if VDRVERSNUM >= 20301
@@ -3947,7 +3947,7 @@ time_t cFlatDisplayMenu::GetLastRecTimeFromFolder(const cRecording *Recording, i
 #else
     for(cRecording *rec = Recordings.First(); rec; rec = Recordings.Next(rec)) {
 #endif
-        std::string RecFolder2 = GetRecordingName(rec, Level, true);
+        std::string RecFolder2 = GetRecordingName(rec, Level, true).c_str();
         if( RecFolder == RecFolder2 ) { // recordings must be in the same folder
             time_t RecStart2 = rec->Start();
             if( Config.MenuItemRecordingShowFolderDate == 1) { // newest
@@ -3974,7 +3974,7 @@ string cFlatDisplayMenu::xml_substring(string source, const char* str_start, con
     return string();
 }
 
-const char * cFlatDisplayMenu::GetRecordingName(const cRecording *Recording, int Level, bool isFolder) {
+std::string cFlatDisplayMenu::GetRecordingName(const cRecording *Recording, int Level, bool isFolder) {
     if( !Recording )
         return "";
     std::string recNamePart;
@@ -3996,7 +3996,7 @@ const char * cFlatDisplayMenu::GetRecordingName(const cRecording *Recording, int
             recNamePart.erase(0, 1);
         }
     }
-    return recNamePart.c_str();
+    return recNamePart;
 }
 
 const char* cFlatDisplayMenu::GetGenreIcon(uchar genre) {

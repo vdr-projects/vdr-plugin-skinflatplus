@@ -86,7 +86,7 @@ class cFlatDisplayMenu : public cFlatBaseRender,  public cSkinDisplayMenu {
         std::string MainMenuText(std::string Text);
         cString GetIconName(std::string element);
 
-        const char * GetRecordingName(const cRecording *Recording, int Level, bool isFolder);
+        std::string GetRecordingName(const cRecording *Recording, int Level, bool isFolder);
         string xml_substring(string source, const char* str_start, const char* str_end);
 
         const char* GetGenreIcon(uchar genre);
