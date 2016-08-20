@@ -17,6 +17,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [update] MV-Themes
 - [update] timers widget - sort timers by time
 - [update] system information widget - update system_information.g2v
+- [update] temperature widget - update temperatures.g2v
 - [add] support for vdr-2.3.1
 - [add] displaychannel - dvbapi info
     you need oscam min rev 10653 and dvbapi min commit 85da7b2
