@@ -25,6 +25,10 @@ enum stream_content
 	sc_audio_HEAAC    = 0x06,
 };
 
+static int CompareTimers(const void *a, const void *b) {
+    return (*(const cTimer **)a)->Compare(**(const cTimer **)b);
+}
+
 cFlatDisplayMenu::cFlatDisplayMenu(void) {
     CreateFullOsd();
     TopBarCreate();
@@ -4418,6 +4422,10 @@ int cFlatDisplayMenu::DrawMainMenuWidgetActiveTimers(int wLeft, int wWidth, int 
                 timerRemoteActive.Append(remoteTimer);
         }
     }
+    timerRec.Sort(CompareTimers);
+    timerActive.Sort(CompareTimers);
+    timerRemoteRec.Sort(CompareTimers);
+    timerRemoteActive.Sort(CompareTimers);
 
     if( (timerRec.Size() == 0 && timerActive.Size() == 0 && timerRemoteRec.Size() == 0 && timerRemoteActive.Size() == 0) && Config.MainMenuWidgetActiveTimerHideEmpty )
         return 0;
@@ -5321,3 +5329,5 @@ void cFlatDisplayMenu::PreLoadImages(void) {
     imgLoader.LoadIcon("recording", fontHeight, fontHeight);
     imgLoader.LoadIcon("folder", fontHeight, fontHeight);
 }
+
+
