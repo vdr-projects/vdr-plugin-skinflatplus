@@ -8,6 +8,7 @@ VDR Plugin 'skinflatplus' Revision History
 - [fix] rename plugin-icon yaepghg to yaepghd
 - [fix] uninitialized pointer in displayrecoding (crash in plex-plugin and others) (thanks chriszero)
 - [fix] recordings name in recording menu (thanks to Delekhan @ vdr-portal.de)
+- [fix] dvb widget - discard not used and discard unknown
 - [update] default themes
     inverted style, selected item fore color is now back color
 - [update] disk usage icons with 32 sections instead of 16, thanks to MegaV0lt

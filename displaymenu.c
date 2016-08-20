@@ -4298,6 +4298,8 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
             if (channel && channel->Number() > 0) {
                 chanName = channel->Name();
             } else {
+                if( Config.MainMenuWidgetDVBDevicesDiscardUnknown )
+                    continue;
                 chanName = tr("Unknown");
             }
             strDevice << *chanName;
@@ -4309,6 +4311,8 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
             if (channel && channel->Number() > 0) {
                 chanName = channel->Name();
             } else {
+                if( Config.MainMenuWidgetDVBDevicesDiscardUnknown )
+                    continue;
                 chanName = tr("Unknown");
             }
             strDevice << *chanName;
@@ -4316,9 +4320,11 @@ int cFlatDisplayMenu::DrawMainMenuWidgetDVBDevices(int wLeft, int wWidth, int Co
         } else {
             if( channel ) {
                 cString chanName = channel->Name();
-                if( !strcmp(*chanName, "") )
+                if( !strcmp(*chanName, "") ) {
+                    if( Config.MainMenuWidgetDVBDevicesDiscardNotUsed )
+                        continue;
                     strDevice << tr("not used");
-                else {
+                } else {
                     if( Config.MainMenuWidgetDVBDevicesDiscardUnknown )
                         continue;
                     strDevice << tr("Unknown") << " (" << *chanName << ")";
