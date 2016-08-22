@@ -39,12 +39,18 @@ class cFlatConfig
         void DecorCheckAndInit(void);
 
         void GetConfigFiles(cStringList &Files);
+
+        void RecordingOldLoadConfig(void);
+        int GetRecordingOldValue(std::string folder);
     public:
 
         cString ThemeCurrent;
         cString logoPath;
         cString iconPath;
+        cString RecordingOldConfigFile;
 
+        std::vector<std::string> RecordingOldFolder;
+        std::vector<int> RecordingOldValue;
         // BORDER TYPES
         // 0 = none
         // 1 = rect

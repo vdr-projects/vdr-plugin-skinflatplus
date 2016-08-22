@@ -2117,8 +2117,19 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorFg, ColorBg, font, menuItemWidth - Left - marginItem);
             Left += font->Width(" 999 ");
             if( Config.MenuItemRecordingShowFolderDate != 0 ) {
-                buffer = cString::sprintf("  (%s)", *ShortDateString(GetLastRecTimeFromFolder(Recording, Level)));
-                menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorExtraTextFg, ColorBg, font, menuItemWidth - Left - marginItem);
+                buffer = cString::sprintf("(%s) ", *ShortDateString(GetLastRecTimeFromFolder(Recording, Level)));
+                menuPixmap->DrawText(cPoint(LeftWidth - font->Width(buffer) - fontHeight*2 - marginItem*2, Top), buffer, ColorExtraTextFg, ColorBg, font);
+                if( isRecordingOld( Recording, Level ) ) {
+                    Left = LeftWidth - fontHeight*2 - marginItem*2;
+                    if( Current )
+                        img = imgLoader.LoadIcon("recording_old_cur", fontHeight, fontHeight);
+                    else
+                        img = imgLoader.LoadIcon("recording_old", fontHeight, fontHeight);
+                    if( img ) {
+                        menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
+                        Left += img->Width() + marginItem;
+                    }
+                }
             }
 
             if( Current && font->Width(RecName) > (menuItemWidth - LeftWidth - marginItem) && Config.ScrollerEnable ) {
@@ -2257,8 +2268,19 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             Left += fontSml->Width(" 999 ");
 
             if( Config.MenuItemRecordingShowFolderDate != 0 ) {
-                buffer = cString::sprintf("  (%s)", *ShortDateString(GetLastRecTimeFromFolder(Recording, Level)));
-                menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorExtraTextFg, ColorBg, fontSml, menuItemWidth - Left - marginItem);
+                buffer = cString::sprintf("  (%s) ", *ShortDateString(GetLastRecTimeFromFolder(Recording, Level)));
+                menuPixmap->DrawText(cPoint(Left, Top), buffer, ColorExtraTextFg, ColorBg, fontSml);
+                if( isRecordingOld( Recording, Level ) ) {
+                    Left += fontSml->Width(buffer);
+                    if( Current )
+                        img = imgLoader.LoadIcon("recording_old_cur", fontSmlHeight, fontSmlHeight);
+                    else
+                        img = imgLoader.LoadIcon("recording_old", fontSmlHeight, fontSmlHeight);
+                    if( img ) {
+                        menuIconsPixmap->DrawImage( cPoint(Left, Top), *img );
+                    }
+                }
+
             }
         } else if( Total == -1 ) {
             if( Current )
@@ -3941,6 +3963,28 @@ void cFlatDisplayMenu::ItemBorderClear(void) {
     ItemsBorder.clear();
 }
 
+bool cFlatDisplayMenu::isRecordingOld( const cRecording *Recording, int Level ) {
+    std::string RecFolder = GetRecordingName(Recording, Level, true).c_str();
+
+    int value = Config.GetRecordingOldValue( RecFolder );
+    if( value < 0 )
+        return false;
+
+    int LastRecTimeFromFolder = GetLastRecTimeFromFolder(Recording, Level);
+    time_t now;
+    time(&now);
+
+    int diffSecs = now - LastRecTimeFromFolder;
+    int days = diffSecs / (60 * 60 * 24);
+
+    //dsyslog("RecFolder: %s LastRecTimeFromFolder: %d time: %d value: %d diff: %d days: %d", RecFolder.c_str(), LastRecTimeFromFolder, now, value, diffSecs, days);
+    if( days > value )
+        return true;
+
+    return false;
+}
+
+
 time_t cFlatDisplayMenu::GetLastRecTimeFromFolder(const cRecording *Recording, int Level) {
     std::string RecFolder = GetRecordingName(Recording, Level, true).c_str();
     time_t RecStart = Recording->Start();
@@ -5324,12 +5368,16 @@ void cFlatDisplayMenu::PreLoadImages(void) {
 
     imgLoader.LoadIcon("recording_new", fontHeight, fontHeight);
     imgLoader.LoadIcon("recording_new", fontSmlHeight, fontSmlHeight);
-    imgLoader.LoadIcon("recording_cutted", fontHeight, fontHeight);
     imgLoader.LoadIcon("recording_new_cur", fontHeight, fontHeight);
     imgLoader.LoadIcon("recording_new_cur", fontSmlHeight, fontSmlHeight);
+    imgLoader.LoadIcon("recording_cutted", fontHeight, fontHeight);
     imgLoader.LoadIcon("recording_cutted_cur", fontHeight, fontHeight);
     imgLoader.LoadIcon("recording", fontHeight, fontHeight);
     imgLoader.LoadIcon("folder", fontHeight, fontHeight);
+    imgLoader.LoadIcon("recording_old", fontHeight, fontHeight);
+    imgLoader.LoadIcon("recording_old_cur", fontHeight, fontHeight);
+    imgLoader.LoadIcon("recording_old", fontSmlHeight, fontSmlHeight);
+    imgLoader.LoadIcon("recording_old_cur", fontSmlHeight, fontSmlHeight);
 }
 
 

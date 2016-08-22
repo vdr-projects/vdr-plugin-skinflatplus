@@ -5,6 +5,7 @@
 cFlatConfig::cFlatConfig(void) {
     logoPath = "";
     iconPath = "";
+    RecordingOldConfigFile = "";
 
     DecorCurrent = -1;
     DecorIndex = 0;
@@ -629,7 +630,12 @@ void cFlatConfig::Init(void) {
         iconPath = cString::sprintf("%s/icons/", PLUGINRESOURCEPATH);
         dsyslog("skinflatplus: iconPath: %s", *iconPath);
     }
-
+    if( !strcmp(RecordingOldConfigFile, "") ) {
+        dsyslog("skinflatplus: PLUGINCONFIGPATH: %s", PLUGINCONFIGPATH);
+        RecordingOldConfigFile = cString::sprintf("%s/recordings_old.cfg", PLUGINCONFIGPATH);
+        dsyslog("skinflatplus: RecordingOldConfigFile: %s", *RecordingOldConfigFile);
+        RecordingOldLoadConfig();
+    }
     ThemeInit();
     DecorCheckAndInit();
 }
@@ -826,6 +832,49 @@ void cFlatConfig::DecorLoadFile(cString File) {
             }
         }
     }
+}
+
+
+void cFlatConfig::RecordingOldLoadConfig(void) {
+    dsyslog("skinflatplus: load recording old config file: %s", *RecordingOldConfigFile);
+    RecordingOldFolder.clear();
+    RecordingOldValue.clear();
+
+    FILE *f = fopen(RecordingOldConfigFile, "r");
+    if( f ) {
+        int line = 0;
+        char *s;
+        cReadLine ReadLine;
+        while( (s = ReadLine.Read(f)) != NULL ) {
+            line++;
+            char *p = strchr(s, '#');
+            if (p)
+                *p = 0;
+            s = stripspace(skipspace(s));
+            if (!isempty(s)) {
+                char *n = s;
+                char *v = strchr(s, '=');
+                if (v) {
+                    *v++ = 0;
+                    n = stripspace(skipspace(n));
+                    v = stripspace(skipspace(v));
+                    int value = atoi( v );
+                    dsyslog("skinflatplus: recording old config - folder: %s value: %d", n, value);
+                    RecordingOldFolder.push_back( n );
+                    RecordingOldValue.push_back( value );
+                }
+            }
+        }
+    }
+}
+
+int cFlatConfig::GetRecordingOldValue(std::string folder) {
+    std::vector<std::string>::size_type sz = RecordingOldFolder.size();
+    for( unsigned i = 0; i < sz; i++) {
+        if( RecordingOldFolder[i] == folder )
+            return RecordingOldValue[i];
+    }
+    return -1;
 }
 
 void cFlatConfig::SetLogoPath(cString path) {
