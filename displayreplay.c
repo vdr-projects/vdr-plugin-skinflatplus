@@ -603,12 +603,12 @@ void cFlatDisplayReplay::Flush(void) {
 void cFlatDisplayReplay::PreLoadImages(void) {
     imgLoader.LoadIcon("rewind", fontHeight, fontHeight);
     imgLoader.LoadIcon("pause", fontHeight, fontHeight);
-    imgLoader.LoadIcon("play_sel", fontHeight, fontHeight);
+    imgLoader.LoadIcon("play", fontHeight, fontHeight);
     imgLoader.LoadIcon("forward", fontHeight, fontHeight);
-    imgLoader.LoadIcon("pause_sel", fontHeight, fontHeight);
-    imgLoader.LoadIcon("forward_sel", fontHeight, fontHeight);
     imgLoader.LoadIcon("rewind_sel", fontHeight, fontHeight);
     imgLoader.LoadIcon("pause_sel", fontHeight, fontHeight);
+    imgLoader.LoadIcon("pause_sel", fontHeight, fontHeight);
+    imgLoader.LoadIcon("forward_sel", fontHeight, fontHeight);
     imgLoader.LoadIcon("recording_cutted_extra", fontHeight, fontHeight);
 
     imgLoader.LoadIcon("43", 999, fontSmlHeight);
