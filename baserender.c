@@ -746,7 +746,6 @@ void cFlatBaseRender::ProgressBarDrawRaw(cPixmap *Pixmap, cPixmap *PixmapBg, cRe
         else
             Pixmap->DrawRectangle(cRect( rect.Left(), rect.Top(), rect.Width(), rect.Height()), clrTransparent);
     }
-
     switch( Type ) {
         case 0: // small line + big line
         {
@@ -924,14 +923,14 @@ void cFlatBaseRender::ProgressBarDrawMarks(int Current, int Total, const cMarks 
     int big = Config.decorProgressReplaySize - sml*2 - 2;
 
     if( !Marks ) {
-        progressBarColorFg = progressBarColorBarCurFg;
+        //progressBarColorFg = progressBarColorBarFg;
         progressBarColorBarFg = progressBarColorBarCurFg;
 
         ProgressBarDraw(Current, Total);
         return;
     }
     if( !Marks->First() ) {
-        progressBarColorFg = progressBarColorBarCurFg;
+        //progressBarColorFg = progressBarColorBarCurFg;
         progressBarColorBarFg = progressBarColorBarCurFg;
 
         ProgressBarDraw(Current, Total);
