@@ -30,7 +30,11 @@ VDR Plugin 'skinflatplus' Revision History
     Create a "recordings_old.cfg" file under PLUGINCONFIGPATH (for example: /etc/vdr/plugins/skinflatplus/recordings_old.cfg)
     Each line has the format:
         FOLDERNAME=DAYS
+    The FOLDERNAME have to be the same name like in the vdr recordings menu.
     If last recording in the folder is older than DAYS than the exclamation mark icon will be shown.
+    There is also a new menu option: MenuItemRecordingDefaultOldDays
+    This is the default value if You don't want to use recordings_old.cfg.
+    If MenuItemRecordingDefaultOldDays is -1, the default value is disabled.
 
 2015-02-14: Version 0.5.1
 - [fix] topbar number recordings

@@ -3968,6 +3968,8 @@ bool cFlatDisplayMenu::isRecordingOld( const cRecording *Recording, int Level ) 
 
     int value = Config.GetRecordingOldValue( RecFolder );
     if( value < 0 )
+        value = Config.MenuItemRecordingDefaultOldDays;
+    if( value < 0 )
         return false;
 
     int LastRecTimeFromFolder = GetLastRecTimeFromFolder(Recording, Level);

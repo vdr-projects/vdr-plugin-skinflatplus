@@ -248,6 +248,7 @@ class cFlatConfig
         int MenuChannelShowCount;
 
         double MenuItemRecordingSeenTreshold;
+        int MenuItemRecordingDefaultOldDays;
 
         // 0 = vertikal
         // 1 = horizontal
