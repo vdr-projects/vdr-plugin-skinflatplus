@@ -130,3 +130,7 @@ HISTORY
  [22.04.2016] - PluginIcon 'plex.png' hinzugefuegt
  [27.04.2016] - Einstellungen 'MV_default' aktualisiert
               - Fehlende '70_MV_rect_sml.decor' wieder hinzugefuegt
+ [24.08.2016] - Symbol 'recording_old.png' und 'recording_old_cur.png' in
+                Skinfarbe hinzugefuegt
+ [25.08.2016] - Symbol 'recording_old.png' und 'recording_old_cur.png' verkleinert
+                auf 90 x 90 Pixel
