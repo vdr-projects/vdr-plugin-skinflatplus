@@ -5,7 +5,7 @@
 
 #define MAX_IMAGE_CACHE     999
 #define LOGO_PRE_CACHE      200
-// note MAX_LOGO_PRE_CACHE is used twice
+// note LOGO_PRE_CACHE is used twice
 // one for displaychannel and one for menu
 // you must double the value for the real amount of pre cached logos
 
@@ -24,6 +24,7 @@ public:
 
     void Create(void);
     void Clear(void);
+    bool RemoveFromCache( std::string Name );
 
     int getCacheCount(void) { if(Overflow) return MAX_IMAGE_CACHE; return InsertIndex+1; }
 

@@ -1,6 +1,6 @@
 #include "imagecache.h"
 #include "config.h"
-
+#include <libgen.h>
 
 #include "displaychannel.h"
 #include "displaymenu.h"
@@ -15,7 +15,7 @@ cImageCache::cImageCache() {
 }
 
 cImageCache::~cImageCache() {
-    
+
 }
 
 void cImageCache::Create(void) {
@@ -36,6 +36,23 @@ void cImageCache::Clear(void) {
     }
 
     InsertIndex = 0;
+}
+
+bool cImageCache::RemoveFromCache( std::string Name ) {
+    bool found = false;
+    for(int index = 0; index < MAX_IMAGE_CACHE; index++ ) {
+        char *bname;
+        bname = basename( (char *)CacheName[index].c_str() );
+        if( !strcmp(bname, Name.c_str()) ) {
+            found = true;
+            dsyslog("skinflatplus RemoveFromCache - %s", CacheName[index].c_str() );
+            CacheImage[index] = NULL;
+            CacheName[index] = "";
+            CacheWidth[index] = -1;
+            CacheHeight[index] = -1;
+        }
+    }
+    return found;
 }
 
 cImage* cImageCache::GetImage(std::string Name, int Width, int Height) {

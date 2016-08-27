@@ -130,10 +130,34 @@ bool cPluginFlat::Service(const char *Id, void *Data) {
 }
 
 const char **cPluginFlat::SVDRPHelpPages(void) {
-    return NULL;
+    static const char *HelpPages[] = {
+        "RLFC\n"
+        "    Remove Logo From Cache.\n"
+        "    Specify logo filename with extension, but without path",
+        NULL
+    };
+    return HelpPages;
 }
 
 cString cPluginFlat::SVDRPCommand(const char *Command, const char *Option, int &ReplyCode) {
+    if( !strcasecmp(Command, "RLFC")) {
+        if( Option == NULL ) {
+            ReplyCode = 500;
+            return "no logo given";
+        }
+        if( !strcmp(Option, "") ) {
+            ReplyCode = 500;
+            return "no logo given";
+        }
+
+        if( imgCache.RemoveFromCache( Option ) ) {
+            ReplyCode = 900;
+            return "successfully remove logo from cache";
+        } else {
+            ReplyCode = 501;
+            return "Failure - logo not found in cache";
+        }
+    }
     return NULL;
 }
 

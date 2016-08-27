@@ -36,6 +36,9 @@ VDR Plugin 'skinflatplus' Revision History
     There is also a new menu option: MenuItemRecordingDefaultOldDays
     This is the default value if You don't want to use recordings_old.cfg.
     If MenuItemRecordingDefaultOldDays is -1, the default value is disabled.
+- [add] svdrp command to remove logo from cache
+    Use svdrp command "RLFC" to remove a logo from cache. Specify logo filename with extension, but without path.
+    For example: svdrpsend PLUG skinflatplus RLFC "rtl ii.png"
 
 2015-02-14: Version 0.5.1
 - [fix] topbar number recordings

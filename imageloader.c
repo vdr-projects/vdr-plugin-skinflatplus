@@ -72,7 +72,7 @@ cImage* cImageLoader::LoadLogo(const char *logo, int width, int height) {
     return img;
 }
 
-cImage* cImageLoader::LoadIcon(const char *cIcon, int width, int height, bool preserveAspect) {
+cImage* cImageLoader::LoadIcon(const char *cIcon, int width, int height) {
     if ((width == 0)||(height==0))
         return NULL;
 
@@ -156,7 +156,7 @@ cImage* cImageLoader::LoadIcon(const char *cIcon, int width, int height, bool pr
     return img;
 }
 
-cImage* cImageLoader::LoadFile(const char *cFile, int width, int height, bool preserveAspect) {
+cImage* cImageLoader::LoadFile(const char *cFile, int width, int height ) {
     if( (width == 0) || (height==0) )
         return NULL;
     cString File = cFile;
