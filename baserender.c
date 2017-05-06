@@ -554,7 +554,20 @@ void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char 
     int x = 0;
     if( !(!Config.ButtonsShowEmpty && !Red) ) {
         buttonsPixmap->DrawText(cPoint(x, 0), Red, Theme.Color(clrButtonFont), Theme.Color(clrButtonBg), font, buttonWidth, fontHeight + marginButtonColor, taCenter);
-        buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonRed));
+        switch( Setup.ColorKey0 ) {
+            case 0:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonRed));
+                break;
+            case 1:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonGreen));
+                break;
+            case 2:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonYellow));
+                break;
+            case 3:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonBlue));
+                break;
+        }
         DecorBorderDraw(x + Config.decorBorderButtonSize, buttonsTop, buttonWidth, buttonsHeight, Config.decorBorderButtonSize, Config.decorBorderButtonType,
             Config.decorBorderButtonFg, Config.decorBorderButtonBg, BorderButton);
         buttonsDrawn = true;
@@ -563,7 +576,22 @@ void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char 
     x += buttonWidth + marginItem + Config.decorBorderButtonSize*2;
     if( !(!Config.ButtonsShowEmpty && !Green) ) {
         buttonsPixmap->DrawText(cPoint(x, 0), Green, Theme.Color(clrButtonFont), Theme.Color(clrButtonBg), font, buttonWidth, fontHeight + marginButtonColor, taCenter);
-        buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonGreen));
+
+        switch( Setup.ColorKey1 ) {
+            case 0:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonRed));
+                break;
+            case 1:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonGreen));
+                break;
+            case 2:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonYellow));
+                break;
+            case 3:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonBlue));
+                break;
+        }
+
         DecorBorderDraw(x + Config.decorBorderButtonSize, buttonsTop, buttonWidth, buttonsHeight, Config.decorBorderButtonSize, Config.decorBorderButtonType,
             Config.decorBorderButtonFg, Config.decorBorderButtonBg, BorderButton);
         buttonsDrawn = true;
@@ -572,7 +600,22 @@ void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char 
     x += buttonWidth + marginItem + Config.decorBorderButtonSize*2;
     if( !(!Config.ButtonsShowEmpty && !Yellow) ) {
         buttonsPixmap->DrawText(cPoint(x, 0), Yellow, Theme.Color(clrButtonFont), Theme.Color(clrButtonBg), font, buttonWidth, fontHeight + marginButtonColor, taCenter);
-        buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonYellow));
+
+        switch( Setup.ColorKey2 ) {
+            case 0:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonRed));
+                break;
+            case 1:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonGreen));
+                break;
+            case 2:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonYellow));
+                break;
+            case 3:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonBlue));
+                break;
+        }
+
         DecorBorderDraw(x + Config.decorBorderButtonSize, buttonsTop, buttonWidth, buttonsHeight, Config.decorBorderButtonSize, Config.decorBorderButtonType,
             Config.decorBorderButtonFg, Config.decorBorderButtonBg, BorderButton);
         buttonsDrawn = true;
@@ -583,7 +626,22 @@ void cFlatBaseRender::ButtonsSet(const char *Red, const char *Green, const char 
         buttonWidth += buttonsWidth - (x + buttonWidth + Config.decorBorderButtonSize*2);
     if( !(!Config.ButtonsShowEmpty && !Blue) ) {
         buttonsPixmap->DrawText(cPoint(x, 0), Blue, Theme.Color(clrButtonFont), Theme.Color(clrButtonBg), font, buttonWidth, fontHeight + marginButtonColor, taCenter);
-        buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonBlue));
+
+        switch( Setup.ColorKey3 ) {
+            case 0:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonRed));
+                break;
+            case 1:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonGreen));
+                break;
+            case 2:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonYellow));
+                break;
+            case 3:
+                buttonsPixmap->DrawRectangle(cRect(x, fontHeight + marginButtonColor, buttonWidth, buttonColorHeight), Theme.Color(clrButtonBlue));
+                break;
+        }
+
         DecorBorderDraw(x + Config.decorBorderButtonSize, buttonsTop, buttonWidth, buttonsHeight, Config.decorBorderButtonSize, Config.decorBorderButtonType,
             Config.decorBorderButtonFg, Config.decorBorderButtonBg, BorderButton);
         buttonsDrawn = true;
