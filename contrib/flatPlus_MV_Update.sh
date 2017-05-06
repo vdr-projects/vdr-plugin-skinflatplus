@@ -2,86 +2,81 @@
 
 # flatPlus_MV_Update.sh
 # Skript zum Updaten der MV-Themen
+VERSION=170319
 
 # Ordner und Dateien
-ICONS="icons" ; THEMES="themes" ; DECORS="decors" ; CONFIGS="configs"
-PREVIEWS="previews" ; INFO="MV_Themes.INFO" ; HIST="MV_Themes.HISTORY"
+ICONS='icons' ; THEMES='themes' ; DECORS='decors' ; CONFIGS='configs'
+PREVIEWS='previews' ; INFO='MV_Themes.INFO' ; HIST='MV_Themes.HISTORY'
 
 # Ordner für Direktupdate (Im aktuellem Filesystem); Beispiel für Gen2VDR
-THEMEDIR="/etc/vdr/themes"
-PLUGINDIR="/etc/vdr/plugins/skinflatplus"
+THEMEDIR='/etc/vdr/themes'
+PLUGINDIR='/etc/vdr/plugins/skinflatplus'
 ICONDIR="${PLUGINDIR}/icons"
 DECORDIR="${PLUGINDIR}/decors"
 CONFIGSDIR="${PLUGINDIR}/configs"
 PREVIEWDIR="${PLUGINDIR}/previews"
 
-timedout_read() {
-  timeout="$1" ; varname="$2" ; old_tty_settings="$(stty -g)"
-  stty -icanon min 0 time "${timeout}0"
-  read "$varname"
-  stty "$old_tty_settings"           # See man page for "stty."
-}
+LN='-------------------------------'
 
-_help() {
-  echo "-------------------------------"
+f_help() {
+  echo "$LN"
   echo "Falsche(r) Parameter: $*"
   echo "Aufruf mit ${0##*/}"
-  echo "Parameter -Silent    Keine Abfragen (Silent Update)."
-  echo "Parameter -Direct    Direktes Update der Daten im Filesysten (/etc/vdr)."
-  echo "                     !!! Speziell für Gen2VDR angepasst !!!"
+  echo 'Parameter -Silent    Keine Abfragen (Silent Update).'
+  echo 'Parameter -Direct    Direktes Update der Daten im Filesysten (/etc/vdr).'
+  echo '                     !!! Speziell für Gen2VDR angepasst !!!'
   exit
 }
-### Start
+
+# --- Start ---
 # In Skriptordner wechseln (contrib)
 cd "$(dirname "$0")"  # Skript im contrib-Ordner
 
-if [[ ! -d "../$ICONS" || ! -d "../$THEMES" || ! -d "../$DECORS" ]] ; then
-  echo "Falsches Verzeichnis! Skript muss im ./contrib-Ordner ausgeführt werden"
+if [[ ! -d "../${ICONS}" || ! -d "../${THEMES}" || ! -d "../${DECORS}" ]] ; then
+  echo 'Falsches Verzeichnis! Skript muss im ./contrib-Ordner ausgeführt werden'
   exit 1
 fi
 
 if [[ -n "$1" ]] ; then         # Parameter wurde übergeben
-  case $1 in
+  case "$1" in
     -Silent) SILENTUPDATE=1 ; echo "Silent Update! ($1)" ;;
-    -Direct) DIRECTUPDATE=1 ; echo "Direct Update! ($1)" ; unset -v SILENTUPDATE ;;
-    *)       _help "$@"
+    -Direct) DIRECTUPDATE=1 ; echo "Direct Update! ($1)" ; unset -v 'SILENTUPDATE' ;;
+    *)       f_help "$@" ;;
   esac
 fi
 
 # MV_Themes Löschen!
 if [[ -z "$SILENTUPDATE" ]] ; then
-  echo "-------------------------------"
-  [[ -n "$DIRECTUPDATE" ]] && echo "ACHTUNG: Dateien in /etc werden gelöscht!"
-  echo "MV_Themen löschen? (J/n)"
-  timedout_read 5 TASTE
+  echo "$LN"
+  [[ -n "$DIRECTUPDATE" ]] && echo 'ACHTUNG: MV_Themen in /etc werden gelöscht!'
+  read -p 'MV_Themen löschen? (J/n)' -t 5 TASTE
   if [[ "${TASTE^^}" == "N" ]] ; then
-    echo "Skript abgebrochen. Es wurde nichts gelöscht!"
+    echo 'Skript abgebrochen. Es wurde nichts gelöscht!'
     exit
   fi
 fi
 
 if [[ -n "$DIRECTUPDATE" ]] ; then # Löschen im Dateisystem (/etc)
-  [[ -d "$ICONDIR" ]] && rm -rf ${ICONDIR}/MV*
-  [[ -d "$THEMEDIR" ]] && rm -f ${THEMEDIR}/flatPlus-MV*
-  [[ -d "$DECORDIR" ]] && rm -f ${DECORDIR}/*MV*
-  [[ -d "$CONFIGSDIR" ]] && rm -f ${CONFIGSDIR}/*MV*
-  [[ -d "$PREVIEWDIR" ]] && rm -f ${PREVIEWDIR}/*MV*
+  [[ -d "$ICONDIR" ]] && rm -rf "${ICONDIR}"/MV*
+  [[ -d "$THEMEDIR" ]] && rm -f "${THEMEDIR}"/flatPlus-MV*
+  [[ -d "$DECORDIR" ]] && rm -f "${DECORDIR}"/*MV*
+  [[ -d "$CONFIGSDIR" ]] && rm -f "${CONFIGSDIR}"/*MV*
+  [[ -d "$PREVIEWDIR" ]] && rm -f "${PREVIEWDIR}"/*MV*
 else                             # Löschen im Source-Dir von skinflatPlus
-  rm -rf ../${ICONS}/MV*
-  rm -f ../${THEMES}/flatPlus-MV*
-  rm -f ../${DECORS}/*MV*
-  rm -f ../${INFO} ../${HIST}
-  rm -f ../${CONFIGSDIR}/*MV*
-  rm -f ../${PREVIEWDIR}/*MV*
+  rm -rf ../"${ICONS}"/MV*
+  rm -f ../"${THEMES}"/flatPlus-MV*
+  rm -f ../"${DECORS}"/*MV*
+  rm -f ../"${INFO}" ../"${HIST}"
+  rm -f ../"${CONFIGS}"/*MV*
+  rm -f ../"${PREVIEWS}"/*MV*
 fi
 
-echo "MV-Themen wurden entfernt."
+echo 'MV-Themen wurden entfernt.'
 
 # MV_Themes neu laden
 if [[ -z "$SILENTUPDATE" ]] ; then
-  echo "-------------------------------"
-  echo "MV_Themes neu herunterladen und entpacken? (J/n)"
-  timedout_read 5 TASTE
+  echo "$LN"
+  read -p 'MV_Themes neu herunterladen und entpacken? (J/n)' -t 5 TASTE
   [[ "${TASTE^^}" == "N" ]] && exit
 fi
 
@@ -89,37 +84,36 @@ cd ..        # In das Source-Verzeichnis von SkinFlatPlus
 
 # Download
 [[ -n "$DIRECTUPDATE" ]] && cd /tmp
-wget "https://dl.dropboxusercontent.com/u/1490505/VDR/skinflatplus/MV_Themes.tar.xz"
+wget "https://www.dropbox.com/s/c5mh4g2qonjs25r/MV_Themes.tar.xz"
 tar -xJf MV_Themes.tar.xz    # Entpacken
 rm -f MV_Themes.tar.xz       # Archiv entfernen
 
 if [[ -n "$DIRECTUPDATE" ]] ; then
-  cp -f ${THEMES}/flatPlus-MV* $THEMEDIR
-  cp -f ${DECORS}/*MV* $DECORDIR
-  cp -rf ${ICONS}/MV* $ICONDIR
-  cp -f ${CONFIGS}/*MV* $CONFIGSDIR
-  cp -f ${PREVIEWDIR}/*MV* $PREVIEWDIR
+  cp -f "${THEMES}"/flatPlus-MV* "$THEMEDIR"
+  cp -f "${DECORS}"/*MV* "$DECORDIR"
+  cp -rf "${ICONS}"/MV* "$ICONDIR"
+  cp -f "${CONFIGS}"/*MV* "$CONFIGSDIR"
+  cp -f "${PREVIEWS}"/*MV* "$PREVIEWDIR"
 fi
 
-echo "-------------------------------"
-echo "MV-Themen wurden aktualisiert."
+echo "$LN"
+echo 'MV-Themen wurden aktualisiert.'
 
 [[ -n "$DIRECTUPDATE" ]] && exit
 
 if [[ -z "$SILENTUPDATE" ]] ; then
-  echo "-------------------------------"
-  echo "MV_Themen installieren (make install)? (j/N)"
-  timedout_read 5 TASTE
+  echo "$LN"
+  read -p 'MV_Themen installieren (make install)? (j/N)' -t 5 TASTE
   if [[ "${TASTE^^}" == "J" ]] ; then
     #cd ..
     make install
-    echo "-------------------------------"
-    echo "MV-Themen wurden installiert."
+    echo "$LN"
+    echo 'MV-Themen wurden installiert.'
   fi
 else     # Silentupdate - Themen instalieren
   make install
 fi
 
-echo "-------------------------------"
+echo "$LN"
 
 exit

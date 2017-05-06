@@ -1,6 +1,6 @@
 MV-Themen fuer Skin flatPlus
 
-Download: https://dl.dropboxusercontent.com/u/1490505/VDR/skinflatplus/MV_Themes.tar.xz
+Download: https://www.dropbox.com/s/c5mh4g2qonjs25r/MV_Themes.tar.xz
 
 HISTORY
  [...] Erste Version
@@ -134,3 +134,7 @@ HISTORY
                 Skinfarbe hinzugefuegt
  [25.08.2016] - Symbol 'recording_old.png' und 'recording_old_cur.png' verkleinert
                 auf 90 x 90 Pixel
+ [11.09.2016] - Skript zum automatischen Kanallogowechsel hinzugefuegt. Fuer Sender,
+                die sich den Sendeplatz teilen (Bsp.: Comedy Central/VIVA)
+ [03.10.2016] - Konfiguration 'MV_default' aktualisiert
+ [17.03.2017] - Neuer Download-Link, da Dropbox das Public-Feature deaktiviert hat
