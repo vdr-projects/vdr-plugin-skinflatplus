@@ -22,6 +22,7 @@ cFlatConfig::cFlatConfig(void) {
 
     MenuContentFullSize = true;
 
+    ChannelShowStartTime = true;
     ChannelFormatShow = true;
     ChannelResolutionAspectShow = true;
     ChannelSimpleAspectFormat = true;
@@ -377,6 +378,7 @@ bool cFlatConfig::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "ChannelDvbapiInfoShow") == 0)                ChannelDvbapiInfoShow = atoi(Value);
     else if (strcmp(Name, "MenuItemRecordingSeenTreshold") == 0)        MenuItemRecordingSeenTreshold = atod(Value);
     else if (strcmp(Name, "MenuItemRecordingDefaultOldDays") == 0)      MenuItemRecordingDefaultOldDays = atoi(Value);
+    else if (strcmp(Name, "ChannelShowStartTime") == 0)      ChannelShowStartTime = atoi(Value);
     else return false;
 
     return true;

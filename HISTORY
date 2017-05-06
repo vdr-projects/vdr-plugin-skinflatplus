@@ -1,5 +1,10 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
+
+201X-XX-XX: Version XXX
+- [add] support for change color key mapping
+- [add] displaychannel show event start time on the left before event title
+
 2016-09-05: Version 0.6.0
 - [fix] eMenuSortMode in displaymenu.h for compile with VDR < 2.2.0
 - [fix] position of widgets in main menu (add menu item border size)

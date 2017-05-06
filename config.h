@@ -212,6 +212,7 @@ class cFlatConfig
         int ChannelSimpleAspectFormat;
         int ChannelTimeLeft;
         int ChannelDvbapiInfoShow;
+        int ChannelShowStartTime;
 
         int ChannelWeatherShow;
         int PlaybackWeatherShow;

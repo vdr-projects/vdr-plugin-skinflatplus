@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skinflat 0.5.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2016-08-26 16:35+0200\n"
+"POT-Creation-Date: 2017-05-06 16:13+0200\n"
 "PO-Revision-Date: 2015-02-09 20:09+0100\n"
 "Last-Translator: Martin Schirrmacher\n"
 "Language-Team: Martin Schirrmacher\n"
@@ -536,6 +536,9 @@ msgstr "Bildercache Einträge"
 
 msgid "Show Channelinfo icons"
 msgstr "Zeige Kanalinfo Logos"
+
+msgid "Show event start time left"
+msgstr "Zeige Event Startzeit links"
 
 msgid "Show signal quality"
 msgstr "Zeige Signalqualität"

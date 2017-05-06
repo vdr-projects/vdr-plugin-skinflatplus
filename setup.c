@@ -325,6 +325,7 @@ void cFlatSetup::Store(void) {
     SetupStore("ChannelDvbapiInfoShow", Config.ChannelDvbapiInfoShow);
     SetupStore("MenuItemRecordingSeenTreshold", dtoa(Config.MenuItemRecordingSeenTreshold));
     SetupStore("MenuItemRecordingDefaultOldDays", Config.MenuItemRecordingDefaultOldDays);
+    SetupStore("ChannelShowStartTime", Config.ChannelShowStartTime);
 
     Config.Init();
 }
@@ -515,6 +516,7 @@ bool cFlatSetupGeneral::SetupParse(const char *Name, const char *Value) {
     else if (strcmp(Name, "ChannelDvbapiInfoShow") == 0)         SetupConfig->ChannelDvbapiInfoShow = atoi(Value);
     else if (strcmp(Name, "MenuItemRecordingSeenTreshold") == 0)        SetupConfig->MenuItemRecordingSeenTreshold = atod(Value);
     else if (strcmp(Name, "MenuItemRecordingDefaultOldDays") == 0)         SetupConfig->MenuItemRecordingDefaultOldDays = atoi(Value);
+    else if (strcmp(Name, "ChannelShowStartTime") == 0)                 SetupConfig->ChannelShowStartTime = atoi(Value);
     else return false;
 
     return true;
@@ -687,6 +689,7 @@ void cFlatSetupGeneral::SaveCurrentSettings(void) {
     Config.Store("ChannelDvbapiInfoShow", SetupConfig->ChannelDvbapiInfoShow, *Filename);
     Config.Store("MenuItemRecordingSeenTreshold", dtoa(Config.MenuItemRecordingSeenTreshold), *Filename);
     Config.Store("MenuItemRecordingDefaultOldDays", SetupConfig->MenuItemRecordingDefaultOldDays, *Filename);
+    Config.Store("ChannelShowStartTime", SetupConfig->ChannelShowStartTime, *Filename);
 
     cString msg = cString::sprintf("%s %s", tr("saved settings in file:"), *File);
     Skins.Message(mtInfo, msg);
@@ -857,6 +860,7 @@ void cFlatSetupChannelInfo::Setup(void) {
     Clear();
 
     Add(new cMenuEditBoolItem(tr("Show Channelinfo icons"), &SetupConfig->ChannelIconsShow));
+    Add(new cMenuEditBoolItem(tr("Show event start time left"), &SetupConfig->ChannelShowStartTime));
     Add(new cMenuEditBoolItem(tr("Show signal quality"), &SetupConfig->SignalQualityShow));
     Add(new cMenuEditBoolItem(tr("Show weather widget"), &SetupConfig->ChannelWeatherShow));
     Add(new cMenuEditPrcItem(tr("Weather widget font size"), &SetupConfig->WeatherFontSize, 0.01, 0.2, 1));

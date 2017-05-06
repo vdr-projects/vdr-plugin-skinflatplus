@@ -331,6 +331,11 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
     int RecWidth = fontSml->Width("REC");
 
     int left = heightBottom * 1.34 + marginItem;
+    int StartTimeLeft = left;
+
+    if( Config.ChannelShowStartTime ) {
+        left += font->Width("00:00  ");
+    }
 
     if( Present ) {
         cString startTime = Present->GetTimeString();
@@ -368,6 +373,10 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
             Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontSml, timeStringWidth, 0, taRight);
         chanInfoBottomPixmap->DrawText(cPoint(channelWidth - seenWidth - marginItem * 2, fontSmlHeight), *seen,
                 Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontSml, seenWidth, 0, taRight);
+
+        if( Config.ChannelShowStartTime ) {
+            chanInfoBottomPixmap->DrawText(cPoint(StartTimeLeft, 0), *startTime, Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), font);
+        }
 
         if( (epgWidth > channelWidth - left - maxWidth) && Config.ScrollerEnable ) {
             scrollers.AddScroller(*epg, cRect(Config.decorBorderChannelSize + left, Config.decorBorderChannelSize+channelHeight - heightBottom, channelWidth - left - maxWidth, fontHeight), Theme.Color(clrChannelFontEpg), clrTransparent, font);
@@ -416,6 +425,9 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         chanInfoBottomPixmap->DrawText(cPoint(channelWidth - durWidth - marginItem * 2, fontHeight + fontSmlHeight*2), *dur,
                 Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), fontSml, durWidth, 0, taRight);
 
+        if( Config.ChannelShowStartTime ) {
+            chanInfoBottomPixmap->DrawText(cPoint(StartTimeLeft, fontHeight + fontSmlHeight), *startTime, Theme.Color(clrChannelFontEpgFollow), Theme.Color(clrChannelBg), font);
+        }
         if( (epgWidth > channelWidth - left - maxWidth) && Config.ScrollerEnable ) {
             scrollers.AddScroller(*epg, cRect(Config.decorBorderChannelSize + left, Config.decorBorderChannelSize+channelHeight - heightBottom + fontHeight + fontSmlHeight, channelWidth - left - maxWidth, fontHeight), Theme.Color(clrChannelFontEpgFollow), clrTransparent, font);
         } else {
