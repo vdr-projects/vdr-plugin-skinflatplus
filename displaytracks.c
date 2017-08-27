@@ -15,15 +15,15 @@ cFlatDisplayTracks::cFlatDisplayTracks(const char *Title, int NumTracks, const c
     if( img_stereo )
         stereoWidth = img_stereo->Width();
 
-    int imgWidthMax = max(ac3Width, stereoWidth);
+    int imgWidthMax = std::max(ac3Width, stereoWidth);
     itemHeight = fontHeight + Config.MenuItemPadding + Config.decorBorderTrackSize*2;
     currentIndex = -1;
     maxItemWidth = font->Width(Title) + marginItem*4;
     for (int i = 0; i < NumTracks; i++)
-        maxItemWidth = max(maxItemWidth, font->Width(Tracks[i]) + marginItem*2);
+        maxItemWidth = std::max(maxItemWidth, font->Width(Tracks[i]) + marginItem*2);
 
     int headerWidth = font->Width(Title) + font->Width(" ") + imgWidthMax;
-    maxItemWidth = max(maxItemWidth, headerWidth);
+    maxItemWidth = std::max(maxItemWidth, headerWidth);
 
     itemsHeight = (NumTracks+1) * itemHeight;
     int left = osdWidth - maxItemWidth;

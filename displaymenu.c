@@ -2022,7 +2022,7 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
                 Left += fontHeight + marginItem;
             }
 
-            //int Minutes = max(0, (Recording->LengthInSeconds() + 30) / 60);
+            //int Minutes = std::max(0, (Recording->LengthInSeconds() + 30) / 60);
             int Minutes = (Recording->LengthInSeconds() + 30) / 60;
             cString Length = cString::sprintf("%02d:%02d", Minutes / 60, Minutes % 60);
             buffer = cString::sprintf("%s  %s  %s ", *ShortDateString(Recording->Start()), *TimeString(Recording->Start()), *Length);

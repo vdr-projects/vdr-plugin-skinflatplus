@@ -41,7 +41,7 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     heightBottom = (fontHeight*2) + (fontSmlHeight*2) + marginItem; // Top, Buttom, Between
     heightImageLogo = heightBottom;
     if( Config.SignalQualityShow )
-        heightBottom += max(fontSmlHeight, (Config.decorProgressSignalSize*2) + marginItem) + marginItem;
+        heightBottom += std::max(fontSmlHeight, (Config.decorProgressSignalSize*2) + marginItem) + marginItem;
     else if( Config.ChannelIconsShow )
         heightBottom += fontSmlHeight + marginItem;
 
@@ -367,7 +367,7 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
 
         epg = Present->Title();
         epgShort = Present->ShortText();
-        int maxWidth = max(timeStringWidth, seenWidth);
+        int maxWidth = std::max(timeStringWidth, seenWidth);
 
         chanInfoBottomPixmap->DrawText(cPoint(channelWidth - timeStringWidth - marginItem * 2, 0), *timeString,
             Theme.Color(clrChannelFontEpg), Theme.Color(clrChannelBg), fontSml, timeStringWidth, 0, taRight);
@@ -415,7 +415,7 @@ void cFlatDisplayChannel::SetEvents(const cEvent *Present, const cEvent *Followi
         cString dur = cString::sprintf("%d min", Following->Duration() / 60);
         int durWidth = fontSml->Width(*dur) + fontSml->Width("  ");
 
-        int maxWidth = max(timeStringWidth, durWidth);
+        int maxWidth = std::max(timeStringWidth, durWidth);
 
         epg = Following->Title();
         epgShort = Following->ShortText();
@@ -514,10 +514,10 @@ void cFlatDisplayChannel::SignalQualityDraw(void) {
     cFont *SignalFont = cFont::CreateFont(Setup.FontOsd, Config.decorProgressSignalSize);
 
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
-    top += max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem;
+    top += std::max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem;
     int left = marginItem * 2;
     int progressTop = fontHeight*2 + fontSmlHeight*2 + marginItem;
-    progressTop += max(fontSmlHeight, Config.decorProgressSignalSize) / 2 - Config.decorProgressSignalSize / 2;
+    progressTop += std::max(fontSmlHeight, Config.decorProgressSignalSize) / 2 - Config.decorProgressSignalSize / 2;
 
     progressTop = top;
 
@@ -585,7 +585,7 @@ void cFlatDisplayChannel::DvbapiInfoDraw(void) {
         return;
 
     int top = fontHeight*2 + fontSmlHeight*2 + marginItem;
-    top += max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem*2;
+    top += std::max(fontSmlHeight, Config.decorProgressSignalSize) - (Config.decorProgressSignalSize*2) - marginItem*2;
     int left = BitrateRight + marginItem * 2;
     if (BitrateRight == 0 )
         left = SignalStrengthRight + marginItem * 2;
@@ -675,7 +675,7 @@ void cFlatDisplayChannel::PreLoadImages(void) {
             index++;
     }
 
-    height = max(fontSmlHeight, Config.decorProgressSignalSize);
+    height = std::max(fontSmlHeight, Config.decorProgressSignalSize);
     imgLoader.LoadIcon("crypted", 999, height);
     imgLoader.LoadIcon("uncrypted", 999, height);
     imgLoader.LoadIcon("unknown_asp", 999, height);

@@ -385,9 +385,9 @@ void cFlatBaseRender::TopBarUpdate(void) {
         cString date = ShortDateString(t);
         int dateWidth = topBarFontSml->Width(*date);
 
-        Right = TopBarWidth - timeWidth - max(weekdayWidth, dateWidth) - marginItem;
-        topBarPixmap->DrawText(cPoint(Right, fontSmlTop), weekday, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, max(weekdayWidth, dateWidth), 0, taRight);
-        topBarPixmap->DrawText(cPoint(Right, fontSmlTop + topBarFontSmlHeight), date, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, max(weekdayWidth, dateWidth), 0, taRight);
+        Right = TopBarWidth - timeWidth - std::max(weekdayWidth, dateWidth) - marginItem;
+        topBarPixmap->DrawText(cPoint(Right, fontSmlTop), weekday, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, std::max(weekdayWidth, dateWidth), 0, taRight);
+        topBarPixmap->DrawText(cPoint(Right, fontSmlTop + topBarFontSmlHeight), date, Theme.Color(clrTopBarDateFont), Theme.Color(clrTopBarBg), topBarFontSml, std::max(weekdayWidth, dateWidth), 0, taRight);
 
         int middleWidth = 0;
         int numConflicts = 0;
@@ -462,7 +462,7 @@ void cFlatBaseRender::TopBarUpdate(void) {
 
         int extra1Width = topBarFontSml->Width(tobBarTitleExtra1);
         int extra2Width = topBarFontSml->Width(tobBarTitleExtra2);
-        int extraMaxWidth = max(extra1Width, extra2Width);
+        int extraMaxWidth = std::max(extra1Width, extra2Width);
         middleWidth += extraMaxWidth;
         Right -= extraMaxWidth + marginItem;
 
@@ -1106,8 +1106,8 @@ void cFlatBaseRender::ScrollbarDraw(cPixmap *Pixmap, int Left, int Top, int Heig
     if( !Pixmap )
         return;
 
-    int scrollHeight = max(int((Height) * double(Shown) / Total + 0.5), 5);
-    int scrollTop = min(int(Top + (Height) * double(Offset) / Total + 0.5), Top + Height - scrollHeight);
+    int scrollHeight = std::max(int((Height) * double(Shown) / Total + 0.5), 5);
+    int scrollTop = std::min(int(Top + (Height) * double(Offset) / Total + 0.5), Top + Height - scrollHeight);
 
     /* Types
      * 0 = left line + rect bar
@@ -1697,8 +1697,8 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
 
     int left = marginItem;
 
-    int widthTempToday = max(weatherFontSml->Width(tempMaxToday.c_str()), weatherFontSml->Width(tempMinToday.c_str()) );
-    int widthTempTomorrow = max(weatherFontSml->Width(tempMaxTomorrow.c_str()), weatherFontSml->Width(tempMinTomorrow.c_str()) );
+    int widthTempToday = std::max(weatherFontSml->Width(tempMaxToday.c_str()), weatherFontSml->Width(tempMinToday.c_str()) );
+    int widthTempTomorrow = std::max(weatherFontSml->Width(tempMaxTomorrow.c_str()), weatherFontSml->Width(tempMinTomorrow.c_str()) );
 
     int wTop = topBarHeight + Config.decorBorderTopBarSize*2 + 20 + Config.decorBorderChannelEPGSize;
     int wWidth = marginItem + weatherFont->Width(tempToday.c_str()) + weatherFontSign->Width(tempTodaySign.c_str()) + marginItem*2 + weatherFont->Height() + marginItem \
