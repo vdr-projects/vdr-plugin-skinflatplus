@@ -748,12 +748,6 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
     if( Config.MenuChannelView == 0 || !Channel )
         return false;
 
-#if VDRVERSNUM >= 20301
-    LOCK_SCHEDULES_READ;
-#else
-    cSchedulesLock schedulesLock;
-    const cSchedules *schedules = cSchedules::Schedules(schedulesLock);
-#endif
     const cEvent *Event = NULL;
 
     bool DrawProgress = true;
@@ -884,8 +878,11 @@ bool cFlatDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool C
 
     // event from channel
 #if VDRVERSNUM >= 20301
+    LOCK_SCHEDULES_READ;
     const cSchedule *Schedule = Schedules->GetSchedule( Channel );
 #else
+    cSchedulesLock schedulesLock;
+    const cSchedules *schedules = cSchedules::Schedules(schedulesLock);
     const cSchedule *Schedule = schedules->GetSchedule( Channel->GetChannelID() );
 #endif
     if( Schedule ) {
@@ -4424,13 +4421,6 @@ int cFlatDisplayMenu::DrawMainMenuWidgetActiveTimers(int wLeft, int wWidth, int 
     //check if remotetimers plugin is available
     static cPlugin* pRemoteTimers = cPluginManager::GetPlugin("remotetimers");
 
-#if VDRVERSNUM >= 20301
-    LOCK_SCHEDULES_READ;
-#else
-    cSchedulesLock SchedulesLock;
-    const cSchedules *Schedules = cSchedules::Schedules(SchedulesLock);
-#endif
-
     time_t now;
     time(&now);
     if( (Config.MainMenuWidgetActiveTimerShowRemoteActive || Config.MainMenuWidgetActiveTimerShowRemoteRecording) && pRemoteTimers && (now - remoteTimersLastRefresh) > Config.MainMenuWidgetActiveTimerShowRemoteRefreshTime ) {
@@ -4459,6 +4449,13 @@ int cFlatDisplayMenu::DrawMainMenuWidgetActiveTimers(int wLeft, int wWidth, int 
         if( timerRec.Size() + timerActive.Size() >= Config.MainMenuWidgetActiveTimerMaxCount )
             break;
     }
+
+#if VDRVERSNUM >= 20301
+    LOCK_SCHEDULES_READ;
+#else
+    cSchedulesLock SchedulesLock;
+    const cSchedules *Schedules = cSchedules::Schedules(SchedulesLock);
+#endif
     if( (Config.MainMenuWidgetActiveTimerShowRemoteActive || Config.MainMenuWidgetActiveTimerShowRemoteRecording) && pRemoteTimers &&
         timerRec.Size() + timerActive.Size() < Config.MainMenuWidgetActiveTimerMaxCount ) {
         cTimer* remoteTimer = NULL;

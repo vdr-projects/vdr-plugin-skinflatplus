@@ -9,6 +9,34 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#if VDRVERSNUM >= 20301
+#include <vdr/thread.h>
+
+class cRecCounter : public cThread
+{
+    private:
+        int numRec;
+        cCondWait condWait;
+        cRecCounter() { numRec = 0; }
+    protected:
+        void Action(void) {
+            LOCK_TIMERS_READ;
+            for(const cTimer *ti = Timers->First(); ti; ti = Timers->Next(ti)) {
+                if( ti->HasFlags(tfRecording) ) numRec++;
+            }
+            condWait.Signal();
+        }
+    public:
+        static int Count(void) {
+            cRecCounter rc;
+            rc.Start();
+            if(rc.condWait.Wait(500))
+                return rc.numRec;
+            return 0;
+        }
+};
+#endif
+
 cFlatBaseRender::cFlatBaseRender(void) {
     font = cFont::CreateFont(Setup.FontOsd, Setup.FontOsdSize );
     fontSml = cFont::CreateFont(Setup.FontSml, Setup.FontSmlSize);
@@ -424,15 +452,11 @@ void cFlatBaseRender::TopBarUpdate(void) {
         if( Config.TopBarRecordingShow ) {
             // look for timers
             #if VDRVERSNUM >= 20301
-                LOCK_TIMERS_READ;
-                for(const cTimer *ti = Timers->First(); ti; ti = Timers->Next(ti)) {
+                numRec = cRecCounter::Count();
             #else
-                for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti)) {
+                for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti))
+                    if( ti->HasFlags(tfRecording) ) numRec++;
             #endif
-                if( ti->HasFlags(tfRecording) ) {
-                    numRec++;
-                }
-            }
             if( numRec ) {
                 imgRec = imgLoader.LoadIcon("topbar_timer", topBarFontHeight - marginItem*2, topBarFontHeight - marginItem*2);
                 if( imgRec ) {
