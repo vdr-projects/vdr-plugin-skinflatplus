@@ -5302,8 +5302,8 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
                 contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
                 left += fontHeight - marginItem;
             }
-            contentWidget.AddText(*precString, false, cRect(left, ContentTop + (fontHeight/2 - fontTempSml->Height()/2), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("XXX% "), fontTempSml->Height(), taRight);
-            left += fontTempSml->Width("XXXX%") + marginItem;
+            contentWidget.AddText(*precString, false, cRect(left, ContentTop + (fontHeight/2 - fontTempSml->Height()/2), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("100%"), fontTempSml->Height(), taRight);
+            left += fontTempSml->Width("100% ") + marginItem;
 
             contentWidget.AddText(summary.c_str(), false, cRect(left, ContentTop + (fontHeight/2 - fontTempSml->Height()/2), wWidth - left, fontHeight), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, wWidth - left);
 
