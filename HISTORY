@@ -2,6 +2,7 @@ VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
 201X-XX-XX: Version XXX
+- [fix] '%' sign not shown in menü weather widget at certian font
 - [add] support for change color key mapping
 - [add] displaychannel show event start time on the left before event title
 
