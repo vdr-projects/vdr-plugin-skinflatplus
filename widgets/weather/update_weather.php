@@ -1,6 +1,11 @@
 <?php
 
 $config = dirname(__FILE__)."/update_weather.config";
+if( !file_exists( $config ) )
+{
+    echo "ERROR: config file <$config> does not exist!\n";
+    return 1;
+}
 $ini_array = parse_ini_file($config);
 
 $latitude = $ini_array['Latitude'];
@@ -27,7 +32,7 @@ $forecast = new ForecastIO($api_key);
 $condition = $forecast->getCurrentConditions($latitude, $longitude, $units, $lang);
 if( !$handle = fopen($OUTPUTFLDRTEMP."/weather.0.temp", "w") ) {
     print "can't create file!\n";
-    continue;
+    return 2;
 }
 $temp = round($condition->getTemperature(), 1);
 if( $convertPoint == 1 )
