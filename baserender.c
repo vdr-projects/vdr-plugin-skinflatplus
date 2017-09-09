@@ -10,31 +10,7 @@
 #include FT_FREETYPE_H
 
 #if VDRVERSNUM >= 20301
-#include <vdr/thread.h>
-
-class cRecCounter : public cThread
-{
-    private:
-        int numRec;
-        cCondWait condWait;
-        cRecCounter() { numRec = 0; }
-    protected:
-        void Action(void) {
-            LOCK_TIMERS_READ;
-            for(const cTimer *ti = Timers->First(); ti; ti = Timers->Next(ti)) {
-                if( ti->HasFlags(tfRecording) ) numRec++;
-            }
-            condWait.Signal();
-        }
-    public:
-        static int Count(void) {
-            cRecCounter rc;
-            rc.Start();
-            if(rc.condWait.Wait(500))
-                return rc.numRec;
-            return 0;
-        }
-};
+    #include <future>
 #endif
 
 cFlatBaseRender::cFlatBaseRender(void) {
@@ -452,7 +428,13 @@ void cFlatBaseRender::TopBarUpdate(void) {
         if( Config.TopBarRecordingShow ) {
             // look for timers
             #if VDRVERSNUM >= 20301
-                numRec = cRecCounter::Count();
+                auto recCounterFuture = std::async([&numRec](){
+                    LOCK_TIMERS_READ;
+                    for(const cTimer *ti = Timers->First(); ti; ti = Timers->Next(ti)) {
+                        if( ti->HasFlags(tfRecording) ) numRec++;
+                    }
+                });
+                recCounterFuture.get();
             #else
                 for(cTimer *ti = Timers.First(); ti; ti = Timers.Next(ti))
                     if( ti->HasFlags(tfRecording) ) numRec++;

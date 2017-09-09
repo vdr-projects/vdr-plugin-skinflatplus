@@ -48,6 +48,8 @@ SKINFLATPLUS_WIDGETDIR ?= $(LIBDIR)/$(PLUGIN)/widgets
 export CFLAGS   = $(call PKGCFG,cflags)
 export CXXFLAGS = $(call PKGCFG,cxxflags)
 
+CXXFLAGS += -std=c++11
+
 ### Allow user defined options to overwrite defaults:
 
 -include $(PLGCFG)

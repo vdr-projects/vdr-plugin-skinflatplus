@@ -6,6 +6,10 @@
 #include <fstream>
 #include <iostream>
 
+#if VDRVERSNUM >= 20301
+    #include <future>
+#endif
+
 #ifndef VDRLOGO
     #define VDRLOGO "vdrlogo_default"
 #endif
@@ -1488,7 +1492,11 @@ bool cFlatDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current
     return true;
 }
 
+#if APIVERSNUM >= 20308
 bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current, bool Selectable, const cChannel *Channel, bool WithDate, eTimerMatch TimerMatch, bool TimerActive) {
+#else
+bool cFlatDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current, bool Selectable, const cChannel *Channel, bool WithDate, eTimerMatch TimerMatch) {
+#endif
     if( Config.MenuEventView == 0 )
         return false;
 
@@ -1900,10 +1908,6 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
     if( Config.MenuRecordingView == 0 )
         return false;
 
-#if VDRVERSNUM >= 20301
-    LOCK_RECORDINGS_READ;
-#endif
-
     cString buffer;
     cString RecName = GetRecordingName(Recording, Level, Total == 0).c_str();
 
@@ -1919,6 +1923,7 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
         LastRecFolder = RecFolder;
         if( RecFolder != "" && LastItemRecordingLevel > 0 ) {
 #if VDRVERSNUM >= 20301
+            LOCK_RECORDINGS_READ;
             for(const cRecording *Rec = Recordings->First(); Rec; Rec = Recordings->Next(Rec)) {
 #else
             for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
@@ -1932,6 +1937,7 @@ bool cFlatDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, 
             }
         } else {
 #if VDRVERSNUM >= 20301
+            LOCK_RECORDINGS_READ;
             for(const cRecording *Rec = Recordings->First(); Rec; Rec = Recordings->Next(Rec)) {
 #else
             for(cRecording *Rec = Recordings.First(); Rec; Rec = Recordings.Next(Rec)) {
@@ -3218,13 +3224,18 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     // lent from skinelchi
     if( Config.RecordingAdditionalInfoShow ) {
 #if VDRVERSNUM >= 20301
-        LOCK_CHANNELS_READ;
-        const cChannel *channel = Channels->GetByChannelID(((cRecordingInfo *)recInfo)->ChannelID());
+        auto channelFuture = std::async([&recAdditional](tChannelID channelId){
+            LOCK_CHANNELS_READ;
+            const cChannel *channel = Channels->GetByChannelID(channelId);
+            if (channel)
+                recAdditional << trVDR("Channel") << ": " << channel->Number() << " - " << channel->Name() << endl;
+        }, recInfo->ChannelID());
+        channelFuture.get();
 #else
         cChannel *channel = Channels.GetByChannelID(((cRecordingInfo *)recInfo)->ChannelID());
-#endif
         if (channel)
             recAdditional << trVDR("Channel") << ": " << channel->Number() << " - " << channel->Name() << endl;
+#endif
 
         const cEvent *Event = recInfo->GetEvent();
         if( Event ) {
