@@ -181,4 +181,6 @@ class cFlatBaseRender
         int GetFontAscender(const char *Name, int CharHeight, int CharWidth = 0);
 
         void DrawWidgetWeather(void);
+
+        virtual cPixmap *CreatePixmap(int Layer, const cRect &ViewPort, const cRect &DrawPort = cRect::Null);
 };

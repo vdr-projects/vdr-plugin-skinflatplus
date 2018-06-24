@@ -15,11 +15,27 @@ void cTextScroll::SetText(const char *text, cRect position, tColor colorFg, tCol
     if( Osd && Pixmap )
         Osd->DestroyPixmap(Pixmap);
 
-    Pixmap = Osd->CreatePixmap(Layer, Position, drawPort);
+    Pixmap = CreatePixmap(Layer, Position, drawPort);
     dsyslog("skinflatplus: TextScrollerPixmap left: %d top: %d width: %d height: %d", Position.Left(), Position.Top(), Position.Width(), Position.Height());
     dsyslog("skinflatplus: TextScrollerPixmap drawPort left: %d top: %d width: %d height: %d", drawPort.Left(), drawPort.Top(), drawPort.Width(), drawPort.Height());
     Pixmap->Fill( colorBg );
     Draw();
+}
+
+cPixmap *cTextScroll::CreatePixmap(int Layer, const cRect &ViewPort, const cRect &DrawPort) {
+    cSize maxPixmapSize = Osd->MaxPixmapSize();
+    cRect SafeDrawPort( DrawPort.X(), DrawPort.Y(), DrawPort.Width(), DrawPort.Height());
+
+    if( DrawPort.Width() > maxPixmapSize.Width() ) {
+        dsyslog("Try to create Pixmap (%d x %d) > MaxPixmapSize (%d x %d)-> cut Pixmap to MaxPixmapSize", DrawPort.Width(), DrawPort.Height(), maxPixmapSize.Width(), maxPixmapSize.Height() );
+        SafeDrawPort.SetWidth(maxPixmapSize.Width());
+    }
+    if( DrawPort.Height() > maxPixmapSize.Height() ) {
+        dsyslog("Try to create Pixmap (%d x %d) > MaxPixmapSize (%d x %d)-> cut Pixmap to MaxPixmapSize", DrawPort.Width(), DrawPort.Height(), maxPixmapSize.Width(), maxPixmapSize.Height() );
+        SafeDrawPort.SetHeight(maxPixmapSize.Height());
+    }
+
+    return Osd->CreatePixmap(Layer, ViewPort, SafeDrawPort);
 }
 
 void cTextScroll::UpdateViewPortWidth(int w) {

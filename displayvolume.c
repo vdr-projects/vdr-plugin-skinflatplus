@@ -9,13 +9,13 @@ cFlatDisplayVolume::cFlatDisplayVolume(void) {
     CreateFullOsd();
     TopBarCreate();
     int width = osdWidth / 4 * 3;
-    
+
     int top = osdHeight - 50 - Config.decorProgressVolumeSize - labelHeight - marginItem - Config.decorBorderVolumeSize*2;
     int left = osdWidth - width - Config.decorBorderVolumeSize;
     left /= 2;
-    
-    labelPixmap = osd->CreatePixmap(1, cRect(0, top, osdWidth, labelHeight));
-    muteLogoPixmap = osd->CreatePixmap(2, cRect(0, top, osdWidth, labelHeight));
+
+    labelPixmap = CreatePixmap(1, cRect(0, top, osdWidth, labelHeight));
+    muteLogoPixmap = CreatePixmap(2, cRect(0, top, osdWidth, labelHeight));
 
     ProgressBarCreate(left, osdHeight - 50 - Config.decorProgressVolumeSize, width, Config.decorProgressVolumeSize, marginItem, marginItem,
         Config.decorProgressVolumeFg, Config.decorProgressVolumeBarFg, Config.decorProgressVolumeBg, Config.decorProgressVolumeType, true);
@@ -29,7 +29,7 @@ cFlatDisplayVolume::~cFlatDisplayVolume() {
 void cFlatDisplayVolume::SetVolume(int Current, int Total, bool Mute) {
     labelPixmap->Fill(clrTransparent);
     muteLogoPixmap->Fill(clrTransparent);
-    
+
     cString label = cString::sprintf("%s: %d", tr("Volume"), Current);
     cString maxLabel = cString::sprintf("%s: %d", tr("Volume"), 555);
     int maxlabelWidth = font->Width(maxLabel) + marginItem;
@@ -38,7 +38,7 @@ void cFlatDisplayVolume::SetVolume(int Current, int Total, bool Mute) {
     int DecorTop = osdHeight - 50 - Config.decorProgressVolumeSize - labelHeight - Config.decorBorderVolumeSize*2;
 
     labelPixmap->DrawRectangle(cRect(left - marginItem, marginItem, marginItem, fontHeight), Theme.Color(clrVolumeBg));
-    
+
     DecorBorderClear(left - marginItem, DecorTop, maxlabelWidth + marginItem*4 + fontHeight, fontHeight, Config.decorBorderVolumeSize);
     DecorBorderClear(left - marginItem, DecorTop, maxlabelWidth + marginItem, fontHeight, Config.decorBorderVolumeSize);
 
@@ -59,7 +59,7 @@ void cFlatDisplayVolume::SetVolume(int Current, int Total, bool Mute) {
     }
 
     ProgressBarDraw(Current, Total);
-    
+
     int width = (osdWidth / 4 * 3);
     left = osdWidth - width - Config.decorBorderVolumeSize;
     left /= 2;

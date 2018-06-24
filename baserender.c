@@ -117,6 +117,22 @@ void cFlatBaseRender::CreateOsd(int left, int top, int width, int height) {
     return;
 }
 
+cPixmap *cFlatBaseRender::CreatePixmap(int Layer, const cRect &ViewPort, const cRect &DrawPort) {
+    cSize maxPixmapSize = osd->MaxPixmapSize();
+    cRect SafeDrawPort( DrawPort.X(), DrawPort.Y(), DrawPort.Width(), DrawPort.Height());
+
+    if( DrawPort.Width() > maxPixmapSize.Width() ) {
+        dsyslog("Try to create Pixmap (%d x %d) > MaxPixmapSize (%d x %d)-> cut Pixmap to MaxPixmapSize", DrawPort.Width(), DrawPort.Height(), maxPixmapSize.Width(), maxPixmapSize.Height() );
+        SafeDrawPort.SetWidth(maxPixmapSize.Width());
+    }
+    if( DrawPort.Height() > maxPixmapSize.Height() ) {
+        dsyslog("Try to create Pixmap (%d x %d) > MaxPixmapSize (%d x %d)-> cut Pixmap to MaxPixmapSize", DrawPort.Width(), DrawPort.Height(), maxPixmapSize.Width(), maxPixmapSize.Height() );
+        SafeDrawPort.SetHeight(maxPixmapSize.Height());
+    }
+
+    return osd->CreatePixmap(Layer, ViewPort, SafeDrawPort);
+}
+
 void cFlatBaseRender::TopBarCreate(void) {
     int fs = int(round(cOsd::OsdHeight() * Config.TopBarFontSize));
     topBarFont = cFont::CreateFont(Setup.FontOsd, fs);
@@ -131,11 +147,11 @@ void cFlatBaseRender::TopBarCreate(void) {
     else
         topBarHeight = topBarFontSmlHeight * 2;
 
-    topBarPixmap = osd->CreatePixmap(1, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
+    topBarPixmap = CreatePixmap(1, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
     //dsyslog("skinflatplus: topBarPixmap left: %d top: %d width: %d height: %d", Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight);
-    topBarIconBGPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
+    topBarIconBGPixmap = CreatePixmap(2, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
     //dsyslog("skinflatplus: topBarIconBGPixmap left: %d top: %d width: %d height: %d", Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight);
-    topBarIconPixmap = osd->CreatePixmap(3, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
+    topBarIconPixmap = CreatePixmap(3, cRect(Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight));
     //dsyslog("skinflatplus: topBarIconPixmap left: %d top: %d width: %d height: %d", Config.decorBorderTopBarSize, Config.decorBorderTopBarSize, osdWidth - Config.decorBorderTopBarSize*2, topBarHeight);
     topBarPixmap->Fill(clrTransparent);
     topBarIconBGPixmap->Fill(clrTransparent);
@@ -542,7 +558,7 @@ void cFlatBaseRender::ButtonsCreate(void) {
     buttonsWidth = osdWidth;
     buttonsTop = osdHeight - buttonsHeight - Config.decorBorderButtonSize;
 
-    buttonsPixmap = osd->CreatePixmap(1, cRect(Config.decorBorderButtonSize,
+    buttonsPixmap = CreatePixmap(1, cRect(Config.decorBorderButtonSize,
         buttonsTop, buttonsWidth - Config.decorBorderButtonSize*2, buttonsHeight));
     buttonsPixmap->Fill(clrTransparent);
     //dsyslog("skinflatplus: buttonsPixmap left: %d top: %d width: %d height: %d", Config.decorBorderButtonSize, buttonsTop, buttonsWidth - Config.decorBorderButtonSize*2, buttonsHeight);
@@ -672,9 +688,9 @@ void cFlatBaseRender::MessageCreate(void) {
     if( Config.MessageColorPosition == 1 )
         messageHeight += 8;
     int top = osdHeight - Config.MessageOffset - messageHeight - Config.decorBorderMessageSize;
-    messagePixmap = osd->CreatePixmap(5, cRect(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight));
+    messagePixmap = CreatePixmap(5, cRect(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight));
     messagePixmap->Fill(clrTransparent);
-    messageIconPixmap = osd->CreatePixmap(5, cRect(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight));
+    messageIconPixmap = CreatePixmap(5, cRect(Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight));
     messageIconPixmap->Fill(clrTransparent);
 
     //dsyslog("skinflatplus: messagePixmap left: %d top: %d width: %d height: %d", Config.decorBorderMessageSize, top, osdWidth - Config.decorBorderMessageSize*2, messageHeight);
@@ -789,8 +805,8 @@ void cFlatBaseRender::ProgressBarCreate(int Left, int Top, int Width, int Height
 
     progressBarColorBarCurFg = Theme.Color(clrReplayProgressBarCurFg);
 
-    progressBarPixmap = osd->CreatePixmap(3, cRect(Left, Top, Width, progressBarHeight));
-    progressBarPixmapBg = osd->CreatePixmap(2, cRect(Left - progressBarMarginVer, Top - progressBarMarginHor, Width + progressBarMarginVer*2, progressBarHeight + progressBarMarginHor*2));
+    progressBarPixmap = CreatePixmap(3, cRect(Left, Top, Width, progressBarHeight));
+    progressBarPixmapBg = CreatePixmap(2, cRect(Left - progressBarMarginVer, Top - progressBarMarginHor, Width + progressBarMarginVer*2, progressBarHeight + progressBarMarginHor*2));
     progressBarPixmap->Fill(clrTransparent);
     progressBarPixmapBg->Fill(clrTransparent);
 }
@@ -1322,7 +1338,7 @@ void cFlatBaseRender::DecorBorderDraw(int Left, int Top, int Width, int Height, 
     int BottomDecor = Height + Size;
 
     if( !decorPixmap ) {
-        decorPixmap = osd->CreatePixmap(4, cRect(0, 0, cOsd::OsdWidth(), cOsd::OsdHeight()));
+        decorPixmap = CreatePixmap(4, cRect(0, 0, cOsd::OsdWidth(), cOsd::OsdHeight()));
         decorPixmap->Fill(clrTransparent);
     }
 

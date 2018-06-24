@@ -30,10 +30,10 @@ cFlatDisplayTracks::cFlatDisplayTracks(const char *Title, int NumTracks, const c
     left /= 2;
     TopBarSetTitle(Title);
 
-    tracksPixmap = osd->CreatePixmap(1, cRect(left, osdHeight - itemsHeight - marginItem, maxItemWidth, itemsHeight));
+    tracksPixmap = CreatePixmap(1, cRect(left, osdHeight - itemsHeight - marginItem, maxItemWidth, itemsHeight));
     tracksPixmap->Fill(clrTransparent);
 
-    tracksLogoPixmap = osd->CreatePixmap(1, cRect(left, osdHeight - itemsHeight - marginItem, maxItemWidth, itemsHeight));
+    tracksLogoPixmap = CreatePixmap(1, cRect(left, osdHeight - itemsHeight - marginItem, maxItemWidth, itemsHeight));
     tracksLogoPixmap->Fill(clrTransparent);
 
     SetItem(Title, -1, false);

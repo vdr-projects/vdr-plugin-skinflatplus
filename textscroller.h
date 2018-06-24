@@ -23,6 +23,9 @@ private:
     bool isReserveStep;
     bool ResetX;
     int ScrollType;
+
+    virtual cPixmap *CreatePixmap(int Layer, const cRect &ViewPort, const cRect &DrawPort = cRect::Null);
+
 public:
     cTextScroll(cOsd *osd, int type, int pixels, int waitsteps, int layer) {
         Font = NULL;

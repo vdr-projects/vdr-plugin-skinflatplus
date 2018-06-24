@@ -48,11 +48,11 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     int heightTop = fontHeight;
 
     int height = heightBottom;
-    chanInfoBottomPixmap = osd->CreatePixmap(1, cRect(Config.decorBorderChannelSize,
+    chanInfoBottomPixmap = CreatePixmap(1, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, channelWidth, heightBottom));
     chanInfoBottomPixmap->Fill( Theme.Color(clrChannelBg) );
 
-    chanIconsPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderChannelSize,
+    chanIconsPixmap = CreatePixmap(2, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, channelWidth, heightBottom));
     chanIconsPixmap->Fill( clrTransparent );
 
@@ -61,14 +61,14 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     TVSWidth = osdWidth - 40 - Config.decorBorderChannelEPGSize*2;
     TVSHeight = osdHeight - topBarHeight - heightBottom - 40 - Config.decorBorderChannelEPGSize*2;
 
-    chanEpgImagesPixmap = osd->CreatePixmap(2, cRect(TVSLeft, TVSTop, TVSWidth, TVSHeight));
+    chanEpgImagesPixmap = CreatePixmap(2, cRect(TVSLeft, TVSTop, TVSWidth, TVSHeight));
     chanEpgImagesPixmap->Fill( clrTransparent );
 
-    chanLogoBGPixmap = osd->CreatePixmap(2, cRect(Config.decorBorderChannelSize,
+    chanLogoBGPixmap = CreatePixmap(2, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, heightBottom*2, heightBottom*2));
     chanLogoBGPixmap->Fill( clrTransparent );
 
-    chanLogoPixmap = osd->CreatePixmap(3, cRect(Config.decorBorderChannelSize,
+    chanLogoPixmap = CreatePixmap(3, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, heightBottom*2, heightBottom*2));
     chanLogoPixmap->Fill( clrTransparent );
 
@@ -80,7 +80,7 @@ cFlatDisplayChannel::cFlatDisplayChannel(bool WithInfo) {
     ProgressBarDrawBgColor();
 
     height += heightTop;
-    chanInfoTopPixmap = osd->CreatePixmap(1, cRect(Config.decorBorderChannelSize,
+    chanInfoTopPixmap = CreatePixmap(1, cRect(Config.decorBorderChannelSize,
         Config.decorBorderChannelSize+channelHeight - height, channelWidth, heightTop));
     chanInfoTopPixmap->Fill( clrTransparent );
 

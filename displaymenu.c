@@ -3192,7 +3192,7 @@ void cFlatDisplayMenu::SetRecording(const cRecording *Recording) {
     chTop = topBarHeight + marginItem + Config.decorBorderTopBarSize*2 + Config.decorBorderMenuContentHeadSize;
     chWidth = menuWidth - Config.decorBorderMenuContentHeadSize*2;
     chHeight = fontHeight + fontSmlHeight*2 + marginItem*2;
-    contentHeadPixmap = osd->CreatePixmap(1, cRect(chLeft, chTop, chWidth, chHeight));
+    contentHeadPixmap = CreatePixmap(1, cRect(chLeft, chTop, chWidth, chHeight));
     //dsyslog("skinflatplus: contentHeadPixmap left: %d top: %d width: %d height: %d", chLeft, chTop, chWidth, chHeight );
 
     contentHeadIconsPixmap->Fill(clrTransparent);
