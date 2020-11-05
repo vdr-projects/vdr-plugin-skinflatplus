@@ -245,7 +245,11 @@ void cFlatBaseRender::TopBarEnableDiskUsage(void) {
         ChartDiskUsage = 100 - DiskUsage;          // DiskFreePrecent
         if( Config.DiskUsageShort == false ) {     // Long format
             extra1 = cString::sprintf("%s: %d%% %s", tr("Disk"), ChartDiskUsage, tr("free") );
-            extra2 = cString::sprintf("%.1f GB ~ %02d:%02d", FreeGB, FreeMinutes / 60, FreeMinutes % 60);
+            if( FreeGB < 1000.0 ) {                // Less than 1000 GB
+                extra2 = cString::sprintf("%.1f GB ~ %02d:%02d", FreeGB, FreeMinutes / 60, FreeMinutes % 60);
+            } else {                               // 1000 GB+
+                extra2 = cString::sprintf("%.2f TB ~ %02d:%02d", FreeGB / 1024.0, FreeMinutes / 60, FreeMinutes % 60);
+            }
         } else {                                   // Short format
             extra1 = cString::sprintf("%d%% %s", ChartDiskUsage, tr("free") );
             extra2 = cString::sprintf("~ %02d:%02d", FreeMinutes / 60, FreeMinutes % 60);
@@ -287,7 +291,11 @@ void cFlatBaseRender::TopBarEnableDiskUsage(void) {
     } else {                                       // Show in occupied mode
         if( Config.DiskUsageShort == false ) {     // Long format
             extra1 = cString::sprintf("%s: %d%% %s", tr("Disk"), DiskUsage, tr("occupied") );
-            extra2 = cString::sprintf("%.1f GB ~ %02d:%02d", OccupiedGB, OccupiedMinutes / 60, OccupiedMinutes % 60);
+            if( OccupiedGB < 1000.0 ) {            // Less than 1000 GB
+                extra2 = cString::sprintf("%.1f GB ~ %02d:%02d", OccupiedGB, OccupiedMinutes / 60, OccupiedMinutes % 60);
+            } else {                               // 1000 GB+
+                extra2 = cString::sprintf("%.2f TB ~ %02d:%02d", OccupiedGB / 1024.0, OccupiedMinutes / 60, OccupiedMinutes % 60);
+            }
         } else {                                   // Short format
             extra1 = cString::sprintf("%d%% %s", DiskUsage, tr("occupied") );
             extra2 = cString::sprintf("~ %02d:%02d", OccupiedMinutes / 60, OccupiedMinutes % 60);
