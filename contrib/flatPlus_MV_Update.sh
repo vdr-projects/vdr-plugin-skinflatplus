@@ -2,11 +2,11 @@
 
 # flatPlus_MV_Update.sh
 # Skript zum Updaten der MV-Themen
-VERSION=170319
+VERSION=170506
 
 # Ordner und Dateien
 ICONS='icons' ; THEMES='themes' ; DECORS='decors' ; CONFIGS='configs'
-PREVIEWS='previews' ; INFO='MV_Themes.INFO' ; HIST='MV_Themes.HISTORY'
+PREVIEWS='preview' ; INFO='MV_Themes.INFO' ; HIST='MV_Themes.HISTORY'
 
 # Ordner für Direktupdate (Im aktuellem Filesystem); Beispiel für Gen2VDR
 THEMEDIR='/etc/vdr/themes'
@@ -14,7 +14,7 @@ PLUGINDIR='/etc/vdr/plugins/skinflatplus'
 ICONDIR="${PLUGINDIR}/icons"
 DECORDIR="${PLUGINDIR}/decors"
 CONFIGSDIR="${PLUGINDIR}/configs"
-PREVIEWDIR="${PLUGINDIR}/previews"
+PREVIEWDIR="${PLUGINDIR}/preview"
 
 LN='-------------------------------'
 

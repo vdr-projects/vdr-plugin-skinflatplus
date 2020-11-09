@@ -87,7 +87,7 @@ HISTORY
               - '70_MV_rect_sml.decor' angepasst
               - Empfohlene Einstellungen aktualisiert
  [14.07.2014] - Symbol 'chart1b.png' mit 'chart7.png' verlinkt; Symbole 'chart2b.png'
-                bis 'chart7b.png' mit den default Symbolen 'chart6.png' bis 
+                bis 'chart7b.png' mit den default Symbolen 'chart6.png' bis
                 'chart1.png' verlinkt
  [02.08.2014] - Vorschaubilder fuer alle Themen im Ordner 'preview'
               - Icons auch fuer MVGreen erstellt
@@ -138,3 +138,5 @@ HISTORY
                 die sich den Sendeplatz teilen (Bsp.: Comedy Central/VIVA)
  [03.10.2016] - Konfiguration 'MV_default' aktualisiert
  [17.03.2017] - Neuer Download-Link, da Dropbox das Public-Feature deaktiviert hat
+ [17.06.2017] - Chart-Symbole fuer Diskbelegung 'chart31w.png' und 'chart32w.png' mit Warn-Symbol.
+                Symole ohne 'w' bleiben als Alternative im Paket.
