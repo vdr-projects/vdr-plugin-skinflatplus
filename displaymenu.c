@@ -5237,7 +5237,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
             std::getline(file5, prec);
             //std::replace( prec.begin(), prec.end(), '.', ',');
             file5.close();
-            p = atof(prec.c_str()) //* 100.0;
+            p = atof(prec.c_str()); //* 100.0;
             //p = roundUp(p, 10);
             precString = cString::sprintf("%.0f%%", p);
         } else

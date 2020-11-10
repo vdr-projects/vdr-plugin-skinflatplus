@@ -4,7 +4,7 @@ Since the command usually needs long time to execute this is not called from ski
 You have to call the command from the system via cron or at system start.
 For example call the command from cron.daily.
 
-You need jq jor this widget. For example in Ubuntu you need the package "jq".
+You need jq for this widget. For example in Ubuntu you need the package "jq".
 
 Please move update_weather.conf.dist to update_weather.conf
 
