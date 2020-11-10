@@ -4,10 +4,11 @@ Since the command usually needs long time to execute this is not called from ski
 You have to call the command from the system via cron or at system start.
 For example call the command from cron.daily.
 
-You need php5 with command line support for this widget. For example in Ubuntu you need the package "php5-cli".
+You need jq jor this widget. For example in Ubuntu you need the package "jq".
 
-Please move update_weather.config to update_weather.config.sample
+Please move update_weather.conf.dist to update_weather.conf
 
-cp update_weather.config.sample update_weather.config
+cp update_weather.conf.dist update_weather.conf
 
-Configure your location and others in update_weather.config. Use php-script "GetLatLangFromCity.php" to get latitude & longitude from your location.
+Configure your location and others in update_weather.conf.
+Use "https://www.latlong.net" to get latitude & longitude from your location.

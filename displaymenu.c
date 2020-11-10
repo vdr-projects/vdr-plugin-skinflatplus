@@ -175,7 +175,7 @@ void cFlatDisplayMenu::DrawScrollbar(int Total, int Offset, int Shown, int Top, 
 }
 
 void cFlatDisplayMenu::Scroll(bool Up, bool Page) {
-    // Wird das Menü gescrollt oder Content?
+    // Wird das MenÃ¼ gescrollt oder Content?
     if( ComplexContent.IsShown() && ComplexContent.IsScrollingActive() && ComplexContent.Scrollable() ) {
         bool scrolled = ComplexContent.Scroll(Up, Page);
         if( scrolled ) {
@@ -5235,10 +5235,10 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
         std::ifstream file5(*precFilename, std::ifstream::in);
         if( file5.is_open() ) {
             std::getline(file5, prec);
-            std::replace( prec.begin(), prec.end(), '.', ',');
+            //std::replace( prec.begin(), prec.end(), '.', ',');
             file5.close();
-            p = atof(prec.c_str()) * 100.0;
-            p = roundUp(p, 10);
+            p = atof(prec.c_str()) //* 100.0;
+            //p = roundUp(p, 10);
             precString = cString::sprintf("%.0f%%", p);
         } else
            continue;
@@ -5261,7 +5261,7 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
         weekDayName = WeekDayName(t2);
 
         if( Config.MainMenuWidgetWeatherType == 0 ) { // short
-            if( left + fontHeight*2 + fontTempSml->Width("-99,9°C") + fontTempSml->Width("XXXX") + marginItem*6 > wWidth )
+            if( left + fontHeight*2 + fontTempSml->Width("-99,9Â°C") + fontTempSml->Width("XXXX") + marginItem*6 > wWidth )
                 break;
             if( index > 0 ) {
                 contentWidget.AddText("|", false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), font);
@@ -5303,10 +5303,10 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
                 contentWidget.AddImage(img, cRect(left, ContentTop + marginItem, fontHeight, fontHeight));
                 left += fontHeight + marginItem;
             }
-            contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("-99,9°C"), fontTempSml->Height(), taRight);
-            contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("-99,9°C"), fontTempSml->Height(), taRight);
+            contentWidget.AddText(tempMax.c_str(), false, cRect(left, ContentTop, 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("-99,9Â°C"), fontTempSml->Height(), taRight);
+            contentWidget.AddText(tempMin.c_str(), false, cRect(left, ContentTop + fontTempSml->Height(), 0, 0), Theme.Color(clrMenuEventFontInfo), Theme.Color(clrMenuEventBg), fontTempSml, fontTempSml->Width("-99,9Â°C"), fontTempSml->Height(), taRight);
 
-            left += fontTempSml->Width("-99,9°C ") + marginItem;
+            left += fontTempSml->Width("-99,9Â°C ") + marginItem;
 
             img = imgLoader.LoadIcon("widgets/umbrella", fontHeight, fontHeight - marginItem*2);
             if( img ) {

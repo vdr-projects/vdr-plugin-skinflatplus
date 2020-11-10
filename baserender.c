@@ -1707,10 +1707,10 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
     file.open(*filename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, precToday);
-        std::replace( precToday.begin(), precToday.end(), '.', ',');
+        //std::replace( precToday.begin(), precToday.end(), '.', ',');
         file.close();
-        p = atof(precToday.c_str()) * 100.0;
-        p = roundUp(p, 10);
+        p = atof(precToday.c_str()) //* 100.0;
+        //p = roundUp(p, 10);
         precToday = cString::sprintf("%.0f%%", p);
     }
 
@@ -1718,10 +1718,10 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
     file.open(*filename, std::ifstream::in);
     if( file.is_open() ) {
         std::getline(file, precTomorrow);
-        std::replace( precTomorrow.begin(), precTomorrow.end(), '.', ',');
+        //std::replace( precTomorrow.begin(), precTomorrow.end(), '.', ',');
         file.close();
-        p = atof(precTomorrow.c_str()) * 100.0;
-        p = roundUp(p, 10);
+        p = atof(precTomorrow.c_str()) //* 100.0;
+        //p = roundUp(p, 10);
         precTomorrow = cString::sprintf("%.0f%%", p);
     }
 
