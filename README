@@ -103,25 +103,22 @@ Alle Ausgaben der Scripte sind unter
 ** Wetter-Widget
 
 Zeigt das aktuelle Wetter und eine Vorschau an. Die Ansicht der Vorschau kann konfiguriert werden. Es existiert eine Lang- und eine Kurzansicht. Bei der langen Ansicht gibt es pro Tag eine Zeile bei der kurzen Ansicht wird alles in einer Zeile dargestellt. Die Anzahl der Tage kann über die Plugineinstellungen konfiguriert werden, wobei max. 7 Tage möglich sind.
-Dieses Widget benötigt php5, unter Ubuntu ist z.B. das Paket php5-cli notwendig.
-Im Ordner existiert eine update_weather.config.sample diese muss nach update_weather.config kopiert werden.
+Dieses Widget benötigt jq, unter Ubuntu ist z.B. das Paket jq notwendig.
+Im Ordner existiert eine update_weather.conf.dist diese muss nach update_weather.conf kopiert werden.
 <pre>
 cd /usr/local/lib/vdr/skinflatplus/widgets/weather
-cp update_weather.config.sample update_weather.config
+cp update_weather.conf.dist update_weather.conf
 </pre>
-Anschließend muss Latitude und Longitude vom Ort ermittelt werden, dafür gibt es das kleine php-Script GetLatLangFromCity.php. Einfach ausführen und den Ort eingeben.
-<pre>
-php5 GetLatLangFromCity.php
-</pre>
-Die Werte von Latitude und Longitude in die update_weather.config schreiben und auch den Wert "LocationSkin" entsprechend anpassen. "LocationSkin" wird später im Skin als Ort angezeigt.
+Anschließend muss Latitude und Longitude vom Ort ermittelt werden, dafür gibt es z. B. die Seite https://www.latlong.net.
+Die Werte von Latitude und Longitude in die update_weather.conf schreiben und auch den Wert "LOCATION" entsprechend anpassen. "LOCATION" wird später im Skin als Ort angezeigt.
 
-Das Script (update_weather.php) wird nicht vom Skin aufgerufen. Dies muss extern über cron oder ähnliches erfolgen. Z.B. über folgende Zeile in der /etc/crontab
+Das Script (update_weather.sh) wird nicht vom Skin aufgerufen. Dies muss extern über cron oder ähnliches erfolgen. Z.B. über folgende Zeile in der /etc/crontab
 <pre>
-# update weather every 12 hours
-7 */12   * * *   root    php5 /usr/local/lib/vdr/skinflatplus/widgets/weather/update_weather.php
+# update weather every 2 hours
+7 */2   * * *   root    bash /usr/local/lib/vdr/skinflatplus/widgets/weather/update_weather.sh
 </pre>
 
-Für die Wetterdaten wird forecast.io verwendet. Hier sind 1000 Abfragen am Tag frei, jede weiteren 10.000 Abfragen kosten dann $1. Pro Aufruf von update_weather.php werden 2 Abfragen getätigt. Bitte registriere dich kostenlos bei forecast.io und erstelle einen eigenen Api-Key. Diesen dann einfach in die update_weather.config eintragen. Hierfür ist nur eine E-Mail Adresse + Passwort notwendig. Wenn das Script nicht mehr funktioniert sind höchstwahrscheinlich die 1000 Abfragen/Tag überschritten.
+Für die Wetterdaten wird openweathermap.org verwendet. Hier sind 1.000 Abfragen am Tag (30.000 im Monat) frei (https://openweathermap.org/full-price#current). Bitte registriere dich kostenlos bei openweathermap.org und erstelle einen eigenen Api-Key. Diesen dann einfach in die update_weather.conf eintragen. Hierfür ist nur eine E-Mail Adresse + Passwort notwendig.
 
 Für die Kanalinfo gibt es eine kleine Version des Wetter Widgets. hier wird Heute + Morgen angezeigt.
 

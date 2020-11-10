@@ -11,6 +11,7 @@ VDR Plugin 'skinflatplus' Revision History
     Output device has to implement MaxPixmapSize to overwrite vdr core default value.
 - [update] weather widget update_weather.php php7 support (reported by Delekhan)
 - [update] disk usage shown in TB when over 999 GB (MegaV0lt)
+- [update] change to openweathermap api (MegaV0lt)
 - [add] support for change color key mapping
 - [add] displaychannel show event start time on the left before event title
 
