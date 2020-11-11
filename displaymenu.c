@@ -5243,14 +5243,14 @@ int cFlatDisplayMenu::DrawMainMenuWidgetWeather(int wLeft, int wWidth, int Conte
         } else
            continue;
 
-        std::string precType;
+        /* std::string precType;  // Wird nirgends verwendet?
         cString precTypeFilename = cString::sprintf("%s/weather/weather.%d.precipitationType", WIDGETOUTPUTPATH, index );
         std::ifstream file6(*precTypeFilename, std::ifstream::in);
         if( file6.is_open() ) {
             std::getline(file6, precType);
             file6.close();
         } else
-           continue;
+           continue; */
 
         cString weekDayName = "";
         time_t t;

@@ -58,7 +58,6 @@ f_get_weather(){
     f_write_temp "$jqdata" "${DATA_DIR}/weather.${cnt}.tempMax"                        # Temperatur (Max./Tag)
     jq -r .daily[${cnt}].humidity "$WEATHER_JSON" > "${DATA_DIR}/weather.${cnt}.precipitation"  # Luftfeuchte
     jq -r .daily[${cnt}].weather[0].description "$WEATHER_JSON" > "${DATA_DIR}/weather.${cnt}.summary"  # Beschreibung
-    cp --force "${DATA_DIR}/weather.${cnt}.summary" "$WEATHER_JSON" > "${DATA_DIR}/weather.${cnt}.precipitationType"  # Fix for Skin...
     jq -r .daily[${cnt}].weather[0].id "$WEATHER_JSON" > "${DATA_DIR}/weather.${cnt}.icon"  # Wettersymbol
     ((cnt++))
   done
