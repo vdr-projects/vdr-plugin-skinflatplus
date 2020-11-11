@@ -12,7 +12,7 @@
 #
 # Einstellungen zum Skript in der dazugehörigen *.conf vornehmen!
 #
-#VERSION=201010
+#VERSION=201111
 
 ### Variablen ###
 SELF="$(readlink /proc/$$/fd/255)" || SELF="$0"  # Eigener Pfad (besseres $0)
@@ -47,7 +47,6 @@ f_get_weather(){
   printf '%s\n' "$LOCATION" > "${DATA_DIR}/weather.location"                           # Der Ort für die Werte z. B. Berlin
   jqdata=$(jq -r .current.temp "$WEATHER_JSON")
   f_write_temp "$jqdata" "${DATA_DIR}/weather.0.temp"                                  # Aktuelle Temperatur
-  jq -r .current.humidity "$WEATHER_JSON" > "${DATA_DIR}/weather.0.precipitation"      # Luftfeuchte
   jq -r .current.weather[0].description "$WEATHER_JSON" > "${DATA_DIR}/weather.0.description"  # Beschreibung
 
   # x-Tage Vorhersage
@@ -56,7 +55,7 @@ f_get_weather(){
     f_write_temp "$jqdata" "${DATA_DIR}/weather.${cnt}.tempMin"                        # Temperatur (Min./Nacht)
     jqdata=$(jq -r .daily[${cnt}].temp.day "$WEATHER_JSON")
     f_write_temp "$jqdata" "${DATA_DIR}/weather.${cnt}.tempMax"                        # Temperatur (Max./Tag)
-    jq -r .daily[${cnt}].humidity "$WEATHER_JSON" > "${DATA_DIR}/weather.${cnt}.precipitation"  # Luftfeuchte
+    jq -r .daily[${cnt}].pop "$WEATHER_JSON" > "${DATA_DIR}/weather.${cnt}.precipitation"  # Niederschlagswahrscheinlichkeit
     jq -r .daily[${cnt}].weather[0].description "$WEATHER_JSON" > "${DATA_DIR}/weather.${cnt}.summary"  # Beschreibung
     jq -r .daily[${cnt}].weather[0].id "$WEATHER_JSON" > "${DATA_DIR}/weather.${cnt}.icon"  # Wettersymbol
     ((cnt++))

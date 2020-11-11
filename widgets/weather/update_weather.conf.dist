@@ -6,11 +6,11 @@
 # der kostenlos bezogen werden kann (https://openweathermap.org/price).
 
 # Openweathermap-Daten
-API_KEY='00000000000000000000000000000000'  # https://openweathermap.org/price
+API_KEY=''  # https://openweathermap.org/price
 LATITUDE='50.110924'                        # https://www.latlong.net/
 LONGITUDE='8.682127'
 LOCATION='Frankfurt am Main'                # Wird im Skin angezeigt
 _LANG='de_DE.UTF-8' ; L="${_LANG%%_*}"      # Sprache
 UNITS='metric'  # Temp Einheit (standard [°K], metric [°C], imperial [°F])
 
-FORECAST_DAYS=5                             # Anzahl der Tage für die Vorschau (Max. 7)
+FORECAST_DAYS=7                             # Anzahl der Tage für die Vorschau (Max. 7)
