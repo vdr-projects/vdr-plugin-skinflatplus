@@ -1996,7 +1996,7 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
     std::replace( precToday.begin(), precToday.end(), '.', ',');
     file.close();
     p = atof(precToday.c_str()) * 100.0;
-    // p = roundUp(p, 10);
+    p = roundUp(p, 10);
     precToday = cString::sprintf("%.0f%%", p);
   }
 
@@ -2007,7 +2007,7 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
     std::replace( precTomorrow.begin(), precTomorrow.end(), '.', ',');
     file.close();
     p = atof(precTomorrow.c_str()) * 100.0;
-    // p = roundUp(p, 10);
+    p = roundUp(p, 10);
     precTomorrow = cString::sprintf("%.0f%%", p);
   }
 
