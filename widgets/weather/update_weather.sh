@@ -12,15 +12,13 @@
 #
 # Einstellungen zum Skript in der dazugehörigen *.conf vornehmen!
 #
-#VERSION=201111
+#VERSION=201116
 
 ### Variablen ###
 SELF="$(readlink /proc/$$/fd/255)" || SELF="$0"  # Eigener Pfad (besseres $0)
-#SELF_DIR="${SELF%/*}"                            # Pfad
 SELF_NAME="${SELF##*/}"                          # skript.sh
 CONF="${SELF%.*}.conf"                           # Konfiguration
 DATA_DIR='/tmp/skinflatplus/widgets/weather'     # Verzeichnis für die Daten
-# Wetterdaten werden in $DATA_DIR gespeichert
 WEATHER_JSON="${DATA_DIR}/weather.json"          # Aktuelles Wetter
 LC_NUMERIC=C
 
@@ -44,21 +42,34 @@ f_get_weather(){
     "https://api.openweathermap.org/data/2.5/onecall?lat=${LATITUDE}&lon=${LONGITUDE}&exclude=minutely,hourly,alerts&units=${UNITS}&lang=${L}&appid=${API_KEY}"
 
   # Aktuelle Wetterdaten
-  printf '%s\n' "$LOCATION" > "${DATA_DIR}/weather.location"                           # Der Ort für die Werte z. B. Berlin
+  printf '%s\n' "$LOCATION" > "${DATA_DIR}/weather.location"       # Der Ort für die Werte z. B. Berlin
   jqdata=$(jq -r .current.temp "$WEATHER_JSON")
-  f_write_temp "$jqdata" "${DATA_DIR}/weather.0.temp"                                  # Aktuelle Temperatur
+  f_write_temp "$jqdata" "${DATA_DIR}/weather.0.temp"              # Aktuelle Temperatur
   jq -r .current.weather[0].description "$WEATHER_JSON" > "${DATA_DIR}/weather.0.description"  # Beschreibung
 
   # x-Tage Vorhersage
   while [[ ${cnt:=0} -lt $FORECAST_DAYS ]] ; do
-    jqdata=$(jq -r .daily[${cnt}].temp.night "$WEATHER_JSON")
-    f_write_temp "$jqdata" "${DATA_DIR}/weather.${cnt}.tempMin"                        # Temperatur (Min./Nacht)
-    jqdata=$(jq -r .daily[${cnt}].temp.day "$WEATHER_JSON")
-    f_write_temp "$jqdata" "${DATA_DIR}/weather.${cnt}.tempMax"                        # Temperatur (Max./Tag)
-    jq -r .daily[${cnt}].pop "$WEATHER_JSON" > "${DATA_DIR}/weather.${cnt}.precipitation"  # Niederschlagswahrscheinlichkeit
-    jq -r .daily[${cnt}].weather[0].description "$WEATHER_JSON" > "${DATA_DIR}/weather.${cnt}.summary"  # Beschreibung
-    jq -r .daily[${cnt}].weather[0].id "$WEATHER_JSON" > "${DATA_DIR}/weather.${cnt}.icon"  # Wettersymbol
+    jqdata=$(jq -r .daily[${cnt}].temp.night "$WEATHER_JSON")      # Temperatur (Min./Nacht)
+    f_write_temp "$jqdata" "${DATA_DIR}/weather.${cnt}.tempMin"
+    jqdata=$(jq -r .daily[${cnt}].temp.day "$WEATHER_JSON")        # Temperatur (Max./Tag)
+    f_write_temp "$jqdata" "${DATA_DIR}/weather.${cnt}.tempMax"
+    jq -r .daily[${cnt}].pop "$WEATHER_JSON" \
+      > "${DATA_DIR}/weather.${cnt}.precipitation"                 # Niederschlagswahrscheinlichkeit
+    jq -r .daily[${cnt}].weather[0].description "$WEATHER_JSON" \
+      > "${DATA_DIR}/weather.${cnt}.summary"  # Beschreibung
+    jqdata=$(jq -r .daily[${cnt}].weather[0].id "$WEATHER_JSON")   # Wettersymbol
+    case $jqdata in
+      800) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='clear-night' ;;
+      803) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='partly-cloudy-night' ;;
+      *) ;;
+    esac
+    printf '%s\n' "$jqdata" > "${DATA_DIR}/weather.${cnt}.icon"
     ((cnt++))
+    # Aus der API-Dokumentation:
+    #801 	Clouds 	few clouds:        11-25% 	02d 02n
+    #802 	Clouds 	scattered clouds:  25-50% 	03d 03n
+    #803 	Clouds 	broken clouds:     51-84% 	04d 04n
+    #804 	Clouds 	overcast clouds:   85-100% 	04d 04n
   done
 }
 
