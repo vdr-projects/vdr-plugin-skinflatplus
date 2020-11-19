@@ -12,7 +12,7 @@
 #
 # Einstellungen zum Skript in der dazugehörigen *.conf vornehmen!
 #
-#VERSION=201116
+#VERSION=201119
 
 ### Variablen ###
 SELF="$(readlink /proc/$$/fd/255)" || SELF="$0"  # Eigener Pfad (besseres $0)
@@ -60,7 +60,7 @@ f_get_weather(){
     jqdata=$(jq -r .daily[${cnt}].weather[0].id "$WEATHER_JSON")   # Wettersymbol
     case $jqdata in
       800) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='clear-night' ;;
-      803) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='partly-cloudy-night' ;;
+      801) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='partly-cloudy-night' ;;
       *) ;;
     esac
     printf '%s\n' "$jqdata" > "${DATA_DIR}/weather.${cnt}.icon"
