@@ -1,4 +1,4 @@
-flatPlus-MV_Themen erstellt am 20.03.2017 13:43
+flatPlus-MV_Themen erstellt am 19.11.2020 16:21
 Basisthema: flatPlus-MVGreen.theme, Basisicons: MVdefault
 
 => Installationshimnweise am Ende der Datei! <=
@@ -23,6 +23,7 @@ Thema: Pumpkin, Farbe: F0A30A
 Thema: Purple, Farbe: 6C0AAB 
 Thema: PurpleGrey, Farbe: 76608A 
 Thema: Red, Farbe: E51400 
+Thema: Teal, Farbe: 009688 
 Thema: Terra, Farbe: 7A3B3F 
 Thema: Blood, Farbe: 911D10, Hintergrund: 221111 
 Thema: DeepBlue, Farbe: 0545DF, Hintergrund: 101030 Schriftfarbe: DDDDEE
@@ -34,8 +35,8 @@ Thema: Rauchglas, Farbe: 825A2C, Hintergrund: 200F02
 Thema: White, Farbe: FFFFFF Schriftfarbe: A5A5A5
 Thema: XMAS, Farbe: CC1111, Hintergrund: 114511 
 Thema: Zitrone, Farbe: EEEE0F, Hintergrund: 88881A Schriftfarbe: FFFFAA
-31 Themen erstellt. Davon 8 mit Hintergrund und 3 mit invertierter Auswahl
-Insgesamt 32 Icon-Ordner erstellt
+32 Themen erstellt. Davon 8 mit Hintergrund und 3 mit invertierter Auswahl
+Insgesamt 33 Icon-Ordner erstellt
 
 Installationshinweise:
  - Alle *.theme aus dem Ordner themes nach <vdrconfigdir>/themes kopieren.
