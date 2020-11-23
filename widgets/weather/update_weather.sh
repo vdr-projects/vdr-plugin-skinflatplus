@@ -12,7 +12,7 @@
 #
 # Einstellungen zum Skript in der dazugehörigen *.conf vornehmen!
 #
-#VERSION=201119
+#VERSION=201123
 
 ### Variablen ###
 SELF="$(readlink /proc/$$/fd/255)" || SELF="$0"  # Eigener Pfad (besseres $0)
@@ -43,9 +43,16 @@ f_get_weather(){
 
   # Aktuelle Wetterdaten
   printf '%s\n' "$LOCATION" > "${DATA_DIR}/weather.location"       # Der Ort für die Werte z. B. Berlin
-  jqdata=$(jq -r .current.temp "$WEATHER_JSON")
-  f_write_temp "$jqdata" "${DATA_DIR}/weather.0.temp"              # Aktuelle Temperatur
-  jq -r .current.weather[0].description "$WEATHER_JSON" > "${DATA_DIR}/weather.0.description"  # Beschreibung
+  jqdata=$(jq -r .current.temp "$WEATHER_JSON")                    # Aktuelle Temperatur
+  f_write_temp "$jqdata" "${DATA_DIR}/weather.0.temp"
+  jq -r .current.weather[0].description "$WEATHER_JSON" > "${DATA_DIR}/weather.0.sumary"  # Beschreibung
+  jqdata=$(jq -r .current.weather[0].id "$WEATHER_JSON")           # Wettersymbol
+  case $jqdata in
+    800) [[ $(jq -r .current.weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='clear-night' ;;
+    801) [[ $(jq -r .current.weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='partly-cloudy-night' ;;
+    *) ;;
+  esac
+  printf '%s\n' "$jqdata" > "${DATA_DIR}/weather.0.icon"
 
   # x-Tage Vorhersage
   while [[ ${cnt:=0} -lt $FORECAST_DAYS ]] ; do
@@ -57,19 +64,16 @@ f_get_weather(){
       > "${DATA_DIR}/weather.${cnt}.precipitation"                 # Niederschlagswahrscheinlichkeit
     jq -r .daily[${cnt}].weather[0].description "$WEATHER_JSON" \
       > "${DATA_DIR}/weather.${cnt}.summary"  # Beschreibung
-    jqdata=$(jq -r .daily[${cnt}].weather[0].id "$WEATHER_JSON")   # Wettersymbol
-    case $jqdata in
-      800) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='clear-night' ;;
-      801) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='partly-cloudy-night' ;;
-      *) ;;
-    esac
-    printf '%s\n' "$jqdata" > "${DATA_DIR}/weather.${cnt}.icon"
+    if [[ "$cnt" -gt 0 ]] ; then  # Aktuelle Daten nicht überschreiben
+      jqdata=$(jq -r .daily[${cnt}].weather[0].id "$WEATHER_JSON")  # Wettersymbol
+      case $jqdata in
+        800) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='clear-night' ;;
+        801) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='partly-cloudy-night' ;;
+        *) ;;
+      esac
+      printf '%s\n' "$jqdata" > "${DATA_DIR}/weather.${cnt}.icon"
+    fi
     ((cnt++))
-    # Aus der API-Dokumentation:
-    #801 	Clouds 	few clouds:        11-25% 	02d 02n
-    #802 	Clouds 	scattered clouds:  25-50% 	03d 03n
-    #803 	Clouds 	broken clouds:     51-84% 	04d 04n
-    #804 	Clouds 	overcast clouds:   85-100% 	04d 04n
   done
 }
 
