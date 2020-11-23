@@ -1940,7 +1940,7 @@ void cFlatBaseRender::DrawWidgetWeather(void) {
   } else
     return;
 
-  filename = cString::sprintf("%s/weather/weather.0.icon", WIDGETOUTPUTPATH);
+  filename = cString::sprintf("%s/weather/weather.0.icon-act", WIDGETOUTPUTPATH);
   file.open(*filename, std::ifstream::in);
   if (file.is_open()) {
     std::getline(file, iconToday);

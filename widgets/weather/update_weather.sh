@@ -52,7 +52,7 @@ f_get_weather(){
     801) [[ $(jq -r .current.weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='partly-cloudy-night' ;;
     *) ;;
   esac
-  printf '%s\n' "$jqdata" > "${DATA_DIR}/weather.0.icon"
+  printf '%s\n' "$jqdata" > "${DATA_DIR}/weather.0.icon-act"       # Symbol für 'Jetzt'
 
   # x-Tage Vorhersage
   while [[ ${cnt:=0} -lt $FORECAST_DAYS ]] ; do
@@ -64,15 +64,13 @@ f_get_weather(){
       > "${DATA_DIR}/weather.${cnt}.precipitation"                 # Niederschlagswahrscheinlichkeit
     jq -r .daily[${cnt}].weather[0].description "$WEATHER_JSON" \
       > "${DATA_DIR}/weather.${cnt}.summary"  # Beschreibung
-    if [[ "$cnt" -gt 0 ]] ; then  # Aktuelle Daten nicht überschreiben
-      jqdata=$(jq -r .daily[${cnt}].weather[0].id "$WEATHER_JSON")  # Wettersymbol
-      case $jqdata in
-        800) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='clear-night' ;;
-        801) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='partly-cloudy-night' ;;
-        *) ;;
-      esac
-      printf '%s\n' "$jqdata" > "${DATA_DIR}/weather.${cnt}.icon"
-    fi
+    jqdata=$(jq -r .daily[${cnt}].weather[0].id "$WEATHER_JSON")  # Wettersymbol
+    case $jqdata in
+      800) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='clear-night' ;;
+      801) [[ $(jq -r .daily[${cnt}].weather[0].icon "$WEATHER_JSON") =~ n ]] && jqdata='partly-cloudy-night' ;;
+      *) ;;
+    esac
+    printf '%s\n' "$jqdata" > "${DATA_DIR}/weather.${cnt}.icon"
     ((cnt++))
   done
 }
