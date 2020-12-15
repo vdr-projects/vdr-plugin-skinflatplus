@@ -12,7 +12,7 @@
 #
 # Einstellungen zum Skript in der dazugehörigen *.conf vornehmen!
 #
-#VERSION=201124
+#VERSION=201215
 
 ### Variablen ###
 SELF="$(readlink /proc/$$/fd/255)" || SELF="$0"  # Eigener Pfad (besseres $0)
@@ -20,7 +20,7 @@ SELF_NAME="${SELF##*/}"                          # skript.sh
 CONF="${SELF%.*}.conf"                           # Konfiguration
 DATA_DIR='/tmp/skinflatplus/widgets/weather'     # Verzeichnis für die Daten
 WEATHER_JSON="${DATA_DIR}/weather.json"          # Aktuelles Wetter
-LC_NUMERIC=C
+LC_NUMERIC='C'
 
 ### Funktionen ###
 f_log(){
@@ -28,7 +28,7 @@ f_log(){
   logger -t "$SELF_NAME" "$*"
 }
 
-f_write_temp(){  # Temperaturwert aufbereiten und schreiben (# $1 Temperatur, $2 Ausgabedatei)
+f_write_temp(){  # Temperaturwert aufbereiten und schreiben ($1 Temperatur, $2 Ausgabedatei)
   local data="$1" file="$2"
   printf -v data '%.1f' "$data"  # Temperatur mit einer Nachkommastelle
   printf '%s' "${data/./,}${DEGREE_SIGN}" > "$file"  # Daten schreiben (13,1°C)
@@ -64,7 +64,7 @@ f_get_weather(){
       > "${DATA_DIR}/weather.${cnt}.precipitation"                 # Niederschlagswahrscheinlichkeit
     jqdata=$(jq -r .daily[${cnt}].weather[0].description "$WEATHER_JSON")
     if [[ "$cnt" -eq 0 ]] ; then
-      [[ "$jqdata" != "$jqdata2" ]] && jqdata="$jqdata / $jqdata2" # Beschreibung / aktuell
+      [[ "$jqdata" != "$jqdata2" ]] && jqdata+=" / $jqdata2" # Beschreibung / aktuell
     fi
     printf '%s\n' "$jqdata" > "${DATA_DIR}/weather.${cnt}.summary" # Beschreibung
     jqdata=$(jq -r .daily[${cnt}].weather[0].id "$WEATHER_JSON")   # Wettersymbol
