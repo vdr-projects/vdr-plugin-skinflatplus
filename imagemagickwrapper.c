@@ -4,7 +4,6 @@
 #include "imagescaler.h"
 
 cImageMagickWrapper::cImageMagickWrapper() {
-    InitializeMagick(NULL);
 }
 
 cImageMagickWrapper::~cImageMagickWrapper() {

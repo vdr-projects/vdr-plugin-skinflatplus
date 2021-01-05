@@ -28,6 +28,10 @@ SKINFLATPLUS_VDRLOGO = vdrlogo_default
 #DEFINES += -DDEBUGIMAGELOADTIME
 #DEFINES += -DDEBUGEPGTIME
 
+# External image lib to use: imagemagick, graphicsmagick
+#IMAGELIB = imagemagick
+IMAGELIB = graphicsmagick
+
 ### The version number of this plugin (taken from the main source file):
 
 VERSION = $(shell grep 'static const char \*VERSION *=' $(PLUGIN).c | awk '{ print $$6 }' | sed -e 's/[";]//g')
@@ -68,12 +72,16 @@ SOFILE = libvdr-$(PLUGIN).so
 
 ### Includes and Defines and Dependencies (add further entries here):
 
-INCLUDES += $(shell pkg-config --cflags Magick++ freetype2 fontconfig)
+ifeq ($(IMAGELIB), imagemagick)
+	INCLUDES += $(shell pkg-config --cflags Magick++ freetype2 fontconfig)
+	LIBS += $(shell pkg-config --libs Magick++)
+else ifeq ($(IMAGELIB), graphicsmagick)
+	INCLUDES += $(shell pkg-config --cflags GraphicsMagick++ freetype2 fontconfig)
+	LIBS += $(shell pkg-config --libs GraphicsMagick++)
+endif
 
 DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' -DVDRLOGO=\"$(SKINFLATPLUS_VDRLOGO)\"
 DEFINES += -DWIDGETFOLDER='"$(SKINFLATPLUS_WIDGETDIR)"'
-
-LIBS += $(shell pkg-config --libs Magick++)
 
 ### The object files (add further files here):
 
