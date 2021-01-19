@@ -79,7 +79,7 @@ msgid "original title: "
 msgstr "Originaltitel: "
 
 msgid "collection name: "
-msgstr "Sammlung Name:"
+msgstr "Sammlung Name: "
 
 msgid "release date: "
 msgstr "Erscheinungsdatum: "
@@ -634,7 +634,7 @@ msgid "Recording menu recording seen treshold"
 msgstr "Aufnahmen: Aufnahme gesehen Schwellwert"
 
 msgid "Recording menu default value - old folder in days"
-msgstr "Aufnahmen: default-Wert alter Ordner in Tagen"
+msgstr "Aufnahmen: Vorgabe-Wert alter Ordner in Tagen"
 
 msgid "Timer menu show timer count in title"
 msgstr "Timer: Anzahl der Timer in Titelleiste"
@@ -712,7 +712,7 @@ msgid "Dimm on pause delay"
 msgstr "Dimmen bei Pause Verzögerung"
 
 msgid "Dimm on pause opaque"
-msgstr "Dimmen bei Pause Undurchsichtigkeit"
+msgstr "Dimmen bei Pause Transparenz"
 
 msgid "Replay border by decor-file?"
 msgstr "Wiedergabe: Rand aus Dekordatei?"

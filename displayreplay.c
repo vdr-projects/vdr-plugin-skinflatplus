@@ -343,10 +343,11 @@ void cFlatDisplayReplay::UpdateInfo(void) {
                 series.seriesId = seriesId;
                 series.episodeId = episodeId;
                 if (pScraper->Service("GetSeries", &series)) {
-                    if( series.banners.size() > 0 )
+                    if( series.banners.size() > 0 ) {
                         mediaPath = series.banners[0].path;
-                    mediaWidth = series.banners[0].width * Config.TVScraperReplayInfoPosterSize*100;
-                    mediaHeight = series.banners[0].height * Config.TVScraperReplayInfoPosterSize*100;
+                        mediaWidth = series.banners[0].width * Config.TVScraperReplayInfoPosterSize*100;
+                        mediaHeight = series.banners[0].height * Config.TVScraperReplayInfoPosterSize*100;
+                    }
                 }
             } else if (movieId > 0) {
                 cMovie movie;

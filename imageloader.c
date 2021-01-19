@@ -8,7 +8,6 @@
 using namespace Magick;
 
 cImageLoader::cImageLoader() {
-    InitializeMagick(NULL);
     logoExtension = "png";
 }
 

@@ -16,12 +16,12 @@ See the file COPYING for more information.
 Anforderungen
 -------------------------------
 - VDR Version >= 1.7.34
-- ImageMagick zur Anzeige von png/jpg Icons, Kanal Logos and EPG Bilder
+- GraphicsMagick oder ImageMagick zur Anzeige von png/jpg Icons, Kanal Logos and EPG Bilder
 
 
 Beschreibung
 -------------------------------
-Skin flatPlus ist ein moderner und aktueller Skin für VDR.
+Skin flatPlus ist ein schneller, moderner und aktueller Skin fÃ¼r VDR.
 Das Design ist flach und geradlinig (keine glossy oder 3D-Effekte)
 
 
@@ -29,10 +29,14 @@ git-Zugriff
 -------------------------------
 Auf das git kann mittels
 
+Original:
 git clone http://projects.vdr-developer.org/git/skin-flatplus.git/
 
+MegaV0lt
+git clone https://github.com/MegaV0lt/vdr-plugin-skinflatplus.git/
+
 zugegriffen werden.
-Da im git natürlich aktiv entwickelt wird können Fehler nicht ausgeschlossen werden (ich empfehle es nicht für produktiv Systeme)
+Da im git natÃ¼rlich aktiv entwickelt wird kÃ¶nnen Fehler nicht ausgeschlossen werden (ich empfehle es nicht fÃ¼r produktiv Systeme)
 
 
 Installation
@@ -41,24 +45,24 @@ Installation wie bei allen VDR Plugins.
     make
     make install
 
-Für die Kanallogos empfehle ich die Logos von Copperhead: http://creimer.net/channellogos/
+FÃ¼r die Kanallogos empfehle ich die Logos von Copperhead: http://creimer.net/channellogos/
 Ich nutze "nopacity-logos-white"
-Alternativ können auch die Logos von 3PO genutzt werden:
+Alternativ kÃ¶nnen auch die Logos von 3PO genutzt werden:
 https://github.com/3PO/Senderlogos
 
-Die Logos müssen im folgenden Ordner zur Verfügung gestellt werden:
+Die Logos mÃ¼ssen im folgenden Ordner zur VerfÃ¼gung gestellt werden:
     <vdrconfigdir>/plugins/skinflatplus/logos/
 
-Der Skin muss im Menü unter Einstellungen -> OSD ausgewählt werden.
+Der Skin muss im MenÃ¼ unter Einstellungen -> OSD ausgewÃ¤hlt werden.
 
 
 Versteckte Einstellungen
 -------------------------------
-Versteckte Einstellungen sind Einstellungen die in der VDR setup.conf konfiguriert werden können, wozu es aber keine Einstellungen im OSD -> Einstellungen -> Plugins -> skinflatplus gibt.
+Versteckte Einstellungen sind Einstellungen die in der VDR setup.conf konfiguriert werden kÃ¶nnen, wozu es aber keine Einstellungen im OSD -> Einstellungen -> Plugins -> skinflatplus gibt.
 
 * MenuItemRecordingClearPercent - Wenn die Einstellung auf 1 gesetzt ist, wird vom Aufnahmetext das Prozentzeichen am Anfang des Strings entfernt.
-* MenuItemRecordingShowFolderDate - Wenn die Einstellung auf 1 gesetzt ist, wird bei einem Ordner von der neuesten Aufzeichnung das Datum angezeigt, Wenn die Einstellung auf 2 gesetzt ist, wird bei einem Ordner von der ältesten Aufzeichnung das Datum angezeigt.
-* MenuItemParseTilde - Wenn die Einstellung auf 1 gesetzt ist, wird beim Menü-Item-Text auf den Buchstaben Tilde '~' geprüft und wenn eine Tilde gefunden wurde, wird die Tilde entfernt und alles was nach der Tilde steht in einer anderen Farbe dargestellt. Dies ist z.B. interessant wenn man epgsearch hat.
+* MenuItemRecordingShowFolderDate - Wenn die Einstellung auf 1 gesetzt ist, wird bei einem Ordner von der neuesten Aufzeichnung das Datum angezeigt, Wenn die Einstellung auf 2 gesetzt ist, wird bei einem Ordner von der Ã¤ltesten Aufzeichnung das Datum angezeigt.
+* MenuItemParseTilde - Wenn die Einstellung auf 1 gesetzt ist, wird beim MenÃ¼-Item-Text auf den Buchstaben Tilde '~' geprÃ¼ft und wenn eine Tilde gefunden wurde, wird die Tilde entfernt und alles was nach der Tilde steht in einer anderen Farbe dargestellt. Dies ist z.B. interessant wenn man epgsearch hat.
 * ChannelBitrateShowCalcInterval - In welchen Intervall soll die Bitrate (Kanalanzeige) aktualisiert werden (default 20)
 
 Widgets
@@ -67,18 +71,18 @@ Seit Version 0.5.0 gibt es die Widgets.
 Es gibt interne und externe Widgets. Die internen Widgets funktionieren out-of-the-box, da Sie innerhalb des VDR implementiert sind.
 Externe Widgets sind externe Programme/Scripte, hier sind (teilweise) manuelle Anpassungen notwendig damit diese laufen.
 
-Die Widgets werden auf der rechten Seite des Hauptmenüs angezeigt. In der Höhe ist nur begrenzt Platz, deshalb kann es passieren das nicht alle Widgets angezeigt werden können (da einfach kein Platz mehr ist). Hier muss du selbst entscheiden welches Widget auf welcher Position angezeigt werden soll.
+Die Widgets werden auf der rechten Seite des HauptmenÃ¼s angezeigt. In der HÃ¶he ist nur begrenzt Platz, deshalb kann es passieren das nicht alle Widgets angezeigt werden kÃ¶nnen (da einfach kein Platz mehr ist). Hier muss du selbst entscheiden welches Widget auf welcher Position angezeigt werden soll.
 
 * Interne Widgets
 
-** DVB Geräte
+** DVB GerÃ¤te
 
-Zeigt die DVB Geräte an, wer dieses benutzt und auf welchem Kanel das Gerät gerade ist. Über die Plugineinstellungen kann konfiguriert werden ob "unbekannte" und/oder "nicht benutzte" Geräte ausgeblendet werden sollen.
-Leider ist es derzeit nicht möglich 100% herauszufinden wer das Gerät derzeit nutzt. Z.B. gibt es Fälle wie den EPG-Scan welcher nicht erkannt wird.
+Zeigt die DVB GerÃ¤te an, wer dieses benutzt und auf welchem Kanel das GerÃ¤t gerade ist. Ãœber die Plugineinstellungen kann konfiguriert werden ob "unbekannte" und/oder "nicht benutzte" GerÃ¤te ausgeblendet werden sollen.
+Leider ist es derzeit nicht mÃ¶glich 100% herauszufinden wer das GerÃ¤t derzeit nutzt. Z.B. gibt es FÃ¤lle wie den EPG-Scan welcher nicht erkannt wird.
 
 ** Aktive Timer
 
-Zeit die aktiven Timer an. Über die Plugineinstellungen kann die max. Anzahl der Timer konfiguriert werden welche angezeigt wird. Weiter kann konfiguriert werden, dass das Widget ausgeblendet wird, wenn keine aktiven Timer existieren.
+Zeit die aktiven Timer an. Ãœber die Plugineinstellungen kann die max. Anzahl der Timer konfiguriert werden welche angezeigt wird. Weiter kann konfiguriert werden, dass das Widget ausgeblendet wird, wenn keine aktiven Timer existieren.
 
 ** Timer Konflikte
 
@@ -86,7 +90,7 @@ Zeigt die Anzahl der Timer-Konflikte an. Es ist in Plannung das auch die eigentl
 
 ** Letzte Aufnahmen
 
-Zeigt die letzten Aufnahmen nach Datum sortiert an. Über die Plugineinstellungen kann die max. Anzahl der Elemente konfiguriert werden.
+Zeigt die letzten Aufnahmen nach Datum sortiert an. Ãœber die Plugineinstellungen kann die max. Anzahl der Elemente konfiguriert werden.
 
 * Externe Widgets
 
@@ -102,34 +106,31 @@ Alle Ausgaben der Scripte sind unter
 
 ** Wetter-Widget
 
-Zeigt das aktuelle Wetter und eine Vorschau an. Die Ansicht der Vorschau kann konfiguriert werden. Es existiert eine Lang- und eine Kurzansicht. Bei der langen Ansicht gibt es pro Tag eine Zeile bei der kurzen Ansicht wird alles in einer Zeile dargestellt. Die Anzahl der Tage kann über die Plugineinstellungen konfiguriert werden, wobei max. 7 Tage möglich sind.
-Dieses Widget benötigt php5, unter Ubuntu ist z.B. das Paket php5-cli notwendig.
-Im Ordner existiert eine update_weather.config.sample diese muss nach update_weather.config kopiert werden.
+Zeigt das aktuelle Wetter und eine Vorschau an. Die Ansicht der Vorschau kann konfiguriert werden. Es existiert eine Lang- und eine Kurzansicht. Bei der langen Ansicht gibt es pro Tag eine Zeile bei der kurzen Ansicht wird alles in einer Zeile dargestellt. Die Anzahl der Tage kann Ã¼ber die Plugineinstellungen konfiguriert werden, wobei max. 7 Tage mÃ¶glich sind.
+Dieses Widget benÃ¶tigt jq, unter Ubuntu ist z.B. das Paket jq notwendig.
+Im Ordner existiert eine update_weather.conf.dist diese muss nach update_weather.conf kopiert werden.
 <pre>
 cd /usr/local/lib/vdr/skinflatplus/widgets/weather
-cp update_weather.config.sample update_weather.config
+cp update_weather.conf.dist update_weather.conf
 </pre>
-Anschließend muss Latitude und Longitude vom Ort ermittelt werden, dafür gibt es das kleine php-Script GetLatLangFromCity.php. Einfach ausführen und den Ort eingeben.
+AnschlieÃŸend muss Latitude und Longitude vom Ort ermittelt werden, dafÃ¼r gibt es z. B. die Seite https://www.latlong.net.
+Die Werte von Latitude und Longitude in die update_weather.conf schreiben und auch den Wert "LOCATION" entsprechend anpassen. "LOCATION" wird spÃ¤ter im Skin als Ort angezeigt.
+
+Das Script (update_weather.sh) wird nicht vom Skin aufgerufen. Dies muss extern Ã¼ber cron oder Ã¤hnliches erfolgen. Z.B. Ã¼ber folgende Zeile in der /etc/crontab
 <pre>
-php5 GetLatLangFromCity.php
-</pre>
-Die Werte von Latitude und Longitude in die update_weather.config schreiben und auch den Wert "LocationSkin" entsprechend anpassen. "LocationSkin" wird später im Skin als Ort angezeigt.
-
-Das Script (update_weather.php) wird nicht vom Skin aufgerufen. Dies muss extern über cron oder ähnliches erfolgen. Z.B. über folgende Zeile in der /etc/crontab
-<pre>
-# update weather every 12 hours
-7 */12   * * *   root    php5 /usr/local/lib/vdr/skinflatplus/widgets/weather/update_weather.php
+# update weather every 2 hours
+7 */2   * * *   root    bash /usr/local/lib/vdr/skinflatplus/widgets/weather/update_weather.sh
 </pre>
 
-Für die Wetterdaten wird forecast.io verwendet. Hier sind 1000 Abfragen am Tag frei, jede weiteren 10.000 Abfragen kosten dann $1. Pro Aufruf von update_weather.php werden 2 Abfragen getätigt. Bitte registriere dich kostenlos bei forecast.io und erstelle einen eigenen Api-Key. Diesen dann einfach in die update_weather.config eintragen. Hierfür ist nur eine E-Mail Adresse + Passwort notwendig. Wenn das Script nicht mehr funktioniert sind höchstwahrscheinlich die 1000 Abfragen/Tag überschritten.
+FÃ¼r die Wetterdaten wird openweathermap.org verwendet. Hier sind 1.000 Abfragen am Tag (30.000 im Monat) frei (https://openweathermap.org/full-price#current). Bitte registriere dich kostenlos bei openweathermap.org und erstelle einen eigenen Api-Key. Diesen dann einfach in die update_weather.conf eintragen. HierfÃ¼r ist nur eine E-Mail Adresse + Passwort notwendig.
 
-Für die Kanalinfo gibt es eine kleine Version des Wetter Widgets. hier wird Heute + Morgen angezeigt.
+FÃ¼r die Kanalinfo gibt es eine kleine Version des Wetter Widgets. hier wird Heute + Morgen angezeigt.
 
 ** System-Informationen
 
-Mit diesem Widget können verschiedenene Systeminformationen angezeigt werden.
-Dieses Script wird bei jedem Aufruf des Menü erneut ausgeführt. Daher sollte das Script kurz und schnell sein.
-Es wird das Script "system_information" ausgeführt. Dieses muss manuell verlinkt werden! Für Ubuntu z.B. wie folgt
+Mit diesem Widget kÃ¶nnen verschiedenene Systeminformationen angezeigt werden.
+Dieses Script wird bei jedem Aufruf des MenÃ¼ erneut ausgefÃ¼hrt. Daher sollte das Script kurz und schnell sein.
+Es wird das Script "system_information" ausgefÃ¼hrt. Dieses muss manuell verlinkt werden! FÃ¼r Ubuntu z.B. wie folgt
 <pre>
 cd /usr/local/lib/vdr/skinflatplus/widgets/system_information
 ln -s system_information.ubuntu system_information
@@ -139,20 +140,20 @@ In dem Script ist auch die Konfiguration enthalten. Hier kann festgelegt werden 
 
 ** Temperaturen
 
-Mit diesem Widget können die Temperaturen des System angezeigt werden.
-Dieses Script wird bei jedem Aufruf des Menü erneut ausgeführt. Daher sollte das Script kurz und schnell sein.
-Es wird das Script "temperatures" ausgeführt. Dieses muss manuell verlinkt werden! Z.B. wie folgt
+Mit diesem Widget kÃ¶nnen die Temperaturen des System angezeigt werden.
+Dieses Script wird bei jedem Aufruf des MenÃ¼ erneut ausgefÃ¼hrt. Daher sollte das Script kurz und schnell sein.
+Es wird das Script "temperatures" ausgefÃ¼hrt. Dieses muss manuell verlinkt werden! Z.B. wie folgt
 <pre>
 cd /usr/local/lib/vdr/skinflatplus/widgets/temperatures
 ln -s temperatures.default temperatures
 </pre>
 
-Das default Script nutzt lm-sensors um die Temeperaturen zu ermitteln. Du musst sicherstellen das du lm-sensors installiert und auch richtig konfiguriert hast. Weiterhin wird die GPU-Temperatur mittels nvidia-settings ermittelt. Dies funktioniert natürlich nur mit Nvidia Grafikkarten.
+Das default Script nutzt lm-sensors um die Temeperaturen zu ermitteln. Du musst sicherstellen das du lm-sensors installiert und auch richtig konfiguriert hast. Weiterhin wird die GPU-Temperatur mittels nvidia-settings ermittelt. Dies funktioniert natÃ¼rlich nur mit Nvidia Grafikkarten.
 
 ** System-Updatestatus
 
-Mit diesem Widget können die Updates des System angezeigt werden. Dabei wird die Anzahl der Updates und der Sicherheitsupdates angezeigt.
-Das Script (system_update_status) wird nicht vom Skin aufgerufen. Dies muss extern über cron oder ähnliches erfolgen. Z.B. über folgende Zeile in der /etc/crontab
+Mit diesem Widget kÃ¶nnen die Updates des System angezeigt werden. Dabei wird die Anzahl der Updates und der Sicherheitsupdates angezeigt.
+Das Script (system_update_status) wird nicht vom Skin aufgerufen. Dies muss extern Ã¼ber cron oder Ã¤hnliches erfolgen. Z.B. Ã¼ber folgende Zeile in der /etc/crontab
 <pre>
 # update system_updates every 12 hours
 7 */12   * * *   root    /usr/local/lib/vdr/skinflatplus/widgets/system_updatestatus/system_updatestatus
@@ -160,10 +161,10 @@ Das Script (system_update_status) wird nicht vom Skin aufgerufen. Dies muss exte
 
 ** Benutzerdefinierte Ausgabe
 
-Mit diesem Widget können eigene Befehle ausgeführt und angezeigt werden.
-Wenn es in dem Ordner das Script "command" gibt, wird dieses bei jedem Aufruf des Menüs ausgeführt.
+Mit diesem Widget kÃ¶nnen eigene Befehle ausgefÃ¼hrt und angezeigt werden.
+Wenn es in dem Ordner das Script "command" gibt, wird dieses bei jedem Aufruf des MenÃ¼s ausgefÃ¼hrt.
 Das Script command muss 2 Dateien bereitstellen: title & output
-Jeweils für den Titel und der eigentlichen Ausgabe.
+Jeweils fÃ¼r den Titel und der eigentlichen Ausgabe.
 Es sollte darauf geachtet werden das nicht zu viele Zeilen ausgeben werden da immer die gesamte Datei angezeigt wird. Die Zeilen werden rechts einfach abgeschnitten und nicht umgebrochen!
 
 
@@ -176,19 +177,19 @@ If You use scraper2vdr, which I recommend, you'll also get movie and series info
 
 epgd & doppelte Informationen in EPG-Text
 -------------------------------
-Wenn epgd + epg2vdr verwendet wird, wird der angezeigte EPG-Text über die eventsview.sql festgelegt (in der epgd.conf Option: EpgView).
-Mit der default eventsview.sql ist im EPG-Text die Schauspieler, Serien- und Filminformationen mit enthalten. Da diese dann doppelt angezeigt werden würden (im EPG-Text und in den extra Bereichen über scraper2vdr) existiert im contrib-Ordner von flatPlus eine eigene "eventsview-flatplus.sql". Mit dieser wird im EPG-Text wirklich nur der EPG-Text ausgeben und keine weiteren Informationen.
-Ich empfehle diese zu verwenden. Dafür einfach die Datei aus den contrib Ordner nach /etc/epgd/ kopieren und in der epgd.conf folgenden Eintrag verwenden:
+Wenn epgd + epg2vdr verwendet wird, wird der angezeigte EPG-Text Ã¼ber die eventsview.sql festgelegt (in der epgd.conf Option: EpgView).
+Mit der default eventsview.sql ist im EPG-Text die Schauspieler, Serien- und Filminformationen mit enthalten. Da diese dann doppelt angezeigt werden wÃ¼rden (im EPG-Text und in den extra Bereichen Ã¼ber scraper2vdr) existiert im contrib-Ordner von flatPlus eine eigene "eventsview-flatplus.sql". Mit dieser wird im EPG-Text wirklich nur der EPG-Text ausgeben und keine weiteren Informationen.
+Ich empfehle diese zu verwenden. DafÃ¼r einfach die Datei aus den contrib Ordner nach /etc/epgd/ kopieren und in der epgd.conf folgenden Eintrag verwenden:
 
 EpgView = eventsview-flatplus.sql
 
 
 Themes und Theme spezifische Icons
 -------------------------------
-Der Skin ist weitestgehend über Themes anpassbar.
-Die Decorations (Border, ProgressBar) sind über das Theme einstellbar. Dabei kann jeweils der Typ und
-die Größe (in Pixeln) eingestellt werden. Dabei wird von dem ARGB im Theme nur B verwendet. Es muss darauf geachtet werden
-das die Werte in Hex angegeben werden. Wenn man also z.B. eine Größe von 20 Pixeln angeben möchte heißt der Wert: 00000014
+Der Skin ist weitestgehend Ã¼ber Themes anpassbar.
+Die Decorations (Border, ProgressBar) sind Ã¼ber das Theme einstellbar. Dabei kann jeweils der Typ und
+die GrÃ¶ÃŸe (in Pixeln) eingestellt werden. Dabei wird von dem ARGB im Theme nur B verwendet. Es muss darauf geachtet werden
+das die Werte in Hex angegeben werden. Wenn man also z.B. eine GrÃ¶ÃŸe von 20 Pixeln angeben mÃ¶chte heiÃŸt der Wert: 00000014
 Siehe dazu die Beispiele.
 
 Borders:

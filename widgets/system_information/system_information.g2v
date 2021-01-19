@@ -3,11 +3,11 @@
 # this script will be executed when the widget will be drawn
 # so make it short and fast
 
-OUTPUTFLDR="/tmp/skinflatplus/widgets/system_information"
-mkdir -p "$OUTPUTFLDR"
+OUTPUTFLDR='/tmp/skinflatplus/widgets/system_information'
+mkdir --parents "$OUTPUTFLDR"
 
-OUTPUTFLDRTEMP="/tmp/skinflatplus/widgets/temperatures"
-OUTPUTFLDRSUPD="/tmp/skinflatplus/widgets/system_updatestatus"
+OUTPUTFLDRTEMP='/tmp/skinflatplus/widgets/temperatures'
+OUTPUTFLDRSUPD='/tmp/skinflatplus/widgets/system_updatestatus'
 
 
 # enable/disable items
@@ -34,17 +34,17 @@ SHOW_SYSUPDATES=0
 # Uptime: 1:20 5m       Load: 0.41
 
 # must begin with 01
-SYS_VERSION_POS="01"
-KERNEL_VERSION_POS="02"
-UPTIME_POS="03"
-LOAD_POS="04"
-PROCESSES_POS="05"
-MEM_USAGE_POS="06"
-SWAP_USAGE_POS="07"
-ROOT_USAGE_POS="08"
-VIDEO_USAGE_POS="09"
-VDR_CPU_USAGE_POS="10"
-VDR_MEM_USAGE_POS="11"
+SYS_VERSION_POS='01'
+KERNEL_VERSION_POS='02'
+UPTIME_POS='03'
+LOAD_POS='04'
+PROCESSES_POS='05'
+MEM_USAGE_POS='06'
+SWAP_USAGE_POS='07'
+ROOT_USAGE_POS='08'
+VIDEO_USAGE_POS='09'
+VDR_CPU_USAGE_POS=10
+VDR_MEM_USAGE_POS=11
 
 TEMP_CPU_POS=15
 TEMP_PCCASE_POS=16
@@ -54,16 +54,16 @@ SYSUPD_POS=20
 SYSSECUPD_POS=21
 
 # mount point of vdr video disk
-VIDEO_MOUNT="/video"
+VIDEO_MOUNT='/video'
 
 # force english output for filters
-LANG=en_EN
+LANG='en_EN'
 
 # Release-File (PRETTY_NAME & VERSION)
-REL_FILE="/etc/g2v-release"
+REL_FILE='/etc/g2v-release'
 
 # delete all files
-rm -f ${OUTPUTFLDR}/[0-99]*
+rm -f ${OUTPUTFLDR}/[0-9]*
 
 if [[ "$SHOW_SYS_VERSION" == "1" ]] ; then
   if [[ -e "$REL_FILE" ]] ; then
@@ -81,7 +81,7 @@ if [[ "$SHOW_KERNEL_VERSION" == "1" ]] ; then
 fi
 
 if [[ "$SHOW_UPTIME" == "1" ]] ; then
-  UPTIME=($(</proc/uptime))     # UpTime in Array
+  IFS=' ' read -r -a UPTIME < /proc/uptime
   UPTIME[0]="${UPTIME[0]%.*}"   # .* entfernen (UpTime in Sekunden)
   TAGE=$((UPTIME[0] / 86400)) ; STD=$((UPTIME[0] % 86400 / 3600))
   MIN=$((UPTIME[0] % 3600 / 60)) ; SEK=$((UPTIME[0] % 60))
@@ -99,24 +99,26 @@ if [[ "$SHOW_UPTIME" == "1" ]] ; then
 fi
 
 if [[ "$SHOW_LOAD" == "1" ]] ; then
-  LOADAVG=($(</proc/loadavg))   # Zeile in Array
+  IFS=' ' read -r -a LOADAVG < /proc/loadavg  # Zeile in Array
   echo "${LOADAVG[0]//./,} (1M) ${LOADAVG[1]//./,} (5M)" > "${OUTPUTFLDR}/${LOAD_POS}_load"
 fi
 
 if [[ "$SHOW_PROCESSES" == "1" ]] ; then
-  PROCS=($(ls -d /proc/[0-9]*/))
+  mapfile -t PROCS < <(ls --directory /proc/[0-9]*/)
   echo "${#PROCS[@]}" > "${OUTPUTFLDR}/${PROCESSES_POS}_processes"
 fi
 
 if [[ "$SHOW_MEM_USAGE" == "1" || "$SHOW_SWAP_USAGE" == "1" ]] ; then
-  mapfile -t </proc/meminfo    # Ausgabe in Array
-  MEMTOTAL=(${MAPFILE[0]}) ; MEMAVAIL=(${MAPFILE[2]})
-  SWAPTOTAL=(${MAPFILE[14]}) ; SWAPFREE=(${MAPFILE[15]})
+  mapfile -t < /proc/meminfo    # Ausgabe in Array
+  IFS=' ' read -r -a MEMTOTAL <<< "${MAPFILE[0]}"
+  IFS=' ' read -r -a MEMAVAIL <<< "${MAPFILE[2]}"
+  IFS=' ' read -r -a SWAPTOTAL <<< "${MAPFILE[14]}"
+  IFS=' ' read -r -a SWAPFREE <<< "${MAPFILE[15]}"
 fi
 
 if [[ "$SHOW_MEM_USAGE" == "1" ]] ; then
-  MEMUSED=$((${MEMTOTAL[1]} - ${MEMAVAIL[1]}))
-  MU=$(($MEMUSED * 1000 / ${MEMTOTAL[1]}))
+  MEMUSED=$((MEMTOTAL[1] - MEMAVAIL[1]))
+  MU=$((MEMUSED * 1000 / MEMTOTAL[1]))
   [[ $MU -lt 10 ]] && MU="0${MU}"
   MU_DEC="${MU: -1}" ; MEM_USAGE="${MU:0: -1},${MU_DEC}"
   echo "${MEM_USAGE}%" > "${OUTPUTFLDR}/${MEM_USAGE_POS}_mem_usage"
@@ -126,8 +128,8 @@ if [[ "$SHOW_SWAP_USAGE" == "1" ]] ; then
   if [[ ${SWAPTOTAL[1]} -eq ${SWAPFREE[1]} ]] ; then
     echo "0,0%" > "${OUTPUTFLDR}/${SWAP_USAGE_POS}_swap_usage"
   else
-    SWPUSED=$((${SWAPTOTAL[1]} - ${SWAPFREE[1]}))
-    SU=$(($SWPUSED * 1000 / ${SWAPFREE[1]}))
+    SWPUSED=$((SWAPTOTAL[1] - SWAPFREE[1]))
+    SU=$((SWPUSED * 1000 / SWAPFREE[1]))
     [[ $SU -lt 10 ]] && SU="0${SU}"
     SU_DEC="${SU: -1}" ; SWAP_USAGE="${SU:0: -1},${SU_DEC}"
     echo "${SWAP_USAGE}%" > "${OUTPUTFLDR}/${SWAP_USAGE_POS}_swap_usage"
@@ -136,14 +138,14 @@ fi
 
 if [[ "$SHOW_ROOT_USAGE" == "1" ]] ; then
   mapfile -t < <(df -Ph /)    # Ausgabe von df in Array (Zwei Zeilen)
-  ROOTUSAGE=(${MAPFILE[1]})   # 2. Zeile in Array
+  IFS=' ' read -r -a ROOTUSAGE <<< "${MAPFILE[1]}"  # 2. Zeile in Array
   # Beispiel 2. Zeile: tmpfs  128M  30M  99M  23%  /root
   echo "${ROOTUSAGE[4]}" > "${OUTPUTFLDR}/${ROOT_USAGE_POS}_root_usage"
 fi
 
 if [[ "$SHOW_VIDEO_USAGE" == "1" && -d "$VIDEO_MOUNT" ]] ; then
   mapfile -t < <(df -Ph "$VIDEO_MOUNT")    # Ausgabe von df in Array (Zwei Zeilen)
-  VIDEOUSAGE=(${MAPFILE[1]})               # 2. Zeile in Array
+  IFS=' ' read -r -a VIDEOUSAGE <<< "${MAPFILE[1]}"  # 2. Zeile in Array
   # Beispiel 2. Zeile: tmpfs  128M  30M  99M  23%  /root
   echo "${VIDEOUSAGE[4]}" > "${OUTPUTFLDR}/${VIDEO_USAGE_POS}_video_usage"
 fi
@@ -153,12 +155,14 @@ if [[ "$SHOW_VDR_CPU_USAGE" == "1" || "$SHOW_VDR_MEM_USAGE" == "1" ]] ; then
 fi
 
 if [[ "$SHOW_VDR_CPU_USAGE" == "1" ]] ; then
-  CPUTMP=(${MAPFILE[0]}) ; CPU_USAGE=${CPUTMP[0]/./,}  # 24.2 -> 24,2
+  IFS=' ' read -r -a CPUTMP <<< "${MAPFILE[0]}"
+  CPU_USAGE=${CPUTMP[0]/./,}  # 24.2 -> 24,2
   echo "${CPU_USAGE//[[:space:]]/}%" > "${OUTPUTFLDR}/${VDR_CPU_USAGE_POS}_vdr_cpu_usage"
 fi
 
 if [[ "$SHOW_VDR_MEM_USAGE" == "1" ]] ; then
-  MEMTMP=(${MAPFILE[0]}) ; VDR_MEM_USAGE=${MEMTMP[1]/./,}  # 24.2 -> 24,2
+  IFS=' ' read -r -a MEMTMP <<< "${MAPFILE[0]}"
+  VDR_MEM_USAGE=${MEMTMP[1]/./,}  # 24.2 -> 24,2
   echo "${VDR_MEM_USAGE//[[:space:]]/}%" > "${OUTPUTFLDR}/${VDR_MEM_USAGE_POS}_vdr_mem_usage"
 fi
 

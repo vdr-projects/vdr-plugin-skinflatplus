@@ -1,15 +1,17 @@
 VDR Plugin 'skinflatplus' Revision History
 ---------------------------------------
 
-201X-XX-XX: Version XXX
+202X-XX-XX: Version XXX
 - [fix] '%' sign not shown in menu weather widget at certian font
 - [update] use std::min & std::max
 - [update] support for vdr 2.3.8 (thanks to nanohcv)
 - [update] support for vdr 2.4.0 - MaxPixmapSize
     Cut Pixmaps to MaxPixmapSize (default in vdr core 2048x2048)
     Maybe textscrolling does not work with cut off pixmaps.
-    Output device has to implement MaxPixmapSize to overwrite vdr core default value.    
+    Output device has to implement MaxPixmapSize to overwrite vdr core default value.
 - [update] weather widget update_weather.php php7 support (reported by Delekhan)
+- [update] disk usage shown in TB when over 999 GB (MegaV0lt)
+- [update] change to openweathermap api (MegaV0lt)
 - [add] support for change color key mapping
 - [add] displaychannel show event start time on the left before event title
 

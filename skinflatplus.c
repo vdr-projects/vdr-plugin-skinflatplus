@@ -7,6 +7,7 @@
  */
 #include <getopt.h>
 #include <vdr/plugin.h>
+#include <Magick++.h>
 
 #if defined(APIVERSNUM) && APIVERSNUM < 10734
 #error "VDR-1.7.34 API version or greater is required!"
@@ -75,6 +76,11 @@ bool cPluginFlat::ProcessArgs(int argc, char *argv[]) {
     }
     return true;
 }
+
+__attribute__((constructor)) static void init(void) {
+   Magick::InitializeMagick(NULL);
+}
+
 
 bool cPluginFlat::Initialize(void) {
     Config.Init();
